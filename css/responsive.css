@@ -1,0 +1,817 @@
+/* ==========================================
+   TAVNIT LANDING PAGE - RESPONSIVE STYLES
+   Mobile-First Responsive Design
+   ========================================== */
+
+/* ==========================================
+   TABLET (768px - 1023px)
+   ========================================== */
+@media (max-width: 1023px) {
+  /* Typography Adjustments */
+  :root {
+    --font-size-5xl: 40px;
+    --font-size-6xl: 48px;
+  }
+
+  .hero-title {
+    font-size: var(--font-size-5xl);
+  }
+
+  /* Header - Tablet */
+  .header-content {
+    padding: 0 32px;
+  }
+
+  .nav-menu {
+    gap: 24px;
+  }
+
+  .nav-menu a {
+    font-size: 14px;
+  }
+
+  /* Docs Header - Tablet */
+  .docs-header-content {
+    padding-left: 0;
+    padding-right: 32px;
+  }
+
+  .docs-logo {
+    padding-left: 16px;
+  }
+
+  .docs-logo img {
+    height: 40px;
+  }
+
+  .docs-label {
+    font-size: 14px;
+  }
+
+  /* Hero Section */
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-cta-group {
+    justify-content: center;
+  }
+
+  .hero-social-proof {
+    justify-content: center;
+  }
+
+  #hero-animation-container {
+    min-height: 400px;
+  }
+
+  /* Problem Grid */
+  .problem-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Video Container */
+  .video-container {
+    max-width: 100%;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Steps */
+  .steps-container {
+    flex-direction: column;
+  }
+
+  .step-connector {
+    transform: rotate(90deg);
+    margin: var(--spacing-md) 0;
+  }
+
+  /* Features Grid */
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Use Cases */
+  .use-case-layout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  .use-case-visual {
+    order: -1;
+    min-height: 300px;
+  }
+
+  /* Integrations Grid */
+  .integrations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Pricing Features */
+  .pricing-features ul {
+    grid-template-columns: 1fr;
+  }
+
+  /* Pricing Grid (Tablet) */
+  .pricing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pricing-package-featured {
+    transform: scale(1);
+  }
+
+  .pricing-package-featured:hover {
+    transform: translateY(-8px);
+  }
+
+  .features-grid-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+
+  .footer-grid .footer-column:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ==========================================
+   MOBILE (320px - 767px)
+   ========================================== */
+@media (max-width: 767px) {
+  /* Typography Adjustments */
+  :root {
+    --font-size-4xl: 28px;
+    --font-size-5xl: 32px;
+    --font-size-6xl: 36px;
+    --spacing-3xl: 64px;
+    --spacing-4xl: 96px;
+  }
+
+  .section-title {
+    font-size: var(--font-size-4xl);
+  }
+
+  .section-subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  /* Container Padding */
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  /* Header - Mobile */
+  .header-content {
+    padding: 0 16px;
+    height: 56px;
+  }
+
+  .logo img {
+    height: 40px;
+  }
+
+  .nav-menu {
+    display: none;
+  }
+
+  .cta-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  /* Docs Header - Mobile */
+  .docs-header-content {
+    padding-left: 0;
+    padding-right: 16px;
+    height: 56px;
+  }
+
+  .docs-logo {
+    width: auto;
+    padding-left: 16px;
+  }
+
+  .docs-logo img {
+    height: 36px;
+  }
+
+  .docs-label {
+    display: none;
+  }
+
+  .back-link span {
+    display: none;
+  }
+
+  .sign-in-btn {
+    font-size: 13px;
+    padding: 6px 14px;
+  }
+
+  /* Update docs container for mobile header height */
+  .docs-container {
+    margin-top: 56px;
+    min-height: calc(100vh - 56px);
+  }
+
+  .docs-sidebar {
+    top: 56px;
+    height: calc(100vh - 56px);
+  }
+
+  /* Buttons */
+  .btn-large {
+    padding: 14px 24px;
+    font-size: var(--font-size-base);
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-secondary-light {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Hero Section */
+  .hero {
+    min-height: auto;
+    padding: var(--spacing-2xl) 0;
+    padding-top: calc(56px + var(--spacing-2xl));
+  }
+
+  .hero-title {
+    font-size: var(--font-size-5xl);
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #hero-animation-container {
+    min-height: 300px;
+  }
+
+  /* Gradient Orbs - Smaller on Mobile */
+  .gradient-orb-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    left: -150px;
+  }
+
+  .gradient-orb-2 {
+    width: 250px;
+    height: 250px;
+    bottom: -125px;
+    right: -125px;
+  }
+
+  .gradient-orb-3 {
+    width: 200px;
+    height: 200px;
+  }
+
+  /* Section Padding */
+  .problem,
+  .how-it-works,
+  .features,
+  .use-cases,
+  .integrations,
+  .pricing,
+  .social-proof {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .final-cta {
+    padding: var(--spacing-3xl) 0;
+  }
+
+  /* Problem Grid */
+  .problem-card {
+    padding: var(--spacing-lg);
+  }
+
+  .problem-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .problem-card h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  /* Steps */
+  .step {
+    padding: var(--spacing-lg);
+  }
+
+  .step-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .step h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  .step p {
+    font-size: var(--font-size-sm);
+  }
+
+  /* Features Grid */
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .feature-card {
+    padding: var(--spacing-lg);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .feature-card h3 {
+    font-size: var(--font-size-xl);
+  }
+
+  /* Use Cases */
+  .use-cases-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tab-button {
+    width: 100%;
+  }
+
+  .use-case-layout {
+    padding: var(--spacing-lg);
+  }
+
+  .use-case-info h3 {
+    font-size: var(--font-size-3xl);
+  }
+
+  .use-case-visual {
+    min-height: 250px;
+  }
+
+  .use-case-animation {
+    min-height: 250px;
+  }
+
+  /* Integrations */
+  .integration-card {
+    padding: var(--spacing-lg);
+  }
+
+  .integration-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .integration-card h3 {
+    font-size: var(--font-size-xl);
+  }
+
+  .integration-example {
+    padding: var(--spacing-sm);
+  }
+
+  .integration-example code {
+    font-size: var(--font-size-xs);
+  }
+
+  /* Pricing */
+  .pricing-card {
+    padding: var(--spacing-lg);
+  }
+
+  /* Pricing Grid (Mobile) */
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .pricing-package {
+    padding: var(--spacing-md);
+  }
+
+  .features-grid-list {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .pricing-features-all {
+    padding: var(--spacing-lg);
+  }
+
+  .pricing-amount .price {
+    font-size: 56px;
+  }
+
+  .pricing-features ul {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .stat-card {
+    padding: var(--spacing-lg);
+  }
+
+  .stat-number {
+    font-size: var(--font-size-4xl);
+  }
+
+  /* Final CTA */
+  .cta-content h2 {
+    font-size: var(--font-size-4xl);
+  }
+
+  .cta-content p {
+    font-size: var(--font-size-base);
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Footer */
+  .footer {
+    padding: var(--spacing-xl) 0 var(--spacing-md);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .footer-grid .footer-column:first-child {
+    grid-column: 1;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    text-align: center;
+  }
+
+  /* Animation Containers */
+  .pdf-doc {
+    padding: 1rem;
+  }
+
+  .table-doc table {
+    font-size: 10px;
+  }
+
+  .table-doc th,
+  .table-doc td {
+    padding: 0.5rem;
+  }
+
+  /* Hide complex animations on mobile for performance */
+  .gradient-orb {
+    display: none;
+  }
+
+  /* Comparison Table - Mobile */
+  .comparison {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .comparison .section-title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .comparison .section-subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .comparison-table-container {
+    margin-left: calc(var(--spacing-sm) * -1);
+    margin-right: calc(var(--spacing-sm) * -1);
+    border-radius: 0;
+  }
+
+  .comparison-table {
+    min-width: 700px;
+    font-size: 12px;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: var(--spacing-sm) var(--spacing-xs);
+  }
+
+  .product-badge {
+    font-size: 8px;
+    padding: 3px 8px;
+  }
+
+  .product-name {
+    font-size: var(--font-size-sm);
+  }
+
+  .product-tagline {
+    font-size: 10px;
+  }
+
+  .feature-name strong {
+    font-size: var(--font-size-xs);
+  }
+
+  .feature-desc {
+    display: none;
+  }
+
+  .icon-check,
+  .icon-check-muted,
+  .icon-x {
+    width: 18px;
+    height: 18px;
+  }
+
+  .badge-limited {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .btn-table {
+    font-size: var(--font-size-xs);
+    padding: 8px 12px;
+  }
+}
+
+/* ==========================================
+   SMALL MOBILE (320px - 479px)
+   ========================================== */
+@media (max-width: 479px) {
+  /* Typography */
+  :root {
+    --font-size-4xl: 24px;
+    --font-size-5xl: 28px;
+    --font-size-6xl: 32px;
+  }
+
+  /* Hero */
+  .hero-title {
+    font-size: var(--font-size-5xl);
+  }
+
+  /* Buttons */
+  .btn-primary,
+  .btn-secondary {
+    padding: 12px 20px;
+    font-size: var(--font-size-sm);
+  }
+
+  /* Cards */
+  .feature-card,
+  .problem-card,
+  .integration-card {
+    padding: var(--spacing-md);
+  }
+
+  /* Animations - Further simplification */
+  #hero-animation-container {
+    min-height: 250px;
+  }
+
+  .use-case-visual {
+    min-height: 200px;
+  }
+
+  /* Pricing */
+  .pricing-amount .price {
+    font-size: 48px;
+  }
+}
+
+/* ==========================================
+   LARGE DESKTOP (1440px+)
+   ========================================== */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  :root {
+    --font-size-6xl: 72px;
+  }
+
+  .hero-title {
+    font-size: 58px;
+  }
+
+  #hero-animation-container {
+    min-height: 500px;
+  }
+}
+
+/* ==========================================
+   PRINT STYLES
+   ========================================== */
+@media print {
+  .nav,
+  .nav-mobile-toggle,
+  .hero-cta-group,
+  .final-cta,
+  .footer {
+    display: none;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: black;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .section-title {
+    page-break-after: avoid;
+  }
+
+  .feature-card,
+  .problem-card,
+  .integration-card {
+    page-break-inside: avoid;
+    border: 1px solid #000;
+  }
+}
+
+/* ==========================================
+   LANDSCAPE MOBILE (Horizontal orientation)
+   ========================================== */
+@media (max-width: 900px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #hero-animation-container {
+    min-height: 350px;
+  }
+}
+
+/* ==========================================
+   HIGH DPI / RETINA DISPLAYS
+   ========================================== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Ensure crisp rendering on high DPI screens */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Increase shadow quality */
+  .feature-card,
+  .pricing-card,
+  .integration-card {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* ==========================================
+   DARK MODE (Optional - Future Enhancement)
+   ========================================== */
+@media (prefers-color-scheme: dark) {
+  /* Uncomment and adjust colors if dark mode is implemented */
+  /*
+  :root {
+    --gray-50: #1f2937;
+    --gray-100: #111827;
+    --white: #1f2937;
+    --gray-900: #f9fafb;
+  }
+
+  body {
+    background-color: #111827;
+    color: #f9fafb;
+  }
+
+  .nav {
+    background: rgba(31, 41, 55, 0.9);
+    border-bottom-color: #374151;
+  }
+
+  .feature-card,
+  .problem-card,
+  .integration-card,
+  .pricing-card {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  */
+
+  /* Comparison Table - Tablet */
+  .comparison {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .comparison-table-container {
+    margin-left: calc(var(--spacing-md) * -1);
+    margin-right: calc(var(--spacing-md) * -1);
+    border-radius: 0;
+  }
+
+  .comparison-table {
+    font-size: var(--font-size-sm);
+  }
+
+  .product-name {
+    font-size: var(--font-size-base);
+  }
+
+  .feature-name strong {
+    font-size: var(--font-size-sm);
+  }
+
+  .feature-desc {
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* ==========================================
+   ACCESSIBILITY - FOCUS STYLES
+   ========================================== */
+@media (prefers-reduced-motion: no-preference) {
+  :focus {
+    outline: 2px solid #667eea;
+    outline-offset: 4px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 4px;
+  }
+}
+
+/* ==========================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ========================================== */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch targets */
+  .btn-primary,
+  .btn-secondary,
+  .tab-button,
+  .nav-links a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover effects on touch devices */
+  .feature-card:hover,
+  .problem-card:hover,
+  .integration-card:hover {
+    transform: none;
+  }
+
+  /* Simplify animations for better performance */
+  .gradient-orb {
+    animation: none;
+  }
+}

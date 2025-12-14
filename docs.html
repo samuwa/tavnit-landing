@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tavnit Documentation - Learn how to integrate document extraction into your workflow">
+  <title>Documentation - Tavnit</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/docs.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="docs-body">
+
+  <!-- Header -->
+  <header class="docs-header">
+    <div class="docs-header-content">
+      <a href="index.html" class="back-link-left">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <a href="index.html" class="docs-logo">
+        <img src="assets/tavnit_logo.png" alt="Tavnit">
+        <span class="docs-label">Docs</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Documentation Container -->
+  <div class="docs-container">
+    <!-- Sidebar (Desktop) -->
+    <aside class="docs-sidebar" id="docs-sidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-header-title">Contents</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#getting-started" class="sidebar-item active" data-section="getting-started">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+          Getting Started
+        </a>
+        <a href="#email-integration" class="sidebar-item" data-section="email-integration">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M22 7l-10 7L2 7"/>
+          </svg>
+          Email Integration
+        </a>
+        <a href="#api-integration" class="sidebar-item" data-section="api-integration">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 3l5 5-5 5"/>
+            <path d="M21 8H9"/>
+            <path d="M8 21l-5-5 5-5"/>
+            <path d="M3 16h12"/>
+          </svg>
+          API Integration
+        </a>
+        <a href="#api-code" class="sidebar-subitem" data-section="api-code">Code</a>
+        <a href="#api-no-code" class="sidebar-subitem" data-section="api-no-code">No-Code</a>
+        <a href="#webhooks" class="sidebar-item" data-section="webhooks">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4"/>
+            <path d="M12 18v4"/>
+            <path d="M4.93 4.93l2.83 2.83"/>
+            <path d="M16.24 16.24l2.83 2.83"/>
+            <path d="M2 12h4"/>
+            <path d="M18 12h4"/>
+            <path d="M4.93 19.07l2.83-2.83"/>
+            <path d="M16.24 7.76l2.83-2.83"/>
+          </svg>
+          Webhooks
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Mobile Tab Navigation -->
+    <div class="docs-mobile-tabs">
+      <button class="tab-btn active" data-section="getting-started">Getting Started</button>
+      <button class="tab-btn" data-section="email-integration">Email</button>
+      <button class="tab-btn" data-section="api-integration">API</button>
+      <button class="tab-btn" data-section="webhooks">Webhooks</button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+      <!-- Getting Started Section -->
+      <section id="getting-started" class="doc-section active">
+        <h1 class="doc-title">Getting Started</h1>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/>
+            </svg>
+            <h2>Welcome to Tavnit</h2>
+          </div>
+          <p>Tavnit helps you automatically extract data from documents like invoices, receipts, and forms. Instead of manually typing information from each document, Tavnit reads them for you and organizes the data in a structured way.</p>
+          <p>This guide will walk you through creating your first flow and processing documents.</p>
+        </div>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+            <h2>Step 1: Create a Flow</h2>
+          </div>
+          <p>A "flow" is like a template that tells Tavnit what information to look for in your documents. For example, an invoice flow might look for invoice numbers, dates, and line items.</p>
+          <ol class="numbered-list">
+            <li>Click the "New Flow" button on the Flows page</li>
+            <li>Enter a name for your flow (e.g., "Invoice Processing")</li>
+            <li>Select the type of document you'll be processing</li>
+            <li>Review and customize the fields Tavnit discovered</li>
+            <li>Click "Activate" to make your flow ready to use</li>
+          </ol>
+        </div>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="3" y1="15" x2="21" y2="15"/>
+              <line x1="9" y1="3" x2="9" y2="21"/>
+              <line x1="15" y1="3" x2="15" y2="21"/>
+            </svg>
+            <h2>Step 2: Understanding Fields</h2>
+          </div>
+          <p>When you upload sample documents, Tavnit uses AI to discover what information can be extracted. There are two types of fields:</p>
+
+          <div class="info-box info-box-purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <div>
+              <strong>Metadata Fields</strong>
+              <p>Single values that appear once per document, like invoice number, date, or vendor name.</p>
+            </div>
+          </div>
+
+          <div class="info-box info-box-secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <div>
+              <strong>Table Fields</strong>
+              <p>Repeating data like line items on an invoice, each with columns like description, quantity, and price.</p>
+            </div>
+          </div>
+
+          <p>You can add, remove, or rename fields to match exactly what you need.</p>
+        </div>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <h2>Step 3: Process Documents</h2>
+          </div>
+          <p>Once your flow is active, you can process documents in several ways:</p>
+
+          <div class="info-box info-box-success">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <div>
+              <strong>Manual Upload</strong>
+              <p>Go to the Runs page, select your flow, and upload documents directly through the web interface.</p>
+            </div>
+          </div>
+
+          <div class="info-box info-box-secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M22 7l-10 7L2 7"/>
+            </svg>
+            <div>
+              <strong>Email Integration</strong>
+              <p>Send documents as email attachments to your flow's unique email address. See the Email Integration tab for details.</p>
+            </div>
+          </div>
+
+          <div class="info-box info-box-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 3l5 5-5 5"/>
+              <path d="M21 8H9"/>
+              <path d="M8 21l-5-5 5-5"/>
+              <path d="M3 16h12"/>
+            </svg>
+            <div>
+              <strong>API Integration</strong>
+              <p>Send documents programmatically from your own applications or automation tools. See the API Integration tab for details.</p>
+            </div>
+          </div>
+
+          <p>After processing, you'll see the extracted data on the run details page. You can also export results or receive them via webhook.</p>
+        </div>
+      </section>
+
+      <!-- Email Integration Section -->
+      <section id="email-integration" class="doc-section">
+        <h1 class="doc-title">Email Integration</h1>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M22 7l-10 7L2 7"/>
+            </svg>
+            <h2>Process Documents via Email</h2>
+          </div>
+          <p>Tavnit allows you to process documents simply by sending them as email attachments. Each flow has a unique email address that you can send documents to.</p>
+          <p>This is perfect for:</p>
+          <ul class="bullet-list">
+            <li>Forwarding invoices or receipts from your inbox</li>
+            <li>Setting up email forwarding rules for automatic processing</li>
+            <li>Processing documents without logging into Tavnit</li>
+          </ul>
+        </div>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 3l-6 6"/>
+              <path d="M15 3h6v6"/>
+              <path d="M10 3h4"/>
+              <path d="M3 10v4"/>
+              <path d="M3 21h18"/>
+              <path d="M3 3v7"/>
+            </svg>
+            <h2>Enable Email Trigger</h2>
+          </div>
+          <p>To start receiving documents via email, you need to enable the Email Trigger for your flow:</p>
+          <ol class="numbered-list">
+            <li>Go to the Flows page and select your flow</li>
+            <li>Open the flow's details page</li>
+            <li>Find the "Email Trigger" section and enable it</li>
+            <li>Copy your flow's unique email address</li>
+          </ol>
+
+          <div class="info-box info-box-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 16v-4"/>
+              <path d="M12 8h.01"/>
+            </svg>
+            <div>
+              <strong>One Run Per Attachment</strong>
+              <p>When you send an email with multiple attachments, Tavnit creates a separate run for each PDF or image file. This means if you attach 3 invoices, you'll get 3 separate extraction results.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57a4 4 0 1 1 5.66 5.66l-8.59 8.57a2 2 0 1 1-2.83-2.83l8.49-8.48"/>
+            </svg>
+            <h2>Supported File Types</h2>
+          </div>
+          <p>The Email Trigger accepts the following file types as attachments:</p>
+          <ul class="bullet-list">
+            <li>PDF documents (.pdf)</li>
+            <li>Images (.jpg, .jpeg, .png)</li>
+          </ul>
+          <p>Other file types will be ignored. The email subject and body are not processed – only the attachments.</p>
+        </div>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            <h2>Email Output</h2>
+          </div>
+          <p>You can also configure Tavnit to send extraction results to an email address automatically. This is useful when you want to receive the extracted data without checking the Tavnit dashboard.</p>
+          <ol class="numbered-list">
+            <li>Go to your flow's details page</li>
+            <li>Find the "Email Output" section</li>
+            <li>Enter the email address where you want to receive results</li>
+            <li>Save your changes</li>
+          </ol>
+
+          <div class="info-box info-box-purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 3l5 5-5 5"/>
+              <path d="M21 8H9"/>
+              <path d="M8 21l-5-5 5-5"/>
+              <path d="M3 16h12"/>
+            </svg>
+            <div>
+              <strong>JSON Format</strong>
+              <p>The extraction results are sent as JSON data in the email body. You can use this with email automation tools to parse and process the data further.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- API Integration Section -->
+      <section id="api-integration" class="doc-section">
+        <h1 class="doc-title">API Integration</h1>
+
+        <!-- Sub-tabs for Code/No-Code -->
+        <div class="api-subtabs">
+          <button class="subtab-btn active" data-subtab="api-code">Code</button>
+          <button class="subtab-btn" data-subtab="api-no-code">No-Code</button>
+        </div>
+
+        <!-- Code Sub-section -->
+        <div id="api-code" class="api-subsection active">
+          <div class="doc-card">
+            <div class="card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <h2>What is an API?</h2>
+            </div>
+            <p>An API (Application Programming Interface) is like a messenger that lets different software talk to each other. Instead of manually uploading documents through our website, you can write a small program that sends documents automatically.</p>
+            <p>This is useful if you want to:</p>
+            <ul class="bullet-list">
+              <li>Process many documents at once</li>
+              <li>Connect Tavnit to other tools you use</li>
+              <li>Build automated workflows</li>
+            </ul>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <h2>Credentials</h2>
+            </div>
+
+            <h3 class="credential-label">API Key</h3>
+            <p>Your API key is available in the Integrations tab after signing in.</p>
+            <div class="warning-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              Keep your API key secret. If you regenerate it from the Integrations tab, the previous key will be disabled.
+            </div>
+
+            <h3 class="credential-label">Flow ID</h3>
+            <p>The Flow ID can be found on each flow's details page.</p>
+
+            <h3 class="credential-label">API URL</h3>
+            <p>Use this URL to run flows programmatically:</p>
+            <div class="code-inline">https://tavnit.io/api/runs/process</div>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <h2>Sending Documents</h2>
+            </div>
+            <p>Tavnit accepts documents in two ways:</p>
+
+            <div class="info-box info-box-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57a4 4 0 1 1 5.66 5.66l-8.59 8.57a2 2 0 1 1-2.83-2.83l8.49-8.48"/>
+              </svg>
+              <div>
+                <strong>Multipart file upload</strong>
+                <p>Send the file as binary data (classic file upload). Best when you have direct access to the file.</p>
+              </div>
+            </div>
+
+            <div class="info-box info-box-secondary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 3l5 5-5 5"/>
+                <path d="M21 8H9"/>
+                <path d="M8 21l-5-5 5-5"/>
+                <path d="M3 16h12"/>
+              </svg>
+              <div>
+                <strong>Base64-encoded file</strong>
+                <p>Send the file content as a base64 string with a filename. Useful when working with automation tools or APIs that provide files as base64.</p>
+              </div>
+            </div>
+
+            <p>Both methods use the same endpoint and header:</p>
+            <ul class="bullet-list">
+              <li>URL: https://tavnit.io/api/runs/process</li>
+              <li>Header: X-API-Key: YOUR_API_KEY</li>
+            </ul>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 3l5 5-5 5"/>
+                <path d="M21 8H9"/>
+                <path d="M8 21l-5-5 5-5"/>
+                <path d="M3 16h12"/>
+              </svg>
+              <h2>Code Example</h2>
+            </div>
+            <p>Select your preferred programming language:</p>
+
+            <div class="language-toggle">
+              <button class="lang-btn active" data-lang="python">Python</button>
+              <button class="lang-btn" data-lang="javascript">JavaScript</button>
+            </div>
+
+            <div id="python-code" class="code-example active">
+              <div class="code-header">
+                <span>Python</span>
+                <button class="copy-btn" data-code="python">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code class="language-python">import requests
+
+API_KEY = "YOUR_API_KEY"
+FLOW_ID = "YOUR_FLOW_ID"
+
+# ─────────────────────────────────────────────────────────────
+# Option 1: Multipart file upload (binary)
+# ─────────────────────────────────────────────────────────────
+with open("document.pdf", "rb") as file:
+    response = requests.post(
+        "https://tavnit.io/api/runs/process",
+        headers={"X-API-Key": API_KEY},
+        data={
+            "flow_id": FLOW_ID,
+            "source": "api"
+        },
+        files={"file": file}
+    )
+
+print(response.json())
+
+
+# ─────────────────────────────────────────────────────────────
+# Option 2: Base64-encoded file (JSON body)
+# ─────────────────────────────────────────────────────────────
+import base64
+
+with open("document.pdf", "rb") as file:
+    file_base64 = base64.b64encode(file.read()).decode("utf-8")
+
+response = requests.post(
+    "https://tavnit.io/api/runs/process",
+    headers={
+        "X-API-Key": API_KEY,
+        "Content-Type": "application/json"
+    },
+    json={
+        "flow_id": FLOW_ID,
+        "source": "api",
+        "filename": "document.pdf",
+        "file_base64": file_base64
+    }
+)
+
+print(response.json())</code></pre>
+            </div>
+
+            <div id="javascript-code" class="code-example">
+              <div class="code-header">
+                <span>JavaScript</span>
+                <button class="copy-btn" data-code="javascript">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code class="language-javascript">const API_KEY = "YOUR_API_KEY";
+const FLOW_ID = "YOUR_FLOW_ID";
+
+// ─────────────────────────────────────────────────────────────
+// Option 1: Multipart file upload (binary)
+// ─────────────────────────────────────────────────────────────
+async function processDocument(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("flow_id", FLOW_ID);
+  formData.append("source", "api");
+
+  const response = await fetch("https://tavnit.io/api/runs/process", {
+    method: "POST",
+    headers: { "X-API-Key": API_KEY },
+    body: formData,
+  });
+
+  return await response.json();
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// Option 2: Base64-encoded file (JSON body)
+// ─────────────────────────────────────────────────────────────
+async function processDocumentBase64(base64Content, filename) {
+  const response = await fetch("https://tavnit.io/api/runs/process", {
+    method: "POST",
+    headers: {
+      "X-API-Key": API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      flow_id: FLOW_ID,
+      source: "api",
+      filename: filename,
+      file_base64: base64Content
+    })
+  });
+
+  return await response.json();
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- No-Code Sub-section -->
+        <div id="api-no-code" class="api-subsection">
+          <div class="doc-card">
+            <div class="card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              <h2>Automation Tools Overview</h2>
+            </div>
+            <p>You don't need to write code to integrate Tavnit with your workflows. No-code automation platforms let you connect apps visually and build powerful automations.</p>
+            <p>Popular no-code platforms that work with Tavnit:</p>
+
+            <div class="info-box info-box-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6"/>
+                <path d="M12 15v6"/>
+              </svg>
+              <div>
+                <strong>Make.com</strong>
+                <p>Visual automation platform with 1000+ app integrations. Great for complex multi-step workflows.</p>
+              </div>
+            </div>
+
+            <div class="info-box info-box-warning">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              <div>
+                <strong>Zapier</strong>
+                <p>Connect Tavnit to 5000+ apps with simple "Zaps". Perfect for straightforward automations.</p>
+              </div>
+            </div>
+
+            <div class="info-box info-box-success">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M3 12h6"/>
+                <path d="M15 12h6"/>
+                <path d="M12 3v6"/>
+                <path d="M12 15v6"/>
+              </svg>
+              <div>
+                <strong>n8n</strong>
+                <p>Open-source workflow automation. Self-host or use their cloud service for full control.</p>
+              </div>
+            </div>
+
+            <p>All of these platforms support HTTP requests, which means they can send documents to Tavnit's API.</p>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6"/>
+                <path d="M12 17v6"/>
+              </svg>
+              <h2>Make.com Integration</h2>
+            </div>
+            <p>Make.com (formerly Integromat) is a visual automation platform that lets you connect apps and automate workflows without writing any code.</p>
+            <a href="https://www.make.com/" target="_blank" class="external-link">
+              Visit Make.com
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            </a>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+              <h2>Getting Started with Make.com</h2>
+            </div>
+            <ol class="numbered-list">
+              <li>Go to make.com and create a free account</li>
+              <li>Click "Create a new scenario" from your dashboard</li>
+              <li>You'll see a blank canvas where you can add modules</li>
+              <li>Search for "HTTP" and add the "Make a request" module</li>
+            </ol>
+
+            <div class="info-box info-box-info">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 16v-4"/>
+                <path d="M12 8h.01"/>
+              </svg>
+              <div>
+                <strong>What is a Scenario?</strong>
+                <p>A scenario is an automated workflow in Make.com. It consists of modules (apps) connected together. When one module triggers or receives data, it passes that data to the next module.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6"/>
+                <path d="M12 17v6"/>
+                <path d="M5 12H1"/>
+                <path d="M23 12h-4"/>
+                <path d="M18.36 5.64l-2.83 2.83"/>
+                <path d="M8.47 15.53l-2.83 2.83"/>
+                <path d="M18.36 18.36l-2.83-2.83"/>
+                <path d="M8.47 8.47L5.64 5.64"/>
+              </svg>
+              <h2>Configure the HTTP Module</h2>
+            </div>
+            <p>Once you've added the HTTP module, configure it to send documents to Tavnit. You can use either of these two approaches:</p>
+
+            <h3 class="option-header option-purple">Option 1: Multipart/form-data (when you have a File object)</h3>
+            <ol class="numbered-list">
+              <li>Add an HTTP "Make a request" module to your scenario</li>
+              <li>Configure the request:
+                <ul class="bullet-list">
+                  <li>URL: https://tavnit.io/api/runs/process</li>
+                  <li>Method: POST</li>
+                </ul>
+              </li>
+              <li>In the Headers tab, add:
+                <ul class="bullet-list">
+                  <li>Header name: X-API-Key</li>
+                  <li>Header value: YOUR_API_KEY</li>
+                </ul>
+              </li>
+              <li>Set Body type to "multipart/form-data"</li>
+              <li>Add form fields:
+                <ul class="bullet-list">
+                  <li>flow_id: YOUR_FLOW_ID</li>
+                  <li>source: api</li>
+                  <li>file: (map from previous module)</li>
+                </ul>
+              </li>
+              <li>Run your scenario to test</li>
+            </ol>
+
+            <h3 class="option-header option-secondary">Option 2: JSON + base64 (when you have a base64 string)</h3>
+            <p>If your previous module outputs a base64 string instead of a file, use this approach:</p>
+            <ol class="numbered-list">
+              <li>Set Body type to "Raw" and select "JSON (application/json)"</li>
+              <li>In the Headers tab, also add:
+                <ul class="bullet-list">
+                  <li>Header name: Content-Type</li>
+                  <li>Header value: application/json</li>
+                </ul>
+              </li>
+              <li>Set the JSON body to:</li>
+            </ol>
+            <pre class="code-block"><code>{
+  "flow_id": "YOUR_FLOW_ID",
+  "source": "api",
+  "filename": "document.pdf",
+  "file_base64": "{{previous_module.base64_content}}"
+}</code></pre>
+
+            <div class="info-box info-box-info">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 16v-4"/>
+                <path d="M12 8h.01"/>
+              </svg>
+              <div>
+                <strong>Mapping the base64 content</strong>
+                <p>Replace {{previous_module.base64_content}} with the actual mapping from your previous module. In Make.com, click in the field and select the base64 output from the module that provides your file.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Webhooks Section -->
+      <section id="webhooks" class="doc-section">
+        <h1 class="doc-title">Webhooks</h1>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            <h2>What is a Webhook?</h2>
+          </div>
+          <p>A webhook is like a notification system. When you set a webhook URL on a flow, we'll automatically send a message to that URL whenever a document finishes processing.</p>
+          <p>Think of it like getting a text message when your pizza is ready – except instead of pizza, it's your processed document data!</p>
+        </div>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <h2>Why Use Webhooks?</h2>
+          </div>
+          <p>Webhooks are perfect for automation. For example, you could have the results:</p>
+          <ul class="bullet-list">
+            <li>Automatically added to a Google Sheet or database</li>
+            <li>Sent as a notification to Slack or Teams</li>
+            <li>Trigger another process in Make.com or Zapier</li>
+            <li>Update records in your CRM or accounting software</li>
+          </ul>
+          <p>Without webhooks, you would need to keep checking if documents are done processing. With webhooks, you just sit back and let the data come to you.</p>
+        </div>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v6"/>
+              <path d="M12 17v6"/>
+              <path d="M5 12H1"/>
+              <path d="M23 12h-4"/>
+              <path d="M18.36 5.64l-2.83 2.83"/>
+              <path d="M8.47 15.53l-2.83 2.83"/>
+              <path d="M18.36 18.36l-2.83-2.83"/>
+              <path d="M8.47 8.47L5.64 5.64"/>
+            </svg>
+            <h2>How to Set Up a Webhook</h2>
+          </div>
+          <ol class="numbered-list">
+            <li>Go to the Flows page</li>
+            <li>Click on the flow you want to configure</li>
+            <li>Open the flow settings or details panel</li>
+            <li>Find the "Webhook URL" field</li>
+            <li>Enter your webhook URL (the address where you want to receive notifications)</li>
+            <li>Save your changes</li>
+          </ol>
+
+          <div class="info-box info-box-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <div>
+              <strong>Where do I get a webhook URL?</strong>
+              <p>If you use Make.com, Zapier, or similar tools, they provide webhook URLs when you create a "webhook trigger". You can also create your own endpoint if you have a web server.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-card">
+          <div class="card-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            <h2>What Happens When a Webhook Fires</h2>
+          </div>
+          <p>When a document finishes processing:</p>
+          <ol class="numbered-list">
+            <li>Tavnit extracts the data from your document</li>
+            <li>We send a message (HTTP POST request) to your webhook URL</li>
+            <li>The message contains the extracted data in JSON format</li>
+            <li>Your receiving system can then do whatever you want with the data</li>
+          </ol>
+          <p>This all happens automatically – no manual intervention needed!</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/docs.js"></script>
+</body>
+</html>

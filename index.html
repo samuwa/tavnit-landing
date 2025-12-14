@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tavnit - Transform PDFs into structured data with AI-powered extraction. Invoice processing, contract analysis, and form automation made simple.">
+  <meta name="keywords" content="PDF data extraction, invoice processing automation, document to table converter, AI document extraction, PDF to structured data">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="Tavnit - AI-Powered Document Data Extraction">
+  <meta property="og:description" content="Transform PDFs into structured data in seconds. Unlimited flows, developer-friendly APIs, transparent pricing.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tavnit.io">
+
+  <title>Tavnit - Transform Documents into Structured Data with AI</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="logo">
+        <img src="assets/tavnit_logo.png" alt="Tavnit">
+      </a>
+      <nav class="nav-menu">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#features">Features</a>
+        <a href="#use-cases">Use Cases</a>
+        <a href="#integrations">Integrations</a>
+        <a href="#pricing">Pricing</a>
+        <a href="docs.html">Docs</a>
+      </nav>
+      <a href="https://app.tavnit.io" class="cta-btn">Get Started</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-background">
+      <div class="gradient-orb gradient-orb-1"></div>
+      <div class="gradient-orb gradient-orb-2"></div>
+      <div class="gradient-orb gradient-orb-3"></div>
+    </div>
+
+    <div class="container hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Transforms<br>
+          Documents into<br>
+          <span class="gradient-text">Structured Data</span>&nbsp;in<br>
+          Seconds
+        </h1>
+        <p class="hero-subtitle">
+          AI-powered extraction that turns PDFs, invoices, and forms into queryable, machine-readable data
+        </p>
+        <div class="hero-cta-group">
+          <a href="https://app.tavnit.io" class="btn-primary btn-large">
+            Start Free Trial
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="#how-it-works" class="btn-secondary btn-large">See How It Works</a>
+        </div>
+        <div class="hero-social-proof">
+          <span>10,000+ documents processed</span>
+          <span class="separator">|</span>
+          <span>500+ teams</span>
+        </div>
+      </div>
+
+      <div class="hero-animation">
+        <div id="hero-animation-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Statement Section -->
+  <section class="problem" id="problem">
+    <div class="container">
+      <h2 class="section-title">Still Copy-Pasting Data from PDFs?</h2>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-icon problem-icon-red">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+            </svg>
+          </div>
+          <h3>Hours wasted on manual data entry</h3>
+          <p>Your team spends countless hours transcribing information from PDFs into spreadsheets</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon problem-icon-red">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/>
+            </svg>
+          </div>
+          <h3>Inconsistent formatting causes errors</h3>
+          <p>Different document formats lead to mistakes, typos, and costly data quality issues</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon problem-icon-red">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3>No audit trail for compliance</h3>
+          <p>Manual processes leave no record of who extracted what, when, and from which document</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">Transform your documents into structured data in 4 simple steps</p>
+
+      <div class="workflow-timeline">
+        <!-- Step 1: Upload -->
+        <div class="workflow-step">
+          <div class="step-icon-wrapper">
+            <div class="step-icon-circle">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+              </svg>
+            </div>
+            <div class="icon-glow"></div>
+          </div>
+          <div class="step-content">
+            <h3>Upload Document</h3>
+            <p>Drop your PDF via UI, forward an email, or call our API</p>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="workflow-connector">
+          <div class="connector-line"></div>
+          <div class="connector-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Step 2: AI Analysis -->
+        <div class="workflow-step">
+          <div class="step-icon-wrapper">
+            <div class="step-icon-circle">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <div class="icon-glow"></div>
+          </div>
+          <div class="step-content">
+            <h3>AI Analysis</h3>
+            <p>Advanced AI analyzes document structure and extracts insights</p>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="workflow-connector">
+          <div class="connector-line"></div>
+          <div class="connector-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Step 3: Extract Data -->
+        <div class="workflow-step">
+          <div class="step-icon-wrapper">
+            <div class="step-icon-circle">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+              </svg>
+            </div>
+            <div class="icon-glow"></div>
+          </div>
+          <div class="step-content">
+            <h3>Extract Data</h3>
+            <p>Intelligent field detection with tables, metadata, and validation</p>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="workflow-connector">
+          <div class="connector-line"></div>
+          <div class="connector-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Step 4: Get Results -->
+        <div class="workflow-step">
+          <div class="step-icon-wrapper">
+            <div class="step-icon-circle">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <div class="icon-glow"></div>
+          </div>
+          <div class="step-content">
+            <h3>Get Results</h3>
+            <p>Receive structured JSON, CSV export, or webhook notification</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Watch Video Button -->
+      <div style="text-align: center; margin-top: var(--spacing-2xl);">
+        <button class="btn-watch-video" id="watch-video-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/>
+          </svg>
+          <span>Watch Demo Video</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Modal -->
+  <div class="video-modal" id="video-modal">
+    <div class="video-modal-overlay" id="video-modal-overlay"></div>
+    <div class="video-modal-content">
+      <button class="video-modal-close" id="video-modal-close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <div class="video-container-modal">
+        <!-- Video will be added here -->
+        <video id="demo-video" controls>
+          <source src="your-demo-video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <!-- Placeholder message while no video is available -->
+        <div class="video-placeholder">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+          <p>Demo video coming soon</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Grid Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title">Everything You Need to Automate Document Processing</h2>
+      <p class="section-subtitle">Powerful features designed for teams and developers</p>
+
+      <div class="features-grid">
+        <!-- Feature 1: Flow Builder -->
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                <path d="M10 6.5h4M10 17.5h4M6.5 10v4M17.5 10v4"/>
+              </svg>
+            </div>
+            <h3>Flow Builder</h3>
+          </div>
+          <p>Create custom extraction templates in 5 steps. Define fields, validation rules, and output formats.</p>
+          <div class="feature-tag">No-code setup</div>
+        </div>
+
+        <!-- Feature 2: AI-Powered Extraction -->
+        <div class="feature-card feature-card-highlight">
+          <div class="feature-header">
+            <div class="feature-icon feature-icon-gradient">
+              <svg width="32" height="32" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <h3>AI-Powered Extraction</h3>
+          </div>
+          <p>Advanced AI with confidence scoring. Handles tables, handwriting, and complex layouts.</p>
+          <div class="feature-tag feature-tag-gradient">AI Powered</div>
+        </div>
+
+        <!-- Feature 3: Credit-Based Billing -->
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <h3>Credit-Based Billing</h3>
+          </div>
+          <p>Pay-as-you-go pricing. Auto-recharge when low. Monthly spend caps. Transparent, predictable costs.</p>
+          <div class="feature-tag">Pay-as-you-go</div>
+        </div>
+
+        <!-- Feature 4: Team Collaboration -->
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+              </svg>
+            </div>
+            <h3>Team Collaboration</h3>
+          </div>
+          <p>Role-based access: Owner, Admin, Member, Viewer. Invite codes, audit logs, permission management.</p>
+          <div class="feature-tag">Unlimited users</div>
+        </div>
+
+        <!-- Feature 5: Real-Time Dashboard -->
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+              </svg>
+            </div>
+            <h3>Real-Time Dashboard</h3>
+          </div>
+          <p>Track usage, flows, and pages with live updates powered by Supabase. Real-time subscriptions for instant status updates and analytics.</p>
+          <div class="feature-tag">Live updates</div>
+        </div>
+
+        <!-- Feature 6: Developer-Friendly APIs -->
+        <div class="feature-card">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <h3>Developer-Friendly APIs</h3>
+          </div>
+          <p>REST API with API keys, webhooks for automation, email triggers, and direct JSONB database queries for powerful data access.</p>
+          <div class="feature-tag">Full API access</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases Section -->
+  <section class="use-cases" id="use-cases">
+    <div class="container">
+      <h2 class="section-title">Built for Real-World Workflows</h2>
+      <p class="section-subtitle">See how teams use Tavnit to automate document processing</p>
+
+      <div class="use-cases-tabs">
+        <button class="tab-button active" data-tab="invoice">Invoice Processing</button>
+        <button class="tab-button" data-tab="contract">Contract Analysis</button>
+        <button class="tab-button" data-tab="form">Form Automation</button>
+        <button class="tab-button" data-tab="expense">Expense Reports</button>
+      </div>
+
+      <div class="use-cases-content">
+        <!-- Invoice Processing Tab -->
+        <div class="tab-content active" id="tab-invoice">
+          <div class="use-case-layout">
+            <div class="use-case-info">
+              <div class="use-case-badge">Finance Teams</div>
+              <h3>Invoice Processing</h3>
+              <div class="use-case-section">
+                <h4>The Problem</h4>
+                <p>Processing 100+ invoices monthly means hours of manual data entry, prone to errors and delays.</p>
+              </div>
+              <div class="use-case-section">
+                <h4>The Solution</h4>
+                <p>Extract vendor, invoice number, date, line items → CSV → accounting software</p>
+              </div>
+              <div class="use-case-result">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>90% time savings, zero data entry errors</span>
+              </div>
+            </div>
+            <div class="use-case-visual">
+              <video width="100%" autoplay muted loop playsinline>
+                <source src="Invoice_animation.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contract Analysis Tab -->
+        <div class="tab-content" id="tab-contract">
+          <div class="use-case-layout">
+            <div class="use-case-info">
+              <div class="use-case-badge">Legal & Procurement</div>
+              <h3>Contract Analysis</h3>
+              <div class="use-case-section">
+                <h4>The Problem</h4>
+                <p>Reviewing contract terms across thousands of documents is time-consuming and error-prone.</p>
+              </div>
+              <div class="use-case-section">
+                <h4>The Solution</h4>
+                <p>Extract key terms, parties, dates, obligations → searchable database</p>
+              </div>
+              <div class="use-case-result">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Query entire contract portfolio in seconds</span>
+              </div>
+            </div>
+            <div class="use-case-visual">
+              <video width="100%" autoplay muted loop playsinline>
+                <source src="contract.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Automation Tab -->
+        <div class="tab-content" id="tab-form">
+          <div class="use-case-layout">
+            <div class="use-case-info">
+              <div class="use-case-badge">HR & Recruiting</div>
+              <h3>Resume Screening</h3>
+              <div class="use-case-section">
+                <h4>The Problem</h4>
+                <p>Manually reviewing hundreds of resumes wastes valuable time and creates screening inconsistencies.</p>
+              </div>
+              <div class="use-case-section">
+                <h4>The Solution</h4>
+                <p>Extract candidate name, skills, experience, education → structured database → ATS integration</p>
+              </div>
+              <div class="use-case-result">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Screen 100+ resumes in minutes with consistent criteria</span>
+              </div>
+            </div>
+            <div class="use-case-visual">
+              <video width="100%" autoplay muted loop playsinline>
+                <source src="cv_animation.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expense Reports Tab -->
+        <div class="tab-content" id="tab-expense">
+          <div class="use-case-layout">
+            <div class="use-case-info">
+              <div class="use-case-badge">Finance & Employees</div>
+              <h3>Expense Report Processing</h3>
+              <div class="use-case-section">
+                <h4>The Problem</h4>
+                <p>Collecting receipts and categorizing expenses is tedious and delays reimbursements.</p>
+              </div>
+              <div class="use-case-section">
+                <h4>The Solution</h4>
+                <p>Upload receipts → extract merchant, amount, category → expense system</p>
+              </div>
+              <div class="use-case-result">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Expense reports in minutes, not hours</span>
+              </div>
+            </div>
+            <div class="use-case-visual">
+              <video width="100%" autoplay muted loop playsinline>
+                <source src="Invoice_animation.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrations Section -->
+  <section class="integrations" id="integrations">
+    <div class="container">
+      <h2 class="section-title">Multiple Ways to Integrate</h2>
+      <p class="section-subtitle">Choose the integration method that fits your workflow</p>
+
+      <!-- Integration Methods -->
+      <div class="integration-methods">
+        <!-- API Integration -->
+        <div class="integration-method">
+          <div class="method-header">
+            <div class="method-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <div class="method-info">
+              <h3>REST API</h3>
+              <p>Full programmatic control</p>
+            </div>
+          </div>
+          <div class="method-body">
+            <div class="code-example">
+              <div class="code-header">
+                <span class="code-lang">cURL</span>
+                <span class="code-label">Quick Example</span>
+              </div>
+              <pre><code>curl -X POST https://tavnit.io/api/runs/process \
+  -H "X-API-Key: YOUR_KEY" \
+  -F "file=@invoice.pdf" \
+  -F "flow_id=YOUR_FLOW_ID"</code></pre>
+            </div>
+
+            <a href="docs.html#api-integration" class="code-expand-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/>
+              </svg>
+              <span>View Full Examples</span>
+            </a>
+
+            <ul class="method-features">
+              <li>API key authentication</li>
+              <li>Multipart or JSON support</li>
+              <li>Real-time processing</li>
+            </ul>
+          </div>
+          <a href="docs.html#api-integration" class="method-cta">View API Docs →</a>
+        </div>
+
+        <!-- Email Integration -->
+        <div class="integration-method">
+          <div class="method-header">
+            <div class="method-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="method-info">
+              <h3>Email Integration</h3>
+              <p>Send & receive via email</p>
+            </div>
+          </div>
+          <div class="method-body">
+            <div class="email-example">
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px;">Email Trigger (Input)</h4>
+              <div class="email-step">
+                <span class="step-num">1</span>
+                <span>Enable Email Trigger on your flow</span>
+              </div>
+              <div class="email-step">
+                <span class="step-num">2</span>
+                <span>Copy your flow's unique email address</span>
+              </div>
+              <div class="email-step">
+                <span class="step-num">3</span>
+                <span>Forward PDFs/images as attachments</span>
+              </div>
+
+              <div style="height: 16px;"></div>
+
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px;">Email Output (Results)</h4>
+              <div class="email-step">
+                <span class="step-num">✓</span>
+                <span>Configure recipient email in flow settings</span>
+              </div>
+              <div class="email-step">
+                <span class="step-num">✓</span>
+                <span>Receive JSON results automatically</span>
+              </div>
+            </div>
+            <ul class="method-features">
+              <li>Unique email per flow</li>
+              <li>One run per attachment</li>
+              <li>Automatic email replies</li>
+            </ul>
+          </div>
+          <a href="docs.html#email-integration" class="method-cta">Setup Email →</a>
+        </div>
+
+        <!-- Webhook Integration -->
+        <div class="integration-method">
+          <div class="method-header">
+            <div class="method-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <div class="method-info">
+              <h3>Webhooks</h3>
+              <p>Real-time notifications</p>
+            </div>
+          </div>
+          <div class="method-body">
+            <div class="webhook-example">
+              <div class="webhook-flow">
+                <div class="flow-step">
+                  <div class="flow-icon-svg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/>
+                    </svg>
+                  </div>
+                  <span>Document processed</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                  <div class="flow-icon-svg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                    </svg>
+                  </div>
+                  <span>Tavnit sends POST</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                  <div class="flow-icon-svg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                    </svg>
+                  </div>
+                  <span>Your URL receives data</span>
+                </div>
+              </div>
+              <div class="email-step" style="margin-top: 12px;">
+                <span class="step-num">→</span>
+                <span>Configure webhook URL in flow settings</span>
+              </div>
+            </div>
+            <ul class="method-features">
+              <li>Automatic notifications</li>
+              <li>JSON extraction results</li>
+              <li>Make, Zapier and more</li>
+            </ul>
+          </div>
+          <a href="docs.html#webhooks" class="method-cta">Configure Webhooks →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Table Section -->
+  <section class="comparison" id="comparison">
+    <div class="container">
+      <h2 class="section-title">Why Choose Tavnit?</h2>
+      <p class="section-subtitle">See how we compare to other document extraction solutions</p>
+
+      <!-- Comparison Table -->
+      <div class="comparison-table-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th class="feature-column">Features</th>
+              <th class="product-column product-tavnit">
+                <div class="product-header">
+                  <div class="product-name">Tavnit</div>
+                  <div class="product-tagline">AI-Powered</div>
+                </div>
+              </th>
+              <th class="product-column">
+                <div class="product-header">
+                  <div class="product-name">Nanonets</div>
+                  <div class="product-tagline">Flow Automation</div>
+                </div>
+              </th>
+              <th class="product-column">
+                <div class="product-header">
+                  <div class="product-name">Docsumo</div>
+                  <div class="product-tagline">IDP Platform</div>
+                </div>
+              </th>
+              <th class="product-column">
+                <div class="product-header">
+                  <div class="product-name">Amazon Textract</div>
+                  <div class="product-tagline">AWS Service</div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- AI-Powered Intelligence -->
+            <tr>
+              <td class="feature-name">
+                <strong>AI-Powered Intelligence</strong>
+                <span class="feature-desc">Advanced vision AI for context-aware extraction</span>
+              </td>
+              <td class="product-tavnit">
+                <svg class="icon-check" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+            </tr>
+
+            <!-- Webhook Notifications -->
+            <tr>
+              <td class="feature-name">
+                <strong>Webhook Notifications</strong>
+                <span class="feature-desc">Real-time completion notifications</span>
+              </td>
+              <td class="product-tavnit">
+                <svg class="icon-check" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-x" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </td>
+            </tr>
+
+            <!-- No-Code Flow Builder -->
+            <tr>
+              <td class="feature-name">
+                <strong>No-Code Flow Builder</strong>
+                <span class="feature-desc">Create templates without coding</span>
+              </td>
+              <td class="product-tavnit">
+                <svg class="icon-check" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <span class="badge-limited">Limited</span>
+              </td>
+              <td>
+                <svg class="icon-x" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </td>
+            </tr>
+
+            <!-- Complex Table Extraction -->
+            <tr>
+              <td class="feature-name">
+                <strong>Complex Table Extraction</strong>
+                <span class="feature-desc">Extract line items and nested data</span>
+              </td>
+              <td class="product-tavnit">
+                <svg class="icon-check" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+            </tr>
+
+            <!-- Email Integration -->
+            <tr>
+              <td class="feature-name">
+                <strong>Email Integration</strong>
+                <span class="feature-desc">Auto-process email attachments</span>
+              </td>
+              <td class="product-tavnit">
+                <svg class="icon-check" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-x" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </td>
+            </tr>
+
+            <!-- Unlimited Team Members -->
+            <tr>
+              <td class="feature-name">
+                <strong>Unlimited Team Members</strong>
+                <span class="feature-desc">Role-based access, no per-seat fees</span>
+              </td>
+              <td class="product-tavnit">
+                <svg class="icon-check" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <span class="badge-limited">Plan-based</span>
+              </td>
+              <td>
+                <span class="badge-limited">5 Max</span>
+              </td>
+              <td>
+                <svg class="icon-x" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </td>
+            </tr>
+
+            <!-- Developer API -->
+            <tr>
+              <td class="feature-name">
+                <strong>Developer-Friendly API</strong>
+                <span class="feature-desc">REST API, JSONB queries</span>
+              </td>
+              <td class="product-tavnit">
+                <svg class="icon-check" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+              <td>
+                <svg class="icon-check-muted" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td class="product-tavnit">
+                <a href="#pricing" class="btn-primary btn-table">Get Started</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <h2 class="section-title">Simple, Transparent Pricing</h2>
+      <p class="section-subtitle">Pay-as-you-go • Auto-recharge • Monthly spend caps</p>
+
+      <!-- Credit Packages Grid -->
+      <div class="pricing-grid">
+        <!-- Starter Package -->
+        <div class="pricing-package">
+          <div class="package-header">
+            <h3 class="package-name">Starter</h3>
+            <div class="package-price">
+              <span class="price-amount">$10</span>
+            </div>
+            <div class="package-credits">
+              <span class="credits-amount">100</span>
+              <span class="credits-label">credits</span>
+            </div>
+          </div>
+          <div class="package-details">
+            <p class="credits-breakdown">100 base credits</p>
+            <p class="credits-value">= 100 pages</p>
+          </div>
+          <a href="https://app.tavnit.io" class="btn-secondary btn-package">Get Started</a>
+        </div>
+
+        <!-- Growth Package -->
+        <div class="pricing-package">
+          <div class="package-header">
+            <h3 class="package-name">Growth</h3>
+            <div class="package-price">
+              <span class="price-amount">$45</span>
+            </div>
+            <div class="package-credits">
+              <span class="credits-amount">550</span>
+              <span class="credits-label">credits</span>
+            </div>
+          </div>
+          <div class="package-details">
+            <p class="credits-breakdown">450 base + <span class="bonus-highlight">100 bonus</span></p>
+            <p class="credits-value">= 550 pages</p>
+          </div>
+          <a href="https://app.tavnit.io" class="btn-secondary btn-package">Get Started</a>
+        </div>
+
+        <!-- Pro Package -->
+        <div class="pricing-package">
+          <div class="package-header">
+            <h3 class="package-name">Pro</h3>
+            <div class="package-price">
+              <span class="price-amount">$85</span>
+            </div>
+            <div class="package-credits">
+              <span class="credits-amount">1,150</span>
+              <span class="credits-label">credits</span>
+            </div>
+          </div>
+          <div class="package-details">
+            <p class="credits-breakdown">850 base + <span class="bonus-highlight">300 bonus</span></p>
+            <p class="credits-value">= 1,150 pages</p>
+          </div>
+          <a href="https://app.tavnit.io" class="btn-secondary btn-package">Get Started</a>
+        </div>
+
+        <!-- Enterprise Package (BEST VALUE) -->
+        <div class="pricing-package pricing-package-featured">
+          <div class="package-badge">BEST VALUE</div>
+          <div class="package-header">
+            <h3 class="package-name">Enterprise</h3>
+            <div class="package-price">
+              <span class="price-amount">$400</span>
+            </div>
+            <div class="package-credits">
+              <span class="credits-amount">6,000</span>
+              <span class="credits-label">credits</span>
+            </div>
+          </div>
+          <div class="package-details">
+            <p class="credits-breakdown">4,000 base + <span class="bonus-highlight">2,000 bonus</span></p>
+            <p class="credits-value">= 6,000 pages</p>
+          </div>
+          <a href="https://app.tavnit.io" class="btn-primary btn-package">Get Started</a>
+        </div>
+      </div>
+
+      <!-- What's Included (Same for All) -->
+      <div class="pricing-features-all">
+        <h4>Everything Included in All Packages:</h4>
+        <ul class="features-grid-list">
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>Unlimited flows</span>
+          </li>
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>Unlimited team members</span>
+          </li>
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>AI field discovery</span>
+          </li>
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>CSV exports</span>
+          </li>
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>API & webhook access</span>
+          </li>
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>Email triggers</span>
+          </li>
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>Auto-recharge with spend limits</span>
+          </li>
+          <li>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>Direct database queries (JSONB)</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA Section -->
+  <section class="final-cta">
+    <div class="cta-background">
+      <div class="gradient-orb gradient-orb-1"></div>
+      <div class="gradient-orb gradient-orb-2"></div>
+    </div>
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Transform Your Document Workflow?</h2>
+        <p>Sign up with Google (OAuth). No email/password needed. Secure Google authentication only.</p>
+        <div class="cta-buttons">
+          <a href="https://app.tavnit.io" class="btn-primary btn-large">Get Started Now</a>
+          <a href="docs.html" class="btn-secondary-light btn-large">View Documentation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <img src="assets/tavnit_logo.png" alt="Tavnit" class="footer-logo-img">
+          </div>
+          <p class="footer-description">
+            AI-powered document extraction that transforms PDFs into structured data.
+          </p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="docs.html">Documentation</a></li>
+            <li><a href="docs.html#api-integration">API Reference</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#use-cases">Use Cases</a></li>
+            <li><a href="docs.html#getting-started">Integration Guide</a></li>
+            <li><a href="docs.html">Documentation</a></li>
+            <li><a href="https://app.tavnit.io">Sign In</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">GitHub</a></li>
+            <li><a href="mailto:support@tavnit.com">support@tavnit.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Tavnit. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- Anime.js Animation Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="js/main.js"></script>
+  <script src="js/animation-hero.js"></script>
+  <script src="js/animation-process.js"></script>
+  <script src="js/animation-usecases.js"></script>
+
+  <!-- Video Modal Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const watchVideoBtn = document.getElementById('watch-video-btn');
+      const videoModal = document.getElementById('video-modal');
+      const videoModalClose = document.getElementById('video-modal-close');
+      const videoModalOverlay = document.getElementById('video-modal-overlay');
+      const demoVideo = document.getElementById('demo-video');
+
+      // Open modal
+      if (watchVideoBtn) {
+        watchVideoBtn.addEventListener('click', function() {
+          videoModal.classList.add('active');
+          document.body.style.overflow = 'hidden'; // Prevent scrolling
+        });
+      }
+
+      // Close modal function
+      function closeModal() {
+        videoModal.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+        // Pause video if playing
+        if (demoVideo && !demoVideo.paused) {
+          demoVideo.pause();
+        }
+      }
+
+      // Close on X button click
+      if (videoModalClose) {
+        videoModalClose.addEventListener('click', closeModal);
+      }
+
+      // Close on overlay click
+      if (videoModalOverlay) {
+        videoModalOverlay.addEventListener('click', closeModal);
+      }
+
+      // Close on ESC key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
