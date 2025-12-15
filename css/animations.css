@@ -79,32 +79,32 @@
 .pdf-doc {
   background: white;
   border: 2px solid #d1d5db;
-  padding: 2rem;
+  padding: 2.3rem;
   position: relative;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
-  min-width: 280px;
+  min-width: 320px;
 }
 
 .pdf-field {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 1.15rem;
+  margin-bottom: 1.15rem;
 }
 
 .pdf-label {
-  height: 10px;
-  width: 100px;
+  height: 12px;
+  width: 115px;
   background: #9ca3af;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
 .pdf-value {
-  height: 10px;
-  width: 120px;
+  height: 12px;
+  width: 138px;
   background: #d1d5db;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
 /* Arrow Styles */
@@ -129,21 +129,21 @@
 .table-doc {
   background: white;
   border: 2px solid #d1d5db;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
-  min-width: 280px;
+  min-width: 320px;
 }
 
 .table-doc table {
   width: 100%;
-  font-size: 13px;
+  font-size: 15px;
   border-collapse: collapse;
 }
 
 .table-doc th {
   text-align: left;
-  padding: 0.875rem 1.25rem;
+  padding: 1rem 1.5rem;
   background: #f9fafb;
   border-bottom: 2px solid #d1d5db;
   color: #4b5563;
@@ -151,15 +151,15 @@
 }
 
 .table-doc td {
-  padding: 0.875rem 1.25rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
 .target-bar {
-  height: 10px;
-  width: 120px;
+  height: 12px;
+  width: 138px;
   background: #d1d5db;
-  border-radius: 5px;
+  border-radius: 6px;
   transition: all 0.3s ease;
 }
 
@@ -169,10 +169,10 @@
 }
 
 .target-label {
-  height: 10px;
-  width: 100px;
+  height: 12px;
+  width: 115px;
   background: #d1d5db;
-  border-radius: 5px;
+  border-radius: 6px;
   transition: all 0.3s ease;
 }
 
@@ -822,6 +822,82 @@
 
 #connection-line {
   animation: connectionPulse 2s ease-in-out infinite;
+}
+
+/* ==========================================
+   HERO ANIMATION - MOBILE RESPONSIVE
+   ========================================== */
+
+@media (max-width: 767px) {
+  .pdf-doc,
+  .table-doc {
+    min-width: unset;
+    padding: 1.5rem;
+  }
+
+  .pdf-doc {
+    transform: scale(0.9);
+    transform-origin: center center;
+  }
+
+  .table-doc {
+    transform: scale(0.9);
+    transform-origin: center center;
+  }
+
+  .table-doc table {
+    font-size: 12px;
+  }
+
+  .table-doc th,
+  .table-doc td {
+    padding: 0.75rem 1rem;
+  }
+
+  .pdf-field {
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .pdf-label {
+    width: 80px;
+  }
+
+  .pdf-value {
+    width: 100px;
+  }
+
+  .target-bar {
+    width: 100px;
+  }
+
+  .target-label {
+    width: 80px;
+  }
+}
+
+@media (max-width: 479px) {
+  .pdf-doc,
+  .table-doc {
+    padding: 1rem;
+  }
+
+  .pdf-doc {
+    transform: scale(0.85);
+  }
+
+  .table-doc {
+    transform: scale(0.85);
+  }
+
+  .table-doc table {
+    font-size: 11px;
+  }
+
+  .table-doc th,
+  .table-doc td {
+    padding: 0.5rem 0.75rem;
+  }
 }
 
 /* ==========================================

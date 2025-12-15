@@ -3,6 +3,16 @@
 // Full-featured animation for hero section
 // ==========================================
 
+// Get responsive scale factor based on viewport width
+function getResponsiveScale() {
+  const viewportWidth = window.innerWidth;
+  if (viewportWidth <= 480) return 0.4;
+  if (viewportWidth <= 640) return 0.5;
+  if (viewportWidth <= 768) return 0.6;
+  if (viewportWidth <= 1024) return 0.75;
+  return 1;
+}
+
 function initHeroAnimation() {
   const container = document.getElementById('hero-animation-container');
   if (!container || container.dataset.animationInitialized) return;
@@ -18,14 +28,19 @@ function initHeroAnimation() {
   animationWrapper.style.cssText = `
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    gap: 2.5rem;
+    gap: 3rem;
     align-items: start;
-    max-width: 1100px;
+    max-width: 1250px;
     width: 100%;
     position: relative;
     margin: 0 auto;
     padding: 1.5rem 0;
   `;
+
+  // Apply responsive scaling
+  const scale = getResponsiveScale();
+  animationWrapper.style.transform = `scale(${scale})`;
+  animationWrapper.style.transformOrigin = 'center top';
 
   // Field definitions
   const fields = [
@@ -426,6 +441,69 @@ function animateParticle(particleId, sourceRect, targetRect, wrapperRect) {
   particle.style.animation = 'flyToTable 1.2s ease-out forwards';
 }
 
+// Debounce helper for resize handler
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Track current viewport width to detect significant changes
+let lastViewportWidth = window.innerWidth;
+
+// Reinitialize animation on significant resize
+function handleResize() {
+  const currentWidth = window.innerWidth;
+  const widthDiff = Math.abs(currentWidth - lastViewportWidth);
+
+  // Check if we crossed any breakpoints that affect scaling
+  const crossedBreakpoint =
+    (lastViewportWidth > 480 && currentWidth <= 480) ||
+    (lastViewportWidth <= 480 && currentWidth > 480) ||
+    (lastViewportWidth > 640 && currentWidth <= 640) ||
+    (lastViewportWidth <= 640 && currentWidth > 640) ||
+    (lastViewportWidth > 768 && currentWidth <= 768) ||
+    (lastViewportWidth <= 768 && currentWidth > 768) ||
+    (lastViewportWidth > 1024 && currentWidth <= 1024) ||
+    (lastViewportWidth <= 1024 && currentWidth > 1024);
+
+  // Update scale on any breakpoint crossing
+  if (crossedBreakpoint) {
+    lastViewportWidth = currentWidth;
+    const wrapper = document.querySelector('#hero-animation-container .animation-wrapper');
+    if (wrapper) {
+      const scale = getResponsiveScale();
+      wrapper.style.transform = `scale(${scale})`;
+    }
+  }
+
+  // Reinitialize completely only for major layout changes
+  if (widthDiff > 200) {
+    lastViewportWidth = currentWidth;
+
+    const container = document.getElementById('hero-animation-container');
+    if (container) {
+      // Reset initialization flag to allow reinit
+      container.dataset.animationInitialized = '';
+      container.innerHTML = '';
+
+      // Reinitialize if in viewport
+      if (isInViewport(container)) {
+        initHeroAnimation();
+      }
+    }
+  }
+}
+
+// Debounced resize handler
+const debouncedResize = debounce(handleResize, 250);
+
 // Auto-initialize if container exists
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
@@ -433,12 +511,16 @@ if (document.readyState === 'loading') {
     if (container && isInViewport(container)) {
       initHeroAnimation();
     }
+    // Add resize listener
+    window.addEventListener('resize', debouncedResize);
   });
 } else {
   const container = document.getElementById('hero-animation-container');
   if (container && isInViewport(container)) {
     initHeroAnimation();
   }
+  // Add resize listener
+  window.addEventListener('resize', debouncedResize);
 }
 
 function isInViewport(element) {
