@@ -51,7 +51,7 @@
   --font-size-2xl: 24px;
   --font-size-3xl: 30px;
   --font-size-4xl: 36px;
-  --font-size-5xl: 48px;
+  --font-size-5xl: 52px;
   --font-size-6xl: 60px;
 
   --line-height-tight: 1.25;
@@ -486,12 +486,12 @@ a:hover {
 
 .hero-title {
   margin-bottom: 0;
-  font-size: 52px;
+  font-size: var(--font-size-5xl);
   line-height: 1.2;
 }
 
 .typing-wrapper {
-  font-size: 52px;
+  font-size: var(--font-size-5xl);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -562,7 +562,7 @@ a:hover {
 
 /* Animation wrapper scaling support */
 .animation-wrapper {
-  transform-origin: center top;
+  transform-origin: center center;
   will-change: transform;
 }
 

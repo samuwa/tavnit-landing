@@ -41,7 +41,7 @@ function initHeroAnimation() {
   // Apply responsive scaling
   const scale = getResponsiveScale();
   animationWrapper.style.transform = `scale(${scale})`;
-  animationWrapper.style.transformOrigin = 'center top';
+  animationWrapper.style.transformOrigin = 'center center';
 
   // Field definitions
   const fields = [
