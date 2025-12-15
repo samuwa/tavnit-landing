@@ -3,15 +3,13 @@
 // Full-featured animation for hero section
 // ==========================================
 
-// Get responsive scale factor based on viewport width
-function getResponsiveScale() {
+// Get responsive gap based on viewport width
+function getResponsiveGap() {
   const viewportWidth = window.innerWidth;
-  if (viewportWidth <= 380) return 0.55;
-  if (viewportWidth <= 480) return 0.6;
-  if (viewportWidth <= 640) return 0.7;
-  if (viewportWidth <= 768) return 0.8;
-  if (viewportWidth <= 1024) return 0.9;
-  return 1;
+  if (viewportWidth <= 380) return '0.5rem';
+  if (viewportWidth <= 480) return '0.75rem';
+  if (viewportWidth <= 768) return '1.5rem';
+  return '3rem';
 }
 
 function initHeroAnimation() {
@@ -27,18 +25,16 @@ function initHeroAnimation() {
   const animationWrapper = document.createElement('div');
   animationWrapper.className = 'animation-wrapper';
 
-  // Apply responsive scaling - scale the entire animation proportionately
-  const scale = getResponsiveScale();
+  // Apply responsive gap - no transform scaling, let CSS handle element sizes
+  const gap = getResponsiveGap();
 
   animationWrapper.style.cssText = `
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    gap: 3rem;
+    gap: ${gap};
     align-items: start;
     position: relative;
-    padding: 1.5rem 0;
-    transform: scale(${scale});
-    transform-origin: center center;
+    padding: 0.5rem 0;
   `;
 
   // Field definitions
@@ -474,13 +470,13 @@ function handleResize() {
     (lastViewportWidth > 1024 && currentWidth <= 1024) ||
     (lastViewportWidth <= 1024 && currentWidth > 1024);
 
-  // Update scale on any breakpoint crossing
+  // Update gap on any breakpoint crossing - CSS handles element sizing
   if (crossedBreakpoint) {
     lastViewportWidth = currentWidth;
     const wrapper = document.querySelector('#hero-animation-container .animation-wrapper');
     if (wrapper) {
-      const scale = getResponsiveScale();
-      wrapper.style.transform = `scale(${scale})`;
+      const gap = getResponsiveGap();
+      wrapper.style.gap = gap;
     }
   }
 
