@@ -548,8 +548,8 @@ a:hover {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 1000px;
   margin: 0 auto;
+  overflow: visible;
 }
 
 #hero-animation-container {
@@ -564,6 +564,8 @@ a:hover {
 .animation-wrapper {
   transform-origin: center center;
   will-change: transform;
+  /* Ensure scaled content doesn't affect layout size */
+  display: inline-grid;
 }
 
 /* ==========================================

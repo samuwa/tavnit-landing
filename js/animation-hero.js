@@ -26,22 +26,20 @@ function initHeroAnimation() {
   // Create main animation structure
   const animationWrapper = document.createElement('div');
   animationWrapper.className = 'animation-wrapper';
+
+  // Apply responsive scaling - scale the entire animation proportionately
+  const scale = getResponsiveScale();
+
   animationWrapper.style.cssText = `
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     gap: 3rem;
     align-items: start;
-    max-width: 1250px;
-    width: 100%;
     position: relative;
-    margin: 0 auto;
     padding: 1.5rem 0;
+    transform: scale(${scale});
+    transform-origin: center center;
   `;
-
-  // Apply responsive scaling
-  const scale = getResponsiveScale();
-  animationWrapper.style.transform = `scale(${scale})`;
-  animationWrapper.style.transformOrigin = 'center center';
 
   // Field definitions
   const fields = [
