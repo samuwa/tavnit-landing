@@ -142,12 +142,13 @@
 
   /* Hero Animation - Container height for scaled content */
   #hero-animation-container {
-    min-height: 380px;
+    min-height: 320px;
     overflow: visible;
   }
 
   .hero-animation {
     overflow: visible;
+    margin: 0;
   }
 
   /* Pricing Features */
@@ -539,12 +540,17 @@
 
   /* Hero Animation - Mobile container */
   #hero-animation-container {
-    min-height: 320px;
+    min-height: 280px;
     overflow: visible;
   }
 
   .hero-animation {
     overflow: visible;
+    margin: 0;
+  }
+
+  .typing-wrapper {
+    margin-top: -20px;
   }
 
   /* Pricing */
@@ -746,12 +752,17 @@
 
   /* Animations - Container for smallest screens */
   #hero-animation-container {
-    min-height: 220px;
+    min-height: 200px;
     overflow: visible;
   }
 
   .hero-animation {
     overflow: visible;
+    margin: 0;
+  }
+
+  .typing-wrapper {
+    margin-top: -30px;
   }
 
   .use-case-visual {

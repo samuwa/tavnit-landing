@@ -6,10 +6,11 @@
 // Get responsive scale factor based on viewport width
 function getResponsiveScale() {
   const viewportWidth = window.innerWidth;
-  if (viewportWidth <= 480) return 0.4;
-  if (viewportWidth <= 640) return 0.5;
-  if (viewportWidth <= 768) return 0.6;
-  if (viewportWidth <= 1024) return 0.75;
+  if (viewportWidth <= 380) return 0.55;
+  if (viewportWidth <= 480) return 0.6;
+  if (viewportWidth <= 640) return 0.7;
+  if (viewportWidth <= 768) return 0.8;
+  if (viewportWidth <= 1024) return 0.9;
   return 1;
 }
 
@@ -464,6 +465,8 @@ function handleResize() {
 
   // Check if we crossed any breakpoints that affect scaling
   const crossedBreakpoint =
+    (lastViewportWidth > 380 && currentWidth <= 380) ||
+    (lastViewportWidth <= 380 && currentWidth > 380) ||
     (lastViewportWidth > 480 && currentWidth <= 480) ||
     (lastViewportWidth <= 480 && currentWidth > 480) ||
     (lastViewportWidth > 640 && currentWidth <= 640) ||

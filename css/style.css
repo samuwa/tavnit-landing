@@ -549,7 +549,7 @@ a:hover {
   z-index: 1;
   width: 100%;
   max-width: 1000px;
-  margin: -20px 0;
+  margin: 0 auto;
 }
 
 #hero-animation-container {
