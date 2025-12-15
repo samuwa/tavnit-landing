@@ -328,8 +328,12 @@
   /* Hero Section */
   .hero {
     min-height: auto;
-    padding: var(--spacing-2xl) 0;
-    padding-top: calc(56px + var(--spacing-2xl));
+    padding: var(--spacing-lg) 0;
+    padding-top: calc(56px + var(--spacing-md));
+  }
+
+  .hero-container {
+    gap: var(--spacing-sm);
   }
 
   .hero-title {
@@ -347,7 +351,7 @@
   }
 
   #hero-animation-container {
-    min-height: 300px;
+    min-height: 260px;
   }
 
   /* Gradient Orbs - Smaller on Mobile */
@@ -540,7 +544,7 @@
 
   /* Hero Animation - Mobile container */
   #hero-animation-container {
-    min-height: 320px;
+    min-height: auto;
     overflow: visible;
   }
 
@@ -550,7 +554,12 @@
   }
 
   .typing-wrapper {
-    margin-top: -10px;
+    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .hero-cta-wrapper {
+    gap: var(--spacing-sm);
   }
 
   /* Pricing */
@@ -631,20 +640,6 @@
     flex-direction: column;
     gap: var(--spacing-xs);
     text-align: center;
-  }
-
-  /* Animation Containers */
-  .pdf-doc {
-    padding: 1rem;
-  }
-
-  .table-doc table {
-    font-size: 10px;
-  }
-
-  .table-doc th,
-  .table-doc td {
-    padding: 0.5rem;
   }
 
   /* Hide complex animations on mobile for performance */
@@ -732,6 +727,15 @@
   }
 
   /* Hero */
+  .hero {
+    padding: var(--spacing-md) 0;
+    padding-top: calc(56px + var(--spacing-sm));
+  }
+
+  .hero-container {
+    gap: var(--spacing-xs);
+  }
+
   .hero-title {
     font-size: var(--font-size-5xl);
   }
@@ -752,7 +756,7 @@
 
   /* Animations - Container for smallest screens */
   #hero-animation-container {
-    min-height: 280px;
+    min-height: auto;
     overflow: visible;
   }
 
@@ -762,7 +766,12 @@
   }
 
   .typing-wrapper {
-    margin-top: -20px;
+    margin-top: var(--spacing-2xs);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .hero-cta-wrapper {
+    gap: var(--spacing-xs);
   }
 
   .use-case-visual {
