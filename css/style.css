@@ -1126,7 +1126,9 @@ a:hover {
 
 .feature-icon svg {
   display: block;
-  margin: auto;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .feature-icon-gradient {
@@ -1174,6 +1176,11 @@ a:hover {
 .feature-tag-gradient {
   background: var(--gradient-primary);
   color: var(--white);
+}
+
+/* Hide features pagination on desktop */
+.features-pagination {
+  display: none;
 }
 
 /* ==========================================
@@ -1329,6 +1336,11 @@ a:hover {
   min-height: 300px;
 }
 
+/* Hide use cases pagination on desktop */
+.use-cases-pagination {
+  display: none;
+}
+
 /* ==========================================
    INTEGRATIONS SECTION - MODERN REDESIGN
    ========================================== */
@@ -1466,8 +1478,8 @@ a:hover {
 
 .code-example code {
   font-family: 'Monaco', 'Courier New', monospace;
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 11px;
+  line-height: 1.5;
   color: #10b981;
   display: block;
 }
@@ -1717,6 +1729,16 @@ a:hover {
 
 .export-item-soon:hover {
   opacity: 1;
+}
+
+/* Hide integration pagination on desktop */
+.integration-pagination {
+  display: none;
+}
+
+/* Hide mobile comparison on desktop */
+.comparison-mobile {
+  display: none;
 }
 
 /* ==========================================
@@ -2322,6 +2344,15 @@ a:hover {
 
 .footer-column a:hover {
   color: var(--white);
+}
+
+/* Hide Quick Links on Desktop, show original columns */
+.footer-column:nth-child(2) {
+  display: none;
+}
+
+.footer-column-desktop {
+  display: block;
 }
 
 .footer-bottom {
