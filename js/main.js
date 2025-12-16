@@ -55,27 +55,66 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ==========================================
-  // USE CASES TABS
+  // USE CASES TABS & CAROUSEL
   // ==========================================
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
+  const useCasesContent = document.querySelector('.use-cases-content');
+  const useCasesDots = document.querySelectorAll('.use-cases-pagination .pagination-dot');
 
-  tabButtons.forEach(button => {
+  // Desktop tab click handling
+  tabButtons.forEach((button, index) => {
     button.addEventListener('click', function() {
-      const targetTab = this.dataset.tab;
-
       // Remove active class from all buttons and content
       tabButtons.forEach(btn => btn.classList.remove('active'));
       tabContents.forEach(content => content.classList.remove('active'));
 
-      // Add active class to clicked button and corresponding content
+      // Add active class to clicked tab
       this.classList.add('active');
-      const activeContent = document.getElementById(`tab-${targetTab}`);
-      if (activeContent) {
-        activeContent.classList.add('active');
+      if (tabContents[index]) {
+        tabContents[index].classList.add('active');
       }
     });
   });
+
+  // Mobile carousel handling
+  if (useCasesContent && useCasesDots.length > 0) {
+    // Update active dot based on scroll position
+    function updateActiveUseCaseDot() {
+      const scrollLeft = useCasesContent.scrollLeft;
+      const cardWidth = tabContents[0]?.offsetWidth || 0;
+      const gap = 24; // var(--spacing-md) = 24px on mobile
+      const index = Math.round(scrollLeft / (cardWidth + gap));
+
+      useCasesDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    // Scroll to specific card when dot is clicked
+    useCasesDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        const cardWidth = tabContents[0]?.offsetWidth || 0;
+        const gap = 24;
+        const scrollPosition = index * (cardWidth + gap);
+
+        useCasesContent.scrollTo({
+          left: scrollPosition,
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Update active dot on scroll
+    let useCaseScrollTimeout;
+    useCasesContent.addEventListener('scroll', () => {
+      clearTimeout(useCaseScrollTimeout);
+      useCaseScrollTimeout = setTimeout(updateActiveUseCaseDot, 100);
+    }, { passive: true });
+
+    // Initialize on load
+    updateActiveUseCaseDot();
+  }
 
   // ==========================================
   // INTERSECTION OBSERVER - SCROLL ANIMATIONS
@@ -325,6 +364,191 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('%cTavnit 🚀', 'font-size: 20px; font-weight: bold; color: #667eea;');
   console.log('%cBuilt with care for document extraction automation', 'font-size: 12px; color: #6b7280;');
   console.log('%cInterested in working with us? Check out https://tavnit.com/careers', 'font-size: 12px; color: #764ba2;');
+
+  // ==========================================
+  // INTEGRATION METHODS CAROUSEL (MOBILE)
+  // ==========================================
+  const integrationMethods = document.querySelector('.integration-methods');
+  const integrationCards = document.querySelectorAll('.integration-method');
+  const integrationDots = document.querySelectorAll('.integration-dot');
+
+  if (integrationMethods && integrationDots.length > 0) {
+    // Update active dot based on scroll position
+    function updateActiveDot() {
+      const scrollLeft = integrationMethods.scrollLeft;
+      const cardWidth = integrationCards[0]?.offsetWidth || 0;
+      const gap = 16; // var(--spacing-md) = 16px
+      const index = Math.round(scrollLeft / (cardWidth + gap));
+
+      integrationDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    // Scroll to specific card when dot is clicked
+    integrationDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        const cardWidth = integrationCards[0]?.offsetWidth || 0;
+        const gap = 16;
+        const scrollPosition = index * (cardWidth + gap);
+
+        integrationMethods.scrollTo({
+          left: scrollPosition,
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Update active dot on scroll
+    let scrollTimeout;
+    integrationMethods.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateActiveDot, 100);
+    }, { passive: true });
+
+    // Initialize on load
+    updateActiveDot();
+  }
+
+  // ==========================================
+  // FEATURES CAROUSEL (MOBILE)
+  // ==========================================
+  const featuresGrid = document.querySelector('.features-grid');
+  const featureCards = document.querySelectorAll('.feature-card');
+  const featuresDots = document.querySelectorAll('.features-pagination .pagination-dot');
+
+  if (featuresGrid && featuresDots.length > 0) {
+    // Update active dot based on scroll position
+    function updateActiveFeatureDot() {
+      const scrollLeft = featuresGrid.scrollLeft;
+      const cardWidth = featureCards[0]?.offsetWidth || 0;
+      const gap = 24; // var(--spacing-md) = 24px on mobile
+      const index = Math.round(scrollLeft / (cardWidth + gap));
+
+      featuresDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    // Scroll to specific card when dot is clicked
+    featuresDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        const cardWidth = featureCards[0]?.offsetWidth || 0;
+        const gap = 24;
+        const scrollPosition = index * (cardWidth + gap);
+
+        featuresGrid.scrollTo({
+          left: scrollPosition,
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Update active dot on scroll
+    let featureScrollTimeout;
+    featuresGrid.addEventListener('scroll', () => {
+      clearTimeout(featureScrollTimeout);
+      featureScrollTimeout = setTimeout(updateActiveFeatureDot, 100);
+    }, { passive: true });
+
+    // Initialize on load
+    updateActiveFeatureDot();
+  }
+
+  // ==========================================
+  // MOBILE COMPARISON SELECTOR
+  // ==========================================
+  const competitorBtns = document.querySelectorAll('.competitor-btn');
+  const competitorName = document.getElementById('competitor-name');
+  const competitorTagline = document.getElementById('competitor-tagline');
+
+  // Competitor data
+  const competitors = {
+    nanonets: {
+      name: 'Nanonets',
+      tagline: 'OCR Platform',
+      features: {
+        ai: 'check',
+        webhooks: 'check',
+        nocode: 'check',
+        email: 'check',
+        team: 'limited',
+        tables: 'check'
+      }
+    },
+    docsumo: {
+      name: 'Docsumo',
+      tagline: 'Document AI',
+      features: {
+        ai: 'check',
+        webhooks: 'check',
+        nocode: 'check',
+        email: 'x',
+        team: 'limited',
+        tables: 'check'
+      }
+    },
+    textract: {
+      name: 'AWS Textract',
+      tagline: 'OCR Service',
+      features: {
+        ai: 'x',
+        webhooks: 'x',
+        nocode: 'x',
+        email: 'x',
+        team: 'check',
+        tables: 'check'
+      }
+    }
+  };
+
+  function updateComparison(competitor) {
+    const data = competitors[competitor];
+
+    // Update header
+    competitorName.textContent = data.name;
+    competitorTagline.textContent = data.tagline;
+
+    // Update feature cells
+    Object.keys(data.features).forEach(feature => {
+      const cell = document.querySelector(`[data-feature="${feature}"]`);
+      if (!cell) return;
+
+      const value = data.features[feature];
+
+      // Clear cell
+      cell.innerHTML = '';
+
+      if (value === 'check') {
+        cell.innerHTML = `
+          <svg class="icon-check-muted" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        `;
+      } else if (value === 'x') {
+        cell.innerHTML = `
+          <svg class="icon-x" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        `;
+      } else if (value === 'limited') {
+        cell.innerHTML = '<span class="badge-limited">Limited</span>';
+      }
+    });
+  }
+
+  // Add click handlers
+  competitorBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      // Update active state
+      competitorBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+
+      // Update comparison
+      const competitor = this.dataset.competitor;
+      updateComparison(competitor);
+    });
+  });
 
   // ==========================================
   // INITIALIZE ON LOAD
