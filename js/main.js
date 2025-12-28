@@ -499,6 +499,30 @@ document.addEventListener('DOMContentLoaded', function() {
         team: 'check',
         tables: 'check'
       }
+    },
+    googledocai: {
+      name: 'Google Doc AI',
+      tagline: 'Google Cloud',
+      features: {
+        ai: 'check',
+        webhooks: 'check',
+        nocode: 'x',
+        email: 'x',
+        team: 'limited',
+        tables: 'check'
+      }
+    },
+    abbyy: {
+      name: 'ABBYY',
+      tagline: 'Enterprise OCR',
+      features: {
+        ai: 'check',
+        webhooks: 'limited',
+        nocode: 'x',
+        email: 'limited',
+        team: 'limited',
+        tables: 'check'
+      }
     }
   };
 

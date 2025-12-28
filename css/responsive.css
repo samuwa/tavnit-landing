@@ -7,6 +7,25 @@
    TABLET (768px - 1023px)
    ========================================== */
 @media (max-width: 1023px) {
+  /* Adjust scroll snapping on tablet for better touch experience */
+  html {
+    scroll-snap-type: y proximity;
+  }
+
+  /* Make snap points less strict on tablet */
+  .hero,
+  .problem,
+  .how-it-works,
+  .features,
+  .use-cases,
+  .integrations,
+  .comparison,
+  .pricing,
+  .final-cta,
+  .footer {
+    scroll-snap-stop: normal;
+  }
+
   /* Typography Adjustments */
   :root {
     --font-size-5xl: 40px;
@@ -356,6 +375,39 @@
    MOBILE (320px - 767px)
    ========================================== */
 @media (max-width: 767px) {
+  /* Disable scroll snapping on mobile for better touch experience */
+  html {
+    scroll-snap-type: none;
+  }
+
+  /* Remove scroll snap from all sections on mobile */
+  .hero,
+  .problem,
+  .how-it-works,
+  .features,
+  .use-cases,
+  .integrations,
+  .comparison,
+  .pricing,
+  .final-cta,
+  .footer {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+    min-height: auto;
+  }
+
+  /* Restore original mobile section styles */
+  .problem,
+  .how-it-works,
+  .features,
+  .use-cases,
+  .integrations,
+  .comparison,
+  .pricing,
+  .final-cta {
+    display: block;
+  }
+
   /* Typography Adjustments */
   :root {
     --font-size-4xl: 28px;
