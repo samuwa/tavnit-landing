@@ -303,18 +303,23 @@ a:hover {
 .logo {
   display: flex;
   align-items: center;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .logo:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .logo img {
   height: 80px;
   width: auto;
   display: block;
+  transition: transform 0.2s ease;
+}
+
+.logo:hover img {
+  transform: scale(1.02);
 }
 
 .nav-menu {
@@ -382,9 +387,19 @@ a:hover {
   padding: 0;
   background: transparent;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
   gap: 5px;
   z-index: 1001;
+  transition: all 0.2s ease;
+}
+
+.nav-mobile-toggle:hover {
+  background: var(--gray-100);
+}
+
+.nav-mobile-toggle:active {
+  transform: scale(0.95);
 }
 
 .nav-mobile-toggle span {

@@ -3,6 +3,8 @@
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Mobile sidebar menu
+  initMobileSidebar();
   // Navigation functionality
   initNavigation();
   // API sub-tabs
@@ -16,23 +18,103 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ==========================================
+// MOBILE SIDEBAR MENU
+// ==========================================
+function initMobileSidebar() {
+  const menuToggle = document.getElementById('docs-menu-toggle');
+  const sidebar = document.getElementById('docs-sidebar');
+  const overlay = document.getElementById('docs-sidebar-overlay');
+  const closeBtn = document.getElementById('sidebar-close-btn');
+  const sidebarLinks = document.querySelectorAll('.sidebar-item, .sidebar-subitem');
+
+  // Toggle sidebar on menu button click
+  if (menuToggle) {
+    menuToggle.addEventListener('click', function() {
+      toggleSidebar();
+    });
+  }
+
+  // Close sidebar on close button click
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      closeSidebar();
+    });
+  }
+
+  // Close sidebar on overlay click
+  if (overlay) {
+    overlay.addEventListener('click', function() {
+      closeSidebar();
+    });
+  }
+
+  // Close sidebar when clicking a link on mobile
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      // Only close on mobile/tablet
+      if (window.innerWidth < 1024) {
+        closeSidebar();
+      }
+    });
+  });
+
+  // Close sidebar on escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+      closeSidebar();
+    }
+  });
+
+  // Handle window resize
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      // Close sidebar if resizing to desktop
+      if (window.innerWidth >= 1024 && sidebar.classList.contains('active')) {
+        closeSidebar();
+      }
+    }, 250);
+  });
+}
+
+function toggleSidebar() {
+  const menuToggle = document.getElementById('docs-menu-toggle');
+  const sidebar = document.getElementById('docs-sidebar');
+  const overlay = document.getElementById('docs-sidebar-overlay');
+
+  menuToggle.classList.toggle('active');
+  sidebar.classList.toggle('active');
+  overlay.classList.toggle('active');
+
+  // Prevent body scroll when sidebar is open
+  if (sidebar.classList.contains('active')) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+function closeSidebar() {
+  const menuToggle = document.getElementById('docs-menu-toggle');
+  const sidebar = document.getElementById('docs-sidebar');
+  const overlay = document.getElementById('docs-sidebar-overlay');
+
+  menuToggle.classList.remove('active');
+  sidebar.classList.remove('active');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ==========================================
 // NAVIGATION
 // ==========================================
 function initNavigation() {
-  // Sidebar navigation (desktop)
+  // Sidebar navigation
   const sidebarItems = document.querySelectorAll('.sidebar-item, .sidebar-subitem');
   sidebarItems.forEach(item => {
     item.addEventListener('click', function(e) {
       e.preventDefault();
-      const section = this.dataset.section;
-      navigateToSection(section);
-    });
-  });
-
-  // Mobile tab navigation
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
       const section = this.dataset.section;
       navigateToSection(section);
     });
@@ -77,18 +159,6 @@ function navigateToSection(sectionId) {
         parentItem.classList.add('active');
       }
     }
-  }
-
-  // Update mobile tabs
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  tabBtns.forEach(btn => btn.classList.remove('active'));
-  let activeTabSection = sectionId;
-  if (sectionId === 'api-code' || sectionId === 'api-no-code') {
-    activeTabSection = 'api-integration';
-  }
-  const activeTab = document.querySelector(`.tab-btn[data-section="${activeTabSection}"]`);
-  if (activeTab) {
-    activeTab.classList.add('active');
   }
 
   // Scroll to top
