@@ -1,0 +1,9 @@
+# Tavnit - robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://tavnit.io/sitemap.xml
+
+# Disallow admin/internal paths if any (add as needed)
+# Disallow: /admin/
