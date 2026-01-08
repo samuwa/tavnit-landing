@@ -104,6 +104,8 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
 }
 
 body {
@@ -185,14 +187,14 @@ a:hover {
 
 .section-title {
   text-align: center;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .section-subtitle {
   text-align: center;
   font-size: var(--font-size-lg);
   color: var(--gray-600);
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -301,18 +303,23 @@ a:hover {
 .logo {
   display: flex;
   align-items: center;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .logo:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .logo img {
   height: 80px;
   width: auto;
   display: block;
+  transition: transform 0.2s ease;
+}
+
+.logo:hover img {
+  transform: scale(1.02);
 }
 
 .nav-menu {
@@ -380,9 +387,19 @@ a:hover {
   padding: 0;
   background: transparent;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
   gap: 5px;
   z-index: 1001;
+  transition: all 0.2s ease;
+}
+
+.nav-mobile-toggle:hover {
+  background: var(--gray-100);
+}
+
+.nav-mobile-toggle:active {
+  transform: scale(0.95);
 }
 
 .nav-mobile-toggle span {
@@ -1053,19 +1070,19 @@ a:hover {
    FEATURES SECTION
    ========================================== */
 .features {
-  padding: var(--spacing-3xl) 0;
+  padding: var(--spacing-2xl) 0;
   background: var(--white);
 }
 
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-2xl);
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
 }
 
 .feature-card {
-  padding: var(--spacing-xl);
+  padding: var(--spacing-lg);
   background: var(--white);
   border: 2px solid var(--gray-200);
   border-radius: var(--radius-xl);
@@ -1126,7 +1143,9 @@ a:hover {
 
 .feature-icon svg {
   display: block;
-  margin: auto;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .feature-icon-gradient {
@@ -1176,11 +1195,16 @@ a:hover {
   color: var(--white);
 }
 
+/* Hide features pagination on desktop */
+.features-pagination {
+  display: none;
+}
+
 /* ==========================================
    USE CASES SECTION
    ========================================== */
 .use-cases {
-  padding: var(--spacing-3xl) 0;
+  padding: var(--spacing-3xl) 0 var(--spacing-xl);
   background: linear-gradient(180deg, var(--white) 0%, var(--gray-50) 100%);
 }
 
@@ -1188,7 +1212,7 @@ a:hover {
   display: flex;
   gap: var(--spacing-sm);
   justify-content: center;
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-md);
   flex-wrap: wrap;
 }
 
@@ -1217,7 +1241,7 @@ a:hover {
 }
 
 .use-cases-content {
-  margin-top: var(--spacing-2xl);
+  margin-top: var(--spacing-md);
 }
 
 .tab-content {
@@ -1243,11 +1267,11 @@ a:hover {
 .use-case-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-2xl);
+  gap: var(--spacing-lg);
   align-items: center;
   background: var(--white);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-2xl);
+  padding: var(--spacing-lg);
   box-shadow: var(--shadow-lg);
 }
 
@@ -1259,17 +1283,17 @@ a:hover {
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
   font-weight: 600;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .use-case-info h3 {
-  font-size: var(--font-size-4xl);
-  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--spacing-sm);
   color: var(--gray-900);
 }
 
 .use-case-section {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .use-case-section h4 {
@@ -1291,10 +1315,10 @@ a:hover {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
   background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
   border-radius: var(--radius-lg);
-  margin-top: var(--spacing-lg);
+  margin-top: var(--spacing-md);
 }
 
 .use-case-result svg {
@@ -1329,11 +1353,16 @@ a:hover {
   min-height: 300px;
 }
 
+/* Hide use cases pagination on desktop */
+.use-cases-pagination {
+  display: none;
+}
+
 /* ==========================================
    INTEGRATIONS SECTION - MODERN REDESIGN
    ========================================== */
 .integrations {
-  padding: var(--spacing-4xl) 0;
+  padding: var(--spacing-2xl) 0;
   background: var(--white);
 }
 
@@ -1341,15 +1370,15 @@ a:hover {
 .integration-methods {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-xl);
-  margin: var(--spacing-3xl) 0;
+  gap: var(--spacing-lg);
+  margin: var(--spacing-xl) 0;
 }
 
 .integration-method {
   background: var(--white);
   border: 2px solid var(--gray-200);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-xl);
+  padding: var(--spacing-lg);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
@@ -1385,8 +1414,8 @@ a:hover {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
   border-bottom: 1px solid var(--gray-200);
 }
 
@@ -1425,7 +1454,7 @@ a:hover {
 /* Method Body */
 .method-body {
   flex: 1;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 /* Code Example */
@@ -1433,7 +1462,7 @@ a:hover {
   background: var(--gray-900);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .code-header {
@@ -1466,22 +1495,22 @@ a:hover {
 
 .code-example code {
   font-family: 'Monaco', 'Courier New', monospace;
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 11px;
+  line-height: 1.5;
   color: #10b981;
   display: block;
 }
 
 /* Email Example */
 .email-example {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .email-step {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
   font-size: var(--font-size-sm);
   color: var(--gray-700);
 }
@@ -1516,7 +1545,7 @@ a:hover {
 
 /* Webhook Example */
 .webhook-example {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .webhook-flow {
@@ -1524,8 +1553,8 @@ a:hover {
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-md);
-  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-sm);
   background: var(--gray-50);
   border-radius: var(--radius-lg);
 }
@@ -1585,7 +1614,7 @@ a:hover {
 .method-features {
   list-style: none;
   padding: 0;
-  margin: var(--spacing-md) 0;
+  margin: var(--spacing-sm) 0;
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-xs);
@@ -1719,6 +1748,16 @@ a:hover {
   opacity: 1;
 }
 
+/* Hide integration pagination on desktop */
+.integration-pagination {
+  display: none;
+}
+
+/* Hide mobile comparison on desktop */
+.comparison-mobile {
+  display: none;
+}
+
 /* ==========================================
    PRICING SECTION
    ========================================== */
@@ -1812,7 +1851,7 @@ a:hover {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-lg);
-  margin: var(--spacing-2xl) 0;
+  margin: var(--spacing-xl) 0 var(--spacing-md);
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -1940,8 +1979,8 @@ a:hover {
 
 .pricing-features-all {
   max-width: 900px;
-  margin: var(--spacing-3xl) auto;
-  padding: var(--spacing-2xl);
+  margin: var(--spacing-xl) auto 0;
+  padding: var(--spacing-lg);
   background: var(--gray-50);
   border-radius: var(--radius-xl);
 }
@@ -1950,7 +1989,7 @@ a:hover {
   font-size: var(--font-size-xl);
   font-weight: 700;
   text-align: center;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
   color: var(--gray-900);
 }
 
@@ -1958,7 +1997,7 @@ a:hover {
   list-style: none;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
 }
 
 .features-grid-list li {
@@ -2086,7 +2125,8 @@ a:hover {
   border-collapse: separate;
   border-spacing: 0;
   background: var(--white);
-  min-width: 900px;
+  min-width: 1200px;
+  font-size: 14px;
 }
 
 /* Table Header */
@@ -2099,12 +2139,12 @@ a:hover {
 }
 
 .comparison-table th {
-  padding: var(--spacing-md) var(--spacing-sm);
+  padding: 16px 10px;
   text-align: center;
   vertical-align: middle;
   font-weight: 600;
   color: var(--gray-700);
-  font-size: var(--font-size-sm);
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -2112,8 +2152,8 @@ a:hover {
 .feature-column {
   text-align: left;
   padding-left: var(--spacing-md);
-  width: 35%;
-  font-size: var(--font-size-base);
+  width: 32%;
+  font-size: 14px;
   text-transform: none;
   letter-spacing: normal;
   color: var(--gray-900);
@@ -2121,15 +2161,15 @@ a:hover {
 
 /* Product Headers */
 .product-column {
-  width: 16.25%;
+  width: 11.33%;
 }
 
 .product-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: var(--spacing-xs) 0;
+  gap: 4px;
+  padding: 6px 0;
   position: relative;
 }
 
@@ -2138,28 +2178,30 @@ a:hover {
   top: -12px;
   background: var(--gradient-primary);
   color: var(--white);
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: var(--radius-full);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
 }
 
 .product-name {
-  font-size: var(--font-size-lg);
+  font-size: 15px;
   font-weight: 700;
   color: var(--gray-900);
   text-transform: none;
-  letter-spacing: normal;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .product-tagline {
-  font-size: var(--font-size-xs);
+  font-size: 11px;
   color: var(--gray-500);
   font-weight: 500;
   text-transform: none;
+  line-height: 1.3;
 }
 
 /* Tavnit Column Highlight */
@@ -2195,7 +2237,7 @@ a:hover {
 }
 
 .comparison-table td {
-  padding: var(--spacing-md) var(--spacing-sm);
+  padding: 14px 10px;
   text-align: center;
   vertical-align: middle;
 }
@@ -2207,17 +2249,19 @@ a:hover {
 
 .feature-name strong {
   display: block;
-  font-size: var(--font-size-base);
+  font-size: 14px;
   font-weight: 600;
   color: var(--gray-900);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+  line-height: 1.4;
 }
 
 .feature-desc {
   display: block;
-  font-size: var(--font-size-sm);
+  font-size: 12px;
   color: var(--gray-500);
   font-weight: 400;
+  line-height: 1.4;
 }
 
 /* Icons */
@@ -2236,12 +2280,13 @@ a:hover {
 
 .badge-limited {
   display: inline-block;
-  padding: 4px 12px;
+  padding: 4px 10px;
   background: var(--gray-100);
   color: var(--gray-600);
-  font-size: var(--font-size-xs);
+  font-size: 11px;
   font-weight: 600;
   border-radius: var(--radius-md);
+  white-space: nowrap;
 }
 
 /* Table Footer */
@@ -2250,14 +2295,16 @@ a:hover {
 }
 
 .comparison-table tfoot td {
-  padding: var(--spacing-md) var(--spacing-sm);
+  padding: 16px 10px;
   border-top: 3px solid var(--gray-200);
 }
 
 .btn-table {
   width: 100%;
-  max-width: 200px;
+  max-width: 140px;
   display: inline-block;
+  font-size: 13px;
+  padding: 10px 16px;
 }
 
 /* ==========================================
@@ -2324,6 +2371,15 @@ a:hover {
   color: var(--white);
 }
 
+/* Hide Quick Links on Desktop, show original columns */
+.footer-column:nth-child(2) {
+  display: none;
+}
+
+.footer-column-desktop {
+  display: block;
+}
+
 .footer-bottom {
   padding-top: var(--spacing-md);
   border-top: 1px solid var(--gray-800);
@@ -2331,4 +2387,100 @@ a:hover {
   justify-content: space-between;
   align-items: center;
   font-size: var(--font-size-sm);
+}
+
+/* ==========================================
+   SCROLL SNAPPING
+   Presentation-style section navigation
+   ========================================== */
+
+/* Hero Section - already has min-height: 100vh */
+.hero {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Problem Section */
+.problem {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* How It Works Section */
+.how-it-works {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Features Section */
+.features {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Use Cases Section */
+.use-cases {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Integrations Section */
+.integrations {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Comparison Section */
+.comparison {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Pricing Section */
+.pricing {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Final CTA Section */
+.final-cta {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Footer - no snap to allow natural end */
+.footer {
+  scroll-snap-align: start;
 }
