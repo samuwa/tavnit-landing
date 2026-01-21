@@ -1,4 +1,4 @@
-# Tavnit Landing Page
+# Tavnit Landing Page .
 
 A modern, conversion-focused landing page for Tavnit - an AI-powered document data extraction platform.
 
