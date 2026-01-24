@@ -547,6 +547,31 @@
     justify-content: center;
   }
 
+  /* Video Modal */
+  .video-modal-content {
+    width: 95%;
+    margin: 10% auto;
+  }
+
+  .video-chapters {
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .video-chapter {
+    min-width: 110px;
+    padding: 8px 12px;
+  }
+
+  .video-chapter .chapter-title {
+    font-size: 11px;
+  }
+
+  .video-chapter .chapter-time {
+    font-size: 10px;
+  }
+
   /* Hero Section */
   .hero {
     min-height: 100vh;

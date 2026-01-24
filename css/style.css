@@ -1047,6 +1047,76 @@ a:hover {
   object-fit: contain;
 }
 
+/* Video Chapters */
+.video-chapters {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-600) transparent;
+}
+
+.video-chapters::-webkit-scrollbar {
+  height: 4px;
+}
+
+.video-chapters::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.video-chapters::-webkit-scrollbar-thumb {
+  background: var(--gray-600);
+  border-radius: 4px;
+}
+
+.video-chapter {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.video-chapter:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.video-chapter.active {
+  background: var(--gradient-primary);
+  border-color: transparent;
+}
+
+.video-chapter .chapter-time {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--font-mono, monospace);
+}
+
+.video-chapter.active .chapter-time {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.video-chapter .chapter-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--white);
+  text-align: center;
+  white-space: nowrap;
+}
+
 .video-placeholder {
   position: absolute;
   top: 50%;

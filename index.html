@@ -330,6 +330,25 @@
           Your browser does not support the video tag.
         </video>
       </div>
+      <!-- Video Chapters -->
+      <div class="video-chapters">
+        <button class="video-chapter active" data-time="5">
+          <span class="chapter-time">0:05</span>
+          <span class="chapter-title">Create a Flow</span>
+        </button>
+        <button class="video-chapter" data-time="129">
+          <span class="chapter-time">2:09</span>
+          <span class="chapter-title">Flow Details</span>
+        </button>
+        <button class="video-chapter" data-time="278">
+          <span class="chapter-time">4:38</span>
+          <span class="chapter-title">Flow Features</span>
+        </button>
+        <button class="video-chapter" data-time="486">
+          <span class="chapter-time">8:06</span>
+          <span class="chapter-title">Running a Flow</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -992,20 +1011,23 @@
       const videoModalClose = document.getElementById('video-modal-close');
       const videoModalOverlay = document.getElementById('video-modal-overlay');
       const demoVideo = document.getElementById('demo-video');
+      const chapters = document.querySelectorAll('.video-chapter');
+
+      // Chapter timestamps in seconds
+      const chapterTimes = [5, 129, 278, 486];
 
       // Open modal
       if (watchVideoBtn) {
         watchVideoBtn.addEventListener('click', function() {
           videoModal.classList.add('active');
-          document.body.style.overflow = 'hidden'; // Prevent scrolling
+          document.body.style.overflow = 'hidden';
         });
       }
 
       // Close modal function
       function closeModal() {
         videoModal.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
-        // Pause video if playing
+        document.body.style.overflow = '';
         if (demoVideo && !demoVideo.paused) {
           demoVideo.pause();
         }
@@ -1027,6 +1049,43 @@
           closeModal();
         }
       });
+
+      // Chapter click handlers
+      chapters.forEach(function(chapter) {
+        chapter.addEventListener('click', function() {
+          const time = parseInt(this.getAttribute('data-time'));
+          if (demoVideo) {
+            demoVideo.currentTime = time;
+            demoVideo.play();
+          }
+          // Update active state
+          chapters.forEach(function(c) { c.classList.remove('active'); });
+          this.classList.add('active');
+        });
+      });
+
+      // Update active chapter based on video time
+      if (demoVideo) {
+        demoVideo.addEventListener('timeupdate', function() {
+          const currentTime = demoVideo.currentTime;
+          let activeIndex = 0;
+
+          for (let i = chapterTimes.length - 1; i >= 0; i--) {
+            if (currentTime >= chapterTimes[i]) {
+              activeIndex = i;
+              break;
+            }
+          }
+
+          chapters.forEach(function(c, index) {
+            if (index === activeIndex) {
+              c.classList.add('active');
+            } else {
+              c.classList.remove('active');
+            }
+          });
+        });
+      }
     });
   </script>
 </body>
