@@ -411,51 +411,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ==========================================
-  // FEATURES CAROUSEL (MOBILE)
-  // ==========================================
-  const featuresGrid = document.querySelector('.features-grid');
-  const featureCards = document.querySelectorAll('.feature-card');
-  const featuresDots = document.querySelectorAll('.features-pagination .pagination-dot');
-
-  if (featuresGrid && featuresDots.length > 0) {
-    // Update active dot based on scroll position
-    function updateActiveFeatureDot() {
-      const scrollLeft = featuresGrid.scrollLeft;
-      const cardWidth = featureCards[0]?.offsetWidth || 0;
-      const gap = 24; // var(--spacing-md) = 24px on mobile
-      const index = Math.round(scrollLeft / (cardWidth + gap));
-
-      featuresDots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === index);
-      });
-    }
-
-    // Scroll to specific card when dot is clicked
-    featuresDots.forEach((dot, index) => {
-      dot.addEventListener('click', () => {
-        const cardWidth = featureCards[0]?.offsetWidth || 0;
-        const gap = 24;
-        const scrollPosition = index * (cardWidth + gap);
-
-        featuresGrid.scrollTo({
-          left: scrollPosition,
-          behavior: 'smooth'
-        });
-      });
-    });
-
-    // Update active dot on scroll
-    let featureScrollTimeout;
-    featuresGrid.addEventListener('scroll', () => {
-      clearTimeout(featureScrollTimeout);
-      featureScrollTimeout = setTimeout(updateActiveFeatureDot, 100);
-    }, { passive: true });
-
-    // Initialize on load
-    updateActiveFeatureDot();
-  }
-
-  // ==========================================
   // INITIALIZE ON LOAD
   // ==========================================
   console.log('Tavnit landing page initialized successfully');

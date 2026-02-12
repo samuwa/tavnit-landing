@@ -5,5 +5,8 @@ Allow: /
 # Sitemaps
 Sitemap: https://tavnit.io/sitemap.xml
 
-# Disallow admin/internal paths if any (add as needed)
-# Disallow: /admin/
+# Disallow non-content paths
+Disallow: /assets/
+Disallow: /css/
+Disallow: /js/
+Disallow: /videos/
