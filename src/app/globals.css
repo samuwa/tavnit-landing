@@ -1,26 +1,892 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: #667eea;
+  --color-primary-dark: #764ba2;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 7em; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4); }
+  50% { box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6); }
+}
+
+@keyframes line-flow {
+  0%, 100% { transform: translateY(-50%) scaleX(0); opacity: 0; }
+  50% { transform: translateY(-50%) scaleX(1); opacity: 1; }
+}
+
+@keyframes arrow-pulse {
+  0%, 100% { transform: translateX(0); opacity: 0.5; }
+  50% { transform: translateX(4px); opacity: 1; }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #0a0a1a;
+  color: #e2e8f0;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.typing-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  vertical-align: top;
+  animation: typing 1.2s steps(15) 3.7s forwards;
+}
+
+.gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  animation: float 20s ease-in-out infinite;
+}
+
+/* ==========================================
+   GLASS CARD UTILITIES
+   ========================================== */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+}
+
+/* ==========================================
+   HERO ANIMATION - PDF TO TABLE EXTRACTION
+   ========================================== */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(11px); }
+}
+
+@keyframes flyToTable {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateX(0) translateY(0) scale(0.7);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateX(30px) translateY(-15px) scale(1.1);
+  }
+  85% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateX(var(--end-x)) translateY(var(--end-y)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateX(var(--end-x)) translateY(var(--end-y)) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* PDF Document */
+.pdf-doc {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.3rem;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  min-width: 320px;
+}
+
+.pdf-field {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  margin-bottom: 1.15rem;
+}
+
+.pdf-label {
+  height: 12px;
+  width: 115px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+}
+
+.pdf-value {
+  height: 12px;
+  width: 138px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+/* Arrow Section */
+.arrow-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 4rem;
+}
+
+/* Table */
+.table-doc {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  min-width: 320px;
+}
+
+.table-doc table {
+  width: 100%;
+  font-size: 15px;
+  border-collapse: collapse;
+}
+
+.table-doc th {
+  text-align: left;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.table-doc td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.target-bar {
+  height: 12px;
+  width: 138px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.target-bar.filled {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+}
+
+.target-label {
+  height: 12px;
+  width: 115px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.target-label.filled {
+  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+/* Particles */
+.particle {
+  position: absolute;
+  pointer-events: none;
+  z-index: 50;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+}
+
+.particle-bar {
+  height: 8px;
+  border-radius: 4px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.particle-label {
+  position: absolute;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0;
+}
+
+.particle-label-bar {
+  height: 8px;
+  width: 80px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.5);
+}
+
+.particle-bar-1 {
+  width: 50px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.particle-bar-2 {
+  width: 60px;
+  background: linear-gradient(90deg, #764ba2, #f093fb);
+}
+
+.scan-border {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(102, 126, 234, 0.6);
+  border-radius: 12px;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: inset 0 0 20px rgba(102, 126, 234, 0.1);
+}
+
+.processing-text {
+  font-size: 12px;
+  font-family: monospace;
+  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+.complete-banner {
+  background: rgba(16, 185, 129, 0.1);
+  border-top: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 0.5rem 1rem;
+  font-size: 12px;
+  color: #34d399;
+  opacity: 0;
+  font-weight: 600;
+}
+
+/* Animation wrapper */
+.animation-wrapper {
+  transform-origin: center center;
+  will-change: transform;
+  display: inline-grid;
+}
+
+/* ==========================================
+   HERO ANIMATION - MOBILE RESPONSIVE
+   ========================================== */
+
+@media (max-width: 767px) {
+  .pdf-doc,
+  .table-doc {
+    min-width: 160px;
+    width: 160px;
+    height: 210px;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+
+  .pdf-doc > div:first-child {
+    margin-bottom: 0.5rem !important;
+    padding-bottom: 0.4rem !important;
+  }
+
+  .pdf-doc > div:first-child > div:first-child > div:first-child {
+    height: 8px !important;
+    width: 50px !important;
+    margin-bottom: 3px !important;
+  }
+
+  .pdf-doc > div:first-child > div:first-child > div:last-child {
+    height: 5px !important;
+    width: 70px !important;
+  }
+
+  .pdf-doc > div:first-child > div:last-child {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .pdf-doc > div:last-of-type:not(.scan-border) {
+    margin-top: 0.5rem !important;
+    padding-top: 0.4rem !important;
+  }
+
+  .pdf-doc > div:last-of-type:not(.scan-border) > div {
+    height: 5px !important;
+    margin-bottom: 3px !important;
+  }
+
+  .table-doc table {
+    font-size: 10px;
+  }
+
+  .table-doc th,
+  .table-doc td {
+    padding: 0.35rem 0.5rem;
+  }
+
+  .pdf-field {
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .pdf-label,
+  .target-label {
+    width: 50px;
+    height: 8px;
+  }
+
+  .pdf-value,
+  .target-bar {
+    width: 70px;
+    height: 8px;
+  }
+
+  .arrow-section {
+    padding-top: 1.5rem;
+    gap: 0.5rem;
+  }
+
+  .arrow-section svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .processing-text {
+    font-size: 9px;
+  }
+
+  .particle-bar {
+    height: 6px;
+  }
+
+  .particle-label-bar {
+    height: 6px;
+    width: 40px;
+  }
+}
+
+@media (max-width: 479px) {
+  .pdf-doc,
+  .table-doc {
+    min-width: 120px;
+    width: 120px;
+    height: 170px;
+    padding: 0.5rem;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+
+  .pdf-doc > div:first-child {
+    margin-bottom: 0.4rem !important;
+    padding-bottom: 0.3rem !important;
+  }
+
+  .pdf-doc > div:first-child > div:first-child > div:first-child {
+    height: 6px !important;
+    width: 40px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .pdf-doc > div:first-child > div:first-child > div:last-child {
+    height: 4px !important;
+    width: 55px !important;
+  }
+
+  .pdf-doc > div:first-child > div:last-child {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .pdf-doc > div:last-of-type:not(.scan-border) {
+    margin-top: 0.4rem !important;
+    padding-top: 0.3rem !important;
+  }
+
+  .pdf-doc > div:last-of-type:not(.scan-border) > div {
+    height: 4px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .table-doc table {
+    font-size: 8px;
+  }
+
+  .table-doc th,
+  .table-doc td {
+    padding: 0.2rem 0.3rem;
+  }
+
+  .pdf-field {
+    gap: 0.2rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .pdf-label,
+  .target-label {
+    width: 35px;
+    height: 6px;
+  }
+
+  .pdf-value,
+  .target-bar {
+    width: 55px;
+    height: 6px;
+  }
+
+  .arrow-section {
+    padding-top: 0.75rem;
+    gap: 0.3rem;
+  }
+
+  .arrow-section svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .processing-text {
+    font-size: 7px;
+  }
+
+  .particle-bar {
+    height: 4px;
+  }
+
+  .particle-label-bar {
+    height: 4px;
+    width: 28px;
+  }
+
+  .complete-banner {
+    font-size: 8px;
+    padding: 0.25rem 0.4rem;
+  }
+}
+
+/* ==========================================
+   HOW IT WORKS - WORKFLOW TIMELINE
+   ========================================== */
+
+.workflow-timeline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+}
+
+.workflow-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.step-icon-wrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.step-icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 3px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.step-icon-circle svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.icon-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.workflow-step:hover .step-icon-circle {
+  border-color: #667eea;
+  color: #667eea;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.3);
+}
+
+.workflow-step:hover .icon-glow {
+  opacity: 0.6;
+}
+
+.step-content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.step-content p {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.workflow-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 60px;
+  flex: 0 0 auto;
+}
+
+.connector-line {
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, #667eea 50%, rgba(255,255,255,0.1) 100%);
+  position: relative;
+}
+
+.connector-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left;
+  animation: line-flow 3s ease-in-out infinite;
+}
+
+.connector-arrow {
+  position: absolute;
+  right: -10px;
+  color: #667eea;
+  opacity: 0.7;
+  animation: arrow-pulse 2s ease-in-out infinite;
+}
+
+.connector-arrow svg {
+  display: block;
+}
+
+@media (max-width: 1023px) {
+  .workflow-timeline {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .workflow-step {
+    flex: none;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .workflow-connector {
+    margin-top: 0;
+    transform: rotate(90deg);
+    margin: 4px 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .workflow-step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    text-align: left;
+    padding: 8px 16px;
+    align-items: center;
+  }
+
+  .step-icon-wrapper {
+    margin-bottom: 0;
+  }
+
+  .step-icon-circle {
+    width: 56px;
+    height: 56px;
+    border-width: 2px;
+  }
+
+  .step-icon-circle svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .icon-glow {
+    display: none;
+  }
+
+  .step-content h3 {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .step-content p {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .workflow-connector {
+    margin: 0;
+    height: 16px;
+    margin-left: calc(16px + 27px);
+  }
+
+  .connector-line {
+    width: 2px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .connector-line::after {
+    display: none;
+  }
+
+  .connector-arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 479px) {
+  .workflow-step {
+    padding: 4px 8px;
+  }
+
+  .step-icon-circle {
+    width: 48px;
+    height: 48px;
+  }
+
+  .step-icon-circle svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .step-content h3 {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .step-content p {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .workflow-connector {
+    height: 12px;
+    margin-left: calc(8px + 23px);
+  }
+
+  .connector-line {
+    height: 12px;
+  }
+}
+
+/* Touch devices: disable hover transforms */
+@media (hover: none) and (pointer: coarse) {
+  .workflow-step:hover .step-icon-circle {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .glass-card-hover:hover {
+    transform: none;
+  }
+}
+
+/* ==========================================
+   SCROLL SNAPPING
+   ========================================== */
+
+#hero {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+#problem {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#how-it-works {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#features {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#platform-overview {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#use-cases {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#integrations {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#pricing {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+.final-cta-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+footer {
+  scroll-snap-align: start;
+}
+
+/* Tablet: softer scroll snap */
+@media (max-width: 1023px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+
+  #problem, #how-it-works, #features, #platform-overview, #use-cases, #integrations, #pricing, .final-cta-section {
+    scroll-snap-stop: normal;
+  }
+}
+
+/* Disable scroll snap on mobile, remove forced min-height and flex centering */
+@media (max-width: 767px) {
+  html {
+    scroll-snap-type: none;
+  }
+
+  #problem, #how-it-works, #features, #platform-overview, #use-cases, #integrations, #pricing, .final-cta-section {
+    min-height: auto;
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+    display: block;
+  }
+}
+
+/* Hide scrollbar for mobile carousels */
+.snap-x::-webkit-scrollbar,
+.mobile-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Prevent horizontal overflow from carousel sections — desktop only */
+@media (min-width: 768px) {
+  section:not(#platform-overview) {
+    overflow-x: clip;
+  }
+}
+
+#platform-overview {
+  overflow: visible;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
