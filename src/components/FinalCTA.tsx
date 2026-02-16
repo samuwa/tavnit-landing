@@ -13,10 +13,10 @@ export default function FinalCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
             Ready to Transform Your Document Workflow?
           </h2>
-          <p className="text-lg md:text-xl text-gray-300 mb-8 md:mb-12">
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-8 md:mb-12">
             Sign up with Google (OAuth). No email/password needed. Secure Google authentication only.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">

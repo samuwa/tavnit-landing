@@ -81,18 +81,18 @@ export default function Pricing() {
           ))}
         </div>
 
-        <p className="text-center text-sm text-gray-500 mb-6">
+        <p className="text-center text-sm text-gray-500 mb-8 sm:mb-6">
           Need more? Buy extra credits at $0.16/credit (minimum 50 credits) on top of any plan.
         </p>
 
         {/* All Plans Include */}
         <motion.div
-          className="max-w-[900px] mx-auto p-5 sm:p-8 rounded-2xl glass-card"
+          className="max-w-[900px] mx-auto p-5 sm:p-8 mb-8 sm:mb-0 rounded-2xl glass-card"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h4 className="text-base sm:text-xl font-bold text-center text-white mb-4 sm:mb-6">Everything Included in All Plans:</h4>
+          <h4 className="text-lg sm:text-xl font-bold text-center text-white mb-5 sm:mb-6">Everything Included in All Plans:</h4>
           <ul className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {includedFeatures.map((f) => (
               <li key={f} className="flex items-start gap-2 text-xs sm:text-sm text-gray-300">
