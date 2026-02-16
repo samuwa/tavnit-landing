@@ -106,16 +106,49 @@ const CardSwap: React.FC<CardSwapProps> = ({
   const intervalRef = useRef<number>(0);
   const container = useRef<HTMLDivElement>(null);
 
+  const pausedRef = useRef(false);
+
   useEffect(() => {
     const total = refs.length;
     refs.forEach((r, i) => placeNow(r.current!, makeSlot(i, cardDistance, verticalDistance, total), skewAmount));
 
+    let cancelled = false;
+
+    const scheduleNext = () => {
+      if (cancelled) return;
+      intervalRef.current = window.setTimeout(() => {
+        if (cancelled) return;
+        if (pausedRef.current) {
+          const waitForResume = () => {
+            if (cancelled) return;
+            if (!pausedRef.current) {
+              swap();
+            } else {
+              intervalRef.current = window.setTimeout(waitForResume, 200);
+            }
+          };
+          intervalRef.current = window.setTimeout(waitForResume, 200);
+          return;
+        }
+        swap();
+      }, delay);
+    };
+
     const swap = () => {
-      if (order.current.length < 2) return;
+      if (cancelled || order.current.length < 2) return;
+
+      if (tlRef.current) {
+        tlRef.current.kill();
+        tlRef.current = null;
+      }
 
       const [front, ...rest] = order.current;
       const elFront = refs[front].current!;
-      const tl = gsap.timeline();
+      const tl = gsap.timeline({
+        onComplete: () => {
+          if (!cancelled) scheduleNext();
+        }
+      });
       tlRef.current = tl;
 
       tl.to(elFront, {
@@ -168,28 +201,33 @@ const CardSwap: React.FC<CardSwapProps> = ({
       });
     };
 
-    swap();
-    intervalRef.current = window.setInterval(swap, delay);
+    scheduleNext();
 
+    const node = container.current!;
     if (pauseOnHover) {
-      const node = container.current!;
       const pause = () => {
+        pausedRef.current = true;
         tlRef.current?.pause();
-        clearInterval(intervalRef.current);
       };
       const resume = () => {
+        pausedRef.current = false;
         tlRef.current?.play();
-        intervalRef.current = window.setInterval(swap, delay);
       };
       node.addEventListener('mouseenter', pause);
       node.addEventListener('mouseleave', resume);
       return () => {
+        cancelled = true;
         node.removeEventListener('mouseenter', pause);
         node.removeEventListener('mouseleave', resume);
-        clearInterval(intervalRef.current);
+        clearTimeout(intervalRef.current);
+        tlRef.current?.kill();
       };
     }
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      cancelled = true;
+      clearTimeout(intervalRef.current);
+      tlRef.current?.kill();
+    };
   }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing]);
 
   const rendered = childArr.map((child, i) =>
