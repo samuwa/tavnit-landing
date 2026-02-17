@@ -142,6 +142,13 @@ const CardSwap: React.FC<CardSwapProps> = ({
         tlRef.current = null;
       }
 
+      // Reset all cards to their correct slot positions before starting.
+      // This recovers from any interrupted animations that left cards
+      // with wrong skew, position, or centering.
+      order.current.forEach((idx, i) => {
+        placeNow(refs[idx].current!, makeSlot(i, cardDistance, verticalDistance, refs.length), skewAmount);
+      });
+
       const [front, ...rest] = order.current;
       const elFront = refs[front].current!;
       const tl = gsap.timeline({
@@ -153,6 +160,9 @@ const CardSwap: React.FC<CardSwapProps> = ({
 
       tl.to(elFront, {
         y: '+=500',
+        skewY: skewAmount,
+        xPercent: -50,
+        yPercent: -50,
         duration: config.durDrop,
         ease: config.ease
       });
@@ -168,6 +178,9 @@ const CardSwap: React.FC<CardSwapProps> = ({
             x: slot.x,
             y: slot.y,
             z: slot.z,
+            skewY: skewAmount,
+            xPercent: -50,
+            yPercent: -50,
             duration: config.durMove,
             ease: config.ease
           },
@@ -190,6 +203,9 @@ const CardSwap: React.FC<CardSwapProps> = ({
           x: backSlot.x,
           y: backSlot.y,
           z: backSlot.z,
+          skewY: skewAmount,
+          xPercent: -50,
+          yPercent: -50,
           duration: config.durReturn,
           ease: config.ease
         },

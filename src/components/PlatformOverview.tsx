@@ -92,7 +92,7 @@ export default function PlatformOverview() {
 
           {/* Right — Card Swap animation */}
           <motion.div
-            className="relative overflow-visible w-full h-[300px] sm:h-[380px] lg:shrink-0 lg:w-[660px] lg:h-[500px]"
+            className="relative overflow-visible w-full h-[360px] sm:h-[420px] lg:shrink-0 lg:w-[660px] lg:h-[500px]"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
