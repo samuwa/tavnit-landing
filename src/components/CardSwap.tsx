@@ -220,27 +220,44 @@ const CardSwap: React.FC<CardSwapProps> = ({
     scheduleNext();
 
     const node = container.current!;
+
+    const pauseAnim = () => {
+      pausedRef.current = true;
+      tlRef.current?.pause();
+    };
+    const resumeAnim = () => {
+      pausedRef.current = false;
+      tlRef.current?.play();
+    };
+
+    // Pause animation when section is not visible in viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          resumeAnim();
+        } else {
+          pauseAnim();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(node);
+
     if (pauseOnHover) {
-      const pause = () => {
-        pausedRef.current = true;
-        tlRef.current?.pause();
-      };
-      const resume = () => {
-        pausedRef.current = false;
-        tlRef.current?.play();
-      };
-      node.addEventListener('mouseenter', pause);
-      node.addEventListener('mouseleave', resume);
+      node.addEventListener('mouseenter', pauseAnim);
+      node.addEventListener('mouseleave', resumeAnim);
       return () => {
         cancelled = true;
-        node.removeEventListener('mouseenter', pause);
-        node.removeEventListener('mouseleave', resume);
+        observer.disconnect();
+        node.removeEventListener('mouseenter', pauseAnim);
+        node.removeEventListener('mouseleave', resumeAnim);
         clearTimeout(intervalRef.current);
         tlRef.current?.kill();
       };
     }
     return () => {
       cancelled = true;
+      observer.disconnect();
       clearTimeout(intervalRef.current);
       tlRef.current?.kill();
     };
