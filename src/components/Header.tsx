@@ -39,7 +39,7 @@ export default function Header() {
             alt="Tavnit"
             width={160}
             height={80}
-            className="h-12 sm:h-16 w-auto brightness-200"
+            className="h-12 sm:h-16 w-auto"
             priority
           />
         </Link>

@@ -37,7 +37,7 @@ export default function Footer() {
                 alt="Tavnit - AI Document Data Extraction Platform"
                 width={120}
                 height={60}
-                className="h-[48px] md:h-[60px] w-auto brightness-200"
+                className="h-[48px] md:h-[60px] w-auto"
               />
             </div>
             <p className="text-sm text-gray-500 leading-relaxed max-w-[300px]">
