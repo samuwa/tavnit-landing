@@ -60,7 +60,7 @@ export default function Hero() {
             </Link>
           </div>
           <div className="flex gap-4 text-xs sm:text-sm text-gray-400">
-            <span>10,000+ documents processed</span>
+            <span>100,000+ documents processed</span>
             <span className="text-gray-600">|</span>
             <span>500+ teams</span>
           </div>

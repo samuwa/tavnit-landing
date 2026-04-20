@@ -16,7 +16,7 @@ const features = [
   { icon: BarChart3, title: "Charts & Analytics", desc: "Bar, line, pie, and scatter charts from your extracted data.", gradient: false },
   { icon: Users, title: "Team Collaboration", desc: "Roles, invite codes, audit logs, and unlimited members.", gradient: false },
   { icon: Code2, title: "Developer APIs", desc: "REST API, webhooks, email triggers, and SDKs.", gradient: false },
-  { icon: Clock, title: "Flexible Billing", desc: "Monthly plans with credits. Buy extra anytime at base rate.", gradient: false },
+  { icon: Clock, title: "Human in the Loop", desc: "Flag extractions for manual review. Approve or correct before data moves downstream.", gradient: false },
 ];
 
 function FeatureCard({ f }: { f: typeof features[number] }) {
