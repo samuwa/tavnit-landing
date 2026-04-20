@@ -33,13 +33,31 @@ import {
   AlertTriangle,
   Copy,
   Check,
+  FolderInput,
+  Wand2,
+  Split,
+  Database,
+  Workflow,
+  Shield,
+  Eye,
+  BarChart3,
+  FileDown,
+  FileUp,
+  Users,
+  UserCog,
+  Fingerprint,
+  ArrowRight,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 
 const Squares = dynamic(() => import("@/components/Squares"), { ssr: false });
 
-type SectionId = "getting-started" | "email-integration" | "api-integration" | "webhooks";
+type SectionId = "getting-started" | "collections" | "cleaners" | "splitters" | "buckets" | "pipeline-map" | "email-integration" | "api-integration" | "webhooks" | "user-roles";
 type ApiTab = "code" | "no-code";
 type Lang = "python" | "javascript";
+
+const API_BASE = "https://run.tavnit.io/api";
 
 const PYTHON_CODE = `import requests
 
@@ -51,7 +69,7 @@ FLOW_ID = "YOUR_FLOW_ID"
 # ─────────────────────────────────────────────────────────────
 with open("document.pdf", "rb") as file:
     response = requests.post(
-        "https://tavnit.io/api/runs/process",
+        "https://run.tavnit.io/api/runs/process",
         headers={"X-API-Key": API_KEY},
         data={
             "flow_id": FLOW_ID,
@@ -72,7 +90,7 @@ with open("document.pdf", "rb") as file:
     file_base64 = base64.b64encode(file.read()).decode("utf-8")
 
 response = requests.post(
-    "https://tavnit.io/api/runs/process",
+    "https://run.tavnit.io/api/runs/process",
     headers={
         "X-API-Key": API_KEY,
         "Content-Type": "application/json"
@@ -99,7 +117,7 @@ async function processDocument(file) {
   formData.append("flow_id", FLOW_ID);
   formData.append("source", "api");
 
-  const response = await fetch("https://tavnit.io/api/runs/process", {
+  const response = await fetch("https://run.tavnit.io/api/runs/process", {
     method: "POST",
     headers: { "X-API-Key": API_KEY },
     body: formData,
@@ -113,7 +131,7 @@ async function processDocument(file) {
 // Option 2: Base64-encoded file (JSON body)
 // ─────────────────────────────────────────────────────────────
 async function processDocumentBase64(base64Content, filename) {
-  const response = await fetch("https://tavnit.io/api/runs/process", {
+  const response = await fetch("https://run.tavnit.io/api/runs/process", {
     method: "POST",
     headers: {
       "X-API-Key": API_KEY,
@@ -135,6 +153,375 @@ const JSON_BODY_EXAMPLE = `{
   "source": "api",
   "filename": "document.pdf",
   "file_base64": "{{previous_module.base64_content}}"
+}`;
+
+const PYTHON_COLLECTIONS_CODE = `import requests
+
+API_KEY = "YOUR_API_KEY"
+COLLECTION_ID = "YOUR_COLLECTION_ID"
+
+# ─────────────────────────────────────────────────────────────
+# Option 1: Multipart file upload (binary)
+# ─────────────────────────────────────────────────────────────
+with open("document.pdf", "rb") as file:
+    response = requests.post(
+        "${API_BASE}/collections/process",
+        headers={"X-API-Key": API_KEY},
+        data={
+            "collection_id": COLLECTION_ID,
+            "source": "api"
+        },
+        files={"file": file}
+    )
+
+print(response.json())
+
+
+# ─────────────────────────────────────────────────────────────
+# Option 2: Base64-encoded file (JSON body)
+# ─────────────────────────────────────────────────────────────
+import base64
+
+with open("document.pdf", "rb") as file:
+    file_base64 = base64.b64encode(file.read()).decode("utf-8")
+
+response = requests.post(
+    "${API_BASE}/collections/process",
+    headers={
+        "X-API-Key": API_KEY,
+        "Content-Type": "application/json"
+    },
+    json={
+        "collection_id": COLLECTION_ID,
+        "source": "api",
+        "filename": "document.pdf",
+        "file_base64": file_base64
+    }
+)
+
+print(response.json())`;
+
+const JAVASCRIPT_COLLECTIONS_CODE = `const API_KEY = "YOUR_API_KEY";
+const COLLECTION_ID = "YOUR_COLLECTION_ID";
+
+// ─────────────────────────────────────────────────────────────
+// Option 1: Multipart file upload (binary)
+// ─────────────────────────────────────────────────────────────
+async function processCollection(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("collection_id", COLLECTION_ID);
+  formData.append("source", "api");
+
+  const response = await fetch("${API_BASE}/collections/process", {
+    method: "POST",
+    headers: { "X-API-Key": API_KEY },
+    body: formData,
+  });
+
+  return await response.json();
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// Option 2: Base64-encoded file (JSON body)
+// ─────────────────────────────────────────────────────────────
+async function processCollectionBase64(base64Content, filename) {
+  const response = await fetch("${API_BASE}/collections/process", {
+    method: "POST",
+    headers: {
+      "X-API-Key": API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      collection_id: COLLECTION_ID,
+      source: "api",
+      filename: filename,
+      file_base64: base64Content
+    })
+  });
+
+  return await response.json();
+}`;
+
+const PYTHON_CLEANERS_CODE = `import requests
+
+api_key = "YOUR_API_KEY"
+cleaner_id = "YOUR_CLEANER_ID"
+
+# Option 1: multipart file upload
+with open("document.pdf", "rb") as f:
+    response = requests.post(
+        "${API_BASE}/sweeps/run",
+        headers={"X-API-Key": api_key},
+        data={"cleaner_id": cleaner_id, "source": "api"},
+        files={"file": ("document.pdf", f, "application/pdf")},
+    )
+
+# Option 2: base64 string
+import base64
+with open("document.pdf", "rb") as f:
+    encoded = base64.b64encode(f.read()).decode()
+
+response = requests.post(
+    "${API_BASE}/sweeps/run",
+    headers={"X-API-Key": api_key, "Content-Type": "application/json"},
+    json={"cleaner_id": cleaner_id, "source": "api",
+          "filename": "document.pdf", "file_base64": encoded},
+)
+
+print(response.json())`;
+
+const JAVASCRIPT_CLEANERS_CODE = `const apiKey = "YOUR_API_KEY";
+const cleanerId = "YOUR_CLEANER_ID";
+
+// Option 1: multipart file upload
+const formData = new FormData();
+formData.append("cleaner_id", cleanerId);
+formData.append("source", "api");
+formData.append("file", fileBlob, "document.pdf");
+
+const response = await fetch("${API_BASE}/sweeps/run", {
+  method: "POST",
+  headers: { "X-API-Key": apiKey },
+  body: formData,
+});
+
+// Option 2: base64 string
+const base64Content = btoa(String.fromCharCode(...new Uint8Array(fileBuffer)));
+const response2 = await fetch("${API_BASE}/sweeps/run", {
+  method: "POST",
+  headers: { "X-API-Key": apiKey, "Content-Type": "application/json" },
+  body: JSON.stringify({
+    cleaner_id: cleanerId, source: "api",
+    filename: "document.pdf", file_base64: base64Content,
+  }),
+});
+
+console.log(await response.json());`;
+
+const PYTHON_SPLITTERS_CODE = `import requests
+
+API_KEY = "YOUR_API_KEY"
+SPLITTER_ID = "YOUR_SPLITTER_ID"
+
+# ─────────────────────────────────────────────────────────────
+# Option 1: Multipart file upload (binary)
+# ─────────────────────────────────────────────────────────────
+with open("document.pdf", "rb") as file:
+    response = requests.post(
+        "${API_BASE}/splits/run",
+        headers={"X-API-Key": API_KEY},
+        data={
+            "splitter_id": SPLITTER_ID,
+            "source": "api"
+        },
+        files={"file": file}
+    )
+
+print(response.json())
+
+
+# ─────────────────────────────────────────────────────────────
+# Option 2: Base64-encoded file (JSON body)
+# ─────────────────────────────────────────────────────────────
+import base64
+
+with open("document.pdf", "rb") as file:
+    file_base64 = base64.b64encode(file.read()).decode("utf-8")
+
+response = requests.post(
+    "${API_BASE}/splits/run",
+    headers={
+        "X-API-Key": API_KEY,
+        "Content-Type": "application/json"
+    },
+    json={
+        "splitter_id": SPLITTER_ID,
+        "source": "api",
+        "filename": "document.pdf",
+        "file_base64": file_base64
+    }
+)
+
+print(response.json())`;
+
+const JAVASCRIPT_SPLITTERS_CODE = `const API_KEY = "YOUR_API_KEY";
+const SPLITTER_ID = "YOUR_SPLITTER_ID";
+
+// ─────────────────────────────────────────────────────────────
+// Option 1: Multipart file upload (binary)
+// ─────────────────────────────────────────────────────────────
+async function processSplitter(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("splitter_id", SPLITTER_ID);
+  formData.append("source", "api");
+
+  const response = await fetch("${API_BASE}/splits/run", {
+    method: "POST",
+    headers: { "X-API-Key": API_KEY },
+    body: formData,
+  });
+
+  return await response.json();
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// Option 2: Base64-encoded file (JSON body)
+// ─────────────────────────────────────────────────────────────
+async function processSplitterBase64(base64Content, filename) {
+  const response = await fetch("${API_BASE}/splits/run", {
+    method: "POST",
+    headers: {
+      "X-API-Key": API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      splitter_id: SPLITTER_ID,
+      source: "api",
+      filename: filename,
+      file_base64: base64Content
+    })
+  });
+
+  return await response.json();
+}`;
+
+const PYTHON_BUCKETS_CODE = `import requests
+
+API_KEY = "YOUR_API_KEY"
+BUCKET_ID = "YOUR_BUCKET_ID"
+BUCKET_NAME = "YOUR_BUCKET_NAME"
+
+# ─────────────────────────────────────────────────────────────
+# Append rows to existing data (overwrite=False)
+# ─────────────────────────────────────────────────────────────
+response = requests.post(
+    "${API_BASE}/buckets/write",
+    headers={
+        "X-API-Key": API_KEY,
+        "Content-Type": "application/json"
+    },
+    json={
+        "bucket_id": BUCKET_ID,
+        "bucket_name": BUCKET_NAME,
+        "overwrite": False,
+        "rows": [
+            {"invoice_number": "INV-1001", "vendor": "Acme Corp", "amount": 1200.50},
+            {"invoice_number": "INV-1002", "vendor": "Globex", "amount": 430.00}
+        ]
+    }
+)
+
+print(response.json())
+
+
+# ─────────────────────────────────────────────────────────────
+# Replace all rows (overwrite=True)
+# ─────────────────────────────────────────────────────────────
+response = requests.post(
+    "${API_BASE}/buckets/write",
+    headers={
+        "X-API-Key": API_KEY,
+        "Content-Type": "application/json"
+    },
+    json={
+        "bucket_id": BUCKET_ID,
+        "bucket_name": BUCKET_NAME,
+        "overwrite": True,
+        "rows": [
+            {"invoice_number": "INV-3001", "vendor": "NewCo", "amount": 400.00}
+        ]
+    }
+)
+
+print(response.json())`;
+
+const JAVASCRIPT_BUCKETS_CODE = `const API_KEY = "YOUR_API_KEY";
+const BUCKET_ID = "YOUR_BUCKET_ID";
+const BUCKET_NAME = "YOUR_BUCKET_NAME";
+
+// ─────────────────────────────────────────────────────────────
+// Append rows to existing data (overwrite: false)
+// ─────────────────────────────────────────────────────────────
+async function appendToBucket(rows) {
+  const response = await fetch("${API_BASE}/buckets/write", {
+    method: "POST",
+    headers: {
+      "X-API-Key": API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      bucket_id: BUCKET_ID,
+      bucket_name: BUCKET_NAME,
+      overwrite: false,
+      rows: rows
+    })
+  });
+
+  return await response.json();
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// Replace all rows (overwrite: true)
+// ─────────────────────────────────────────────────────────────
+async function overwriteBucket(rows) {
+  const response = await fetch("${API_BASE}/buckets/write", {
+    method: "POST",
+    headers: {
+      "X-API-Key": API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      bucket_id: BUCKET_ID,
+      bucket_name: BUCKET_NAME,
+      overwrite: true,
+      rows: rows
+    })
+  });
+
+  return await response.json();
+}
+
+// Usage
+const result = await appendToBucket([
+  { invoice_number: "INV-1001", vendor: "Acme Corp", amount: 1200.50 },
+  { invoice_number: "INV-1002", vendor: "Globex", amount: 430.00 }
+]);
+
+console.log(result);`;
+
+const COLLECTIONS_JSON_EXAMPLE = `{
+  "collection_id": "YOUR_COLLECTION_ID",
+  "source": "api",
+  "filename": "document.pdf",
+  "file_base64": "{{previous_module.base64_content}}"
+}`;
+
+const CLEANERS_JSON_EXAMPLE = `{
+  "cleaner_id": "YOUR_CLEANER_ID",
+  "source": "api",
+  "filename": "document.pdf",
+  "file_base64": "{{previous_module.base64_content}}"
+}`;
+
+const SPLITTERS_JSON_EXAMPLE = `{
+  "splitter_id": "YOUR_SPLITTER_ID",
+  "source": "api",
+  "filename": "combined_docs.pdf",
+  "file_base64": "{{previous_module.base64_content}}"
+}`;
+
+const BUCKETS_JSON_EXAMPLE = `{
+  "bucket_id": "YOUR_BUCKET_ID",
+  "bucket_name": "YOUR_BUCKET_NAME",
+  "overwrite": false,
+  "rows": [
+    { "column_one": "value", "column_two": 123 }
+  ]
 }`;
 
 /* ─── Reusable sub-components ─── */
@@ -261,6 +648,43 @@ function InlineCode({ children }: { children: string }) {
   );
 }
 
+function PermissionRow({ label, owner, admin, member, note }: { label: string; owner: boolean; admin: boolean; member: boolean; note?: string }) {
+  const cell = (allowed: boolean) => (
+    <div className="w-16 flex justify-center">
+      {allowed ? <CheckCircle size={16} className="text-emerald-400" /> : <XCircle size={16} className="text-gray-600" />}
+    </div>
+  );
+  return (
+    <div className="flex items-center py-2 border-b border-white/[0.04]">
+      <div className="flex-1">
+        <span className="text-gray-300 text-sm">{label}</span>
+        {note && <span className="text-gray-500 text-xs block italic">{note}</span>}
+      </div>
+      {cell(owner)}
+      {cell(admin)}
+      {cell(member)}
+    </div>
+  );
+}
+
+function PermissionGroupHeader({ label }: { label: string }) {
+  return (
+    <div className="pt-4 pb-1">
+      <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{label}</span>
+    </div>
+  );
+}
+
+function RoleBadge({ label, color, icon, subtitle }: { label: string; color: string; icon: React.ReactNode; subtitle: string }) {
+  return (
+    <div className={`flex flex-col items-center p-4 rounded-xl border ${color} text-center`}>
+      <div className="mb-2">{icon}</div>
+      <span className="text-sm font-bold text-gray-100">{label}</span>
+      <span className="text-xs text-gray-400 mt-1">{subtitle}</span>
+    </div>
+  );
+}
+
 /* ─── Main page ─── */
 
 export default function DocsPage() {
@@ -290,6 +714,8 @@ export default function DocsPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  const allSections: SectionId[] = ["getting-started", "collections", "cleaners", "splitters", "buckets", "pipeline-map", "email-integration", "api-integration", "webhooks", "user-roles"];
+
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
     if (hash === "api-code") {
@@ -298,7 +724,7 @@ export default function DocsPage() {
     } else if (hash === "api-no-code") {
       setActiveSection("api-integration");
       setApiTab("no-code");
-    } else if (["getting-started", "email-integration", "api-integration", "webhooks"].includes(hash)) {
+    } else if (allSections.includes(hash as SectionId)) {
       setActiveSection(hash as SectionId);
     }
 
@@ -310,12 +736,13 @@ export default function DocsPage() {
       } else if (h === "api-no-code") {
         setActiveSection("api-integration");
         setApiTab("no-code");
-      } else if (["getting-started", "email-integration", "api-integration", "webhooks"].includes(h)) {
+      } else if (allSections.includes(h as SectionId)) {
         setActiveSection(h as SectionId);
       }
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Close sidebar on ESC
@@ -341,6 +768,11 @@ export default function DocsPage() {
 
   const sidebarItems: { id: SectionId; label: string; icon: React.ReactNode; subItems?: { id: ApiTab; label: string }[] }[] = [
     { id: "getting-started", label: "Getting Started", icon: <Layers size={20} /> },
+    { id: "collections", label: "Collections", icon: <FolderInput size={20} /> },
+    { id: "cleaners", label: "Cleaners", icon: <Wand2 size={20} /> },
+    { id: "splitters", label: "Splitters", icon: <Split size={20} /> },
+    { id: "buckets", label: "Buckets", icon: <Database size={20} /> },
+    { id: "pipeline-map", label: "Pipeline Map", icon: <Workflow size={20} /> },
     { id: "email-integration", label: "Email Integration", icon: <Mail size={20} /> },
     {
       id: "api-integration",
@@ -352,6 +784,7 @@ export default function DocsPage() {
       ],
     },
     { id: "webhooks", label: "Webhooks", icon: <Webhook size={20} /> },
+    { id: "user-roles", label: "User Roles", icon: <Shield size={20} /> },
   ];
 
   return (
@@ -482,7 +915,22 @@ export default function DocsPage() {
                   Instead of manually typing information from each document, Tavnit reads them for you and organizes
                   the data in a structured way.
                 </p>
-                <p>This guide will walk you through creating your first flow and processing documents.</p>
+                <p>This guide will walk you through the core features. Use the sidebar to jump to any topic.</p>
+                <InfoBox color="purple" icon={<Layers size={20} />} title="Flows">
+                  Templates that tell Tavnit what to extract from a document. Each flow has fields (e.g., Invoice Number, Date, Line Items).
+                </InfoBox>
+                <InfoBox color="violet" icon={<FolderInput size={20} />} title="Collections">
+                  Smart routing containers — send mixed document types to one endpoint and Tavnit routes each to the right flow automatically.
+                </InfoBox>
+                <InfoBox color="blue" icon={<Database size={20} />} title="Buckets">
+                  Structured spreadsheet-like storage for extracted data. Flows can write their results directly into a bucket.
+                </InfoBox>
+                <InfoBox color="green" icon={<Wand2 size={20} />} title="Cleaners">
+                  AI-powered enrichment tools that re-process and normalise data fields using custom rules and extraction hints.
+                </InfoBox>
+                <InfoBox color="yellow" icon={<Split size={20} />} title="Splitters">
+                  Identify and separate different document types from a mixed batch, routing each page group to the correct flow.
+                </InfoBox>
               </DocCard>
 
               <DocCard icon={<FilePlus size={24} />} title="Step 1: Create a Flow">
@@ -533,6 +981,438 @@ export default function DocsPage() {
                   After processing, you&apos;ll see the extracted data on the run details page. You can also export
                   results or receive them via webhook.
                 </p>
+              </DocCard>
+            </section>
+          )}
+
+          {/* ═══════════ COLLECTIONS ═══════════ */}
+          {activeSection === "collections" && (
+            <section>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Collections
+              </h1>
+
+              <DocCard icon={<FolderInput size={24} />} title="What are Collections?">
+                <p>
+                  Collections are AI-powered document routing containers that group multiple flows together.
+                  When you send a document to a collection, Tavnit automatically analyzes it and routes it to the most appropriate flow.
+                </p>
+                <p>
+                  Think of a collection as a smart mailbox that knows how to sort your documents automatically.
+                </p>
+                <InfoBox color="purple" icon={<Sparkles size={20} />} title="How it works">
+                  Tavnit uses AI vision to analyze the first page of your document, comparing it with the names and descriptions
+                  of the flows in your collection. It then routes the document to the best matching flow for extraction.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Info size={24} />} title="When to Use Collections">
+                <p>Collections are ideal when you receive different types of documents from the same source:</p>
+                <BulletList
+                  items={[
+                    "A vendor portal that sends invoices, purchase orders, and receipts",
+                    "An email inbox receiving various document types",
+                    "An API integration where document types vary",
+                    "Any situation where you don't know which flow to use upfront",
+                  ]}
+                />
+                <InfoBox color="blue" icon={<ArrowLeftRight size={20} />} title="Collections vs Direct Flows">
+                  Use a direct flow when you know exactly what type of document you&apos;re processing.
+                  Use a collection when documents vary and need intelligent routing.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<FilePlus size={24} />} title="Creating a Collection">
+                <p>Follow these steps to create your first collection:</p>
+                <NumberedList
+                  items={[
+                    'Go to the Collections page from the main navigation',
+                    'Click "New Collection" and give it a descriptive name',
+                    "Add the flows you want to include in the collection",
+                    "Optionally set a default flow for unmatched documents",
+                    "Save and activate your collection",
+                  ]}
+                />
+                <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="Tip: Use descriptive flow names">
+                  The AI uses flow names and descriptions to make routing decisions. Clear names like &ldquo;Acme Corp Invoices&rdquo;
+                  or &ldquo;Shipping Receipts&rdquo; help the AI route documents more accurately.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Workflow size={24} />} title="How Routing Works">
+                <p>When a document is submitted to a collection, here&apos;s what happens:</p>
+                <NumberedList
+                  items={[
+                    "Tavnit extracts the first page of your document",
+                    "AI vision analyzes headers, logos, layout, and key text",
+                    "The document is compared with each flow's name and description",
+                    "The best matching flow is selected for extraction",
+                  ]}
+                />
+                <InfoBox color="violet" icon={<Info size={20} />} title="Default Flow">
+                  If the AI can&apos;t find a clear match, it will use your default flow (if configured).
+                  If no default flow is set, the document processing will be cancelled.
+                </InfoBox>
+                <InfoBox color="green" icon={<CheckCircle2 size={20} />} title="Routing Confidence">
+                  Each routing decision includes a confidence score and explanation.
+                  You can review these in the collection runs to understand why documents were routed to specific flows.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Mail size={24} />} title="Email Trigger for Collections">
+                <p>Just like flows, collections can receive documents via email:</p>
+                <NumberedList
+                  items={[
+                    "Open your collection's settings",
+                    'Enable the "Email Trigger" option',
+                    "Copy the collection's unique email address",
+                    "Forward or send documents to that address",
+                  ]}
+                />
+                <p>
+                  Documents sent to the collection email will be automatically analyzed and routed to the appropriate flow.
+                </p>
+              </DocCard>
+
+              <DocCard icon={<Eye size={24} />} title="Viewing Collection Results">
+                <p>Track your collection&apos;s activity from the collection details page:</p>
+                <InfoBox color="purple" icon={<Layers size={20} />} title="Collection Runs">
+                  View all documents processed through the collection, including which flow each was routed to,
+                  the AI&apos;s routing confidence, and the reasoning behind each decision.
+                </InfoBox>
+                <InfoBox color="violet" icon={<Code2 size={20} />} title="Flow Run Results">
+                  Click on any collection run to see the resulting flow run and extracted data.
+                  The extraction results are the same as if you had sent the document directly to that flow.
+                </InfoBox>
+              </DocCard>
+            </section>
+          )}
+
+          {/* ═══════════ CLEANERS ═══════════ */}
+          {activeSection === "cleaners" && (
+            <section>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Cleaners
+              </h1>
+
+              <DocCard icon={<Wand2 size={24} />} title="What are Cleaners?">
+                <p>
+                  Cleaners are AI-powered enrichment configurations that re-process and normalise specific
+                  fields in your extracted data. Where a flow extracts raw values from a document, a cleaner
+                  applies rules, validation, and AI reasoning to clean or enrich those values.
+                </p>
+                <InfoBox color="purple" icon={<ArrowLeftRight size={20} />} title="Flows vs Cleaners">
+                  A flow extracts data from a document. A cleaner takes that data and cleans or enriches it —
+                  for example normalising date formats, correcting misspellings, or classifying values into categories.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Table2 size={24} />} title="Cleaner Fields">
+                <p>Each cleaner defines one or more fields to process. For every field you can configure:</p>
+                <BulletList
+                  items={[
+                    "Extraction hints — examples and patterns that guide the AI",
+                    "Allowed values — restrict output to a fixed list of options",
+                    "Sub-fields — break a field into nested child fields",
+                    "Regex patterns — validate or transform the extracted value",
+                  ]}
+                />
+                <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="Tip: Be specific with hints">
+                  The more examples you provide in the extraction hints, the more accurately the AI will clean your data.
+                  Include edge cases and common variations.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<FilePlus size={24} />} title="Creating a Cleaner">
+                <p>Use the multi-step creation wizard to set up a cleaner:</p>
+                <NumberedList
+                  items={[
+                    'Go to Cleaners in the main navigation and click "New Cleaner"',
+                    "Give your cleaner a descriptive name",
+                    "Upload sample documents — the AI will discover candidate fields",
+                    "Review and customise the discovered fields, adding hints and constraints",
+                    "Link the cleaner to one or more flows (optional)",
+                    "Save and activate",
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<Clock size={24} />} title="Running a Sweep">
+                <p>
+                  A &ldquo;sweep&rdquo; is one execution of a cleaner against a batch of documents or extracted data.
+                  You can trigger sweeps manually or link them to flow runs so they fire automatically.
+                </p>
+                <InfoBox color="green" icon={<Upload size={20} />} title="Manual sweep">
+                  Open the cleaner&apos;s detail page, click &ldquo;Run Sweep&rdquo;, and select the data to process.
+                </InfoBox>
+                <InfoBox color="blue" icon={<ArrowLeftRight size={20} />} title="Linked to a flow">
+                  When a cleaner is linked to a flow, it can be set to run automatically after each extraction run completes.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<BarChart3 size={24} />} title="Viewing Sweep Results">
+                <p>After a sweep completes, open it from the Sweeps history on the cleaner&apos;s page to see:</p>
+                <BulletList
+                  items={[
+                    "Per-field cleaned values and confidence scores",
+                    "Number of records processed and any failures",
+                    "Credit usage for the sweep",
+                    "A comparison of input vs output values",
+                  ]}
+                />
+              </DocCard>
+            </section>
+          )}
+
+          {/* ═══════════ SPLITTERS ═══════════ */}
+          {activeSection === "splitters" && (
+            <section>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Splitters
+              </h1>
+
+              <DocCard icon={<Split size={24} />} title="What are Splitters?">
+                <p>
+                  Splitters identify and separate different document types from a mixed batch.
+                  When you receive a PDF with multiple document types merged together — for example an invoice
+                  followed by a delivery note — a splitter finds the boundary between them and routes each section
+                  to the correct flow for extraction.
+                </p>
+                <InfoBox color="purple" icon={<ArrowLeftRight size={20} />} title="Splitters vs Collections">
+                  A collection routes whole documents to the right flow. A splitter works at the page level,
+                  separating a single mixed-content file into distinct segments first.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Info size={24} />} title="When to Use Splitters">
+                <p>Splitters are ideal when:</p>
+                <BulletList
+                  items={[
+                    "You receive multi-document PDFs from scanners or email systems",
+                    "A vendor sends a single file containing invoices, packing slips, and receipts",
+                    "Archive batches need to be broken into individual documents for processing",
+                    "You need page-level classification before extraction",
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<FilePlus size={24} />} title="Creating a Splitter">
+                <p>Follow these steps to create a splitter:</p>
+                <NumberedList
+                  items={[
+                    'Go to Splitters in the main navigation and click "New Splitter"',
+                    "Give the splitter a descriptive name",
+                    "Upload sample documents that show each document type",
+                    "Configure identification rules for each document type",
+                    "Map each document type to a target flow",
+                    "Save and activate",
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<Clock size={24} />} title="Running a Split">
+                <p>Once your splitter is configured, you can run it against a mixed-content file:</p>
+                <NumberedList
+                  items={[
+                    "Open the splitter's detail page",
+                    'Click "Run Split" and upload the mixed PDF',
+                    "Tavnit analyses each page and groups them by document type",
+                    "Each group is sent to its mapped flow for extraction",
+                  ]}
+                />
+                <InfoBox color="blue" icon={<Code2 size={20} />} title="API trigger">
+                  Splits can also be triggered via the API — see the API Integration tab for endpoint details.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<BarChart3 size={24} />} title="Viewing Split Results">
+                <p>Open a completed split from the Splits history on the splitter&apos;s page to see:</p>
+                <BulletList
+                  items={[
+                    "How many page groups were identified",
+                    "Which flow each group was routed to",
+                    "Extraction run results for each group",
+                    "Any pages that could not be classified",
+                  ]}
+                />
+              </DocCard>
+            </section>
+          )}
+
+          {/* ═══════════ BUCKETS ═══════════ */}
+          {activeSection === "buckets" && (
+            <section>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Buckets
+              </h1>
+
+              <DocCard icon={<Database size={24} />} title="What are Buckets?">
+                <p>
+                  Buckets are structured data tables that collect and organize information.
+                  They can receive data automatically from your flows or be populated programmatically via the API.
+                </p>
+                <p>
+                  Think of a bucket as a spreadsheet with defined columns. Each row of data must match
+                  the bucket&apos;s column structure, ensuring consistency across all entries.
+                </p>
+                <InfoBox color="purple" icon={<Workflow size={20} />} title="Flows + Buckets">
+                  You can link flows to buckets so that extracted data is automatically written into the bucket
+                  after each document is processed. This lets you aggregate results from multiple runs into one place.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Info size={24} />} title="When to Use Buckets">
+                <p>Buckets are ideal for:</p>
+                <BulletList
+                  items={[
+                    "Aggregating extraction results from multiple flow runs into a single table",
+                    "Building datasets that combine document data with external sources",
+                    "Syncing data from external systems via the API",
+                    "Creating a central data store that multiple flows write into",
+                  ]}
+                />
+                <InfoBox color="blue" icon={<ArrowLeftRight size={20} />} title="Buckets vs Flow Runs">
+                  Flow runs store individual document results. Buckets aggregate data across runs
+                  and external sources into a unified table you can export or query.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<FilePlus size={24} />} title="Creating a Bucket">
+                <p>Follow these steps to create a bucket:</p>
+                <NumberedList
+                  items={[
+                    'Go to the Buckets page from the main navigation',
+                    'Click "New Bucket" and give it a name',
+                    "Define the columns (name and data type for each)",
+                    "Optionally link flows that should write data into this bucket",
+                    "Save your bucket",
+                  ]}
+                />
+                <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="Column names matter">
+                  When using the API, every row you send must have exactly the same column names as your bucket.
+                  Choose clear, consistent names upfront.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Fingerprint size={24} />} title="Finding Your Bucket ID & Name">
+                <p>To use the Buckets API, you need your bucket&apos;s ID and name. Both are available in the bucket info dialog:</p>
+                <NumberedList
+                  items={[
+                    "Go to the Buckets page",
+                    "Tap the info icon on the bucket you want to use",
+                    "Copy the Bucket ID and Bucket Name (both are copyable with a single tap)",
+                  ]}
+                />
+                <InfoBox color="green" icon={<Shield size={20} />} title="Safety check">
+                  The API requires both bucket_id and bucket_name to prevent accidental writes to the wrong bucket.
+                  If the name doesn&apos;t match the ID, the request is rejected.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Lock size={24} />} title="Access Control">
+                <p>
+                  Every bucket has a visibility setting and supports per-member access grants,
+                  so you can control exactly who can see or edit your data.
+                </p>
+                <InfoBox color="blue" icon={<Users size={20} />} title="Org-wide (default)">
+                  All members of your organisation can view the bucket. Admins and owners can always edit it.
+                </InfoBox>
+                <InfoBox color="yellow" icon={<Lock size={20} />} title="Private">
+                  Only users who have been explicitly granted access can see or edit this bucket.
+                  Only admins and owners can make a bucket private.
+                </InfoBox>
+                <p>Member-level grants (for private buckets or fine-grained control):</p>
+                <BulletList
+                  items={[
+                    "View — can open the bucket and read its data",
+                    "Edit — can add, update, and delete rows",
+                    "Admin — can change columns, visibility, and manage other members' access",
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<BarChart3 size={24} />} title="Charts">
+                <p>
+                  You can create charts directly from bucket data to visualise trends and aggregations
+                  without exporting to another tool.
+                </p>
+                <InfoBox color="purple" icon={<BarChart3 size={20} />} title="Supported chart types">
+                  Bar, Line, Pie, and Scatter charts are available. Each chart is saved with the bucket
+                  and visible to anyone who can access it.
+                </InfoBox>
+                <p>Creating a chart:</p>
+                <NumberedList
+                  items={[
+                    "Open the bucket's detail page",
+                    'Click "Add Chart" in the charts section',
+                    "Choose chart type and select x-axis and y-axis fields",
+                    "For bar and line charts, choose an aggregation (sum, average, count)",
+                    "Save — the chart appears immediately and updates with new data",
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<FileDown size={24} />} title="CSV Import & Export">
+                <p>Buckets support importing data from CSV files and exporting all rows to CSV.</p>
+                <InfoBox color="green" icon={<FileUp size={20} />} title="Import from CSV">
+                  Upload a CSV file and Tavnit will map its columns to your bucket&apos;s columns.
+                  Column names in the CSV must match the bucket&apos;s column names exactly.
+                </InfoBox>
+                <InfoBox color="blue" icon={<FileDown size={20} />} title="Export to CSV">
+                  Download all current rows as a CSV file from the bucket&apos;s detail page.
+                  Useful for sending data to other tools or creating offline backups.
+                </InfoBox>
+                <p>Both import and export are available from the toolbar at the top of the bucket&apos;s data table.</p>
+              </DocCard>
+            </section>
+          )}
+
+          {/* ═══════════ PIPELINE MAP ═══════════ */}
+          {activeSection === "pipeline-map" && (
+            <section>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Pipeline Map
+              </h1>
+
+              <DocCard icon={<Workflow size={24} />} title="What is the Pipeline Map?">
+                <p>
+                  The Pipeline Map is a visual graph that shows your entire data pipeline at a glance.
+                  It displays all of your flows, cleaners, and buckets as nodes, with lines showing how
+                  data flows between them.
+                </p>
+                <InfoBox color="purple" icon={<ExternalLink size={20} />} title="How to open it">
+                  Click the pipeline icon in the main sidebar. The map slides in as an overlay panel
+                  so you can keep your current screen in view.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Layers size={24} />} title="Reading the Map">
+                <p>Each node type is colour-coded:</p>
+                <InfoBox color="purple" icon={<Layers size={20} />} title="Flows">
+                  The starting point of your pipeline. Each flow receives documents and extracts data.
+                </InfoBox>
+                <InfoBox color="green" icon={<Wand2 size={20} />} title="Cleaners">
+                  Connected to flows they post-process. Lines show which flows feed into each cleaner.
+                </InfoBox>
+                <InfoBox color="blue" icon={<Database size={20} />} title="Buckets">
+                  Destination storage nodes. Lines show which flows write their results into each bucket.
+                </InfoBox>
+                <p>Clicking any node opens its detail page so you can inspect or edit it.</p>
+              </DocCard>
+
+              <DocCard icon={<Info size={24} />} title="Why Use the Pipeline Map?">
+                <p>
+                  As your organisation grows, keeping track of which flows connect to which cleaners and
+                  buckets becomes complex. The Pipeline Map gives you:
+                </p>
+                <BulletList
+                  items={[
+                    "A single view of your entire data architecture",
+                    "Quick identification of orphaned flows (not connected to any bucket or cleaner)",
+                    "Easy navigation — click any node to jump directly to its detail page",
+                    "A live snapshot of run statistics on each node",
+                  ]}
+                />
               </DocCard>
             </section>
           )}
@@ -666,13 +1546,31 @@ export default function DocsPage() {
                     </WarningBox>
 
                     <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Flow ID</h3>
-                    <p>The Flow ID can be found on each flow&apos;s details page.</p>
+                    <p>The Flow ID can be found on each flow&apos;s details page. Use this when sending documents to a specific flow.</p>
 
-                    <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">API URL</h3>
-                    <p>Use this URL to run flows programmatically:</p>
-                    <div className="mt-2">
-                      <InlineCode>https://tavnit.io/api/runs/process</InlineCode>
-                    </div>
+                    <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Collection ID</h3>
+                    <p>The Collection ID can be found on each collection&apos;s details page. Use this when you want AI to route documents to the best-matching flow.</p>
+
+                    <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Cleaner ID</h3>
+                    <p>The Cleaner ID can be found on each cleaner&apos;s details page. Use this when triggering a sweep to post-process or enrich extracted data.</p>
+
+                    <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Splitter ID</h3>
+                    <p>The Splitter ID can be found on each splitter&apos;s details page. Use this when sending documents to be split into individual document types.</p>
+
+                    <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Bucket ID &amp; Name</h3>
+                    <p>Both required when writing to a bucket via API. Find them by tapping the info icon on the bucket&apos;s detail page. The name acts as a safety check to prevent accidental writes to the wrong bucket.</p>
+
+                    <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">API URLs</h3>
+                    <p className="mb-1">Flows API (send to specific flow):</p>
+                    <div className="mb-3"><InlineCode>https://run.tavnit.io/api/runs/process</InlineCode></div>
+                    <p className="mb-1">Collections API (AI routes to best flow):</p>
+                    <div className="mb-3"><InlineCode>https://run.tavnit.io/api/collections/process</InlineCode></div>
+                    <p className="mb-1">Cleaners API (trigger a sweep):</p>
+                    <div className="mb-3"><InlineCode>https://run.tavnit.io/api/sweeps/run</InlineCode></div>
+                    <p className="mb-1">Splitters API (split documents by type):</p>
+                    <div className="mb-3"><InlineCode>https://run.tavnit.io/api/splits/run</InlineCode></div>
+                    <p className="mb-1">Buckets API (write rows to a bucket):</p>
+                    <div><InlineCode>https://run.tavnit.io/api/buckets/write</InlineCode></div>
                   </DocCard>
 
                   <DocCard icon={<Download size={24} />} title="Sending Documents">
@@ -688,7 +1586,7 @@ export default function DocsPage() {
                     <p>Both methods use the same endpoint and header:</p>
                     <BulletList
                       items={[
-                        <>URL: <InlineCode>https://tavnit.io/api/runs/process</InlineCode></>,
+                        <>URL: <InlineCode>https://run.tavnit.io/api/runs/process</InlineCode></>,
                         <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
                       ]}
                     />
@@ -723,6 +1621,113 @@ export default function DocsPage() {
                     ) : (
                       <CodeBlock lang="JavaScript" code={JAVASCRIPT_CODE} />
                     )}
+                  </DocCard>
+
+                  <DocCard icon={<FolderInput size={24} />} title="Collections API">
+                    <p>
+                      Collections allow you to send documents without knowing which flow to use.
+                      AI analyzes each document and routes it to the most appropriate flow automatically.
+                    </p>
+                    <InfoBox color="blue" icon={<Info size={20} />} title="When to use Collections API">
+                      Use this when you receive mixed document types (invoices, receipts, contracts, etc.)
+                      and want AI to determine the correct flow for each document.
+                    </InfoBox>
+                    <p>The Collections API works the same as the Flows API, but uses a collection_id instead of flow_id:</p>
+                    <BulletList
+                      items={[
+                        <>URL: <InlineCode>https://run.tavnit.io/api/collections/process</InlineCode></>,
+                        <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
+                        <>Body: <InlineCode>collection_id</InlineCode> instead of <InlineCode>flow_id</InlineCode></>,
+                      ]}
+                    />
+                    {lang === "python" ? (
+                      <CodeBlock lang="Python (Collections)" code={PYTHON_COLLECTIONS_CODE} />
+                    ) : (
+                      <CodeBlock lang="JavaScript (Collections)" code={JAVASCRIPT_COLLECTIONS_CODE} />
+                    )}
+                    <InfoBox color="purple" icon={<ArrowRight size={20} />} title="Learn more about Collections">
+                      See the Collections tab for a full explanation of how document routing works and how to set up collections in the app.
+                    </InfoBox>
+                  </DocCard>
+
+                  <DocCard icon={<Wand2 size={24} />} title="Cleaners API">
+                    <p>
+                      Cleaners can be triggered via the API to run a sweep on a document or dataset.
+                      This is useful when you want to trigger enrichment or normalisation as part of an automated pipeline.
+                    </p>
+                    <InfoBox color="blue" icon={<Info size={20} />} title="When to use the Cleaners API">
+                      Use this after a flow run to post-process or enrich the extracted values —
+                      for example normalising date formats, correcting spellings, or classifying values into categories.
+                    </InfoBox>
+                    <p>The Cleaners API uses a cleaner_id and accepts a file to sweep:</p>
+                    <BulletList
+                      items={[
+                        <>URL: <InlineCode>https://run.tavnit.io/api/sweeps/run</InlineCode></>,
+                        <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
+                        <>Body: <InlineCode>cleaner_id</InlineCode> + file (multipart or base64)</>,
+                      ]}
+                    />
+                    {lang === "python" ? (
+                      <CodeBlock lang="Python (Cleaners)" code={PYTHON_CLEANERS_CODE} />
+                    ) : (
+                      <CodeBlock lang="JavaScript (Cleaners)" code={JAVASCRIPT_CLEANERS_CODE} />
+                    )}
+                    <InfoBox color="purple" icon={<ArrowRight size={20} />} title="Learn more about Cleaners">
+                      See the Cleaners tab for how to configure fields, extraction hints, and sweep results.
+                    </InfoBox>
+                  </DocCard>
+
+                  <DocCard icon={<Split size={24} />} title="Splitters API">
+                    <p>
+                      Splitters allow you to split multi-document PDFs into individual documents.
+                      AI classifies each page range and matches it to a document type defined in the splitter.
+                    </p>
+                    <InfoBox color="blue" icon={<Info size={20} />} title="When to use Splitters API">
+                      Use this when you receive combined PDFs containing multiple document types
+                      (e.g., a stack of invoices, receipts, and contracts in a single file) and need them separated.
+                    </InfoBox>
+                    <p>The Splitters API uses a splitter_id to identify which splitter to run:</p>
+                    <BulletList
+                      items={[
+                        <>URL: <InlineCode>https://run.tavnit.io/api/splits/run</InlineCode></>,
+                        <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
+                        <>Body: <InlineCode>splitter_id</InlineCode> + file (multipart or base64)</>,
+                      ]}
+                    />
+                    {lang === "python" ? (
+                      <CodeBlock lang="Python (Splitters)" code={PYTHON_SPLITTERS_CODE} />
+                    ) : (
+                      <CodeBlock lang="JavaScript (Splitters)" code={JAVASCRIPT_SPLITTERS_CODE} />
+                    )}
+                    <InfoBox color="purple" icon={<ArrowRight size={20} />} title="Learn more about Splitters">
+                      See the Splitters section for details on how to configure document types and output actions.
+                    </InfoBox>
+                  </DocCard>
+
+                  <DocCard icon={<Database size={24} />} title="Buckets API">
+                    <p>
+                      Write rows of data directly into a bucket programmatically — useful for syncing data
+                      from external systems or pushing records without going through a flow.
+                    </p>
+                    <InfoBox color="blue" icon={<Info size={20} />} title="When to use the Buckets API">
+                      Use this when you want to insert or replace rows in a bucket from your own application,
+                      a database, or an automation tool — independent of any flow run.
+                    </InfoBox>
+                    <BulletList
+                      items={[
+                        <>URL: <InlineCode>https://run.tavnit.io/api/buckets/write</InlineCode></>,
+                        <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
+                        <>Body: <InlineCode>bucket_id</InlineCode>, <InlineCode>bucket_name</InlineCode>, <InlineCode>overwrite</InlineCode> (bool), <InlineCode>rows</InlineCode> (array)</>,
+                      ]}
+                    />
+                    {lang === "python" ? (
+                      <CodeBlock lang="Python (Buckets)" code={PYTHON_BUCKETS_CODE} />
+                    ) : (
+                      <CodeBlock lang="JavaScript (Buckets)" code={JAVASCRIPT_BUCKETS_CODE} />
+                    )}
+                    <InfoBox color="purple" icon={<ArrowRight size={20} />} title="Learn more about Buckets">
+                      See the Buckets tab for column setup, access control, charts, and CSV import/export.
+                    </InfoBox>
                   </DocCard>
                 </>
               )}
@@ -798,7 +1803,7 @@ export default function DocsPage() {
                           Configure the request:
                           <BulletList
                             items={[
-                              <>URL: <InlineCode>https://tavnit.io/api/runs/process</InlineCode></>,
+                              <>URL: <InlineCode>https://run.tavnit.io/api/runs/process</InlineCode></>,
                               "Method: POST",
                             ]}
                           />
@@ -852,6 +1857,95 @@ export default function DocsPage() {
                       Replace {"{{previous_module.base64_content}}"} with the actual mapping from your previous
                       module. In Make.com, click in the field and select the base64 output from the module that
                       provides your file.
+                    </InfoBox>
+                  </DocCard>
+
+                  <DocCard icon={<Settings2 size={24} />} title="Other Platforms (Zapier, Power Automate, n8n)">
+                    <p>The same approach works for any automation platform that supports HTTP requests:</p>
+                    <InfoBox color="purple" icon={<Paperclip size={20} />} title="If your platform gives you a file object">
+                      Use multipart/form-data with a &ldquo;file&rdquo; field containing the file, plus flow_id and source fields.
+                    </InfoBox>
+                    <InfoBox color="violet" icon={<Code2 size={20} />} title="If your platform gives you a base64 string">
+                      Use a JSON body with flow_id, source, filename, and file_base64 (the base64 content from the previous step).
+                    </InfoBox>
+                    <p>Both methods call the same endpoint and produce identical extraction results.</p>
+                  </DocCard>
+
+                  <DocCard icon={<FolderInput size={24} />} title="Using Collections API">
+                    <p>
+                      If you receive different types of documents (invoices, receipts, contracts, etc.) and want AI to automatically
+                      route each document to the right flow, use the Collections API instead.
+                    </p>
+                    <InfoBox color="blue" icon={<ArrowLeftRight size={20} />} title="Collections vs Flows">
+                      Flows API: You specify which flow to use with flow_id. Collections API: AI analyzes the document and picks the best flow automatically using collection_id.
+                    </InfoBox>
+                    <p>The setup is identical to the Flows API above, with two small changes:</p>
+                    <BulletList
+                      items={[
+                        <>URL: <InlineCode>https://run.tavnit.io/api/collections/process</InlineCode></>,
+                        <>Use <InlineCode>collection_id</InlineCode> instead of <InlineCode>flow_id</InlineCode> in your request body</>,
+                      ]}
+                    />
+                    <p>Example JSON body for Collections:</p>
+                    <CodeBlock lang="JSON" code={COLLECTIONS_JSON_EXAMPLE} />
+                  </DocCard>
+
+                  <DocCard icon={<Wand2 size={24} />} title="Using Cleaners API">
+                    <p>
+                      If you want to enrich or normalise extracted data after a flow run, use the Cleaners API
+                      to trigger a sweep programmatically from your automation tool.
+                    </p>
+                    <InfoBox color="blue" icon={<ArrowLeftRight size={20} />} title="Cleaners vs Flows">
+                      Flows API: Extracts raw data from a document. Cleaners API: Post-processes that data — normalising, classifying, or enriching field values.
+                    </InfoBox>
+                    <p>Configuration in your HTTP module:</p>
+                    <BulletList
+                      items={[
+                        <>URL: <InlineCode>https://run.tavnit.io/api/sweeps/run</InlineCode></>,
+                        <>Use <InlineCode>cleaner_id</InlineCode> instead of <InlineCode>flow_id</InlineCode> in your request body</>,
+                      ]}
+                    />
+                    <p>Example JSON body for Cleaners:</p>
+                    <CodeBlock lang="JSON" code={CLEANERS_JSON_EXAMPLE} />
+                  </DocCard>
+
+                  <DocCard icon={<Split size={24} />} title="Using Splitters API">
+                    <p>
+                      If you receive combined PDFs containing multiple document types and need them separated into individual files, use the Splitters API.
+                    </p>
+                    <InfoBox color="blue" icon={<ArrowLeftRight size={20} />} title="Splitters vs Flows">
+                      Flows API: Extracts data from a single document using flow_id. Splitters API: Splits a multi-document PDF into individual documents using splitter_id.
+                    </InfoBox>
+                    <p>The setup is similar to the Flows API, with these changes:</p>
+                    <BulletList
+                      items={[
+                        <>URL: <InlineCode>https://run.tavnit.io/api/splits/run</InlineCode></>,
+                        <>Use <InlineCode>splitter_id</InlineCode> instead of <InlineCode>flow_id</InlineCode> in your request body</>,
+                      ]}
+                    />
+                    <p>Example JSON body for Splitters:</p>
+                    <CodeBlock lang="JSON" code={SPLITTERS_JSON_EXAMPLE} />
+                  </DocCard>
+
+                  <DocCard icon={<Database size={24} />} title="Using Buckets API">
+                    <p>
+                      If you want to push rows of data into a bucket from your automation tool — without sending a document for extraction — use the Buckets Write API.
+                    </p>
+                    <InfoBox color="blue" icon={<ArrowLeftRight size={20} />} title="Buckets vs Flows">
+                      Flows API: Sends a document for AI extraction. Buckets API: Writes structured rows directly into a bucket table.
+                    </InfoBox>
+                    <p>Configuration in your HTTP module:</p>
+                    <BulletList
+                      items={[
+                        <>URL: <InlineCode>https://run.tavnit.io/api/buckets/write</InlineCode></>,
+                        "Method: POST, Content-Type: application/json",
+                        <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
+                      ]}
+                    />
+                    <p>Example JSON body:</p>
+                    <CodeBlock lang="JSON" code={BUCKETS_JSON_EXAMPLE} />
+                    <InfoBox color="purple" icon={<Info size={20} />} title="Finding your Bucket ID & Name">
+                      Open the bucket&apos;s detail page and tap the info icon. Both values are copyable with a single tap.
                     </InfoBox>
                   </DocCard>
                 </>
@@ -921,6 +2015,211 @@ export default function DocsPage() {
                   ]}
                 />
                 <p>This all happens automatically – no manual intervention needed!</p>
+              </DocCard>
+            </section>
+          )}
+
+          {/* ═══════════ USER ROLES ═══════════ */}
+          {activeSection === "user-roles" && (
+            <section>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                User Roles &amp; Permissions
+              </h1>
+
+              <DocCard icon={<Shield size={24} />} title="Overview">
+                <p>
+                  Every Tavnit user belongs to an organisation with one of four roles:
+                  Owner, Admin, Member, or Viewer. Roles control what each user can see and do
+                  across every feature in the app.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-4">
+                  <RoleBadge label="Owner" color="border-purple-500/30 bg-purple-500/[0.06]" icon={<Star size={22} className="text-purple-400" />} subtitle="Full control" />
+                  <RoleBadge label="Admin" color="border-blue-500/30 bg-blue-500/[0.06]" icon={<UserCog size={22} className="text-blue-400" />} subtitle="Manages people & content" />
+                  <RoleBadge label="Member" color="border-cyan-500/30 bg-cyan-500/[0.06]" icon={<Users size={22} className="text-cyan-400" />} subtitle="Run & view" />
+                  <RoleBadge label="Viewer" color="border-gray-500/30 bg-gray-500/[0.06]" icon={<Eye size={22} className="text-gray-400" />} subtitle="Read-only" />
+                </div>
+              </DocCard>
+
+              <DocCard icon={<Star size={24} />} title="Owner">
+                <InfoBox color="purple" icon={<Info size={20} />} title="One owner per org">
+                  There is normally one owner — the person who created the organisation,
+                  or someone explicitly promoted to owner. The owner cannot be removed or
+                  demoted by anyone except themselves.
+                </InfoBox>
+                <p>Owners have unrestricted access to everything:</p>
+                <BulletList
+                  items={[
+                    "Create, edit, and delete flows, buckets, collections, cleaners, and matchers",
+                    "Trigger runs and view all results",
+                    "Invite and remove any team member, including other admins",
+                    "Promote or demote members to any role (including admin)",
+                    "Edit organisation name and settings",
+                    "View and manage billing and subscription",
+                    "Delete the organisation",
+                    "Set any bucket to private",
+                    "Control all bucket access — including changing admin permissions",
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<UserCog size={24} />} title="Admin">
+                <InfoBox color="blue" icon={<Info size={20} />} title="Trusted power users">
+                  Admins help run day-to-day operations. They can create and manage content
+                  and invite new members, but cannot touch billing, org settings, or other admins.
+                </InfoBox>
+                <p>Admins can:</p>
+                <BulletList
+                  items={[
+                    "Create, edit, and delete flows, buckets, collections, and cleaners",
+                    "Create and manage their own matchers, and edit any matcher",
+                    "Trigger runs and view all results",
+                    "Invite new members to the org (member role only)",
+                    "Remove members from the org",
+                    "Edit and delete any flow, collection, or matcher created by members",
+                    "Open the bucket access screen and change member access levels",
+                  ]}
+                />
+                <p>Admins cannot:</p>
+                <BulletList
+                  items={[
+                    "Edit org settings or billing",
+                    "Delete the organisation",
+                    "Set a bucket to private",
+                    "Change another admin's permissions or role",
+                    "Invite someone as admin or owner (owner only)",
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<Users size={24} />} title="Member">
+                <InfoBox color="green" icon={<Info size={20} />} title="Read and run, with limited create">
+                  Members are regular users. They can use flows that already exist and
+                  manage their own matchers, but cannot create flows or modify shared resources.
+                </InfoBox>
+                <p>Members can:</p>
+                <BulletList
+                  items={[
+                    "Trigger runs on existing flows and view all run results",
+                    "View flow details — including fields, webhook, email trigger, email output, data cleaning, and export to bucket settings",
+                    "Create, edit, and delete their own matchers",
+                    "Run matches on existing matchers",
+                    "View all org-visible buckets (read-only by default)",
+                    "Write data to a bucket if an admin or owner grants them editor access",
+                  ]}
+                />
+                <p>Members cannot:</p>
+                <BulletList
+                  items={[
+                    "Create new flows, buckets, collections, or cleaners",
+                    "Edit or delete any flow, or its fields and features",
+                    "Toggle or configure flow features (webhook, email trigger, email output, data cleaning, export to bucket)",
+                    "Edit or delete matchers created by others",
+                    "Invite or remove team members",
+                    "See private buckets unless explicitly granted access",
+                    "Access the bucket access management screen",
+                    "See the billing or org settings pages",
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<Eye size={24} />} title="Viewer">
+                <InfoBox color="blue" icon={<Info size={20} />} title="Read-only access">
+                  Viewers can see flows, runs, buckets, and cleaners but cannot create, edit, delete, or trigger any operation.
+                </InfoBox>
+                <p>Viewers can:</p>
+                <BulletList
+                  items={[
+                    "View flow configurations and run history",
+                    "View bucket data (subject to bucket visibility settings)",
+                    "View cleaner and splitter configurations",
+                    "View the Pipeline Map",
+                  ]}
+                />
+                <p>Viewers cannot:</p>
+                <BulletList
+                  items={[
+                    "Create, edit, or delete any resource",
+                    "Trigger runs, sweeps, or splits",
+                    "Manage team members or billing",
+                    "Change organisation settings",
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<Table2 size={24} />} title="Permissions at a Glance">
+                <p className="mb-4">A summary of who can do what across all features.</p>
+                <div className="overflow-x-auto">
+                  <div className="min-w-[400px]">
+                    {/* Table Header */}
+                    <div className="flex items-center pb-3 border-b border-white/[0.08]">
+                      <div className="flex-1" />
+                      <div className="w-16 text-center"><span className="text-xs font-bold text-purple-400 bg-purple-500/10 px-2 py-1 rounded">Owner</span></div>
+                      <div className="w-16 text-center"><span className="text-xs font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded">Admin</span></div>
+                      <div className="w-16 text-center"><span className="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded">Member</span></div>
+                    </div>
+
+                    <PermissionGroupHeader label="Flows" />
+                    <PermissionRow label="Create flows" owner={true} admin={true} member={false} />
+                    <PermissionRow label="Edit / delete flows" owner={true} admin={true} member={false} />
+                    <PermissionRow label="View flow features & fields" owner={true} admin={true} member={true} />
+                    <PermissionRow label="Configure flow features" owner={true} admin={true} member={false} note="Webhook, email, data cleaning, bucket export" />
+                    <PermissionRow label="Trigger runs" owner={true} admin={true} member={true} />
+                    <PermissionRow label="View run results" owner={true} admin={true} member={true} />
+
+                    <PermissionGroupHeader label="Matchers" />
+                    <PermissionRow label="Create matchers" owner={true} admin={true} member={true} />
+                    <PermissionRow label="Edit / delete own matchers" owner={true} admin={true} member={true} />
+                    <PermissionRow label="Edit / delete any matcher" owner={true} admin={true} member={false} />
+                    <PermissionRow label="Run matches" owner={true} admin={true} member={true} />
+
+                    <PermissionGroupHeader label="Buckets — Configuration" />
+                    <PermissionRow label="Create / edit / delete buckets" owner={true} admin={true} member={false} />
+                    <PermissionRow label="Set bucket to private" owner={true} admin={false} member={false} />
+                    <PermissionRow label="Open access management screen" owner={true} admin={true} member={false} />
+                    <PermissionRow label="Change admin access levels" owner={true} admin={false} member={false} />
+                    <PermissionRow label="Change member access levels" owner={true} admin={true} member={false} />
+
+                    <PermissionGroupHeader label="Buckets — Data" />
+                    <PermissionRow label="View org-visible buckets" owner={true} admin={true} member={true} />
+                    <PermissionRow label="View private buckets" owner={true} admin={false} member={false} note="Requires explicit grant" />
+                    <PermissionRow label="Edit data (org-visible)" owner={true} admin={true} member={false} note="Member needs editor grant" />
+                    <PermissionRow label="Edit data (private)" owner={true} admin={false} member={false} note="Requires editor grant" />
+
+                    <PermissionGroupHeader label="Collections & Cleaners" />
+                    <PermissionRow label="Create collections / cleaners" owner={true} admin={true} member={false} />
+                    <PermissionRow label="Edit / delete any" owner={true} admin={true} member={false} />
+
+                    <PermissionGroupHeader label="Team" />
+                    <PermissionRow label="Invite members" owner={true} admin={true} member={false} />
+                    <PermissionRow label="Remove members" owner={true} admin={true} member={false} />
+                    <PermissionRow label="Promote to admin" owner={true} admin={false} member={false} />
+                    <PermissionRow label="Promote to owner" owner={true} admin={false} member={false} />
+
+                    <PermissionGroupHeader label="Organisation" />
+                    <PermissionRow label="Edit org settings" owner={true} admin={false} member={false} />
+                    <PermissionRow label="View & manage billing" owner={true} admin={false} member={false} />
+                    <PermissionRow label="Delete organisation" owner={true} admin={false} member={false} />
+                  </div>
+                </div>
+              </DocCard>
+
+              <DocCard icon={<Lock size={24} />} title="Bucket Access System">
+                <p>
+                  Buckets have a two-layer access system that lets owners and admins control
+                  exactly who can see and edit each bucket independently of their org role.
+                </p>
+                <InfoBox color="purple" icon={<Eye size={20} />} title="Layer 1 — Visibility">
+                  Each bucket is either Org-visible (everyone in the org can see it) or Private
+                  (only the owner and users with an explicit grant can see it).
+                  Only the org owner can toggle a bucket to private.
+                </InfoBox>
+                <InfoBox color="green" icon={<Lock size={20} />} title="Layer 2 — Access Level">
+                  Each user can be granted Viewer (read-only) or Editor (read + write) access
+                  to a specific bucket. These grants are stored independently of the user&apos;s org role.
+                </InfoBox>
+                <p>To manage access, open a bucket and tap the settings icon &rarr; Manage Access.
+                  The access screen groups users by role and lets you set each person&apos;s level
+                  individually, or use the &ldquo;Set all&rdquo; controls to update an entire group at once.</p>
               </DocCard>
             </section>
           )}
