@@ -11,10 +11,10 @@ const quickLinks = [
 ];
 
 const company = [
-  { label: "About", href: "#" },
-  { label: "Contact", href: "#" },
-  { label: "Privacy Policy", href: "#" },
-  { label: "Terms of Service", href: "#" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "mailto:support@tavnit.com" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
 ];
 
 const resources = [
@@ -56,8 +56,8 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
-              <li><Link href="#" className="text-sm text-gray-500 hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="#" className="text-sm text-gray-500 hover:text-white transition-colors">Terms of Service</Link></li>
+              <li><Link href="/privacy" className="text-sm text-gray-500 hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="text-sm text-gray-500 hover:text-white transition-colors">Terms of Service</Link></li>
             </ul>
           </div>
 
@@ -91,7 +91,7 @@ export default function Footer() {
           <div className="hidden lg:block">
             <h4 className="text-base font-semibold text-white mb-6">Connect</h4>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm text-gray-500 hover:text-white transition-colors">GitHub</Link></li>
+              <li><Link href="https://github.com/tavnit" className="text-sm text-gray-500 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">GitHub</Link></li>
               <li><Link href="mailto:support@tavnit.com" className="text-sm text-gray-500 hover:text-white transition-colors">support@tavnit.com</Link></li>
             </ul>
           </div>

@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const heading = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-heading",
+});
+
+const body = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
 });
 
 export const metadata: Metadata = {
@@ -12,9 +19,24 @@ export const metadata: Metadata = {
   description:
     "Extract structured data from PDFs automatically with AI. Process invoices, contracts, receipts and forms. Auto-clean, store, and visualize — from document to dashboard in seconds. Free trial.",
   keywords:
-    "AI document extraction, PDF data extraction, invoice processing automation, PDF to JSON, PDF to CSV, document to structured data, AI OCR, intelligent document processing, IDP, automated data entry",
+    "AI document extraction, PDF data extraction, invoice processing automation, PDF to JSON, PDF to CSV, document to structured data, AI OCR, intelligent document processing, IDP, automated data entry, document automation, receipt scanning, contract analysis",
   authors: [{ name: "Tavnit" }],
-  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  creator: "Tavnit",
+  publisher: "Tavnit",
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     type: "website",
     url: "https://tavnit.io/",
@@ -38,6 +60,7 @@ export const metadata: Metadata = {
     description:
       "AI-powered document extraction pipeline. Extract, clean, store, and visualize data from invoices, contracts, receipts — automatically.",
     images: ["https://tavnit.io/assets/og-image.png"],
+    creator: "@tavnit_io",
   },
   icons: {
     icon: "/favicon.png",
@@ -51,8 +74,10 @@ export const metadata: Metadata = {
       "x-default": "https://tavnit.io/",
     },
   },
+  category: "technology",
   other: {
     "theme-color": "#667eea",
+    "msapplication-TileColor": "#667eea",
   },
 };
 
@@ -62,8 +87,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" dir="ltr">
       <head>
+        <link rel="dns-prefetch" href="https://app.tavnit.io" />
+        <link rel="preconnect" href="https://app.tavnit.io" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -72,26 +99,51 @@ export default function RootLayout({
               "@graph": [
                 {
                   "@type": "Organization",
+                  "@id": "https://tavnit.io/#organization",
                   name: "Tavnit",
                   url: "https://tavnit.io",
-                  logo: "https://tavnit.io/assets/tavnit_logo.png",
+                  logo: {
+                    "@type": "ImageObject",
+                    url: "https://tavnit.io/assets/tavnit_logo.png",
+                    width: 120,
+                    height: 60,
+                  },
                   description:
                     "AI-powered document data extraction platform — extract, clean, store, and visualize structured data from any document.",
                   contactPoint: {
                     "@type": "ContactPoint",
                     email: "support@tavnit.com",
                     contactType: "customer support",
+                    availableLanguage: "English",
                   },
+                  sameAs: [],
                 },
                 {
                   "@type": "WebSite",
+                  "@id": "https://tavnit.io/#website",
                   name: "Tavnit",
                   url: "https://tavnit.io",
                   description:
                     "AI document data extraction — from PDF to clean, structured, visualized data in seconds.",
+                  publisher: { "@id": "https://tavnit.io/#organization" },
+                  inLanguage: "en-US",
+                },
+                {
+                  "@type": "WebPage",
+                  "@id": "https://tavnit.io/#webpage",
+                  url: "https://tavnit.io",
+                  name: "Tavnit - AI Document Data Extraction | PDF to Structured Data in Seconds",
+                  isPartOf: { "@id": "https://tavnit.io/#website" },
+                  about: { "@id": "https://tavnit.io/#organization" },
+                  description:
+                    "Extract structured data from PDFs automatically with AI. Process invoices, contracts, receipts and forms.",
+                  inLanguage: "en-US",
+                  datePublished: "2024-01-01",
+                  dateModified: "2026-04-20",
                 },
                 {
                   "@type": "SoftwareApplication",
+                  "@id": "https://tavnit.io/#software",
                   name: "Tavnit",
                   applicationCategory: "BusinessApplication",
                   operatingSystem: "Web",
@@ -113,6 +165,20 @@ export default function RootLayout({
                     "REST API and SDKs",
                     "Email Triggers",
                     "Webhook Notifications",
+                  ],
+                  screenshot: "https://tavnit.io/assets/og-image.png",
+                  url: "https://app.tavnit.io",
+                },
+                {
+                  "@type": "BreadcrumbList",
+                  "@id": "https://tavnit.io/#breadcrumb",
+                  itemListElement: [
+                    {
+                      "@type": "ListItem",
+                      position: 1,
+                      name: "Home",
+                      item: "https://tavnit.io",
+                    },
                   ],
                 },
               ],
@@ -179,7 +245,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${heading.variable} ${body.variable} font-body antialiased`}>{children}</body>
     </html>
   );
 }

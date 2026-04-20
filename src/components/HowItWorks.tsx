@@ -37,7 +37,7 @@ export default function HowItWorks() {
   const [videoOpen, setVideoOpen] = useState(false);
 
   return (
-    <section className="py-12 relative overflow-hidden" id="how-it-works">
+    <section className="py-16 md:py-24 relative overflow-hidden" id="how-it-works" aria-labelledby="how-it-works-heading">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <motion.div
           className="text-center mb-8"
@@ -45,7 +45,7 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">How It Works</h2>
+          <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">How It Works</h2>
           <p className="text-base md:text-lg text-gray-400 max-w-[600px] mx-auto">
             Transform your documents into structured data in 5 simple steps
           </p>

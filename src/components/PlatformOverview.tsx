@@ -45,7 +45,7 @@ const screenshots = [
 
 export default function PlatformOverview() {
   return (
-    <section className="py-12" id="platform-overview">
+    <section className="py-16 md:py-24" id="platform-overview" aria-labelledby="platform-overview-heading">
       {/* ── Header — z-10 so animation can't cover it ── */}
       <motion.div
         className="relative z-10 text-center mb-8 md:mb-14 px-4"
@@ -53,7 +53,7 @@ export default function PlatformOverview() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+        <h2 id="platform-overview-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">
           Platform Overview
         </h2>
         <p className="text-base md:text-lg text-gray-400 max-w-[520px] mx-auto">

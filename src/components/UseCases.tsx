@@ -77,11 +77,11 @@ export default function UseCases() {
   }, [handleScroll]);
 
   return (
-    <section className="py-12" id="use-cases">
+    <section className="py-16 md:py-24" id="use-cases" aria-labelledby="use-cases-heading">
       {/* ── Mobile: swipable carousel ── */}
       <div className="md:hidden">
         <div className="px-4 mb-5">
-          <h2 className="text-xl font-bold text-white mb-1 text-center">Built for Real-World Workflows</h2>
+          <p className="text-xl font-bold text-white mb-1 text-center" aria-hidden="true">Built for Real-World Workflows</p>
           <p className="text-xs text-gray-400 text-center">
             See how teams use Tavnit to automate document processing
           </p>
@@ -146,7 +146,7 @@ export default function UseCases() {
       {/* ── Desktop: Tabs + Animated Content ── */}
       <div className="hidden md:block max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-6 md:mb-8">
-          <h2 className="text-2xl md:text-4xl font-bold text-white mb-1 md:mb-2">Built for Real-World Workflows</h2>
+          <h2 id="use-cases-heading" className="text-2xl md:text-4xl font-bold text-white mb-1 md:mb-2">Built for Real-World Workflows</h2>
           <p className="text-sm md:text-lg text-gray-400 max-w-[600px] mx-auto">
             See how teams use Tavnit to automate document processing
           </p>

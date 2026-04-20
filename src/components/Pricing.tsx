@@ -18,7 +18,7 @@ const includedFeatures = [
 
 export default function Pricing() {
   return (
-    <section id="pricing">
+    <section id="pricing" aria-labelledby="pricing-heading">
       <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6">
         <motion.div
           className="text-center mb-10"
@@ -26,7 +26,7 @@ export default function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Simple, Transparent Pricing</h2>
+          <h2 id="pricing-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">Simple, Transparent Pricing</h2>
           <p className="text-lg text-gray-400">Monthly plans with flexible credits</p>
         </motion.div>
 

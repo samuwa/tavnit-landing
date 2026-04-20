@@ -32,7 +32,7 @@ export default function Home() {
       </div>
 
       <Header />
-      <main>
+      <main role="main">
         <Hero />
         <Problem />
         <HowItWorks />

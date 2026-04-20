@@ -1,55 +1,173 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { AlertCircle, AlertTriangle, Shield } from "lucide-react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  Shield,
+  Zap,
+  Target,
+  Eye,
+} from "lucide-react";
 
-const problems = [
+const cards = [
   {
-    icon: AlertCircle,
-    title: "Hours wasted on manual data entry",
-    description: "Your team spends countless hours transcribing information from PDFs into spreadsheets",
+    problem: {
+      icon: AlertCircle,
+      title: "Hours lost to manual data entry",
+      description:
+        "Your team re-types the same fields from PDFs into spreadsheets — every day, across dozens of document types",
+    },
+    solution: {
+      icon: Zap,
+      title: "Instant automated extraction",
+      description:
+        "Tavnit extracts structured data from any document in seconds — no templates, no manual work",
+    },
   },
   {
-    icon: AlertTriangle,
-    title: "Inconsistent formatting causes errors",
-    description: "Different document formats lead to mistakes, typos, and costly data quality issues",
+    problem: {
+      icon: AlertTriangle,
+      title: "Errors multiply at scale",
+      description:
+        "One typo in an invoice number cascades downstream. Different formats, handwriting, and layouts make mistakes inevitable",
+    },
+    solution: {
+      icon: Target,
+      title: "99.9% accuracy, every time",
+      description:
+        "AI-powered validation catches errors before they propagate. Consistent output regardless of input format",
+    },
   },
   {
-    icon: Shield,
-    title: "No audit trail for compliance",
-    description: "Manual processes leave no record of who extracted what, when, and from which document",
+    problem: {
+      icon: Shield,
+      title: "No visibility or control",
+      description:
+        "No audit trail, no approval workflow, no way to know if extracted data was reviewed or who handled it",
+    },
+    solution: {
+      icon: Eye,
+      title: "Full audit trail & approval flow",
+      description:
+        "Every extraction logged, every change tracked. Built-in review workflows with role-based permissions",
+    },
   },
 ];
 
+function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }) {
+  const [active, setActive] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(
+      window.matchMedia("(hover: none) and (pointer: coarse)").matches
+    );
+  }, []);
+
+  const current = active ? card.solution : card.problem;
+  const ProblemIcon = card.problem.icon;
+  const SolutionIcon = card.solution.icon;
+
+  return (
+    <motion.div
+      className={`group relative text-center p-6 sm:p-8 md:p-12 rounded-2xl glass-card transition-all duration-300 overflow-hidden cursor-pointer ${
+        active
+          ? "problem-card--active -translate-y-1"
+          : "glass-card-hover hover:-translate-y-1"
+      }`}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.12 }}
+      onMouseEnter={() => !isTouchDevice && setActive(true)}
+      onMouseLeave={() => !isTouchDevice && setActive(false)}
+      onClick={() => isTouchDevice && setActive((v) => !v)}
+    >
+      {/* Icon */}
+      <div
+        className={`w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 rounded-xl flex items-center justify-center transition-all duration-300 ${
+          active
+            ? "bg-emerald-500/10 text-emerald-400"
+            : "bg-red-500/10 text-red-400"
+        }`}
+      >
+        <div className="relative w-5 h-5 md:w-6 md:h-6">
+          <ProblemIcon
+            className={`w-5 h-5 md:w-6 md:h-6 absolute inset-0 transition-all duration-300 ${
+              active ? "opacity-0 scale-75" : "opacity-100 scale-100"
+            }`}
+          />
+          <SolutionIcon
+            className={`w-5 h-5 md:w-6 md:h-6 absolute inset-0 transition-all duration-300 ${
+              active ? "opacity-100 scale-100" : "opacity-0 scale-75"
+            }`}
+          />
+        </div>
+      </div>
+
+      {/* Title - crossfade */}
+      <div className="relative min-h-[3rem] mb-3 md:mb-4">
+        <h3
+          className={`text-lg md:text-xl font-bold text-white transition-all duration-300 ${
+            active ? "opacity-0 translate-y-[-4px]" : "opacity-100 translate-y-0"
+          }`}
+        >
+          {card.problem.title}
+        </h3>
+        <h3
+          className={`text-lg md:text-xl font-bold text-emerald-300 absolute inset-0 transition-all duration-300 ${
+            active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[4px]"
+          }`}
+        >
+          {card.solution.title}
+        </h3>
+      </div>
+
+      {/* Description - crossfade */}
+      <div className="relative min-h-[4.5rem]">
+        <p
+          className={`text-sm md:text-base text-gray-400 leading-relaxed transition-all duration-300 ${
+            active ? "opacity-0 translate-y-[-4px]" : "opacity-100 translate-y-0"
+          }`}
+        >
+          {card.problem.description}
+        </p>
+        <p
+          className={`text-sm md:text-base text-gray-400 leading-relaxed absolute inset-0 transition-all duration-300 ${
+            active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[4px]"
+          }`}
+        >
+          {card.solution.description}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Problem() {
   return (
-    <section className="py-12" id="problem">
+    <section
+      className="py-16 md:py-24"
+      id="problem"
+      aria-labelledby="problem-heading"
+    >
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <motion.h2
+          id="problem-heading"
           className="text-3xl md:text-4xl font-bold text-center text-white mb-8 md:mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
         >
-          Still Copy-Pasting Data from PDFs?
+          Still Manually Extracting Data from Documents?
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          {problems.map((problem, i) => (
-            <motion.div
-              key={problem.title}
-              className="group text-center p-6 sm:p-8 md:p-12 rounded-2xl glass-card glass-card-hover transition-all duration-300 hover:-translate-y-1"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 rounded-xl flex items-center justify-center bg-red-500/10 text-red-400 group-hover:bg-emerald-500/10 group-hover:text-emerald-400 transition-all duration-300">
-                <problem.icon className="w-5 h-5 md:w-6 md:h-6" />
-              </div>
-              <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">{problem.title}</h3>
-              <p className="text-sm md:text-base text-gray-400 leading-relaxed">{problem.description}</p>
-            </motion.div>
+          {cards.map((card, i) => (
+            <ProblemCard key={card.problem.title} card={card} index={i} />
           ))}
         </div>
       </div>
