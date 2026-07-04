@@ -815,6 +815,16 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Extraction showcase: document scan line */
+@keyframes extractionScan {
+  from {
+    top: -10%;
+  }
+  to {
+    top: 90%;
+  }
+}
+
 /* ==========================================
    SCROLL SNAPPING
    ========================================== */
@@ -843,6 +853,33 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #features {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#extraction {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#agents {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#human-in-the-loop {
   scroll-snap-align: start;
   scroll-snap-stop: always;
   min-height: 100vh;
@@ -888,6 +925,15 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: 80px;
 }
 
+#faq {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .final-cta-section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -907,7 +953,7 @@ footer {
     scroll-snap-type: y proximity;
   }
 
-  #problem, #how-it-works, #features, #platform-overview, #use-cases, #integrations, #pricing, .final-cta-section {
+  #problem, #how-it-works, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
     scroll-snap-stop: normal;
   }
 }
@@ -918,7 +964,7 @@ footer {
     scroll-snap-type: none;
   }
 
-  #problem, #how-it-works, #features, #platform-overview, #use-cases, #integrations, #pricing, .final-cta-section {
+  #problem, #how-it-works, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
     min-height: auto;
     scroll-snap-align: none;
     scroll-snap-stop: normal;

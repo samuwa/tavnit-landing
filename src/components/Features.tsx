@@ -4,20 +4,20 @@ import { useRef, useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   LayoutGrid, Sparkles, GitBranch, Lightbulb,
-  Database, BarChart3, Users, Code2, UserCheck, Scissors,
+  Database, Users, Code2, UserCheck, Bot, Plug,
 } from "lucide-react";
 
 const features = [
   { icon: Sparkles, title: "AI Extraction", desc: "Powered by multiple leading AI models to extract tables, metadata, handwriting, and complex layouts from any document. Includes confidence scoring, field-level validation, and support for multi-page and multi-language documents.", gradient: true, hero: true },
   { icon: LayoutGrid, title: "Flow Builder", desc: "No-code extraction pipelines with field hints, validation, and output mapping.", gradient: false, hero: false },
-  { icon: GitBranch, title: "Smart Routing", desc: "Collections use AI vision to auto-route mixed documents to the right flow.", gradient: false, hero: false },
-  { icon: Lightbulb, title: "AI Data Cleaning", desc: "Cleaners auto-format, categorize, validate, and enrich after extraction.", gradient: false, hero: false },
-  { icon: UserCheck, title: "Human in the Loop", desc: "Flag extractions for manual review. Approve, reject, or correct before data moves downstream.", gradient: false, hero: false },
-  { icon: Scissors, title: "Document Splitting", desc: "Split multi-page PDFs into separate documents and route each automatically.", gradient: false, hero: false },
-  { icon: Database, title: "Buckets & Storage", desc: "Structured tables with custom columns, filters, charts, and CSV/JSON/Excel export.", gradient: false, hero: false },
+  { icon: GitBranch, title: "Routing & Splitting", desc: "Collections auto-route mixed documents to the right flow. Splitters break multi-document PDFs apart first.", gradient: false, hero: false },
+  { icon: Lightbulb, title: "AI Data Cleaning", desc: "Cleaners format, translate, convert currencies and units, calculate fields, match against reference data — even classify HS tariff codes.", gradient: false, hero: false },
+  { icon: Bot, title: "AI Agents", desc: "Browser-automation agents act on extracted data across the web — watch every session live.", gradient: false, hero: false },
+  { icon: UserCheck, title: "Human in the Loop", desc: "Pause runs for review. Edit results in place, approve or reject — every action in an append-only audit trail.", gradient: false, hero: false },
+  { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can run flows and query your data.", gradient: false, hero: false },
+  { icon: Database, title: "Buckets & Analytics", desc: "Structured tables with charts, filters, CSV/Excel export, and AI-powered semantic search across columns.", gradient: false, hero: false },
+  { icon: Code2, title: "API, Email & Webhooks", desc: "REST API, email triggers, webhook callbacks, PDF form filling, and Zapier/Make compatibility.", gradient: false, hero: false },
   { icon: Users, title: "Teams & Roles", desc: "Owner, Admin, Member, Viewer roles with org-level permissions and unlimited seats.", gradient: false, hero: false },
-  { icon: Code2, title: "API, Email & Webhooks", desc: "REST API, email triggers, webhook callbacks, and Zapier/Make compatibility.", gradient: false, hero: false },
-  { icon: BarChart3, title: "Charts & Dashboards", desc: "Pin bar, line, pie, and scatter charts to track extraction trends and data quality.", gradient: false, hero: false },
 ];
 
 /* Hero feature card — spans 2 columns on desktop */
@@ -150,7 +150,7 @@ export default function Features() {
             The Complete Document Automation Platform
           </p>
           <p className="text-xs text-gray-400 text-center">
-            Extract, clean, review, store, and integrate — all in one pipeline
+            Extract, clean, review, store, and act — all in one pipeline
           </p>
         </div>
 
@@ -182,7 +182,7 @@ export default function Features() {
             The Complete Document Automation Platform
           </h2>
           <p className="text-base md:text-lg text-gray-400 max-w-[600px] mx-auto">
-            Extract, clean, review, store, and integrate — all in one pipeline
+            Extract, clean, review, store, and act — all in one pipeline
           </p>
         </motion.div>
 

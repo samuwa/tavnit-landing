@@ -49,11 +49,15 @@ import {
   ArrowRight,
   CheckCircle,
   XCircle,
+  Bot,
+  ClipboardCheck,
+  Plug,
+  MonitorPlay,
 } from "lucide-react";
 
 const Squares = dynamic(() => import("@/components/Squares"), { ssr: false });
 
-type SectionId = "getting-started" | "collections" | "cleaners" | "splitters" | "buckets" | "pipeline-map" | "email-integration" | "api-integration" | "webhooks" | "user-roles";
+type SectionId = "getting-started" | "collections" | "cleaners" | "splitters" | "buckets" | "agents" | "human-in-the-loop" | "pipeline-map" | "email-integration" | "api-integration" | "webhooks" | "mcp-connector" | "user-roles";
 type ApiTab = "code" | "no-code";
 type Lang = "python" | "javascript";
 
@@ -714,7 +718,7 @@ export default function DocsPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const allSections: SectionId[] = ["getting-started", "collections", "cleaners", "splitters", "buckets", "pipeline-map", "email-integration", "api-integration", "webhooks", "user-roles"];
+  const allSections: SectionId[] = ["getting-started", "collections", "cleaners", "splitters", "buckets", "agents", "human-in-the-loop", "pipeline-map", "email-integration", "api-integration", "webhooks", "mcp-connector", "user-roles"];
 
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
@@ -772,6 +776,8 @@ export default function DocsPage() {
     { id: "cleaners", label: "Cleaners", icon: <Wand2 size={20} /> },
     { id: "splitters", label: "Splitters", icon: <Split size={20} /> },
     { id: "buckets", label: "Buckets", icon: <Database size={20} /> },
+    { id: "agents", label: "Agents", icon: <Bot size={20} /> },
+    { id: "human-in-the-loop", label: "Human in the Loop", icon: <ClipboardCheck size={20} /> },
     { id: "pipeline-map", label: "Pipeline Map", icon: <Workflow size={20} /> },
     { id: "email-integration", label: "Email Integration", icon: <Mail size={20} /> },
     {
@@ -784,6 +790,7 @@ export default function DocsPage() {
       ],
     },
     { id: "webhooks", label: "Webhooks", icon: <Webhook size={20} /> },
+    { id: "mcp-connector", label: "MCP Connector", icon: <Plug size={20} /> },
     { id: "user-roles", label: "User Roles", icon: <Shield size={20} /> },
   ];
 
@@ -1368,6 +1375,144 @@ export default function DocsPage() {
           )}
 
           {/* ═══════════ PIPELINE MAP ═══════════ */}
+          {/* ═══════════ AGENTS ═══════════ */}
+          {activeSection === "agents" && (
+            <section>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Agents
+              </h1>
+
+              <DocCard icon={<Bot size={24} />} title="What Are Agents?">
+                <p>
+                  Agents are AI-powered browser automation bots. You describe a mission in plain
+                  language — for example, &ldquo;look up each part number on the supplier portal and capture
+                  its current unit price&rdquo; — and give the agent a starting URL. The agent opens a real
+                  cloud browser, navigates the website, fills forms, clicks buttons, and reads the results.
+                </p>
+                <p>
+                  Unlike scrapers, agents don&apos;t need selectors or scripts to maintain. They figure out
+                  the page as they go and return data that matches the output schema you define.
+                </p>
+                <InfoBox color="blue" icon={<Info size={20} />} title="Don't see Agents in your sidebar?">
+                  Agents are rolling out gradually. If the section isn&apos;t visible in your organization
+                  yet, contact support to enable it.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Settings2 size={24} />} title="Anatomy of an Agent">
+                <BulletList
+                  items={[
+                    <><strong>Mission</strong> — a plain-language instruction describing what the agent should accomplish.</>,
+                    <><strong>Start point</strong> — the URL where the agent begins.</>,
+                    <><strong>Input variables</strong> — values the mission can reference. Set them statically, or pull them from a flow run&apos;s extracted fields.</>,
+                    <><strong>Output captures</strong> — the schema of the data you want back. The agent&apos;s result is validated against it, so output is always typed and structured.</>,
+                    <><strong>Delivery</strong> — where results go: email, webhook, or straight into a Bucket.</>,
+                  ]}
+                />
+              </DocCard>
+
+              <DocCard icon={<Workflow size={24} />} title="Chaining a Flow to an Agent">
+                <p>
+                  The most powerful setup is extraction → action. When a flow finishes processing a
+                  document, it can launch an agent automatically, feeding extracted fields in as inputs:
+                </p>
+                <NumberedList
+                  items={[
+                    "Open your flow's settings",
+                    "Link an agent to the flow",
+                    "Map extracted fields to the agent's input variables",
+                    "Run the flow — when extraction completes, the agent takes over",
+                  ]}
+                />
+                <p>
+                  Example: extract part numbers from a purchase order, then send an agent to the supplier
+                  portal to look up live prices for each one.
+                </p>
+              </DocCard>
+
+              <DocCard icon={<MonitorPlay size={24} />} title="Watching Runs Live">
+                <p>
+                  Every agent run streams its progress step by step, and you can open a live view of the
+                  browser session to watch the agent work in real time. Finished runs keep a replay so
+                  you can audit exactly what the agent did.
+                </p>
+                <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="Runtime limits">
+                  Agent runs have a maximum runtime and a request cap so they stay predictable, and
+                  runtime is billed in credits per minute. You can tighten both limits per agent.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Code2 size={24} />} title="Triggering via API">
+                <p>
+                  Besides manual runs and flow chaining, you can start an agent programmatically with{" "}
+                  <InlineCode>{`POST ${API_BASE}/bots/<agent_id>/run`}</InlineCode> using your{" "}
+                  <InlineCode>X-API-Key</InlineCode> header.
+                </p>
+              </DocCard>
+            </section>
+          )}
+
+          {/* ═══════════ HUMAN IN THE LOOP ═══════════ */}
+          {activeSection === "human-in-the-loop" && (
+            <section>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                Human in the Loop
+              </h1>
+
+              <DocCard icon={<ClipboardCheck size={24} />} title="What is Human in the Loop?">
+                <p>
+                  Human in the Loop (HITL) adds a review checkpoint to your pipeline. When it&apos;s enabled
+                  on a flow, each run pauses in an <strong>awaiting approval</strong> state after extraction
+                  and cleaning — before anything is delivered downstream. No email goes out, no webhook
+                  fires, no Bucket is written until a reviewer approves.
+                </p>
+              </DocCard>
+
+              <DocCard icon={<Settings2 size={24} />} title="Setting It Up">
+                <NumberedList
+                  items={[
+                    "Open the flow you want reviewed",
+                    "Enable Human in the Loop in the flow's settings",
+                    "Choose one or more reviewers from your team",
+                    "Save — every new run now pauses for review",
+                  ]}
+                />
+                <InfoBox color="blue" icon={<Info size={20} />} title="Review only when something looks off">
+                  You don&apos;t have to review every run. Cleaner conditional fields can trigger review
+                  dynamically — for example, only when a total fails validation or a value falls outside
+                  an expected range.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Eye size={24} />} title="Reviewing a Run">
+                <p>
+                  Reviewers are notified by email the moment a run needs attention, and the review queue
+                  shows everything waiting. In the review screen you can:
+                </p>
+                <BulletList
+                  items={[
+                    "Edit any cell directly — fix a misread total or date in place",
+                    "Add or remove rows and columns",
+                    "Approve the run — your edits are folded in and delivery resumes",
+                    "Reject the run with a reason — it's cancelled and nothing is delivered",
+                  ]}
+                />
+                <InfoBox color="green" icon={<CheckCircle2 size={20} />} title="First approval wins">
+                  If several reviewers are assigned, the first decision counts — you don&apos;t need
+                  everyone to sign off.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Shield size={24} />} title="Append-Only Audit Trail">
+                <p>
+                  Every event in a review — reviewer notified, run opened, cell edited, row added,
+                  approved, rejected — is written to a permanent, append-only audit log. Nothing can be
+                  deleted or rewritten, so you always know exactly who changed what and when.
+                </p>
+              </DocCard>
+            </section>
+          )}
+
           {activeSection === "pipeline-map" && (
             <section>
               <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
@@ -2015,6 +2160,58 @@ export default function DocsPage() {
                   ]}
                 />
                 <p>This all happens automatically – no manual intervention needed!</p>
+              </DocCard>
+            </section>
+          )}
+
+          {/* ═══════════ MCP CONNECTOR ═══════════ */}
+          {activeSection === "mcp-connector" && (
+            <section>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                MCP Connector
+              </h1>
+
+              <DocCard icon={<Plug size={24} />} title="What is the MCP Connector?">
+                <p>
+                  MCP (Model Context Protocol) is the open standard that lets AI assistants use external
+                  tools. Tavnit&apos;s MCP connector adds your Tavnit organization as a tool inside{" "}
+                  <strong>claude.ai</strong> (Pro and up), <strong>Cursor</strong>, or any other MCP
+                  client — so you can work with your documents and data by just asking your assistant.
+                </p>
+                <InfoBox color="blue" icon={<Info size={20} />} title="Don't see the connector card?">
+                  The MCP connector is rolling out gradually. If it isn&apos;t visible on your
+                  Integrations page yet, contact support to enable it for your organization.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Settings2 size={24} />} title="Connecting Your Assistant">
+                <NumberedList
+                  items={[
+                    "Open the Integrations page in the Tavnit app",
+                    'Find the "Custom Connector" card and generate a connector URL',
+                    "Copy the URL",
+                    "In claude.ai: Settings → Connectors → Add custom connector, then paste the URL",
+                    "In Cursor or another MCP client: add the URL as a remote MCP server",
+                  ]}
+                />
+                <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="Treat the URL like a password">
+                  The connector URL grants access to your organization&apos;s data. Connector URLs expire
+                  and can be refreshed at any time — refreshing immediately invalidates the old URL, and
+                  any client using it stops working until you paste the new one.
+                </InfoBox>
+              </DocCard>
+
+              <DocCard icon={<Sparkles size={24} />} title="What Your Assistant Can Do">
+                <BulletList
+                  items={[
+                    "Process documents through your flows and get structured results back",
+                    "Read and search your Buckets — ask questions about the data you've extracted",
+                  ]}
+                />
+                <p>
+                  For example: &ldquo;Run this invoice through my Supplier Invoices flow&rdquo; or
+                  &ldquo;What did we pay Acme Corp last month, according to my Invoices bucket?&rdquo;
+                </p>
               </DocCard>
             </section>
           )}

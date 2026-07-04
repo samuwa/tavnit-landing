@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+import { InvoiceDemo, ContractDemo, ResumeDemo, ExpenseDemo } from "./UseCaseAnimations";
 
 const useCases = [
   {
@@ -13,7 +14,7 @@ const useCases = [
     problem: "Processing 100+ invoices monthly means hours of manual data entry, prone to errors and delays.",
     solution: "Extract vendor, invoice number, date, line items → cleaned and categorized automatically → stored in a searchable Bucket",
     result: "90% time savings, zero data entry errors",
-    video: "/videos/Invoice_animation.mp4",
+    Demo: InvoiceDemo,
   },
   {
     id: "contract",
@@ -23,17 +24,17 @@ const useCases = [
     problem: "Reviewing contract terms across thousands of documents is time-consuming and error-prone.",
     solution: "Extract key terms, parties, dates, obligations → stored in Buckets with visual dashboards",
     result: "Query entire contract portfolio in seconds",
-    video: "/videos/Contract.mp4",
+    Demo: ContractDemo,
   },
   {
     id: "form",
-    tab: "Form Automation",
+    tab: "Resume Screening",
     badge: "HR & Recruiting",
     title: "Resume Screening",
     problem: "Manually reviewing hundreds of resumes wastes valuable time and creates inconsistencies.",
     solution: "Extract candidate name, skills, experience, education → AI-powered skill categorization via Cleaners → structured database",
     result: "Screen 100+ resumes in minutes with consistent criteria",
-    video: "/videos/cv_animation.mp4",
+    Demo: ResumeDemo,
   },
   {
     id: "expense",
@@ -43,7 +44,7 @@ const useCases = [
     problem: "Collecting receipts and categorizing expenses is tedious and delays reimbursements.",
     solution: "Upload receipts → extract merchant, amount, category → auto-categorized by Cleaners, stored in Buckets",
     result: "Expense reports in minutes, not hours",
-    video: "/videos/Invoice_animation.mp4",
+    Demo: ExpenseDemo,
   },
 ];
 
@@ -200,16 +201,14 @@ export default function UseCases() {
             </div>
 
             <div className="hidden lg:flex items-center justify-center">
-              <video
-                key={useCases[active].video}
-                className="w-full max-w-[500px] rounded-lg"
-                autoPlay
-                muted
-                loop
-                playsInline
-              >
-                <source src={useCases[active].video} type="video/mp4" />
-              </video>
+              {(() => {
+                const Demo = useCases[active].Demo;
+                return (
+                  <div className="w-full max-w-[500px]">
+                    <Demo />
+                  </div>
+                );
+              })()}
             </div>
           </motion.div>
         </AnimatePresence>

@@ -43,7 +43,7 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          Extract, clean, route, and store data from any document — automatically. No code required.
+          Extract, clean, and store data from any document — then review it with your team and let AI agents act on it. No code required.
         </motion.p>
 
         {/* CTAs */}

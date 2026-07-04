@@ -49,9 +49,9 @@ const cards = [
     },
     solution: {
       icon: Eye,
-      title: "Full audit trail & approval flow",
+      title: "Human review, fully audited",
       description:
-        "Every extraction logged, every change tracked. Built-in review workflows with role-based permissions",
+        "Pause any run for review. Assigned reviewers correct and approve results before delivery — every edit recorded in an append-only audit trail",
     },
   },
 ];

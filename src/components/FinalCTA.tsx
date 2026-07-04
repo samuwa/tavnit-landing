@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Zap, Mail, Code2 } from "lucide-react";
+import { ArrowRight, Zap, Mail, Code2, Plug } from "lucide-react";
 
 export default function FinalCTA() {
   return (
@@ -18,11 +18,11 @@ export default function FinalCTA() {
           viewport={{ once: true }}
         >
           <h2 id="cta-heading" className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-            Stop Re-Typing.<br className="sm:hidden" /> Start Extracting.
+            Stop Re-Typing.<br className="sm:hidden" /> Start Automating.
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-8 md:mb-10 max-w-[560px] mx-auto">
             Create your first extraction flow in minutes. Upload a document and
-            watch structured data appear — cleaned, validated, and ready to use.
+            watch structured data appear — cleaned, reviewed, and ready to act.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8">
@@ -42,20 +42,25 @@ export default function FinalCTA() {
           </div>
 
           {/* Integration strip */}
-          <div className="flex items-center justify-center gap-6 text-gray-500 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-gray-500 text-sm">
             <div className="flex items-center gap-2">
               <Code2 size={16} className="text-gray-500" />
               <span>REST API</span>
             </div>
-            <div className="w-px h-4 bg-white/10" />
+            <div className="w-px h-4 bg-white/10 hidden sm:block" />
             <div className="flex items-center gap-2">
               <Mail size={16} className="text-gray-500" />
               <span>Email Triggers</span>
             </div>
-            <div className="w-px h-4 bg-white/10" />
+            <div className="w-px h-4 bg-white/10 hidden sm:block" />
             <div className="flex items-center gap-2">
               <Zap size={16} className="text-gray-500" />
               <span>Webhooks</span>
+            </div>
+            <div className="w-px h-4 bg-white/10 hidden sm:block" />
+            <div className="flex items-center gap-2">
+              <Plug size={16} className="text-gray-500" />
+              <span>MCP Connector</span>
             </div>
           </div>
         </motion.div>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PlusCircle, Upload, FileText, Sparkles, Database, Play, ArrowRight } from "lucide-react";
+import { PlusCircle, Upload, FileText, Sparkles, UserCheck, Bot, Play, ArrowRight } from "lucide-react";
 import VideoModal from "./VideoModal";
 
 const steps = [
@@ -24,12 +24,17 @@ const steps = [
   {
     icon: Sparkles,
     title: "Clean & Transform",
-    description: "Automatic data cleaning, formatting, and AI categorization with Cleaners",
+    description: "Automatic formatting, categorization, lookups, and calculations with Cleaners",
   },
   {
-    icon: Database,
-    title: "Store & Analyze",
-    description: "Data flows into Buckets for storage, charts, and CSV/JSON export",
+    icon: UserCheck,
+    title: "Review & Approve",
+    description: "Optionally pause for human review — correct, approve, or reject before delivery",
+  },
+  {
+    icon: Bot,
+    title: "Store, Deliver & Act",
+    description: "Data lands in Buckets, fires webhooks, fills PDF forms, or launches an AI Agent",
   },
 ];
 
@@ -47,7 +52,7 @@ export default function HowItWorks() {
         >
           <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">How It Works</h2>
           <p className="text-base md:text-lg text-gray-400 max-w-[600px] mx-auto">
-            Transform your documents into structured data in 5 simple steps
+            From document to structured data to action — in 6 simple steps
           </p>
         </motion.div>
 

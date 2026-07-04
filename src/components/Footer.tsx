@@ -11,10 +11,10 @@ const quickLinks = [
 ];
 
 const company = [
-  { label: "About", href: "/about" },
   { label: "Contact", href: "mailto:support@tavnit.com" },
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms of Service", href: "/terms" },
+  { label: "Agents", href: "#agents" },
+  { label: "Human in the Loop", href: "#human-in-the-loop" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 const resources = [
@@ -41,7 +41,7 @@ export default function Footer() {
               />
             </div>
             <p className="text-sm text-gray-500 leading-relaxed max-w-[300px]">
-              AI-powered document extraction that transforms PDFs into structured data.
+              AI document operations — extract, clean, review, and act on data from any document.
             </p>
           </div>
 
@@ -56,8 +56,7 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
-              <li><Link href="/privacy" className="text-sm text-gray-500 hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="text-sm text-gray-500 hover:text-white transition-colors">Terms of Service</Link></li>
+              <li><Link href="mailto:support@tavnit.com" className="text-sm text-gray-500 hover:text-white transition-colors">Contact</Link></li>
             </ul>
           </div>
 
