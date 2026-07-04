@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.png",
-    apple: "/favicon.png",
+    apple: "/apple-icon.png",
   },
   metadataBase: new URL("https://tavnit.io"),
   alternates: {
@@ -105,8 +105,8 @@ export default function RootLayout({
                   logo: {
                     "@type": "ImageObject",
                     url: "https://tavnit.io/assets/tavnit_logo.png",
-                    width: 120,
-                    height: 60,
+                    width: 1287,
+                    height: 444,
                   },
                   description:
                     "AI-powered document data extraction platform — extract, clean, store, and visualize structured data from any document.",

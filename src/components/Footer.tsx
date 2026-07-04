@@ -35,7 +35,7 @@ export default function Footer() {
               <Image
                 src="/assets/tavnit_logo.png"
                 alt="Tavnit - AI Document Data Extraction Platform"
-                width={120}
+                width={174}
                 height={60}
                 className="h-[48px] md:h-[60px] w-auto"
               />

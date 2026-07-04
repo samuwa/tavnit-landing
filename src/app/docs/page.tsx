@@ -823,7 +823,7 @@ export default function DocsPage() {
             </Link>
             {/* Logo + Docs badge */}
             <Link href="/" className="flex items-center gap-2 hover:opacity-85 transition-opacity">
-              <Image src="/assets/tavnit_logo.png" alt="Tavnit" width={120} height={60} className="h-10 w-auto brightness-200" priority />
+              <Image src="/assets/tavnit_logo.png" alt="Tavnit" width={174} height={60} className="h-10 w-auto" priority />
               <span className="text-sm font-semibold text-[#667eea] bg-[#667eea]/10 px-2.5 py-0.5 rounded-md">
                 Docs
               </span>

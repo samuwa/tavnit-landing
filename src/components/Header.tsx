@@ -38,9 +38,9 @@ export default function Header() {
           <Image
             src="/assets/tavnit_logo.png"
             alt="Tavnit"
-            width={160}
+            width={232}
             height={80}
-            className="h-12 sm:h-16 w-auto"
+            className="h-9 sm:h-11 w-auto"
             priority
           />
         </Link>
