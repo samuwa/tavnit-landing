@@ -4,6 +4,8 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import { InvoiceDemo, ContractDemo, ResumeDemo, ExpenseDemo } from "./UseCaseAnimations";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 const useCases = [
   {
@@ -48,7 +50,18 @@ const useCases = [
   },
 ];
 
-export default function UseCases() {
+/* The tab-switch crossfade — same motion props the original single panel used,
+   now relocated onto each cell's inner element (per the sheet-band guide). */
+const panelMotion = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+  transition: { duration: 0.3 },
+};
+
+export const ROWS = 20;
+
+export default function UseCases({ startRow }: { startRow: number }) {
   const [active, setActive] = useState(0);
   const [mobileActive, setMobileActive] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -77,83 +90,117 @@ export default function UseCases() {
     return () => el.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  const Demo = useCases[active].Demo;
+
   return (
-    <section className="py-16 md:py-24" id="use-cases" aria-labelledby="use-cases-heading">
-      {/* ── Mobile: swipable carousel ── */}
-      <div className="md:hidden">
-        <div className="px-4 mb-5">
-          <p className="text-xl font-bold text-[#0E1C2B] mb-1 text-center" aria-hidden="true">Built for Real-World Workflows</p>
-          <p className="text-xs text-[#6B7686] text-center">
-            See how teams use Tavnit to automate document processing
-          </p>
-        </div>
+    <SheetSection id="use-cases" startRow={startRow} rows={ROWS} ariaLabelledby="use-cases-heading">
+      {/* ── Mobile: swipable carousel (one bare cell keeps the scroll logic intact) ── */}
+      <Cell c={1} span={12} r={2} rowSpan={12} variant="k-bare" interactive={false} className="md:hidden!">
+        <div className="md:hidden">
+          <div className="px-4 mb-5">
+            <p className="text-xl font-bold text-[#0E1C2B] mb-1 text-center" aria-hidden="true">Built for Real-World Workflows</p>
+            <p className="text-xs text-[#6B7686] text-center">
+              See how teams use Tavnit to automate document processing
+            </p>
+          </div>
 
-        <div
-          ref={scrollRef}
-          className="mobile-carousel flex gap-3 px-4 pb-2"
-          style={{
-            overflowX: "auto",
-            overflowY: "hidden",
-            scrollSnapType: "x mandatory",
-            WebkitOverflowScrolling: "touch",
-          } as React.CSSProperties}
-        >
-          {useCases.map((uc) => (
-            <div
-              key={uc.id}
-              className="flex-none snap-center"
-              style={{ width: "calc(100vw - 4rem)" }}
-            >
-              <div className="glass-card rounded-lg p-5 border border-[#C9CFD8] flex flex-col h-full">
-                <span className="inline-block w-fit px-3 py-1 font-mono uppercase tracking-[0.14em] bg-[#FFF6DE] text-[#B9820A] border border-[#FFC53D]/50 rounded-[4px] text-[10px] font-semibold mb-3">
-                  {uc.badge}
-                </span>
-                <h3 className="text-lg font-bold text-[#0E1C2B] mb-3">{uc.title}</h3>
+          <div
+            ref={scrollRef}
+            className="mobile-carousel flex gap-3 px-4 pb-2"
+            style={{
+              overflowX: "auto",
+              overflowY: "hidden",
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
+            } as React.CSSProperties}
+          >
+            {useCases.map((uc) => (
+              <div
+                key={uc.id}
+                className="flex-none snap-center"
+                style={{ width: "calc(100vw - 4rem)" }}
+              >
+                <div className="glass-card rounded-lg p-5 border border-[#C9CFD8] flex flex-col h-full">
+                  <span className="inline-block w-fit px-3 py-1 font-mono uppercase tracking-[0.14em] bg-[#FFF6DE] text-[#B9820A] border border-[#FFC53D]/50 rounded-[4px] text-[10px] font-semibold mb-3">
+                    {uc.badge}
+                  </span>
+                  <h3 className="text-lg font-bold text-[#0E1C2B] mb-3">{uc.title}</h3>
 
-                <div className="mb-3">
-                  <h4 className="text-[10px] font-bold text-[#1B2E44] uppercase tracking-wider mb-1">The Problem</h4>
-                  <p className="text-sm text-[#6B7686] leading-relaxed">{uc.problem}</p>
-                </div>
+                  <div className="mb-3">
+                    <h4 className="text-[10px] font-bold text-[#1B2E44] uppercase tracking-wider mb-1">The Problem</h4>
+                    <p className="text-sm text-[#6B7686] leading-relaxed">{uc.problem}</p>
+                  </div>
 
-                <div className="mb-4">
-                  <h4 className="text-[10px] font-bold text-[#1B2E44] uppercase tracking-wider mb-1">The Solution</h4>
-                  <p className="text-sm text-[#6B7686] leading-relaxed">{uc.solution}</p>
-                </div>
+                  <div className="mb-4">
+                    <h4 className="text-[10px] font-bold text-[#1B2E44] uppercase tracking-wider mb-1">The Solution</h4>
+                    <p className="text-sm text-[#6B7686] leading-relaxed">{uc.solution}</p>
+                  </div>
 
-                <div className="flex items-center gap-2 p-3 bg-[#E6F6F0] border border-[#17A67B]/30 rounded-lg mt-auto">
-                  <CheckCircle2 size={16} className="text-[#17A67B] flex-shrink-0" />
-                  <span className="text-xs font-semibold text-[#0C6B4C]">{uc.result}</span>
+                  <div className="flex items-center gap-2 p-3 bg-[#E6F6F0] border border-[#17A67B]/30 rounded-lg mt-auto">
+                    <CheckCircle2 size={16} className="text-[#17A67B] flex-shrink-0" />
+                    <span className="text-xs font-semibold text-[#0C6B4C]">{uc.result}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-          <div className="flex-none w-4" aria-hidden />
-        </div>
+            ))}
+            <div className="flex-none w-4" aria-hidden />
+          </div>
 
-        <div className="flex justify-center items-center gap-2 mt-4">
-          {useCases.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => scrollToCard(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === mobileActive ? "w-6 bg-[#FFC53D]" : "w-2 bg-[#C9CFD8]"
-              }`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
+          <div className="flex justify-center items-center gap-2 mt-4">
+            {useCases.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => scrollToCard(i)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  i === mobileActive ? "w-6 bg-[#FFC53D]" : "w-2 bg-[#C9CFD8]"
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      </Cell>
 
-      {/* ── Desktop: Tabs + Animated Content ── */}
-      <div className="hidden md:block max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="text-center mb-6 md:mb-8">
-          <h2 id="use-cases-heading" className="text-2xl md:text-4xl font-bold text-[#0E1C2B] mb-1 md:mb-2">Built for Real-World Workflows</h2>
-          <p className="text-sm md:text-lg text-[#6B7686] max-w-[600px] mx-auto">
-            See how teams use Tavnit to automate document processing
-          </p>
-        </div>
+      {/* ── Desktop: heading, subtitle, tab strip, then the animated panel as cells ── */}
 
-        <div className="flex gap-3 justify-center mb-6 flex-wrap">
+      {/* Heading */}
+      <Cell
+        c={2}
+        span={10}
+        r={2}
+        rowSpan={2}
+        variant="k-title"
+        className="justify-center text-center max-md:hidden!"
+        formula="=WORKFLOWS(real_world)"
+      >
+        <h2 id="use-cases-heading">Built for Real-World Workflows</h2>
+      </Cell>
+
+      {/* Subtitle */}
+      <Cell
+        c={2}
+        span={10}
+        r={4}
+        rowSpan={2}
+        variant="k-sub"
+        className="justify-center text-center max-md:hidden!"
+        formula='="see how teams use Tavnit"'
+      >
+        <p className="max-w-[600px] mx-auto">
+          See how teams use Tavnit to automate document processing
+        </p>
+      </Cell>
+
+      {/* Tab strip */}
+      <Cell
+        c={2}
+        span={10}
+        r={7}
+        variant="k-bare"
+        interactive={false}
+        className="max-md:hidden!"
+      >
+        <div className="flex gap-3 justify-center flex-wrap h-full items-center">
           {useCases.map((uc, i) => (
             <button
               key={uc.id}
@@ -168,51 +215,70 @@ export default function UseCases() {
             </button>
           ))}
         </div>
+      </Cell>
 
+      {/* Badge */}
+      <Cell c={2} span={5} r={9} variant="k-bare" className="max-md:hidden!" formula="=WHO(this_is_for)">
         <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center glass-card rounded-lg p-6 md:p-8"
-          >
-            <div>
-              <span className="inline-block px-3 py-1.5 font-mono uppercase tracking-[0.14em] bg-[#FFF6DE] text-[#B9820A] border border-[#FFC53D]/50 rounded-[4px] text-sm font-semibold mb-4">
-                {useCases[active].badge}
-              </span>
-              <h3 className="text-2xl md:text-3xl font-bold text-[#0E1C2B] mb-4">{useCases[active].title}</h3>
+          <motion.div key={active} {...panelMotion}>
+            <span className="inline-block px-3 py-1.5 font-mono uppercase tracking-[0.14em] bg-[#FFF6DE] text-[#B9820A] border border-[#FFC53D]/50 rounded-[4px] text-sm font-semibold">
+              {useCases[active].badge}
+            </span>
+          </motion.div>
+        </AnimatePresence>
+      </Cell>
 
-              <div className="mb-4">
-                <h4 className="text-base font-bold text-[#1B2E44] uppercase tracking-wider mb-2">The Problem</h4>
-                <p className="text-[#6B7686] leading-relaxed">{useCases[active].problem}</p>
-              </div>
+      {/* Title */}
+      <Cell c={2} span={5} r={10} rowSpan={2} variant="k-title" className="max-md:hidden!" formula="=USE_CASE[active]">
+        <AnimatePresence mode="wait">
+          <motion.div key={active} {...panelMotion}>
+            <h3>{useCases[active].title}</h3>
+          </motion.div>
+        </AnimatePresence>
+      </Cell>
 
-              <div className="mb-4">
-                <h4 className="text-base font-bold text-[#1B2E44] uppercase tracking-wider mb-2">The Solution</h4>
-                <p className="text-[#6B7686] leading-relaxed">{useCases[active].solution}</p>
-              </div>
+      {/* The Problem */}
+      <Cell c={2} span={5} r={12} rowSpan={3} variant="k-muted" className="max-md:hidden!" formula="=IFERROR(manual_process, tavnit)">
+        <AnimatePresence mode="wait">
+          <motion.div key={active} {...panelMotion}>
+            <h4 className="text-base font-bold text-[#1B2E44] uppercase tracking-wider mb-2">The Problem</h4>
+            <p className="text-[#6B7686] leading-relaxed">{useCases[active].problem}</p>
+          </motion.div>
+        </AnimatePresence>
+      </Cell>
 
-              <div className="flex items-center gap-4 p-4 bg-[#E6F6F0] border border-[#17A67B]/30 rounded-lg mt-6">
-                <CheckCircle2 size={20} className="text-[#17A67B] flex-shrink-0" />
-                <span className="text-base font-semibold text-[#0C6B4C]">{useCases[active].result}</span>
-              </div>
-            </div>
+      {/* The Solution */}
+      <Cell c={2} span={5} r={15} rowSpan={3} variant="k-muted" className="max-md:hidden!" formula="=PIPELINE(extract → clean → store)">
+        <AnimatePresence mode="wait">
+          <motion.div key={active} {...panelMotion}>
+            <h4 className="text-base font-bold text-[#1B2E44] uppercase tracking-wider mb-2">The Solution</h4>
+            <p className="text-[#6B7686] leading-relaxed">{useCases[active].solution}</p>
+          </motion.div>
+        </AnimatePresence>
+      </Cell>
 
-            <div className="hidden lg:flex items-center justify-center">
-              {(() => {
-                const Demo = useCases[active].Demo;
-                return (
-                  <div className="w-full max-w-[500px]">
-                    <Demo />
-                  </div>
-                );
-              })()}
+      {/* Result chip */}
+      <Cell c={2} span={5} r={18} rowSpan={2} variant="k-bare" className="max-md:hidden!" formula="=SUM(time_saved, errors_removed)">
+        <AnimatePresence mode="wait">
+          <motion.div key={active} {...panelMotion} className="w-full h-full flex items-center">
+            <div className="flex items-center gap-4 p-4 bg-[#E6F6F0] border border-[#17A67B]/30 rounded-lg w-full">
+              <CheckCircle2 size={20} className="text-[#17A67B] flex-shrink-0" />
+              <span className="text-base font-semibold text-[#0C6B4C]">{useCases[active].result}</span>
             </div>
           </motion.div>
         </AnimatePresence>
-      </div>
-    </section>
+      </Cell>
+
+      {/* Animated demo (mirrors the original hidden-lg behavior via the cell) */}
+      <Cell c={7} span={5} r={9} rowSpan={11} variant="k-bare" interactive={false} className="max-lg:hidden!">
+        <AnimatePresence mode="wait">
+          <motion.div key={active} {...panelMotion} className="w-full h-full flex items-center justify-center">
+            <div className="w-full max-w-[500px]">
+              <Demo />
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </Cell>
+    </SheetSection>
   );
 }

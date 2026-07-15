@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion } from "framer-motion";
 import {
   ClipboardCheck,
@@ -10,27 +11,37 @@ import {
   Check,
   X,
 } from "lucide-react";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 const highlights = [
   {
     icon: BellRing,
     title: "Named reviewers",
     desc: "Assign reviewers per flow — they get an email the moment a run needs eyes.",
+    iconFormula: "=NOTIFY(reviewer)",
+    formula: "=ASSIGN(reviewer, flow)",
   },
   {
     icon: PencilLine,
     title: "Edit in place",
     desc: "Correct cells, add rows, or fix columns right in the review screen — no re-processing.",
+    iconFormula: "=EDIT(cell)",
+    formula: "=EDIT(cell, inline=TRUE)",
   },
   {
     icon: SlidersHorizontal,
     title: "Review only what needs it",
     desc: "Pause every run, or let Cleaner rules trigger review only when a value looks off.",
+    iconFormula: "=RULE()",
+    formula: "=IF(value.looks_off, review, pass)",
   },
   {
     icon: History,
     title: "Append-only audit trail",
     desc: "Every view, edit, approval, and rejection is recorded permanently. Nothing changes silently.",
+    iconFormula: "=LOG()",
+    formula: "=APPEND.ONLY(audit_trail)",
   },
 ];
 
@@ -135,72 +146,110 @@ function ReviewDemo() {
   );
 }
 
-export default function HumanInTheLoop() {
+export const ROWS = 27;
+
+export default function HumanInTheLoop({ startRow }: { startRow: number }) {
   return (
-    <section
-      className="py-16 md:py-24 relative overflow-hidden"
+    <SheetSection
       id="human-in-the-loop"
-      aria-labelledby="hitl-heading"
+      startRow={startRow}
+      rows={ROWS}
+      ariaLabelledby="hitl-heading"
     >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Review demo — first on desktop, second on mobile */}
-          <motion.div
-            className="order-2 lg:order-1"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            aria-hidden="true"
-          >
-            <ReviewDemo />
-          </motion.div>
+      {/* Eyebrow */}
+      <Cell c={2} span={8} r={2} variant="k-eyebrow" formula="=HUMAN.IN.LOOP()">
+        <motion.span
+          className="inline-flex items-center gap-2"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <ClipboardCheck size={14} />
+          Human in the Loop
+        </motion.span>
+      </Cell>
 
-          {/* Copy */}
-          <motion.div
-            className="order-1 lg:order-2"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[4px] bg-[#FFF6DE] border border-[#FFC53D]/50 text-[#B9820A] font-mono text-[11px] sm:text-xs uppercase tracking-[0.14em] mb-5">
-              <ClipboardCheck size={14} />
-              Human in the Loop
-            </div>
-            <h2
-              id="hitl-heading"
-              className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-4 leading-tight"
+      {/* Heading */}
+      <Cell c={2} span={10} r={3} rowSpan={3} variant="k-title" formula="=IF(reviewed, ship, hold)">
+        <motion.h2
+          id="hitl-heading"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          AI does the work.
+          <br />
+          Your team has the <span className="gradient-text">final say</span>.
+        </motion.h2>
+      </Cell>
+
+      {/* Body */}
+      <Cell c={2} span={8} r={6} rowSpan={2} variant="k-sub" formula="=PAUSE(run, until=approved)">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Turn on review for any flow and runs pause before anything moves
+          downstream. Reviewers fix mistakes in place and approve with one
+          click — with a complete record of who did what.
+        </motion.p>
+      </Cell>
+
+      {/* Feature rows */}
+      {highlights.map((h, i) => {
+        const fRow = 9 + i * 2;
+        return (
+          <Fragment key={h.title}>
+            <Cell
+              c={2}
+              span={1}
+              r={fRow}
+              rowSpan={2}
+              variant="k-clean"
+              className="justify-center"
+              formula={h.iconFormula}
             >
-              AI does the work.
-              <br />
-              Your team has the <span className="gradient-text">final say</span>.
-            </h2>
-            <p className="text-base md:text-lg text-[#6B7686] mb-8 max-w-[480px]">
-              Turn on review for any flow and runs pause before anything moves
-              downstream. Reviewers fix mistakes in place and approve with one
-              click — with a complete record of who did what.
-            </p>
+              <motion.span
+                className="inline-flex items-center justify-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h.icon size={18} />
+              </motion.span>
+            </Cell>
+            <Cell c={4} span={8} r={fRow} rowSpan={2} formula={h.formula}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-sm md:text-base font-bold text-[#0E1C2B] mb-0.5">
+                  {h.title}
+                </h3>
+                <p className="text-xs md:text-sm text-[#6B7686] leading-relaxed">
+                  {h.desc}
+                </p>
+              </motion.div>
+            </Cell>
+          </Fragment>
+        );
+      })}
 
-            <div className="space-y-5">
-              {highlights.map((h) => (
-                <div key={h.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-md bg-[#E6F6F0] border border-[#17A67B]/40 text-[#0C6B4C] flex items-center justify-center flex-shrink-0">
-                    <h.icon size={18} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm md:text-base font-bold text-[#0E1C2B] mb-0.5">
-                      {h.title}
-                    </h3>
-                    <p className="text-xs md:text-sm text-[#6B7686] leading-relaxed">
-                      {h.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
+      {/* Review demo */}
+      <Cell c={2} span={10} r={18} rowSpan={10} variant="k-bare" interactive={false}>
+        <motion.div
+          className="w-full"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.15 }}
+          aria-hidden="true"
+        >
+          <ReviewDemo />
+        </motion.div>
+      </Cell>
+    </SheetSection>
   );
 }

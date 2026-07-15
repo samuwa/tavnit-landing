@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { Bot, GitBranch, MonitorPlay, PackageCheck, ArrowRight } from "lucide-react";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 /* Agent step log — mirrors the real tools an agent has: goto, observe, fill, click, capture */
 const agentSteps = [
@@ -34,6 +36,13 @@ const highlights = [
     title: "Typed results, delivered",
     desc: "Agents return data that matches your schema, delivered by email, webhook, or straight into a Bucket.",
   },
+];
+
+/* Playful formula-bar strings for each feature row (not copy). */
+const featureFormulas = [
+  "=CHAIN(extraction → agent)",
+  "=STREAM(browser.session, live=true)",
+  "=DELIVER(result, [email, webhook, bucket])",
 ];
 
 function BrowserDemo({ step }: { step: number }) {
@@ -159,10 +168,12 @@ function BrowserDemo({ step }: { step: number }) {
   );
 }
 
-export default function AgentsShowcase() {
+export const ROWS = 28;
+
+export default function AgentsShowcase({ startRow }: { startRow: number }) {
   const [step, setStep] = useState(0);
   const [inView, setInView] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   /* Freeze at the finished state for reduced motion */
   const reducedMotion = useReducedMotion();
 
@@ -190,66 +201,107 @@ export default function AgentsShowcase() {
   const displayStep = reducedMotion ? agentSteps.length : step;
 
   return (
-    <section
-      ref={sectionRef}
-      className="py-16 md:py-24 relative overflow-hidden"
-      id="agents"
-      aria-labelledby="agents-heading"
-    >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Copy */}
+    <SheetSection id="agents" startRow={startRow} rows={ROWS} ariaLabelledby="agents-heading">
+      {/* Eyebrow */}
+      <Cell c={2} span={6} r={2} variant="k-eyebrow" formula='="the web, on autopilot"'>
+        <motion.span
+          className="inline-flex items-center gap-2"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <Bot size={14} />
+          New · Agents
+        </motion.span>
+      </Cell>
+
+      {/* Heading */}
+      <Cell
+        c={2}
+        span={9}
+        r={3}
+        rowSpan={2}
+        variant="k-title"
+        formula="=AGENT(mission) → structured_data"
+      >
+        <motion.h2
+          id="agents-heading"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Extraction was step one.
+          <br />
+          Now your data <span className="gradient-text">acts</span>.
+        </motion.h2>
+      </Cell>
+
+      {/* Body */}
+      <Cell c={2} span={8} r={6} rowSpan={2} variant="k-sub" formula='=DESCRIBE("plain language")'>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Describe a mission in plain language. A Tavnit Agent opens a real
+          browser, works through the website, and brings back structured
+          results — no scripts, no scrapers to maintain.
+        </motion.p>
+      </Cell>
+
+      {/* Feature rows */}
+      {highlights.map((h, i) => (
+        <Cell
+          key={h.title}
+          c={2}
+          span={8}
+          r={9 + i * 2}
+          rowSpan={2}
+          variant="k-muted"
+          formula={featureFormulas[i]}
+        >
           <motion.div
+            className="flex items-start gap-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[4px] bg-[#FFF6DE] border border-[#FFC53D]/50 text-[#B9820A] font-mono text-[11px] sm:text-xs uppercase tracking-[0.14em] mb-5">
-              <Bot size={14} />
-              New · Agents
+            <div className="w-9 h-9 rounded-lg bg-[#FFF6DE] border border-[#FFC53D]/50 text-[#B9820A] flex items-center justify-center flex-shrink-0">
+              <h.icon size={18} />
             </div>
-            <h2
-              id="agents-heading"
-              className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-4 leading-tight"
-            >
-              Extraction was step one.
-              <br />
-              Now your data <span className="gradient-text">acts</span>.
-            </h2>
-            <p className="text-base md:text-lg text-[#6B7686] mb-8 max-w-[480px]">
-              Describe a mission in plain language. A Tavnit Agent opens a real
-              browser, works through the website, and brings back structured
-              results — no scripts, no scrapers to maintain.
-            </p>
-
-            <div className="space-y-5 mb-8">
-              {highlights.map((h) => (
-                <div key={h.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-lg bg-[#FFF6DE] border border-[#FFC53D]/50 text-[#B9820A] flex items-center justify-center flex-shrink-0">
-                    <h.icon size={18} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm md:text-base font-bold text-[#0E1C2B] mb-0.5">
-                      {h.title}
-                    </h3>
-                    <p className="text-xs md:text-sm text-[#6B7686] leading-relaxed">
-                      {h.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
+            <div>
+              <h3 className="text-sm md:text-base font-bold text-[#0E1C2B] mb-0.5">
+                {h.title}
+              </h3>
+              <p className="text-xs md:text-sm text-[#6B7686] leading-relaxed">
+                {h.desc}
+              </p>
             </div>
-
-            <Link
-              href="https://app.tavnit.io"
-              className="inline-flex items-center gap-2 font-semibold text-[#B9820A] hover:text-[#0E1C2B] transition-colors group"
-            >
-              Create your first agent
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
           </motion.div>
+        </Cell>
+      ))}
 
-          {/* Live browser demo */}
+      {/* CTA */}
+      <Cell c={2} span={4} r={16} variant="k-bare" interactive={false} formula="=CREATE_AGENT()">
+        <motion.div
+          className="w-full h-full flex items-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <Link
+            href="https://app.tavnit.io"
+            className="inline-flex items-center gap-2 font-semibold text-[#B9820A] hover:text-[#0E1C2B] transition-colors group"
+          >
+            Create your first agent
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
+      </Cell>
+
+      {/* Live browser demo (kept dark) */}
+      <Cell c={2} span={10} r={18} rowSpan={10} variant="k-bare" interactive={false}>
+        <div ref={sectionRef} className="w-full h-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -260,7 +312,7 @@ export default function AgentsShowcase() {
             <BrowserDemo step={displayStep} />
           </motion.div>
         </div>
-      </div>
-    </section>
+      </Cell>
+    </SheetSection>
   );
 }

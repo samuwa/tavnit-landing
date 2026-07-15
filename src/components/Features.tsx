@@ -6,6 +6,8 @@ import {
   LayoutGrid, Sparkles, GitBranch, Lightbulb,
   Database, Users, Code2, UserCheck, Bot, Plug,
 } from "lucide-react";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 const features = [
   { icon: Sparkles, title: "AI Extraction", desc: "Powered by multiple leading AI models to extract tables, metadata, handwriting, and complex layouts from any document. Includes confidence scoring, field-level validation, and support for multi-page and multi-language documents.", gradient: true, hero: true, accent: "gold" },
@@ -27,6 +29,19 @@ const accentClasses: Record<string, string> = {
   raw: "bg-[#FCEDE1] text-[#B4530E]",
   ink: "bg-[#F0F2F5] text-[#0E1C2B]",
 };
+
+/* Playful formula-bar strings for each non-hero feature card (restFeatures order) */
+const cardFormulas = [
+  "=BUILD(flow, no_code)",
+  "=ROUTE(mixed_docs → flow)",
+  "=CLEAN(format, translate, convert)",
+  "=AGENT.RUN(browser, live)",
+  "=REVIEW(pause → approve | reject)",
+  "=CONNECT(claude.ai, cursor)",
+  "=QUERY(buckets, semantic)",
+  "=WEBHOOK(on_extract)",
+  "=GRANT(role, seats)",
+];
 
 /* Hero feature card — spans 2 columns on desktop */
 function HeroFeatureCard({ f }: { f: typeof features[number] }) {
@@ -92,7 +107,9 @@ function MarqueeCard({ f }: { f: typeof features[number] }) {
 const MARQUEE_SPEED = 30;
 const PAUSE_AFTER_TOUCH_MS = 4000;
 
-export default function Features() {
+export const ROWS = 25;
+
+export default function Features({ startRow }: { startRow: number }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const animRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
@@ -150,77 +167,120 @@ export default function Features() {
   const restFeatures = features.slice(1);
 
   return (
-    <section className="py-16 md:py-24" id="features" aria-labelledby="features-heading">
-      {/* ── Mobile: continuous marquee ── */}
-      <div className="md:hidden">
-        <div className="px-4 mb-5">
-          <p className="text-xl font-bold text-[#0E1C2B] mb-1 text-center" aria-hidden="true">
-            The Complete Document Automation Platform
-          </p>
-          <p className="text-xs text-[#6B7686] text-center">
-            Extract, clean, review, store, and act — all in one pipeline
-          </p>
-        </div>
+    <SheetSection id="features" startRow={startRow} rows={ROWS} ariaLabelledby="features-heading">
+      {/* ── Mobile: continuous marquee (one bare cell keeps the rAF animation intact) ── */}
+      <Cell c={1} span={12} r={2} rowSpan={5} variant="k-bare" interactive={false} className="md:hidden!">
+        <div className="md:hidden">
+          <div className="px-4 mb-5">
+            <p className="text-xl font-bold text-[#0E1C2B] mb-1 text-center" aria-hidden="true">
+              The Complete Document Automation Platform
+            </p>
+            <p className="text-xs text-[#6B7686] text-center">
+              Extract, clean, review, store, and act — all in one pipeline
+            </p>
+          </div>
 
-        <div
-          className="overflow-hidden"
-          onTouchStart={pause}
-        >
           <div
-            ref={trackRef}
-            className="flex gap-3 will-change-transform"
-            style={{ width: "max-content" }}
+            className="overflow-hidden"
+            onTouchStart={pause}
           >
-            {doubled.map((f, i) => (
-              <MarqueeCard key={`${f.title}-${i}`} f={f} />
-            ))}
+            <div
+              ref={trackRef}
+              className="flex gap-3 will-change-transform"
+              style={{ width: "max-content" }}
+            >
+              {doubled.map((f, i) => (
+                <MarqueeCard key={`${f.title}-${i}`} f={f} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </Cell>
 
-      {/* ── Desktop: Bento Grid ── */}
-      <div className="hidden md:block max-w-[1200px] mx-auto px-4 sm:px-6">
-        <motion.div
-          className="text-center mb-10 md:mb-14"
+      {/* ── Desktop: heading, subtitle, hero feature, then a card grid — as sheet cells ── */}
+
+      {/* Heading */}
+      <Cell
+        c={2}
+        span={10}
+        r={2}
+        rowSpan={2}
+        variant="k-title"
+        className="justify-center text-center max-md:hidden!"
+        formula="=FEATURES(platform)"
+      >
+        <motion.h2
+          id="features-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="features-heading" className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-3">
-            The Complete Document Automation Platform
-          </h2>
-          <p className="text-base md:text-lg text-[#6B7686] max-w-[600px] mx-auto">
-            Extract, clean, review, store, and act — all in one pipeline
-          </p>
-        </motion.div>
+          The Complete Document Automation Platform
+        </motion.h2>
+      </Cell>
 
-        {/* Bento layout: hero card on top spanning full width, then 3-col grid */}
-        <div className="space-y-4 md:space-y-5">
-          {/* Hero feature - full width */}
+      {/* Subtitle */}
+      <Cell
+        c={2}
+        span={10}
+        r={4}
+        variant="k-sub"
+        className="justify-center text-center max-md:hidden!"
+        formula="=PIPELINE(extract → clean → review → store → act)"
+      >
+        <motion.p
+          className="max-w-[600px] mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Extract, clean, review, store, and act — all in one pipeline
+        </motion.p>
+      </Cell>
+
+      {/* Hero feature — full width bento card */}
+      <Cell
+        c={2}
+        span={10}
+        r={6}
+        rowSpan={4}
+        variant="k-bare"
+        className="max-md:hidden!"
+        formula="=EXTRACT(tables, metadata, handwriting)"
+      >
+        <motion.div
+          className="w-full h-full"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <HeroFeatureCard f={heroFeature} />
+        </motion.div>
+      </Cell>
+
+      {/* Rest of the features — two cards across, one sheet cell each */}
+      {restFeatures.map((f, i) => (
+        <Cell
+          key={f.title}
+          c={i % 2 === 0 ? 2 : 7}
+          span={5}
+          r={11 + Math.floor(i / 2) * 3}
+          rowSpan={3}
+          variant="k-bare"
+          className="max-md:hidden!"
+          formula={cardFormulas[i]}
+        >
           <motion.div
+            className="w-full h-full"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ delay: i * 0.04 }}
           >
-            <HeroFeatureCard f={heroFeature} />
+            <FeatureCard f={f} />
           </motion.div>
-
-          {/* Rest in 3-column grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-            {restFeatures.map((f, i) => (
-              <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.04 }}
-              >
-                <FeatureCard f={f} />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+        </Cell>
+      ))}
+    </SheetSection>
   );
 }

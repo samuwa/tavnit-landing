@@ -1,21 +1,51 @@
 "use client";
 
 import Header from "@/components/Header";
-import Hero, { ROWS as HERO_ROWS } from "@/components/Hero";
+import Hero, { ROWS as HeroRows } from "@/components/Hero";
+import Problem, { ROWS as ProblemRows } from "@/components/Problem";
+import HowItWorks, { ROWS as HowItWorksRows } from "@/components/HowItWorks";
+import Features, { ROWS as FeaturesRows } from "@/components/Features";
+import ExtractionShowcase, { ROWS as ExtractionRows } from "@/components/ExtractionShowcase";
+import HumanInTheLoop, { ROWS as HitlRows } from "@/components/HumanInTheLoop";
+import AgentsShowcase, { ROWS as AgentsRows } from "@/components/AgentsShowcase";
+import PlatformOverview, { ROWS as PlatformRows } from "@/components/PlatformOverview";
+import UseCases, { ROWS as UseCasesRows } from "@/components/UseCases";
+import Integrations, { ROWS as IntegrationsRows } from "@/components/Integrations";
+import Pricing, { ROWS as PricingRows } from "@/components/Pricing";
+import FAQ, { ROWS as FaqRows } from "@/components/FAQ";
+import FinalCTA, { ROWS as FinalCtaRows } from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import SheetProvider from "@/components/sheet/SheetProvider";
 import FormulaBar from "@/components/sheet/FormulaBar";
 import ColumnHeader from "@/components/sheet/ColumnHeader";
-import SheetSection from "@/components/sheet/SheetSection";
-import Cell from "@/components/sheet/Cell";
 import SheetTabs from "@/components/SheetTabs";
 
+/* The whole page is one workbook. Bands are placed in document order and the
+   running row counter chains the row numbers continuously from band to band,
+   so the left gutter reads 1 … N straight down the entire page. */
+const BANDS = [
+  { C: Hero, rows: HeroRows },
+  { C: Problem, rows: ProblemRows },
+  { C: HowItWorks, rows: HowItWorksRows },
+  { C: Features, rows: FeaturesRows },
+  { C: ExtractionShowcase, rows: ExtractionRows },
+  { C: HumanInTheLoop, rows: HitlRows },
+  { C: AgentsShowcase, rows: AgentsRows },
+  { C: PlatformOverview, rows: PlatformRows },
+  { C: UseCases, rows: UseCasesRows },
+  { C: Integrations, rows: IntegrationsRows },
+  { C: Pricing, rows: PricingRows },
+  { C: FAQ, rows: FaqRows },
+  { C: FinalCTA, rows: FinalCtaRows },
+] as const;
+
 export default function Home() {
-  // Continuous row numbering across every band.
   let row = 1;
-  const heroStart = row;
-  row += HERO_ROWS;
-  const stubStart = row;
+  const placed = BANDS.map(({ C, rows }, i) => {
+    const startRow = row;
+    row += rows;
+    return <C key={i} startRow={startRow} />;
+  });
 
   return (
     <SheetProvider>
@@ -23,15 +53,7 @@ export default function Home() {
       <div className="sheet-wrap">
         <FormulaBar />
         <ColumnHeader />
-
-        <Hero startRow={heroStart} />
-
-        {/* remaining bands are wired in once each section is converted */}
-        <SheetSection id="stub" startRow={stubStart} rows={4}>
-          <Cell c={2} span={8} r={2} rowSpan={2} variant="k-title" formula="=NEXT_BANDS()">
-            More sheet bands land here.
-          </Cell>
-        </SheetSection>
+        {placed}
       </div>
 
       <div style={{ height: "var(--chrome-bottom)" }} aria-hidden />

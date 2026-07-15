@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 /* Keep in sync with the FAQPage JSON-LD schema in src/app/layout.tsx */
 export const faqs = [
@@ -44,70 +46,95 @@ export const faqs = [
   },
 ];
 
-function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
+export const ROWS = 15;
+
+function FaqItem({ q, a, index, row }: { q: string; a: string; index: number; row: number }) {
   const [open, setOpen] = useState(false);
   const panelId = `faq-panel-${index}`;
 
   return (
-    <motion.div
-      className="glass-card rounded-md overflow-hidden"
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.04 }}
-    >
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        aria-controls={panelId}
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer hover:bg-[#FFF6DE] transition-colors"
+    <Cell c={2} span={10} r={row} variant="k-bare" interactive={false}>
+      <motion.div
+        className="glass-card rounded-md overflow-hidden w-full"
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: index * 0.04 }}
       >
-        <span className="text-sm md:text-base font-semibold text-[#0E1C2B]">{q}</span>
-        <ChevronDown
-          size={18}
-          className={`flex-shrink-0 text-[#B9820A] transition-transform duration-300 ${
-            open ? "rotate-180" : ""
+        <button
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-controls={panelId}
+          className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer hover:bg-[#FFF6DE] transition-colors"
+        >
+          <span className="text-sm md:text-base font-semibold text-[#0E1C2B]">{q}</span>
+          <ChevronDown
+            size={18}
+            className={`flex-shrink-0 text-[#B9820A] transition-transform duration-300 ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+        <div
+          id={panelId}
+          className={`grid transition-all duration-300 ease-in-out ${
+            open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
           }`}
-        />
-      </button>
-      <div
-        id={panelId}
-        className={`grid transition-all duration-300 ease-in-out ${
-          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <p className="px-5 pb-4 pt-3 border-t border-[#E7E9EE] text-sm text-[#6B7686] leading-relaxed">{a}</p>
+        >
+          <div className="overflow-hidden">
+            <p className="px-5 pb-4 pt-3 border-t border-[#E7E9EE] text-sm text-[#6B7686] leading-relaxed">{a}</p>
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Cell>
   );
 }
 
-export default function FAQ() {
+export default function FAQ({ startRow }: { startRow: number }) {
   return (
-    <section className="py-16 md:py-24" id="faq" aria-labelledby="faq-heading">
-      <div className="max-w-[800px] mx-auto px-4 sm:px-6">
-        <motion.div
-          className="text-center mb-8 md:mb-12"
+    <SheetSection id="faq" startRow={startRow} rows={ROWS} ariaLabelledby="faq-heading">
+      {/* Heading */}
+      <Cell
+        c={2}
+        span={10}
+        r={2}
+        rowSpan={2}
+        variant="k-title"
+        className="justify-center text-center"
+        formula="=VLOOKUP(question, faqs, 2)"
+      >
+        <motion.h2
+          id="faq-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="faq-heading" className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-3">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-base md:text-lg text-[#6B7686]">
-            Everything you need to know before your first flow
-          </p>
-        </motion.div>
+          Frequently Asked Questions
+        </motion.h2>
+      </Cell>
 
-        <div className="space-y-3">
-          {faqs.map((f, i) => (
-            <FaqItem key={f.q} q={f.q} a={f.a} index={i} />
-          ))}
-        </div>
-      </div>
-    </section>
+      {/* Subtitle */}
+      <Cell
+        c={2}
+        span={10}
+        r={4}
+        variant="k-sub"
+        className="justify-center text-center"
+        formula='="everything before your first flow"'
+      >
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Everything you need to know before your first flow
+        </motion.p>
+      </Cell>
+
+      {/* Accordion — one sheet row per question, answer reveals in-place */}
+      {faqs.map((f, i) => (
+        <FaqItem key={f.q} q={f.q} a={f.a} index={i} row={6 + i} />
+      ))}
+    </SheetSection>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { Sparkles, Wand2, ScanText, LayoutGrid, ArrowRight } from "lucide-react";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 /* Fields appear one per step; the cleaning pass then normalizes the raw values */
 const fields = [
@@ -36,6 +38,10 @@ const highlights = [
     desc: "Cleaners normalize dates and numbers, translate, convert currencies, and enrich values before anything is stored.",
   },
 ];
+
+/* Playful formula-bar strings for the feature key / description cells */
+const keyFormulas = ["=NO_TEMPLATES()", "=READS_LIKE_HUMANS()", "=CLEANED_ON_ARRIVAL()"];
+const descFormulas = ["=FLOW(plain_language)", "=OCR(scans, handwriting, langs)", "=NORMALIZE(dates, numbers, fx)"];
 
 function StatusBadge({ step }: { step: number }) {
   if (step >= DONE_STEP) {
@@ -171,10 +177,12 @@ function ExtractionDemo({ step }: { step: number }) {
   );
 }
 
-export default function ExtractionShowcase() {
+export const ROWS = 27;
+
+export default function ExtractionShowcase({ startRow }: { startRow: number }) {
   const [step, setStep] = useState(0);
   const [inView, setInView] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   /* Freeze at the finished state for reduced motion */
   const reducedMotion = useReducedMotion();
 
@@ -202,77 +210,121 @@ export default function ExtractionShowcase() {
   const displayStep = reducedMotion ? DONE_STEP : step;
 
   return (
-    <section
-      ref={sectionRef}
-      className="py-16 md:py-24 relative overflow-hidden"
-      id="extraction"
-      aria-labelledby="extraction-heading"
-    >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Copy */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+    <SheetSection id="extraction" startRow={startRow} rows={ROWS} ariaLabelledby="extraction-heading">
+      {/* Eyebrow */}
+      <Cell c={2} span={8} r={2} variant="k-eyebrow" formula='="AI extraction, no templates"'>
+        <motion.span
+          className="inline-flex items-center gap-2"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <Sparkles size={14} />
+          AI Extraction
+        </motion.span>
+      </Cell>
+
+      {/* Heading */}
+      <Cell c={2} span={9} r={3} rowSpan={3} variant="k-title" formula="=EXTRACT(any.pdf) → structured_data">
+        <motion.h2
+          id="extraction-heading"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Any document in.
+          <br />
+          Clean, <span className="gradient-text">structured data</span> out.
+        </motion.h2>
+      </Cell>
+
+      {/* Body */}
+      <Cell c={2} span={8} r={7} rowSpan={2} variant="k-sub" formula='="reads like a person, outputs like a database"'>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Tavnit reads your documents the way a person would — then hands
+          you validated fields with a confidence score on every value,
+          already cleaned and formatted.
+        </motion.p>
+      </Cell>
+
+      {/* Feature bullets as a key → description table */}
+      {highlights.map((h, i) => (
+        <Fragment key={h.title}>
+          <Cell
+            c={2}
+            span={4}
+            r={10 + i * 2}
+            rowSpan={2}
+            variant="k-key"
+            formula={keyFormulas[i]}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[4px] bg-[#FFF6DE] border border-[#FFC53D]/50 text-[#B9820A] font-mono text-[11px] sm:text-xs tracking-[0.14em] uppercase mb-5">
-              <Sparkles size={14} />
-              AI Extraction
-            </div>
-            <h2
-              id="extraction-heading"
-              className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-4 leading-tight"
+            <motion.div
+              className="flex items-center gap-3"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
             >
-              Any document in.
-              <br />
-              Clean, <span className="gradient-text">structured data</span> out.
-            </h2>
-            <p className="text-base md:text-lg text-[#6B7686] mb-8 max-w-[480px]">
-              Tavnit reads your documents the way a person would — then hands
-              you validated fields with a confidence score on every value,
-              already cleaned and formatted.
-            </p>
-
-            <div className="space-y-5 mb-8">
-              {highlights.map((h) => (
-                <div key={h.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-lg bg-[#FFF6DE] text-[#B9820A] flex items-center justify-center flex-shrink-0">
-                    <h.icon size={18} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm md:text-base font-bold text-[#0E1C2B] mb-0.5">
-                      {h.title}
-                    </h3>
-                    <p className="text-xs md:text-sm text-[#6B7686] leading-relaxed">
-                      {h.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <Link
-              href="https://app.tavnit.io"
-              className="inline-flex items-center gap-2 font-semibold text-[#B9820A] hover:text-[#0E1C2B] transition-colors group"
-            >
-              Create your first flow
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </motion.div>
-
-          {/* Live extraction demo */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            aria-hidden="true"
+              <span className="w-9 h-9 rounded-lg bg-[#FFF6DE] text-[#B9820A] flex items-center justify-center flex-shrink-0">
+                <h.icon size={18} />
+              </span>
+              <h3 className="font-bold text-[#0E1C2B]">{h.title}</h3>
+            </motion.div>
+          </Cell>
+          <Cell
+            c={6}
+            span={6}
+            r={10 + i * 2}
+            rowSpan={2}
+            variant="k-muted"
+            formula={descFormulas[i]}
           >
-            <ExtractionDemo step={displayStep} />
-          </motion.div>
-        </div>
-      </div>
-    </section>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              {h.desc}
+            </motion.p>
+          </Cell>
+        </Fragment>
+      ))}
+
+      {/* CTA */}
+      <Cell c={2} span={4} r={17} variant="k-bare" interactive={false} formula="=CREATE_FLOW()">
+        <motion.div
+          className="w-full h-full flex items-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <Link
+            href="https://app.tavnit.io"
+            className="inline-flex items-center gap-2 font-semibold text-[#B9820A] hover:text-[#0E1C2B] transition-colors group"
+          >
+            Create your first flow
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
+      </Cell>
+
+      {/* Live extraction demo */}
+      <Cell c={2} span={10} r={19} rowSpan={8} variant="k-bare" interactive={false}>
+        <motion.div
+          ref={sectionRef}
+          className="w-full h-full"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.15 }}
+          aria-hidden="true"
+        >
+          <ExtractionDemo step={displayStep} />
+        </motion.div>
+      </Cell>
+    </SheetSection>
   );
 }

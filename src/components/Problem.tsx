@@ -158,7 +158,7 @@ export default function Problem({ startRow }: { startRow: number }) {
       rows={ROWS}
       ariaLabelledby="problem-heading"
     >
-      {/* Heading */}
+      {/* Heading (kept within column margins B–K) */}
       <Cell
         c={2}
         span={10}
@@ -179,7 +179,7 @@ export default function Problem({ startRow }: { startRow: number }) {
         </motion.h2>
       </Cell>
 
-      {/* Three hover-flip problem → solution cards */}
+      {/* Three hover-flip problem → solution cards, side by side (span 4 each) */}
       <Cell
         c={1}
         span={4}

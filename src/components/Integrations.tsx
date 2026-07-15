@@ -4,6 +4,8 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Code2, Mail, Zap, FileText, Send, Link2, ArrowRight, Plug } from "lucide-react";
 import Link from "next/link";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 /* ══════════════════════════════════════════
    DESKTOP-ONLY COMPONENTS
@@ -402,7 +404,9 @@ const methods = [
    MAIN COMPONENT
    ══════════════════════════════════════════ */
 
-export default function Integrations() {
+export const ROWS = 19;
+
+export default function Integrations({ startRow }: { startRow: number }) {
   const [mobileActive, setMobileActive] = useState(0);
   const [desktopActive, setDesktopActive] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -433,133 +437,159 @@ export default function Integrations() {
   }, [handleScroll]);
 
   return (
-    <section className="py-16 md:py-24" id="integrations" aria-labelledby="integrations-heading">
-      {/* ── Mobile: swipable carousel ── */}
-      <div className="md:hidden">
-        <div className="px-4 mb-5">
-          <p className="text-xl font-bold text-[#0E1C2B] mb-1 text-center" aria-hidden="true">Multiple Ways to Integrate</p>
-          <p className="text-xs text-[#6B7686] text-center">
-            Choose the integration method that fits your workflow
-          </p>
-        </div>
+    <SheetSection id="integrations" startRow={startRow} rows={ROWS} ariaLabelledby="integrations-heading">
+      {/* ── Mobile: swipable carousel (one bare cell keeps the scroll/snap logic intact) ── */}
+      <Cell c={1} span={12} r={2} rowSpan={16} variant="k-bare" interactive={false} className="md:hidden!">
+        <div className="md:hidden">
+          <div className="px-4 mb-5">
+            <p className="text-xl font-bold text-[#0E1C2B] mb-1 text-center" aria-hidden="true">Multiple Ways to Integrate</p>
+            <p className="text-xs text-[#6B7686] text-center">
+              Choose the integration method that fits your workflow
+            </p>
+          </div>
 
-        <div
-          ref={scrollRef}
-          className="mobile-carousel flex gap-3 px-4 pb-2"
-          style={{
-            overflowX: "auto",
-            overflowY: "hidden",
-            scrollSnapType: "x mandatory",
-            WebkitOverflowScrolling: "touch",
-          } as React.CSSProperties}
-        >
-          {mobileSlides.map((Slide, i) => (
-            <div
-              key={i}
-              className="flex-none snap-center"
-              style={{ width: "calc(100vw - 4rem)" }}
-            >
-              <Slide />
-            </div>
-          ))}
-          <div className="flex-none w-4" aria-hidden />
-        </div>
+          <div
+            ref={scrollRef}
+            className="mobile-carousel flex gap-3 px-4 pb-2"
+            style={{
+              overflowX: "auto",
+              overflowY: "hidden",
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
+            } as React.CSSProperties}
+          >
+            {mobileSlides.map((Slide, i) => (
+              <div
+                key={i}
+                className="flex-none snap-center"
+                style={{ width: "calc(100vw - 4rem)" }}
+              >
+                <Slide />
+              </div>
+            ))}
+            <div className="flex-none w-4" aria-hidden />
+          </div>
 
-        <div className="flex justify-center items-center gap-2 mt-4">
-          {mobileSlides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => scrollToCard(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === mobileActive ? "w-6 bg-[#FFC53D]" : "w-2 bg-[#C9CFD8]"
-              }`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
+          <div className="flex justify-center items-center gap-2 mt-4">
+            {mobileSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => scrollToCard(i)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  i === mobileActive ? "w-6 bg-[#FFC53D]" : "w-2 bg-[#C9CFD8]"
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      </Cell>
 
-      {/* ── Desktop: selector rail + detail panel ── */}
-      <div className="hidden md:block max-w-[1100px] mx-auto px-4 sm:px-6">
-        <div className="text-center mb-8 md:mb-10">
-          <h2 id="integrations-heading" className="text-2xl md:text-4xl font-bold text-[#0E1C2B] mb-1 md:mb-3">Multiple Ways to Integrate</h2>
-          <p className="text-sm md:text-lg text-[#6B7686] max-w-[540px] mx-auto">
-            Choose the integration method that fits your workflow
-          </p>
-        </div>
+      {/* ── Desktop: heading, subtitle, then the selector rail + detail panel as sheet cells ── */}
 
-        <motion.div
-          className="grid grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] gap-5"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          {/* Selector rail */}
-          <div className="flex flex-col gap-3" role="tablist" aria-label="Integration methods">
-            {methods.map((m, i) => {
-              const active = i === desktopActive;
-              return (
-                <button
-                  key={m.id}
-                  role="tab"
-                  id={`integration-tab-${m.id}`}
-                  aria-selected={active}
-                  aria-controls="integration-panel"
-                  onClick={() => setDesktopActive(i)}
-                  className={`glass-card rounded-lg px-4 py-3.5 flex items-center gap-3.5 text-left transition-all duration-300 cursor-pointer flex-1 ${
-                    active
-                      ? "border-[#0E1C2B] bg-[#FFF6DE] shadow-[inset_0_0_0_1px_#0E1C2B]"
-                      : "hover:border-[#0E1C2B] hover:bg-[#FFF6DE]"
-                  }`}
-                >
-                  <div
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+      {/* Heading */}
+      <Cell
+        c={2}
+        span={10}
+        r={2}
+        rowSpan={2}
+        variant="k-title"
+        className="justify-center text-center max-md:hidden!"
+        formula="=INTEGRATE(api, email, webhooks, mcp)"
+      >
+        <h2 id="integrations-heading">Multiple Ways to Integrate</h2>
+      </Cell>
+
+      {/* Subtitle */}
+      <Cell
+        c={2}
+        span={10}
+        r={4}
+        variant="k-sub"
+        className="justify-center text-center max-md:hidden!"
+        formula="=CHOOSE(method, your_workflow)"
+      >
+        <p className="max-w-[540px] mx-auto">
+          Choose the integration method that fits your workflow
+        </p>
+      </Cell>
+
+      {/* Selector rail + detail panel — one bare cell preserves the shared tab state & reveal */}
+      <Cell c={2} span={10} r={6} rowSpan={13} variant="k-bare" interactive={false} className="max-md:hidden!">
+        <div className="max-w-[1100px] mx-auto px-4 sm:px-6 w-full">
+          <motion.div
+            className="grid grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] gap-5"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            {/* Selector rail */}
+            <div className="flex flex-col gap-3" role="tablist" aria-label="Integration methods">
+              {methods.map((m, i) => {
+                const active = i === desktopActive;
+                return (
+                  <button
+                    key={m.id}
+                    role="tab"
+                    id={`integration-tab-${m.id}`}
+                    aria-selected={active}
+                    aria-controls="integration-panel"
+                    onClick={() => setDesktopActive(i)}
+                    className={`glass-card rounded-lg px-4 py-3.5 flex items-center gap-3.5 text-left transition-all duration-300 cursor-pointer flex-1 ${
                       active
-                        ? "bg-[#FFC53D] text-[#0E1C2B] shadow-[0_2px_0_#B9820A]"
-                        : "bg-[#FFF6DE] text-[#B9820A]"
+                        ? "border-[#0E1C2B] bg-[#FFF6DE] shadow-[inset_0_0_0_1px_#0E1C2B]"
+                        : "hover:border-[#0E1C2B] hover:bg-[#FFF6DE]"
                     }`}
                   >
-                    <m.icon size={19} />
-                  </div>
-                  <div className="min-w-0">
-                    <div className={`text-sm font-bold transition-colors ${active ? "text-[#0E1C2B]" : "text-[#1B2E44]"}`}>
-                      {m.title}
+                    <div
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                        active
+                          ? "bg-[#FFC53D] text-[#0E1C2B] shadow-[0_2px_0_#B9820A]"
+                          : "bg-[#FFF6DE] text-[#B9820A]"
+                      }`}
+                    >
+                      <m.icon size={19} />
                     </div>
-                    <div className="text-xs text-[#6B7686] truncate">{m.subtitle}</div>
-                  </div>
-                  <ArrowRight
-                    size={15}
-                    className={`ml-auto flex-shrink-0 transition-all duration-300 ${
-                      active ? "text-[#B9820A] opacity-100 translate-x-0" : "opacity-0 -translate-x-1"
-                    }`}
-                  />
-                </button>
-              );
-            })}
-          </div>
+                    <div className="min-w-0">
+                      <div className={`text-sm font-bold transition-colors ${active ? "text-[#0E1C2B]" : "text-[#1B2E44]"}`}>
+                        {m.title}
+                      </div>
+                      <div className="text-xs text-[#6B7686] truncate">{m.subtitle}</div>
+                    </div>
+                    <ArrowRight
+                      size={15}
+                      className={`ml-auto flex-shrink-0 transition-all duration-300 ${
+                        active ? "text-[#B9820A] opacity-100 translate-x-0" : "opacity-0 -translate-x-1"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
 
-          {/* Detail panel */}
-          <div
-            id="integration-panel"
-            role="tabpanel"
-            aria-labelledby={`integration-tab-${methods[desktopActive].id}`}
-            className="glass-card rounded-lg p-6 lg:p-7 h-[520px] lg:h-[490px] overflow-y-auto overflow-x-hidden"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={methods[desktopActive].id}
-                initial={{ opacity: 0, x: 12 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -12 }}
-                transition={{ duration: 0.25 }}
-                className="flex flex-col h-full"
-              >
-                <ActiveContent />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </motion.div>
-      </div>
-    </section>
+            {/* Detail panel */}
+            <div
+              id="integration-panel"
+              role="tabpanel"
+              aria-labelledby={`integration-tab-${methods[desktopActive].id}`}
+              className="glass-card rounded-lg p-6 lg:p-7 h-[520px] lg:h-[490px] overflow-y-auto overflow-x-hidden"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={methods[desktopActive].id}
+                  initial={{ opacity: 0, x: 12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -12 }}
+                  transition={{ duration: 0.25 }}
+                  className="flex flex-col h-full"
+                >
+                  <ActiveContent />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        </div>
+      </Cell>
+    </SheetSection>
   );
 }
