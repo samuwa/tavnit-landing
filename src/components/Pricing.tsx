@@ -26,17 +26,17 @@ export default function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="pricing-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">Simple, Transparent Pricing</h2>
-          <p className="text-lg text-gray-400">Monthly plans with flexible credits</p>
+          <h2 id="pricing-heading" className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-2">Simple, Transparent Pricing</h2>
+          <p className="text-lg text-[#6B7686]">Monthly plans with flexible credits</p>
         </motion.div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 mb-6">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              className={`relative py-5 px-4 sm:py-8 sm:px-6 rounded-2xl flex flex-col hover:-translate-y-2 transition-all duration-300 ${
+              className={`relative py-5 px-4 sm:py-8 sm:px-6 rounded-lg flex flex-col hover:-translate-y-2 transition-all duration-300 ${
                 plan.featured
-                  ? "glass-card border-[#667eea]/50 shadow-xl shadow-[#667eea]/10 lg:scale-105"
+                  ? "glass-card border-[#FFC53D] bg-[#FFF6DE] shadow-[inset_0_0_0_2px_#0E1C2B,0_8px_24px_rgba(14,28,43,0.08)] lg:scale-105"
                   : "glass-card glass-card-hover"
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -45,34 +45,34 @@ export default function Pricing() {
               transition={{ delay: i * 0.1 }}
             >
               {plan.featured && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 sm:px-4 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-full shadow-md whitespace-nowrap">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 sm:px-4 bg-[#FFC53D] text-[#0E1C2B] text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-[4px] shadow-[0_2px_0_#B9820A] whitespace-nowrap">
                   BEST VALUE
                 </div>
               )}
-              <div className="text-center pb-4 sm:pb-6 border-b border-white/10">
-                <h3 className="text-base sm:text-xl font-bold text-white mb-2 sm:mb-4">{plan.name}</h3>
+              <div className="text-center pb-4 sm:pb-6 border-b border-[#E7E9EE]">
+                <h3 className="text-base sm:text-xl font-bold text-[#0E1C2B] mb-2 sm:mb-4">{plan.name}</h3>
                 <div className="mb-1 sm:mb-3">
-                  <span className="text-2xl sm:text-4xl font-extrabold gradient-text">{plan.price}</span>
-                  <span className="text-sm sm:text-base font-semibold text-gray-400">/mo</span>
+                  <span className="font-heading text-2xl sm:text-4xl font-extrabold gradient-text">{plan.price}</span>
+                  <span className="text-sm sm:text-base font-semibold text-[#6B7686]">/mo</span>
                 </div>
                 <div className="flex flex-col items-center mt-1">
-                  <span className="text-xl sm:text-3xl font-bold text-white">{plan.credits}</span>
-                  <span className="text-[10px] sm:text-sm text-gray-500 uppercase tracking-wider">credits/mo</span>
+                  <span className="font-heading text-xl sm:text-3xl font-bold text-[#0E1C2B]">{plan.credits}</span>
+                  <span className="text-[10px] sm:text-sm text-[#6B7686] uppercase tracking-wider">credits/mo</span>
                 </div>
               </div>
               <div className="py-4 sm:py-6 text-center flex-grow flex flex-col items-center justify-center">
-                <p className="text-[11px] sm:text-sm text-gray-400 mb-1 sm:mb-2 leading-snug">
+                <p className="text-[11px] sm:text-sm text-[#6B7686] mb-1 sm:mb-2 leading-snug">
                   {plan.breakdown}
-                  {plan.bonus && <span className="text-[#667eea] font-semibold">{plan.bonus}</span>}
+                  {plan.bonus && <span className="text-[#B9820A] font-semibold">{plan.bonus}</span>}
                 </p>
-                <p className="text-xs sm:text-base text-gray-500 leading-snug">{plan.value}</p>
+                <p className="text-xs sm:text-base text-[#6B7686] leading-snug">{plan.value}</p>
               </div>
               <Link
                 href="https://app.tavnit.io"
                 className={`w-full py-2.5 sm:py-3 rounded-lg text-center text-sm sm:text-base font-semibold transition-all ${
                   plan.featured
-                    ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#667eea]/20"
-                    : "border border-[#667eea]/50 text-[#667eea] hover:bg-[#667eea] hover:text-white hover:-translate-y-0.5"
+                    ? "bg-[#FFC53D] text-[#0E1C2B] shadow-[0_2px_0_#B9820A] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(255,197,61,0.35)]"
+                    : "border border-[#C9CFD8] bg-white text-[#0E1C2B] hover:bg-[#FFF6DE] hover:border-[#0E1C2B] hover:-translate-y-0.5"
                 }`}
               >
                 Get Started
@@ -81,22 +81,22 @@ export default function Pricing() {
           ))}
         </div>
 
-        <p className="text-center text-sm text-gray-500 mb-8 sm:mb-6">
+        <p className="text-center text-sm text-[#6B7686] mb-8 sm:mb-6">
           Need more? Buy extra credits at $0.16/credit (minimum 50 credits) on top of any plan.
         </p>
 
         {/* All Plans Include */}
         <motion.div
-          className="max-w-[900px] mx-auto p-5 sm:p-8 mb-8 sm:mb-0 rounded-2xl glass-card"
+          className="max-w-[900px] mx-auto p-5 sm:p-8 mb-8 sm:mb-0 rounded-lg glass-card"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h4 className="text-lg sm:text-xl font-bold text-center text-white mb-5 sm:mb-6">Everything Included in All Plans:</h4>
+          <h4 className="text-lg sm:text-xl font-bold text-center text-[#0E1C2B] mb-5 sm:mb-6">Everything Included in All Plans:</h4>
           <ul className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {includedFeatures.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-xs sm:text-sm text-gray-300">
-                <Check size={14} className="text-emerald-400 flex-shrink-0 mt-0.5 sm:w-5 sm:h-5" />
+              <li key={f} className="flex items-start gap-2 text-xs sm:text-sm text-[#1B2E44]">
+                <Check size={14} className="text-[#17A67B] flex-shrink-0 mt-0.5 sm:w-5 sm:h-5" />
                 {f}
               </li>
             ))}

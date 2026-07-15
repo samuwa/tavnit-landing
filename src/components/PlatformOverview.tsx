@@ -53,10 +53,10 @@ export default function PlatformOverview() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <h2 id="platform-overview-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">
+        <h2 id="platform-overview-heading" className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-2">
           Platform Overview
         </h2>
-        <p className="text-base md:text-lg text-gray-400 max-w-[520px] mx-auto">
+        <p className="text-base md:text-lg text-[#6B7686] max-w-[520px] mx-auto">
           From dashboard to extraction to tabulation — see how Tavnit
           streamlines your workflow
         </p>
@@ -75,14 +75,14 @@ export default function PlatformOverview() {
           >
             {screenshots.map((s) => (
               <div key={s.label} className="flex gap-4 items-start">
-                <div className="w-11 h-11 rounded-lg bg-[#667eea]/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <s.icon size={22} className="text-[#667eea]" />
+                <div className="w-11 h-11 rounded-lg bg-[#FFF6DE] border border-[#FFC53D]/50 flex items-center justify-center shrink-0 mt-0.5">
+                  <s.icon size={22} className="text-[#B9820A]" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-1">
+                  <h3 className="text-lg font-semibold text-[#0E1C2B] mb-1">
                     {s.label}
                   </h3>
-                  <p className="text-base text-gray-400 leading-relaxed">
+                  <p className="text-base text-[#6B7686] leading-relaxed">
                     {s.desc}
                   </p>
                 </div>
@@ -110,9 +110,9 @@ export default function PlatformOverview() {
               {screenshots.map((s) => (
                 <CardComponent key={s.label}>
                   <div className="flex flex-col w-full h-full">
-                    <div className="relative z-10 px-3 py-1.5 bg-black border-b border-white/10 shrink-0 flex items-center gap-1.5">
-                      <s.icon size={11} className="text-white/60" />
-                      <span className="text-[11px] font-medium tracking-wide text-white/90">
+                    <div className="relative z-10 px-3 py-1.5 bg-[#0E1C2B] border-b border-[#1B2E44] shrink-0 flex items-center gap-1.5">
+                      <s.icon size={11} className="text-[#9FB0C4]" />
+                      <span className="text-[11px] font-medium tracking-wide text-[#EAF0F7]">
                         {s.label}
                       </span>
                     </div>

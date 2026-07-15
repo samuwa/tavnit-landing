@@ -16,6 +16,7 @@ import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
+import SheetTabs from "@/components/SheetTabs";
 
 const Squares = dynamic(() => import("@/components/Squares"), {
   ssr: false,
@@ -24,14 +25,15 @@ const Squares = dynamic(() => import("@/components/Squares"), {
 export default function Home() {
   return (
     <>
-      {/* Fixed Squares background */}
-      <div className="fixed inset-0 -z-10 bg-[#0a0a1a]">
+      {/* Fixed Squares background — animated spreadsheet grid on paper */}
+      <div className="fixed inset-0 -z-10 bg-[#FBFBF9]">
         <Squares
           direction="diagonal"
           speed={0.17}
-          borderColor="#271E37"
+          borderColor="#E7E9EE"
           squareSize={45}
-          hoverFillColor="#222"
+          hoverFillColor="#FFF6DE"
+          vignetteColor="#FBFBF9"
         />
       </div>
 
@@ -52,6 +54,9 @@ export default function Home() {
         <FinalCTA />
       </main>
       <Footer />
+      {/* Spacer so the footer clears the fixed sheet-tab / status bars */}
+      <div style={{ height: "var(--chrome-bottom)" }} aria-hidden />
+      <SheetTabs />
     </>
   );
 }

@@ -43,32 +43,32 @@ function BrowserDemo({ step }: { step: number }) {
   const captured = step >= 5;
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden border border-[#667eea]/20 shadow-2xl shadow-[#667eea]/10">
+    <div className="bg-[#0E1C2B] rounded-lg overflow-hidden border border-[#1B2E44] shadow-[0_8px_24px_rgba(14,28,43,0.08)]">
       {/* Browser chrome */}
-      <div className="flex items-center gap-3 px-4 py-2.5 bg-white/5 border-b border-white/10">
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-[#1B2E44]/60 border-b border-[#1B2E44]">
         <div className="flex gap-1.5" aria-hidden="true">
-          <span className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
-          <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/60" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#B4530E]/70" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FFC53D]/70" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#17A67B]/70" />
         </div>
-        <div className="flex-1 flex items-center gap-2 bg-black/30 rounded-md px-3 py-1 text-[11px] text-gray-400 font-mono truncate">
+        <div className="flex-1 flex items-center gap-2 bg-[#0A1622] rounded-md px-3 py-1 text-[11px] text-[#9FB0C4] font-mono truncate">
           {step >= 1 ? "portal.acme-suppliers.com/parts" : "about:blank"}
         </div>
-        <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 uppercase tracking-wider flex-shrink-0">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="flex items-center gap-1.5 text-[10px] font-bold text-[#17A67B] uppercase tracking-wider flex-shrink-0">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#17A67B] animate-pulse" />
           Live
         </span>
       </div>
 
       {/* Page being operated */}
-      <div className="p-4 sm:p-5 bg-[#0d0d20]/60 min-h-[150px]">
-        <div className="h-2.5 w-24 rounded bg-white/10 mb-4" aria-hidden="true" />
+      <div className="p-4 sm:p-5 bg-[#122135] min-h-[150px]">
+        <div className="h-2.5 w-24 rounded bg-[#1B2E44] mb-4" aria-hidden="true" />
         <div className="flex gap-2 mb-4">
           <div
             className={`flex-1 rounded-lg border px-3 py-2 text-xs font-mono transition-all duration-500 ${
               filled
-                ? "border-[#667eea]/50 bg-[#667eea]/10 text-white"
-                : "border-white/10 bg-black/20 text-gray-600"
+                ? "border-[#FFC53D]/50 bg-[#FFC53D]/10 text-[#EAF0F7]"
+                : "border-[#1B2E44] bg-[#0A1622] text-[#6B7686]"
             }`}
           >
             {filled ? "PN-4471" : "Part number"}
@@ -76,29 +76,29 @@ function BrowserDemo({ step }: { step: number }) {
           <div
             className={`rounded-lg border px-4 py-2 text-xs font-semibold transition-all duration-300 ${
               clicked
-                ? "border-transparent bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white scale-95"
-                : "border-white/10 bg-white/5 text-gray-400"
+                ? "border-transparent bg-[#FFC53D] text-[#0E1C2B] scale-95"
+                : "border-[#1B2E44] bg-[#1B2E44]/50 text-[#9FB0C4]"
             }`}
           >
             Search
           </div>
         </div>
         <div
-          className={`rounded-lg border border-white/10 bg-black/20 px-3 py-2.5 flex items-center justify-between text-xs transition-all duration-500 ${
+          className={`rounded-lg border border-[#1B2E44] bg-[#0A1622] px-3 py-2.5 flex items-center justify-between text-xs transition-all duration-500 ${
             captured ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
           }`}
         >
-          <span className="text-gray-300 font-mono">PN-4471 · Hex bolt M8</span>
+          <span className="text-[#EAF0F7] font-mono">PN-4471 · Hex bolt M8</span>
           <span className="flex gap-3 font-mono">
-            <span className={captured ? "text-emerald-400" : "text-gray-500"}>$12.40</span>
-            <span className="text-gray-400">5 days</span>
+            <span className={captured ? "text-[#17A67B]" : "text-[#6B7686]"}>$12.40</span>
+            <span className="text-[#9FB0C4]">5 days</span>
           </span>
         </div>
       </div>
 
       {/* Agent step log */}
-      <div className="px-4 sm:px-5 py-3.5 border-t border-white/10 bg-black/30">
-        <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2.5">
+      <div className="px-4 sm:px-5 py-3.5 border-t border-[#1B2E44] bg-[#0A1622]">
+        <div className="text-[10px] font-bold text-[#9FB0C4] uppercase tracking-widest mb-2.5">
           Agent steps
         </div>
         <div className="space-y-1.5 font-mono text-[11px]" aria-live="off">
@@ -109,17 +109,17 @@ function BrowserDemo({ step }: { step: number }) {
               <div
                 key={s.verb + i}
                 className={`flex items-center gap-2 transition-all duration-300 ${
-                  done ? "text-gray-500" : current ? "text-white" : "text-gray-700"
+                  done ? "text-[#6B7686]" : current ? "text-[#EAF0F7]" : "text-[#3D5068]"
                 }`}
               >
                 <span
                   className={`w-3.5 text-center flex-shrink-0 ${
-                    done ? "text-emerald-400" : current ? "text-[#667eea]" : ""
+                    done ? "text-[#17A67B]" : current ? "text-[#FFC53D]" : ""
                   }`}
                 >
                   {done ? "✓" : current ? "▸" : "·"}
                 </span>
-                <span className={current ? "text-[#a5b4fc] font-bold" : "text-[#667eea]/70"}>
+                <span className={current ? "text-[#FFC53D] font-bold" : "text-[#FFC53D]/60"}>
                   {s.verb}
                 </span>
                 <span className="truncate">{s.detail}</span>
@@ -131,17 +131,17 @@ function BrowserDemo({ step }: { step: number }) {
 
       {/* Typed output */}
       <div
-        className={`px-4 sm:px-5 py-3.5 border-t border-white/10 bg-emerald-500/5 transition-all duration-500 ${
+        className={`px-4 sm:px-5 py-3.5 border-t border-[#1B2E44] bg-[#17A67B]/10 transition-all duration-500 ${
           outputVisible ? "opacity-100" : "opacity-40"
         }`}
       >
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+          <span className="text-[10px] font-bold text-[#9FB0C4] uppercase tracking-widest">
             Structured output
           </span>
           <span
             className={`text-[10px] font-semibold transition-opacity duration-500 ${
-              outputVisible ? "text-emerald-400 opacity-100" : "opacity-0"
+              outputVisible ? "text-[#17A67B] opacity-100" : "opacity-0"
             }`}
           >
             → delivered to Bucket
@@ -149,7 +149,7 @@ function BrowserDemo({ step }: { step: number }) {
         </div>
         <code
           className={`block font-mono text-[11px] leading-relaxed transition-all duration-500 ${
-            outputVisible ? "text-emerald-300" : "text-gray-700"
+            outputVisible ? "text-[#4CC9A0]" : "text-[#3D5068]"
           }`}
         >
           {'{ "part": "PN-4471", "unit_price": 12.40, "lead_time_days": 5 }'}
@@ -204,19 +204,19 @@ export default function AgentsShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#667eea]/10 border border-[#667eea]/25 text-[#a5b4fc] text-xs font-bold uppercase tracking-wider mb-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[4px] bg-[#FFF6DE] border border-[#FFC53D]/50 text-[#B9820A] font-mono text-[11px] sm:text-xs uppercase tracking-[0.14em] mb-5">
               <Bot size={14} />
               New · Agents
             </div>
             <h2
               id="agents-heading"
-              className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight"
+              className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-4 leading-tight"
             >
               Extraction was step one.
               <br />
               Now your data <span className="gradient-text">acts</span>.
             </h2>
-            <p className="text-base md:text-lg text-gray-400 mb-8 max-w-[480px]">
+            <p className="text-base md:text-lg text-[#6B7686] mb-8 max-w-[480px]">
               Describe a mission in plain language. A Tavnit Agent opens a real
               browser, works through the website, and brings back structured
               results — no scripts, no scrapers to maintain.
@@ -225,14 +225,14 @@ export default function AgentsShowcase() {
             <div className="space-y-5 mb-8">
               {highlights.map((h) => (
                 <div key={h.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-lg bg-[#667eea]/10 text-[#667eea] flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-[#FFF6DE] border border-[#FFC53D]/50 text-[#B9820A] flex items-center justify-center flex-shrink-0">
                     <h.icon size={18} />
                   </div>
                   <div>
-                    <h3 className="text-sm md:text-base font-bold text-white mb-0.5">
+                    <h3 className="text-sm md:text-base font-bold text-[#0E1C2B] mb-0.5">
                       {h.title}
                     </h3>
-                    <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
+                    <p className="text-xs md:text-sm text-[#6B7686] leading-relaxed">
                       {h.desc}
                     </p>
                   </div>
@@ -242,7 +242,7 @@ export default function AgentsShowcase() {
 
             <Link
               href="https://app.tavnit.io"
-              className="inline-flex items-center gap-2 font-semibold text-[#667eea] hover:text-[#a78bfa] transition-colors group"
+              className="inline-flex items-center gap-2 font-semibold text-[#B9820A] hover:text-[#0E1C2B] transition-colors group"
             >
               Create your first agent
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

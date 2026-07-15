@@ -50,7 +50,7 @@ function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
 
   return (
     <motion.div
-      className="glass-card rounded-xl overflow-hidden"
+      className="glass-card rounded-md overflow-hidden"
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -60,12 +60,12 @@ function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls={panelId}
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer hover:bg-white/[0.03] transition-colors"
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer hover:bg-[#FFF6DE] transition-colors"
       >
-        <span className="text-sm md:text-base font-semibold text-white">{q}</span>
+        <span className="text-sm md:text-base font-semibold text-[#0E1C2B]">{q}</span>
         <ChevronDown
           size={18}
-          className={`flex-shrink-0 text-[#667eea] transition-transform duration-300 ${
+          className={`flex-shrink-0 text-[#B9820A] transition-transform duration-300 ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -77,7 +77,7 @@ function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
         }`}
       >
         <div className="overflow-hidden">
-          <p className="px-5 pb-4 text-sm text-gray-400 leading-relaxed">{a}</p>
+          <p className="px-5 pb-4 pt-3 border-t border-[#E7E9EE] text-sm text-[#6B7686] leading-relaxed">{a}</p>
         </div>
       </div>
     </motion.div>
@@ -94,10 +94,10 @@ export default function FAQ() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="faq-heading" className="text-3xl md:text-4xl font-bold text-white mb-3">
+          <h2 id="faq-heading" className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-3">
             Frequently Asked Questions
           </h2>
-          <p className="text-base md:text-lg text-gray-400">
+          <p className="text-base md:text-lg text-[#6B7686]">
             Everything you need to know before your first flow
           </p>
         </motion.div>

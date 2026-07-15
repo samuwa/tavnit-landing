@@ -15,6 +15,7 @@ interface SquaresProps {
   borderColor?: CanvasStrokeStyle;
   squareSize?: number;
   hoverFillColor?: CanvasStrokeStyle;
+  vignetteColor?: string;
 }
 
 const Squares: React.FC<SquaresProps> = ({
@@ -22,7 +23,8 @@ const Squares: React.FC<SquaresProps> = ({
   speed = 1,
   borderColor = '#999',
   squareSize = 40,
-  hoverFillColor = '#222'
+  hoverFillColor = '#222',
+  vignetteColor = '#0a0a1a'
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const requestRef = useRef<number | null>(null);
@@ -81,8 +83,10 @@ const Squares: React.FC<SquaresProps> = ({
         canvas.height / 2,
         Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2
       );
-      gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      gradient.addColorStop(1, '#0a0a1a');
+      // Fade from a transparent version of the vignette color so the
+      // interpolation never passes through semi-transparent grey/black.
+      gradient.addColorStop(0, vignetteColor + '00');
+      gradient.addColorStop(1, vignetteColor);
 
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -148,7 +152,7 @@ const Squares: React.FC<SquaresProps> = ({
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [direction, speed, borderColor, hoverFillColor, squareSize]);
+  }, [direction, speed, borderColor, hoverFillColor, squareSize, vignetteColor]);
 
   return <canvas ref={canvasRef} className="w-full h-full border-none block" />;
 };

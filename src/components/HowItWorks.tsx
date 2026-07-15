@@ -50,8 +50,8 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">How It Works</h2>
-          <p className="text-base md:text-lg text-gray-400 max-w-[600px] mx-auto">
+          <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-2">How It Works</h2>
+          <p className="text-base md:text-lg text-[#6B7686] max-w-[600px] mx-auto">
             From document to structured data to action — in 6 simple steps
           </p>
         </motion.div>
@@ -97,7 +97,7 @@ export default function HowItWorks() {
         <div className="text-center mt-8 md:mt-16">
           <button
             onClick={() => setVideoOpen(true)}
-            className="inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-full text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-lg hover:shadow-xl hover:shadow-[#667eea]/20 cursor-pointer"
+            className="inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-[#FFC53D] text-[#0E1C2B] rounded-lg text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-[0_2px_0_#B9820A] hover:shadow-[0_8px_24px_rgba(255,197,61,0.35)] cursor-pointer"
           >
             <Play size={20} />
             Watch Demo Video

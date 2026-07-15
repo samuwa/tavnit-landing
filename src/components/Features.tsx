@@ -8,31 +8,39 @@ import {
 } from "lucide-react";
 
 const features = [
-  { icon: Sparkles, title: "AI Extraction", desc: "Powered by multiple leading AI models to extract tables, metadata, handwriting, and complex layouts from any document. Includes confidence scoring, field-level validation, and support for multi-page and multi-language documents.", gradient: true, hero: true },
-  { icon: LayoutGrid, title: "Flow Builder", desc: "No-code extraction pipelines with field hints, validation, and output mapping.", gradient: false, hero: false },
-  { icon: GitBranch, title: "Routing & Splitting", desc: "Collections auto-route mixed documents to the right flow. Splitters break multi-document PDFs apart first.", gradient: false, hero: false },
-  { icon: Lightbulb, title: "AI Data Cleaning", desc: "Cleaners format, translate, convert currencies and units, calculate fields, match against reference data — even classify HS tariff codes.", gradient: false, hero: false },
-  { icon: Bot, title: "AI Agents", desc: "Browser-automation agents act on extracted data across the web — watch every session live.", gradient: false, hero: false },
-  { icon: UserCheck, title: "Human in the Loop", desc: "Pause runs for review. Edit results in place, approve or reject — every action in an append-only audit trail.", gradient: false, hero: false },
-  { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can run flows and query your data.", gradient: false, hero: false },
-  { icon: Database, title: "Buckets & Analytics", desc: "Structured tables with charts, filters, CSV/Excel export, and AI-powered semantic search across columns.", gradient: false, hero: false },
-  { icon: Code2, title: "API, Email & Webhooks", desc: "REST API, email triggers, webhook callbacks, PDF form filling, and Zapier/Make compatibility.", gradient: false, hero: false },
-  { icon: Users, title: "Teams & Roles", desc: "Owner, Admin, Member, Viewer roles with org-level permissions and unlimited seats.", gradient: false, hero: false },
+  { icon: Sparkles, title: "AI Extraction", desc: "Powered by multiple leading AI models to extract tables, metadata, handwriting, and complex layouts from any document. Includes confidence scoring, field-level validation, and support for multi-page and multi-language documents.", gradient: true, hero: true, accent: "gold" },
+  { icon: LayoutGrid, title: "Flow Builder", desc: "No-code extraction pipelines with field hints, validation, and output mapping.", gradient: false, hero: false, accent: "gold" },
+  { icon: GitBranch, title: "Routing & Splitting", desc: "Collections auto-route mixed documents to the right flow. Splitters break multi-document PDFs apart first.", gradient: false, hero: false, accent: "jade" },
+  { icon: Lightbulb, title: "AI Data Cleaning", desc: "Cleaners format, translate, convert currencies and units, calculate fields, match against reference data — even classify HS tariff codes.", gradient: false, hero: false, accent: "raw" },
+  { icon: Bot, title: "AI Agents", desc: "Browser-automation agents act on extracted data across the web — watch every session live.", gradient: false, hero: false, accent: "ink" },
+  { icon: UserCheck, title: "Human in the Loop", desc: "Pause runs for review. Edit results in place, approve or reject — every action in an append-only audit trail.", gradient: false, hero: false, accent: "gold" },
+  { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can run flows and query your data.", gradient: false, hero: false, accent: "jade" },
+  { icon: Database, title: "Buckets & Analytics", desc: "Structured tables with charts, filters, CSV/Excel export, and AI-powered semantic search across columns.", gradient: false, hero: false, accent: "raw" },
+  { icon: Code2, title: "API, Email & Webhooks", desc: "REST API, email triggers, webhook callbacks, PDF form filling, and Zapier/Make compatibility.", gradient: false, hero: false, accent: "ink" },
+  { icon: Users, title: "Teams & Roles", desc: "Owner, Admin, Member, Viewer roles with org-level permissions and unlimited seats.", gradient: false, hero: false, accent: "gold" },
 ];
+
+/* Icon accent chips — alternate gold-deep / jade / raw / ink for variety */
+const accentClasses: Record<string, string> = {
+  gold: "bg-[#FFF6DE] text-[#B9820A]",
+  jade: "bg-[#E6F6F0] text-[#0C6B4C]",
+  raw: "bg-[#FCEDE1] text-[#B4530E]",
+  ink: "bg-[#F0F2F5] text-[#0E1C2B]",
+};
 
 /* Hero feature card — spans 2 columns on desktop */
 function HeroFeatureCard({ f }: { f: typeof features[number] }) {
   return (
-    <div className="group relative p-6 md:p-8 rounded-2xl glass-card border-[#667eea]/20 hover:border-[#667eea]/40 transition-all duration-300 h-full overflow-hidden">
+    <div className="group relative p-6 md:p-8 rounded-lg glass-card border-[#FFC53D]/60 hover:border-[#B9820A]/60 transition-all duration-300 h-full overflow-hidden">
       {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#667eea]/5 to-[#764ba2]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#FFF6DE]/80 to-[#FFF6DE]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-5">
-        <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg shadow-[#667eea]/20 flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 md:w-14 md:h-14 rounded-lg bg-[#FFC53D] text-[#0E1C2B] shadow-[0_2px_0_#B9820A] flex items-center justify-center flex-shrink-0">
           <f.icon size={26} />
         </div>
         <div>
-          <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">{f.title}</h3>
-          <p className="text-sm md:text-base text-gray-400 leading-relaxed">{f.desc}</p>
+          <h3 className="text-lg md:text-xl font-bold text-[#0E1C2B] mb-1.5">{f.title}</h3>
+          <p className="text-sm md:text-base text-[#6B7686] leading-relaxed">{f.desc}</p>
         </div>
       </div>
     </div>
@@ -41,20 +49,20 @@ function HeroFeatureCard({ f }: { f: typeof features[number] }) {
 
 function FeatureCard({ f }: { f: typeof features[number] }) {
   return (
-    <div className="group p-5 sm:p-6 rounded-2xl glass-card glass-card-hover hover:-translate-y-1 transition-all duration-300 h-full">
+    <div className="group p-5 sm:p-6 rounded-lg glass-card glass-card-hover hover:-translate-y-1 transition-all duration-300 h-full">
       <div className="flex items-center gap-3.5 mb-3">
         <div
           className={`w-9 h-9 md:w-10 md:h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
             f.gradient
-              ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg shadow-[#667eea]/20"
-              : "bg-[#667eea]/10 text-[#667eea]"
+              ? "bg-[#FFC53D] text-[#0E1C2B] shadow-[0_2px_0_#B9820A]"
+              : accentClasses[f.accent]
           }`}
         >
           <f.icon size={20} />
         </div>
-        <h3 className="text-sm md:text-base font-bold text-white">{f.title}</h3>
+        <h3 className="text-sm md:text-base font-bold text-[#0E1C2B]">{f.title}</h3>
       </div>
-      <p className="text-xs md:text-sm text-gray-400 leading-relaxed">{f.desc}</p>
+      <p className="text-xs md:text-sm text-[#6B7686] leading-relaxed">{f.desc}</p>
     </div>
   );
 }
@@ -62,20 +70,20 @@ function FeatureCard({ f }: { f: typeof features[number] }) {
 /* Compact card for the marquee row */
 function MarqueeCard({ f }: { f: typeof features[number] }) {
   return (
-    <div className="glass-card rounded-xl p-4 border border-white/10 flex-shrink-0 w-[200px]">
+    <div className="glass-card rounded-lg p-4 border border-[#C9CFD8] flex-shrink-0 w-[200px]">
       <div className="flex items-center gap-2.5 mb-2">
         <div
           className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
             f.gradient
-              ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg shadow-[#667eea]/20"
-              : "bg-[#667eea]/10 text-[#667eea]"
+              ? "bg-[#FFC53D] text-[#0E1C2B] shadow-[0_2px_0_#B9820A]"
+              : accentClasses[f.accent]
           }`}
         >
           <f.icon size={16} />
         </div>
-        <h3 className="text-xs font-bold text-white">{f.title}</h3>
+        <h3 className="text-xs font-bold text-[#0E1C2B]">{f.title}</h3>
       </div>
-      <p className="text-[11px] text-gray-400 leading-relaxed">{f.desc}</p>
+      <p className="text-[11px] text-[#6B7686] leading-relaxed">{f.desc}</p>
     </div>
   );
 }
@@ -146,10 +154,10 @@ export default function Features() {
       {/* ── Mobile: continuous marquee ── */}
       <div className="md:hidden">
         <div className="px-4 mb-5">
-          <p className="text-xl font-bold text-white mb-1 text-center" aria-hidden="true">
+          <p className="text-xl font-bold text-[#0E1C2B] mb-1 text-center" aria-hidden="true">
             The Complete Document Automation Platform
           </p>
-          <p className="text-xs text-gray-400 text-center">
+          <p className="text-xs text-[#6B7686] text-center">
             Extract, clean, review, store, and act — all in one pipeline
           </p>
         </div>
@@ -178,10 +186,10 @@ export default function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="features-heading" className="text-3xl md:text-4xl font-bold text-white mb-3">
+          <h2 id="features-heading" className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-3">
             The Complete Document Automation Platform
           </h2>
-          <p className="text-base md:text-lg text-gray-400 max-w-[600px] mx-auto">
+          <p className="text-base md:text-lg text-[#6B7686] max-w-[600px] mx-auto">
             Extract, clean, review, store, and act — all in one pipeline
           </p>
         </motion.div>

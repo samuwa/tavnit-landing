@@ -13,7 +13,7 @@ function DesktopFeatureTags({ tags }: { tags: string[] }) {
   return (
     <div className="flex flex-wrap gap-1 mt-auto pt-5">
       {tags.map((t) => (
-        <span key={t} className="bg-white/5 border border-white/10 rounded-md text-gray-400 font-medium px-2.5 py-1 text-[11px]">{t}</span>
+        <span key={t} className="bg-[#F0F2F5] border border-[#E7E9EE] rounded-md text-[#6B7686] font-medium px-2.5 py-1 text-[11px]">{t}</span>
       ))}
     </div>
   );
@@ -21,7 +21,7 @@ function DesktopFeatureTags({ tags }: { tags: string[] }) {
 
 function DesktopCardLink({ href, label }: { href: string; label: string }) {
   return (
-    <Link href={href} className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] hover:text-[#a78bfa] transition-colors group/link text-sm mt-5">
+    <Link href={href} className="inline-flex items-center gap-1.5 font-semibold text-[#B9820A] hover:text-[#0E1C2B] transition-colors group/link text-sm mt-5">
       {label}
       <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
     </Link>
@@ -32,8 +32,8 @@ function DesktopEmailSteps({ steps, numbered }: { steps: string[]; numbered?: bo
   return (
     <div className="space-y-2.5">
       {steps.map((step, i) => (
-        <div key={i} className="flex items-start gap-3 text-sm text-gray-300">
-          <span className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 font-bold text-[10px] ${numbered ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white" : "bg-emerald-500/20 text-emerald-400"}`}>
+        <div key={i} className="flex items-start gap-3 text-sm text-[#1B2E44]">
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 font-bold text-[10px] ${numbered ? "bg-[#FFC53D] text-[#0E1C2B]" : "bg-[#E6F6F0] text-[#0C6B4C]"}`}>
             {numbered ? i + 1 : "✓"}
           </span>
           <span className="leading-snug">{step}</span>
@@ -53,26 +53,26 @@ const apiEndpoints = [
 function ApiDesktop() {
   return (
     <>
-      <div className="bg-black/40 rounded-lg overflow-hidden border border-white/5">
-        <div className="flex justify-between items-center px-4 py-2 border-b border-white/5">
-          <span className="text-[10px] font-bold text-[#667eea] uppercase tracking-widest">cURL</span>
-          <span className="text-[10px] text-gray-500">Quick Example</span>
+      <div className="bg-[#0E1C2B] rounded-lg overflow-hidden border border-[#1B2E44]">
+        <div className="flex justify-between items-center px-4 py-2 border-b border-[#1B2E44]">
+          <span className="text-[10px] font-bold text-[#FFC53D] uppercase tracking-widest">cURL</span>
+          <span className="text-[10px] text-[#9FB0C4]">Quick Example</span>
         </div>
         <pre className="p-4 overflow-x-auto">
-          <code className="font-mono text-[11px] leading-[1.7] text-emerald-400 block whitespace-pre">{`curl -X POST /api/runs/process \\
+          <code className="font-mono text-[11px] leading-[1.7] text-[#17A67B] block whitespace-pre">{`curl -X POST /api/runs/process \\
   -H "X-API-Key: YOUR_KEY" \\
   -F "file=@invoice.pdf" \\
   -F "flow_id=YOUR_FLOW_ID"`}</code>
         </pre>
       </div>
       <div className="mt-4">
-        <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2.5">More Endpoints</h4>
+        <h4 className="text-xs font-bold text-[#6B7686] uppercase tracking-wider mb-2.5">More Endpoints</h4>
         <div className="space-y-1.5">
           {apiEndpoints.map((e) => (
             <div key={e.path} className="flex items-center gap-2.5 text-[12px]">
-              <span className="px-1.5 py-0.5 rounded bg-[#667eea]/10 text-[#667eea] font-mono font-bold text-[9px] flex-shrink-0">POST</span>
-              <code className="font-mono text-gray-300 flex-shrink-0">{e.path}</code>
-              <span className="text-gray-500 truncate">— {e.desc}</span>
+              <span className="px-1.5 py-0.5 rounded bg-[#FFF6DE] text-[#B9820A] font-mono font-bold text-[9px] flex-shrink-0">POST</span>
+              <code className="font-mono text-[#1B2E44] flex-shrink-0">{e.path}</code>
+              <span className="text-[#6B7686] truncate">— {e.desc}</span>
             </div>
           ))}
         </div>
@@ -88,21 +88,21 @@ function EmailDesktop() {
     <>
       <div className="space-y-5">
         <div>
-          <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Email Trigger</h4>
+          <h4 className="text-xs font-bold text-[#6B7686] uppercase tracking-wider mb-3">Email Trigger</h4>
           <DesktopEmailSteps steps={["Enable Email Trigger on your flow", "Copy your flow's unique email address", "Forward PDFs/images as attachments"]} numbered />
         </div>
         <div>
-          <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Email Output</h4>
+          <h4 className="text-xs font-bold text-[#6B7686] uppercase tracking-wider mb-3">Email Output</h4>
           <DesktopEmailSteps steps={["Configure recipient email in flow settings", "Receive JSON results automatically"]} />
         </div>
         <div>
-          <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2.5">Accepted Attachments</h4>
+          <h4 className="text-xs font-bold text-[#6B7686] uppercase tracking-wider mb-2.5">Accepted Attachments</h4>
           <div className="flex items-center flex-wrap gap-1.5 mb-2">
             {[".pdf", ".png", ".jpg", ".tiff", ".webp", "+ more"].map((ext) => (
-              <span key={ext} className="px-2 py-0.5 rounded bg-black/40 border border-white/10 text-gray-300 font-mono text-[10px]">{ext}</span>
+              <span key={ext} className="px-2 py-0.5 rounded bg-[#F0F2F5] border border-[#C9CFD8] text-[#1B2E44] font-mono text-[10px]">{ext}</span>
             ))}
           </div>
-          <p className="text-[12px] text-gray-500 leading-snug">
+          <p className="text-[12px] text-[#6B7686] leading-snug">
             Each attachment becomes its own run — forward a batch and get one result per
             document. Collections and Splitters have email addresses too, so mixed
             documents route themselves.
@@ -118,7 +118,7 @@ function EmailDesktop() {
 function WebhookDesktop() {
   return (
     <>
-      <div className="p-4 bg-white/3 rounded-xl border border-white/5">
+      <div className="p-4 bg-[#F0F2F5] rounded-lg border border-[#E7E9EE]">
         <div className="flex items-start justify-between">
           {[
             { icon: FileText, label: "Document processed" },
@@ -127,27 +127,27 @@ function WebhookDesktop() {
           ].map((item, i) => (
             <div key={i} className="flex items-start flex-1">
               <div className="flex flex-col items-center gap-2 flex-1">
-                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#667eea] shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-white border border-[#C9CFD8] flex items-center justify-center text-[#B9820A] shadow-sm">
                   <item.icon size={18} />
                 </div>
-                <span className="text-[11px] text-gray-400 font-medium text-center leading-tight max-w-[90px]">{item.label}</span>
+                <span className="text-[11px] text-[#6B7686] font-medium text-center leading-tight max-w-[90px]">{item.label}</span>
               </div>
               {i < 2 && (
                 <div className="h-10 flex items-center flex-shrink-0" aria-hidden="true">
-                  <ArrowRight size={16} className="text-[#667eea]/50" />
+                  <ArrowRight size={16} className="text-[#B9820A]/50" />
                 </div>
               )}
             </div>
           ))}
         </div>
       </div>
-      <div className="mt-4 bg-black/40 rounded-lg overflow-hidden border border-white/5">
-        <div className="flex justify-between items-center px-4 py-2 border-b border-white/5">
-          <span className="text-[10px] font-bold text-[#667eea] uppercase tracking-widest">Payload</span>
-          <span className="text-[10px] text-gray-500">Sent to your URL</span>
+      <div className="mt-4 bg-[#0E1C2B] rounded-lg overflow-hidden border border-[#1B2E44]">
+        <div className="flex justify-between items-center px-4 py-2 border-b border-[#1B2E44]">
+          <span className="text-[10px] font-bold text-[#FFC53D] uppercase tracking-widest">Payload</span>
+          <span className="text-[10px] text-[#9FB0C4]">Sent to your URL</span>
         </div>
         <pre className="p-3.5 overflow-x-auto">
-          <code className="font-mono text-[11px] leading-[1.6] text-emerald-400 block whitespace-pre">{`{
+          <code className="font-mono text-[11px] leading-[1.6] text-[#17A67B] block whitespace-pre">{`{
   "vendor": "Acme Corp",
   "invoice_number": "INV-2043",
   "total": "1,420.00",
@@ -156,7 +156,7 @@ function WebhookDesktop() {
 }`}</code>
         </pre>
       </div>
-      <p className="text-[12px] text-gray-500 leading-snug mt-3">
+      <p className="text-[12px] text-[#6B7686] leading-snug mt-3">
         Your extracted fields arrive at the top level, alongside the run and flow
         IDs. Set the URL in your flow&apos;s settings — deliveries retry
         automatically on transient connection failures.
@@ -172,21 +172,21 @@ function McpDesktop() {
     <>
       <div className="space-y-5">
         <div>
-          <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Connect in Minutes</h4>
+          <h4 className="text-xs font-bold text-[#6B7686] uppercase tracking-wider mb-3">Connect in Minutes</h4>
           <DesktopEmailSteps steps={["Generate a connector URL in Integrations", "Paste it into claude.ai, Cursor, or any MCP client", "Ask your assistant to run flows and query your data"]} numbered />
         </div>
         <div>
-          <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">What Your Assistant Can Do</h4>
+          <h4 className="text-xs font-bold text-[#6B7686] uppercase tracking-wider mb-3">What Your Assistant Can Do</h4>
           <DesktopEmailSteps steps={["Process documents through your flows", "Read and search your Buckets"]} />
         </div>
         <div>
-          <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2.5">Try Asking</h4>
+          <h4 className="text-xs font-bold text-[#6B7686] uppercase tracking-wider mb-2.5">Try Asking</h4>
           <div className="space-y-1.5">
             {[
               "“Run this invoice through my Supplier Invoices flow”",
               "“What did we pay Acme Corp last quarter?”",
             ].map((prompt) => (
-              <div key={prompt} className="px-3 py-1.5 rounded-lg bg-black/40 border border-white/10 text-[12px] text-gray-300 italic">
+              <div key={prompt} className="px-3 py-1.5 rounded-lg bg-[#FFF6DE] border border-[#FFC53D]/40 text-[12px] text-[#1B2E44] italic">
                 {prompt}
               </div>
             ))}
@@ -207,9 +207,9 @@ function MobileEmailSteps({ steps, numbered }: { steps: string[]; numbered?: boo
   return (
     <div className="space-y-1.5">
       {steps.map((step, i) => (
-        <div key={i} className="flex items-start gap-2 text-xs text-gray-300">
+        <div key={i} className="flex items-start gap-2 text-xs text-[#1B2E44]">
           <span className={`w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 font-bold text-[9px] ${
-            numbered ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white" : "bg-emerald-500/20 text-emerald-400"
+            numbered ? "bg-[#FFC53D] text-[#0E1C2B]" : "bg-[#E6F6F0] text-[#0C6B4C]"
           }`}>
             {numbered ? i + 1 : "✓"}
           </span>
@@ -222,24 +222,24 @@ function MobileEmailSteps({ steps, numbered }: { steps: string[]; numbered?: boo
 
 function ApiMobileCard() {
   return (
-    <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
+    <div className="glass-card rounded-lg p-5 border border-[#C9CFD8] flex flex-col h-full">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-[#667eea]/10 flex items-center justify-center text-[#667eea] flex-shrink-0">
+        <div className="w-10 h-10 rounded-lg bg-[#FFF6DE] flex items-center justify-center text-[#B9820A] flex-shrink-0">
           <Code2 size={20} />
         </div>
         <div>
-          <h3 className="text-base font-bold text-white">REST API</h3>
-          <p className="text-[11px] text-gray-400">Full programmatic control</p>
+          <h3 className="text-base font-bold text-[#0E1C2B]">REST API</h3>
+          <p className="text-[11px] text-[#6B7686]">Full programmatic control</p>
         </div>
       </div>
 
-      <div className="bg-black/40 rounded-lg overflow-hidden border border-white/5 mb-3">
-        <div className="flex justify-between items-center px-3 py-1.5 border-b border-white/5">
-          <span className="text-[9px] font-bold text-[#667eea] uppercase tracking-widest">cURL</span>
-          <span className="text-[9px] text-gray-500">Quick Example</span>
+      <div className="bg-[#0E1C2B] rounded-lg overflow-hidden border border-[#1B2E44] mb-3">
+        <div className="flex justify-between items-center px-3 py-1.5 border-b border-[#1B2E44]">
+          <span className="text-[9px] font-bold text-[#FFC53D] uppercase tracking-widest">cURL</span>
+          <span className="text-[9px] text-[#9FB0C4]">Quick Example</span>
         </div>
         <pre className="p-2.5 overflow-x-auto">
-          <code className="font-mono text-[10px] leading-relaxed text-emerald-400 block whitespace-pre-wrap break-all">{`curl -X POST /api/runs/process \\
+          <code className="font-mono text-[10px] leading-relaxed text-[#17A67B] block whitespace-pre-wrap break-all">{`curl -X POST /api/runs/process \\
   -H "X-API-Key: YOUR_KEY" \\
   -F "file=@invoice.pdf" \\
   -F "flow_id=YOUR_FLOW_ID"`}</code>
@@ -248,11 +248,11 @@ function ApiMobileCard() {
 
       <div className="flex flex-wrap gap-1 mb-3">
         {["API key auth", "Multipart / JSON", "Real-time", "Python & JS SDKs"].map((t) => (
-          <span key={t} className="bg-white/5 border border-white/10 rounded px-1.5 py-0.5 text-[9px] text-gray-400 font-medium">{t}</span>
+          <span key={t} className="bg-[#F0F2F5] border border-[#E7E9EE] rounded px-1.5 py-0.5 text-[9px] text-[#6B7686] font-medium">{t}</span>
         ))}
       </div>
 
-      <Link href="/docs#api-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] text-xs mt-auto">
+      <Link href="/docs#api-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#B9820A] text-xs mt-auto">
         View API Docs <ArrowRight size={12} />
       </Link>
     </div>
@@ -261,35 +261,35 @@ function ApiMobileCard() {
 
 function EmailMobileCard() {
   return (
-    <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
+    <div className="glass-card rounded-lg p-5 border border-[#C9CFD8] flex flex-col h-full">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-[#667eea]/10 flex items-center justify-center text-[#667eea] flex-shrink-0">
+        <div className="w-10 h-10 rounded-lg bg-[#FFF6DE] flex items-center justify-center text-[#B9820A] flex-shrink-0">
           <Mail size={20} />
         </div>
         <div>
-          <h3 className="text-base font-bold text-white">Email Integration</h3>
-          <p className="text-[11px] text-gray-400">Send & receive via email</p>
+          <h3 className="text-base font-bold text-[#0E1C2B]">Email Integration</h3>
+          <p className="text-[11px] text-[#6B7686]">Send & receive via email</p>
         </div>
       </div>
 
       <div className="space-y-3 mb-3">
         <div>
-          <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Email Trigger</h4>
+          <h4 className="text-[10px] font-bold text-[#6B7686] uppercase tracking-wider mb-1.5">Email Trigger</h4>
           <MobileEmailSteps steps={["Enable Email Trigger on your flow", "Copy your flow's unique email address", "Forward PDFs/images as attachments"]} numbered />
         </div>
         <div>
-          <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Email Output</h4>
+          <h4 className="text-[10px] font-bold text-[#6B7686] uppercase tracking-wider mb-1.5">Email Output</h4>
           <MobileEmailSteps steps={["Configure recipient email in flow settings", "Receive JSON results automatically"]} />
         </div>
       </div>
 
       <div className="flex flex-wrap gap-1 mb-3">
         {["Unique email per flow", "Mixed doc routing", "One run per attachment", "Auto replies"].map((t) => (
-          <span key={t} className="bg-white/5 border border-white/10 rounded px-1.5 py-0.5 text-[9px] text-gray-400 font-medium">{t}</span>
+          <span key={t} className="bg-[#F0F2F5] border border-[#E7E9EE] rounded px-1.5 py-0.5 text-[9px] text-[#6B7686] font-medium">{t}</span>
         ))}
       </div>
 
-      <Link href="/docs#email-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] text-xs mt-auto">
+      <Link href="/docs#email-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#B9820A] text-xs mt-auto">
         Setup Email <ArrowRight size={12} />
       </Link>
     </div>
@@ -298,18 +298,18 @@ function EmailMobileCard() {
 
 function WebhookMobileCard() {
   return (
-    <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
+    <div className="glass-card rounded-lg p-5 border border-[#C9CFD8] flex flex-col h-full">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-[#667eea]/10 flex items-center justify-center text-[#667eea] flex-shrink-0">
+        <div className="w-10 h-10 rounded-lg bg-[#FFF6DE] flex items-center justify-center text-[#B9820A] flex-shrink-0">
           <Zap size={20} />
         </div>
         <div>
-          <h3 className="text-base font-bold text-white">Webhooks</h3>
-          <p className="text-[11px] text-gray-400">Real-time notifications</p>
+          <h3 className="text-base font-bold text-[#0E1C2B]">Webhooks</h3>
+          <p className="text-[11px] text-[#6B7686]">Real-time notifications</p>
         </div>
       </div>
 
-      <div className="p-3 bg-white/3 rounded-xl border border-white/5 mb-3">
+      <div className="p-3 bg-[#F0F2F5] rounded-lg border border-[#E7E9EE] mb-3">
         <div className="flex items-start justify-between">
           {[
             { icon: FileText, label: "Document processed" },
@@ -318,14 +318,14 @@ function WebhookMobileCard() {
           ].map((item, i) => (
             <div key={i} className="flex items-start flex-1">
               <div className="flex flex-col items-center gap-1.5 flex-1">
-                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#667eea]">
+                <div className="w-8 h-8 rounded-full bg-white border border-[#C9CFD8] flex items-center justify-center text-[#B9820A]">
                   <item.icon size={14} />
                 </div>
-                <span className="text-[9px] text-gray-400 font-medium text-center leading-tight max-w-[74px]">{item.label}</span>
+                <span className="text-[9px] text-[#6B7686] font-medium text-center leading-tight max-w-[74px]">{item.label}</span>
               </div>
               {i < 2 && (
                 <div className="h-8 flex items-center flex-shrink-0" aria-hidden="true">
-                  <ArrowRight size={12} className="text-[#667eea]/50" />
+                  <ArrowRight size={12} className="text-[#B9820A]/50" />
                 </div>
               )}
             </div>
@@ -333,18 +333,18 @@ function WebhookMobileCard() {
         </div>
       </div>
 
-      <div className="flex items-start gap-2 text-xs text-gray-300 mb-3">
-        <span className="w-[18px] h-[18px] rounded-full bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">→</span>
+      <div className="flex items-start gap-2 text-xs text-[#1B2E44] mb-3">
+        <span className="w-[18px] h-[18px] rounded-full bg-[#FFC53D] text-[#0E1C2B] text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">→</span>
         <span className="leading-snug">Configure webhook URL in flow settings</span>
       </div>
 
       <div className="flex flex-wrap gap-1 mb-3">
         {["Auto notifications", "JSON results", "Make & Zapier"].map((t) => (
-          <span key={t} className="bg-white/5 border border-white/10 rounded px-1.5 py-0.5 text-[9px] text-gray-400 font-medium">{t}</span>
+          <span key={t} className="bg-[#F0F2F5] border border-[#E7E9EE] rounded px-1.5 py-0.5 text-[9px] text-[#6B7686] font-medium">{t}</span>
         ))}
       </div>
 
-      <Link href="/docs#webhooks" className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] text-xs mt-auto">
+      <Link href="/docs#webhooks" className="inline-flex items-center gap-1.5 font-semibold text-[#B9820A] text-xs mt-auto">
         Configure Webhooks <ArrowRight size={12} />
       </Link>
     </div>
@@ -353,35 +353,35 @@ function WebhookMobileCard() {
 
 function McpMobileCard() {
   return (
-    <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
+    <div className="glass-card rounded-lg p-5 border border-[#C9CFD8] flex flex-col h-full">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-[#667eea]/10 flex items-center justify-center text-[#667eea] flex-shrink-0">
+        <div className="w-10 h-10 rounded-lg bg-[#FFF6DE] flex items-center justify-center text-[#B9820A] flex-shrink-0">
           <Plug size={20} />
         </div>
         <div>
-          <h3 className="text-base font-bold text-white">MCP Connector</h3>
-          <p className="text-[11px] text-gray-400">Your AI assistant, connected</p>
+          <h3 className="text-base font-bold text-[#0E1C2B]">MCP Connector</h3>
+          <p className="text-[11px] text-[#6B7686]">Your AI assistant, connected</p>
         </div>
       </div>
 
       <div className="space-y-3 mb-3">
         <div>
-          <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Connect in Minutes</h4>
+          <h4 className="text-[10px] font-bold text-[#6B7686] uppercase tracking-wider mb-1.5">Connect in Minutes</h4>
           <MobileEmailSteps steps={["Generate a connector URL in Integrations", "Paste it into claude.ai, Cursor, or any MCP client", "Ask your assistant to run flows and query your data"]} numbered />
         </div>
         <div>
-          <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">What Your Assistant Can Do</h4>
+          <h4 className="text-[10px] font-bold text-[#6B7686] uppercase tracking-wider mb-1.5">What Your Assistant Can Do</h4>
           <MobileEmailSteps steps={["Process documents through your flows", "Read and search your Buckets"]} />
         </div>
       </div>
 
       <div className="flex flex-wrap gap-1 mb-3">
         {["claude.ai (Pro+)", "Cursor", "Any MCP client", "Org-scoped access"].map((t) => (
-          <span key={t} className="bg-white/5 border border-white/10 rounded px-1.5 py-0.5 text-[9px] text-gray-400 font-medium">{t}</span>
+          <span key={t} className="bg-[#F0F2F5] border border-[#E7E9EE] rounded px-1.5 py-0.5 text-[9px] text-[#6B7686] font-medium">{t}</span>
         ))}
       </div>
 
-      <Link href="/docs#mcp-connector" className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] text-xs mt-auto">
+      <Link href="/docs#mcp-connector" className="inline-flex items-center gap-1.5 font-semibold text-[#B9820A] text-xs mt-auto">
         Connect Your Assistant <ArrowRight size={12} />
       </Link>
     </div>
@@ -437,8 +437,8 @@ export default function Integrations() {
       {/* ── Mobile: swipable carousel ── */}
       <div className="md:hidden">
         <div className="px-4 mb-5">
-          <p className="text-xl font-bold text-white mb-1 text-center" aria-hidden="true">Multiple Ways to Integrate</p>
-          <p className="text-xs text-gray-400 text-center">
+          <p className="text-xl font-bold text-[#0E1C2B] mb-1 text-center" aria-hidden="true">Multiple Ways to Integrate</p>
+          <p className="text-xs text-[#6B7686] text-center">
             Choose the integration method that fits your workflow
           </p>
         </div>
@@ -471,7 +471,7 @@ export default function Integrations() {
               key={i}
               onClick={() => scrollToCard(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === mobileActive ? "w-6 bg-[#667eea]" : "w-2 bg-gray-600"
+                i === mobileActive ? "w-6 bg-[#FFC53D]" : "w-2 bg-[#C9CFD8]"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />
@@ -482,8 +482,8 @@ export default function Integrations() {
       {/* ── Desktop: selector rail + detail panel ── */}
       <div className="hidden md:block max-w-[1100px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-8 md:mb-10">
-          <h2 id="integrations-heading" className="text-2xl md:text-4xl font-bold text-white mb-1 md:mb-3">Multiple Ways to Integrate</h2>
-          <p className="text-sm md:text-lg text-gray-400 max-w-[540px] mx-auto">
+          <h2 id="integrations-heading" className="text-2xl md:text-4xl font-bold text-[#0E1C2B] mb-1 md:mb-3">Multiple Ways to Integrate</h2>
+          <p className="text-sm md:text-lg text-[#6B7686] max-w-[540px] mx-auto">
             Choose the integration method that fits your workflow
           </p>
         </div>
@@ -506,31 +506,31 @@ export default function Integrations() {
                   aria-selected={active}
                   aria-controls="integration-panel"
                   onClick={() => setDesktopActive(i)}
-                  className={`glass-card rounded-xl px-4 py-3.5 flex items-center gap-3.5 text-left transition-all duration-300 cursor-pointer flex-1 ${
+                  className={`glass-card rounded-lg px-4 py-3.5 flex items-center gap-3.5 text-left transition-all duration-300 cursor-pointer flex-1 ${
                     active
-                      ? "border-[#667eea]/50 bg-[#667eea]/[0.07] shadow-lg shadow-[#667eea]/10"
-                      : "hover:border-white/20 hover:bg-white/[0.03]"
+                      ? "border-[#0E1C2B] bg-[#FFF6DE] shadow-[inset_0_0_0_1px_#0E1C2B]"
+                      : "hover:border-[#0E1C2B] hover:bg-[#FFF6DE]"
                   }`}
                 >
                   <div
                     className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                       active
-                        ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-md shadow-[#667eea]/25"
-                        : "bg-[#667eea]/10 text-[#667eea]"
+                        ? "bg-[#FFC53D] text-[#0E1C2B] shadow-[0_2px_0_#B9820A]"
+                        : "bg-[#FFF6DE] text-[#B9820A]"
                     }`}
                   >
                     <m.icon size={19} />
                   </div>
                   <div className="min-w-0">
-                    <div className={`text-sm font-bold transition-colors ${active ? "text-white" : "text-gray-300"}`}>
+                    <div className={`text-sm font-bold transition-colors ${active ? "text-[#0E1C2B]" : "text-[#1B2E44]"}`}>
                       {m.title}
                     </div>
-                    <div className="text-xs text-gray-500 truncate">{m.subtitle}</div>
+                    <div className="text-xs text-[#6B7686] truncate">{m.subtitle}</div>
                   </div>
                   <ArrowRight
                     size={15}
                     className={`ml-auto flex-shrink-0 transition-all duration-300 ${
-                      active ? "text-[#667eea] opacity-100 translate-x-0" : "opacity-0 -translate-x-1"
+                      active ? "text-[#B9820A] opacity-100 translate-x-0" : "opacity-0 -translate-x-1"
                     }`}
                   />
                 </button>
@@ -543,7 +543,7 @@ export default function Integrations() {
             id="integration-panel"
             role="tabpanel"
             aria-labelledby={`integration-tab-${methods[desktopActive].id}`}
-            className="glass-card rounded-2xl p-6 lg:p-7 h-[520px] lg:h-[490px] overflow-y-auto overflow-x-hidden"
+            className="glass-card rounded-lg p-6 lg:p-7 h-[520px] lg:h-[490px] overflow-y-auto overflow-x-hidden"
           >
             <AnimatePresence mode="wait">
               <motion.div

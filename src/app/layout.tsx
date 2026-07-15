@@ -1,17 +1,23 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, DM_Sans } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const heading = Plus_Jakarta_Sans({
+const heading = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
   variable: "--font-heading",
 });
 
-const body = DM_Sans({
+const body = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body",
+});
+
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -76,8 +82,8 @@ export const metadata: Metadata = {
   },
   category: "technology",
   other: {
-    "theme-color": "#667eea",
-    "msapplication-TileColor": "#667eea",
+    "theme-color": "#0E1C2B",
+    "msapplication-TileColor": "#0E1C2B",
   },
 };
 
@@ -274,7 +280,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${heading.variable} ${body.variable} font-body antialiased`}>{children}</body>
+      <body className={`${heading.variable} ${body.variable} ${mono.variable} font-body antialiased`}>{children}</body>
     </html>
   );
 }

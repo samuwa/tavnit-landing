@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Extract structured data from PDFs automatically with AI. Process invoices, contracts, receipts and forms.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0a0a1a",
-    theme_color: "#667eea",
+    background_color: "#FBFBF9",
+    theme_color: "#0E1C2B",
     icons: [
       {
         src: "/apple-icon.png",

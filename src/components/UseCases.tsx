@@ -82,8 +82,8 @@ export default function UseCases() {
       {/* ── Mobile: swipable carousel ── */}
       <div className="md:hidden">
         <div className="px-4 mb-5">
-          <p className="text-xl font-bold text-white mb-1 text-center" aria-hidden="true">Built for Real-World Workflows</p>
-          <p className="text-xs text-gray-400 text-center">
+          <p className="text-xl font-bold text-[#0E1C2B] mb-1 text-center" aria-hidden="true">Built for Real-World Workflows</p>
+          <p className="text-xs text-[#6B7686] text-center">
             See how teams use Tavnit to automate document processing
           </p>
         </div>
@@ -104,25 +104,25 @@ export default function UseCases() {
               className="flex-none snap-center"
               style={{ width: "calc(100vw - 4rem)" }}
             >
-              <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
-                <span className="inline-block w-fit px-3 py-1 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-full text-[10px] font-semibold mb-3">
+              <div className="glass-card rounded-lg p-5 border border-[#C9CFD8] flex flex-col h-full">
+                <span className="inline-block w-fit px-3 py-1 font-mono uppercase tracking-[0.14em] bg-[#FFF6DE] text-[#B9820A] border border-[#FFC53D]/50 rounded-[4px] text-[10px] font-semibold mb-3">
                   {uc.badge}
                 </span>
-                <h3 className="text-lg font-bold text-white mb-3">{uc.title}</h3>
+                <h3 className="text-lg font-bold text-[#0E1C2B] mb-3">{uc.title}</h3>
 
                 <div className="mb-3">
-                  <h4 className="text-[10px] font-bold text-gray-300 uppercase tracking-wider mb-1">The Problem</h4>
-                  <p className="text-sm text-gray-400 leading-relaxed">{uc.problem}</p>
+                  <h4 className="text-[10px] font-bold text-[#1B2E44] uppercase tracking-wider mb-1">The Problem</h4>
+                  <p className="text-sm text-[#6B7686] leading-relaxed">{uc.problem}</p>
                 </div>
 
                 <div className="mb-4">
-                  <h4 className="text-[10px] font-bold text-gray-300 uppercase tracking-wider mb-1">The Solution</h4>
-                  <p className="text-sm text-gray-400 leading-relaxed">{uc.solution}</p>
+                  <h4 className="text-[10px] font-bold text-[#1B2E44] uppercase tracking-wider mb-1">The Solution</h4>
+                  <p className="text-sm text-[#6B7686] leading-relaxed">{uc.solution}</p>
                 </div>
 
-                <div className="flex items-center gap-2 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl mt-auto">
-                  <CheckCircle2 size={16} className="text-emerald-400 flex-shrink-0" />
-                  <span className="text-xs font-semibold text-white">{uc.result}</span>
+                <div className="flex items-center gap-2 p-3 bg-[#E6F6F0] border border-[#17A67B]/30 rounded-lg mt-auto">
+                  <CheckCircle2 size={16} className="text-[#17A67B] flex-shrink-0" />
+                  <span className="text-xs font-semibold text-[#0C6B4C]">{uc.result}</span>
                 </div>
               </div>
             </div>
@@ -136,7 +136,7 @@ export default function UseCases() {
               key={i}
               onClick={() => scrollToCard(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === mobileActive ? "w-6 bg-[#667eea]" : "w-2 bg-gray-600"
+                i === mobileActive ? "w-6 bg-[#FFC53D]" : "w-2 bg-[#C9CFD8]"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />
@@ -147,8 +147,8 @@ export default function UseCases() {
       {/* ── Desktop: Tabs + Animated Content ── */}
       <div className="hidden md:block max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-6 md:mb-8">
-          <h2 id="use-cases-heading" className="text-2xl md:text-4xl font-bold text-white mb-1 md:mb-2">Built for Real-World Workflows</h2>
-          <p className="text-sm md:text-lg text-gray-400 max-w-[600px] mx-auto">
+          <h2 id="use-cases-heading" className="text-2xl md:text-4xl font-bold text-[#0E1C2B] mb-1 md:mb-2">Built for Real-World Workflows</h2>
+          <p className="text-sm md:text-lg text-[#6B7686] max-w-[600px] mx-auto">
             See how teams use Tavnit to automate document processing
           </p>
         </div>
@@ -160,8 +160,8 @@ export default function UseCases() {
               onClick={() => setActive(i)}
               className={`px-6 py-3 rounded-lg text-base font-semibold transition-all cursor-pointer ${
                 i === active
-                  ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-[0_0_20px_rgba(102,126,234,0.3)]"
-                  : "glass-card text-gray-300 hover:border-[#667eea]/40 hover:text-white"
+                  ? "bg-[#FFC53D] text-[#0E1C2B] shadow-[0_2px_0_#B9820A]"
+                  : "glass-card text-[#1B2E44] hover:border-[#0E1C2B] hover:bg-[#FFF6DE] hover:text-[#0E1C2B]"
               }`}
             >
               {uc.tab}
@@ -176,27 +176,27 @@ export default function UseCases() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center glass-card rounded-2xl p-6 md:p-8"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center glass-card rounded-lg p-6 md:p-8"
           >
             <div>
-              <span className="inline-block px-3 py-1.5 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-full text-sm font-semibold mb-4">
+              <span className="inline-block px-3 py-1.5 font-mono uppercase tracking-[0.14em] bg-[#FFF6DE] text-[#B9820A] border border-[#FFC53D]/50 rounded-[4px] text-sm font-semibold mb-4">
                 {useCases[active].badge}
               </span>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">{useCases[active].title}</h3>
+              <h3 className="text-2xl md:text-3xl font-bold text-[#0E1C2B] mb-4">{useCases[active].title}</h3>
 
               <div className="mb-4">
-                <h4 className="text-base font-bold text-gray-300 uppercase tracking-wider mb-2">The Problem</h4>
-                <p className="text-gray-400 leading-relaxed">{useCases[active].problem}</p>
+                <h4 className="text-base font-bold text-[#1B2E44] uppercase tracking-wider mb-2">The Problem</h4>
+                <p className="text-[#6B7686] leading-relaxed">{useCases[active].problem}</p>
               </div>
 
               <div className="mb-4">
-                <h4 className="text-base font-bold text-gray-300 uppercase tracking-wider mb-2">The Solution</h4>
-                <p className="text-gray-400 leading-relaxed">{useCases[active].solution}</p>
+                <h4 className="text-base font-bold text-[#1B2E44] uppercase tracking-wider mb-2">The Solution</h4>
+                <p className="text-[#6B7686] leading-relaxed">{useCases[active].solution}</p>
               </div>
 
-              <div className="flex items-center gap-4 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl mt-6">
-                <CheckCircle2 size={20} className="text-emerald-400 flex-shrink-0" />
-                <span className="text-base font-semibold text-white">{useCases[active].result}</span>
+              <div className="flex items-center gap-4 p-4 bg-[#E6F6F0] border border-[#17A67B]/30 rounded-lg mt-6">
+                <CheckCircle2 size={20} className="text-[#17A67B] flex-shrink-0" />
+                <span className="text-base font-semibold text-[#0C6B4C]">{useCases[active].result}</span>
               </div>
             </div>
 

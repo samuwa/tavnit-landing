@@ -68,7 +68,7 @@ export default function VideoModal({ open, onClose }: VideoModalProps) {
         >
           <X size={24} />
         </button>
-        <div className="relative w-full pb-[56.25%] bg-gray-900 rounded-2xl overflow-hidden">
+        <div className="relative w-full pb-[56.25%] bg-white border border-[#C9CFD8] rounded-lg overflow-hidden">
           <video
             ref={videoRef}
             controls
@@ -78,21 +78,21 @@ export default function VideoModal({ open, onClose }: VideoModalProps) {
             <source src="/videos/demo_video.mp4" type="video/mp4" />
           </video>
         </div>
-        <div className="flex gap-2 mt-4 p-3 bg-white/5 rounded-xl overflow-x-auto">
+        <div className="flex gap-2 mt-4 p-3 bg-white border border-[#C9CFD8] rounded-lg overflow-x-auto">
           {chapters.map((ch, i) => (
             <button
               key={ch.time}
               onClick={() => handleChapterClick(ch.time, i)}
               className={`flex-1 min-w-[140px] flex flex-col items-center gap-1 px-4 py-3 rounded-lg transition-all cursor-pointer ${
                 i === activeChapter
-                  ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] border-transparent"
-                  : "bg-white/[0.08] border border-white/10 hover:bg-white/15"
+                  ? "bg-[#FFC53D] border-transparent"
+                  : "bg-[#F0F2F5] border border-[#E7E9EE] hover:bg-[#FFF6DE]"
               }`}
             >
-              <span className={`text-xs font-semibold font-mono ${i === activeChapter ? "text-white/90" : "text-white/60"}`}>
+              <span className={`text-xs font-semibold font-mono ${i === activeChapter ? "text-[#1B2E44]" : "text-[#6B7686]"}`}>
                 {ch.label}
               </span>
-              <span className="text-sm font-semibold text-white whitespace-nowrap">{ch.title}</span>
+              <span className="text-sm font-semibold text-[#0E1C2B] whitespace-nowrap">{ch.title}</span>
             </button>
           ))}
         </div>
