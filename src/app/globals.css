@@ -22,12 +22,28 @@
   --raw-wash: #FCEDE1;
 
   /* fixed spreadsheet chrome heights */
-  --chrome-top: 84px;   /* menubar 46 + formula bar 38 */
+  --nav-h: 56px;
+  --formula-h: 40px;
+  --colhead-h: 30px;
+  --chrome-top: 126px;   /* nav 56 + formula 40 + colheader 30 */
   --chrome-bottom: 64px; /* sheet tabs 38 + status bar 26 */
+
+  /* sheet grid geometry */
+  --gutter: 52px;
+  --row-h: 40px;
+  --cols: 12;
+  --grid-cols: var(--gutter) repeat(var(--cols), minmax(0, 1fr));
+  --sheet-max: 1400px;
 }
 
+@media (max-width: 1023px) {
+  :root { --cols: 8; --gutter: 44px; --row-h: 38px; }
+}
 @media (max-width: 639px) {
   :root {
+    --cols: 6;
+    --gutter: 34px;
+    --row-h: 36px;
     --chrome-bottom: 38px; /* status bar hidden on small screens */
   }
 }
@@ -102,7 +118,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
   scroll-padding-top: var(--chrome-top);
   overflow-y: scroll;
 }
@@ -892,150 +907,252 @@ html {
 }
 
 /* ==========================================
-   SCROLL SNAPPING
+   SHEET LAYOUT — the whole page IS a spreadsheet
    ========================================== */
 
-#hero {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+.sheet-wrap {
+  width: 100%;
+  padding-top: var(--nav-h);       /* clear the fixed top nav */
+  padding-bottom: var(--chrome-bottom); /* clear the fixed sheet tabs */
 }
 
-#problem {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
+/* ---- formula bar (sticky, directly under the nav) ---- */
+.sheet-formulabar {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 40;
+  height: var(--formula-h);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: stretch;
+  background: #fff;
+  border-bottom: 1px solid var(--grid-strong);
+  font-family: var(--font-mono);
+  font-size: 13px;
 }
-
-#how-it-works {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
+.sheet-namebox {
+  width: 88px;
+  flex: none;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  border-right: 1px solid var(--grid-strong);
+  color: var(--ink);
+  font-weight: 500;
+  background: var(--paper);
 }
-
-#features {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
+.sheet-fx {
+  width: 34px;
+  flex: none;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  font-style: italic;
+  color: var(--muted);
+  border-right: 1px solid var(--grid);
 }
-
-#extraction {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
+.sheet-formula {
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  padding: 0 12px;
+  color: var(--ink-soft);
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+}
+.sheet-formula .truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-#agents {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
+/* ---- column header (sticky A/B/C… letters) ---- */
+.sheet-colheader {
+  position: sticky;
+  top: calc(var(--nav-h) + var(--formula-h));
+  z-index: 39;
+  display: grid;
+  grid-template-columns: var(--grid-cols);
+  grid-template-rows: var(--colhead-h);
+  gap: 1px;
+  background: var(--grid);
+  border-bottom: 1px solid var(--grid-strong);
+}
+.sheet-corner {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #E8EBEF;
+}
+.sheet-colhead {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  background: #F0F2F5;
+}
+.sheet-colhead.hot {
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 700;
 }
 
-#human-in-the-loop {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
+/* ---- a section is one grid band of the sheet ---- */
+.sheet-section {
+  display: grid;
+  grid-template-columns: var(--grid-cols);
+  grid-auto-rows: minmax(var(--row-h), auto);
+  gap: 1px;
+  background: var(--grid);
+  border-bottom: 1px solid var(--grid);
+  scroll-margin-top: var(--chrome-top);
+  overflow: visible;
+}
+
+/* base cells */
+.sheet-cell {
+  background: var(--paper);
+  min-width: 0;
+}
+.sheet-rowhead {
+  position: sticky;
+  left: 0;
+  z-index: 6;
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: #F0F2F5;
+}
+.sheet-rowhead.hot {
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 700;
+}
+.sheet-empty {
+  background: var(--paper);
 }
 
-#platform-overview {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
+/* content cell */
+.k-cell {
+  position: relative;
+  z-index: 1;
+  padding: 6px 14px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  background: var(--paper);
+  min-width: 0;
+  outline: none;
+  cursor: cell;
+}
+.k-cell.is-selected,
+.k-cell:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--ink);
+  background: var(--gold-wash);
+  z-index: 5;
+}
+
+/* ---- content-cell variants ---- */
+.k-hero {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(30px, 5.2vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.k-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(24px, 3.4vw, 40px);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.k-sub {
+  font-size: clamp(14px, 1.3vw, 18px);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  white-space: normal;
+}
+.k-muted {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  white-space: normal;
+}
+.k-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+.k-key {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+.k-num {
+  font-family: var(--font-mono);
+  justify-content: flex-end;
+  color: var(--ink);
+}
+.k-strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+.k-cta {
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 700;
   justify-content: center;
+  box-shadow: inset 0 0 0 1px var(--gold-deep);
+  cursor: pointer;
 }
-
-#use-cases {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
-  display: flex;
-  flex-direction: column;
+.k-cta:hover {
+  filter: brightness(1.04);
+}
+.k-ghost {
+  background: #fff;
+  color: var(--ink-soft);
+  font-weight: 600;
   justify-content: center;
+  box-shadow: inset 0 0 0 1px var(--grid-strong);
+  cursor: pointer;
 }
-
-#integrations {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.k-ghost:hover {
+  background: var(--gold-wash);
+  box-shadow: inset 0 0 0 1px var(--ink);
 }
-
-#pricing {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 40px;
+.k-raw {
+  background: var(--raw-wash);
+  color: var(--raw);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
 }
-
-#faq {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.k-clean {
+  background: var(--jade-wash);
+  color: var(--jade-deep);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
 }
-
-.final-cta-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: calc(100vh - var(--chrome-top) - var(--chrome-bottom));
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+/* a bare cell holds rich content / animations with no cell chrome */
+.k-bare {
+  padding: 0;
+  display: block;
+  cursor: default;
 }
-
-footer {
-  scroll-snap-align: start;
-}
-
-/* Tablet: softer scroll snap */
-@media (max-width: 1023px) {
-  html {
-    scroll-snap-type: y proximity;
-  }
-
-  #problem, #how-it-works, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
-    scroll-snap-stop: normal;
-  }
-}
-
-/* Disable scroll snap on mobile, remove forced min-height and flex centering */
-@media (max-width: 767px) {
-  html {
-    scroll-snap-type: none;
-  }
-
-  #problem, #how-it-works, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
-    min-height: auto;
-    scroll-snap-align: none;
-    scroll-snap-stop: normal;
-    display: block;
-  }
+.k-bare.is-selected,
+.k-bare:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--ink);
+  background: transparent;
 }
 
 /* Hide scrollbar for mobile carousels */
@@ -1044,24 +1161,9 @@ footer {
   display: none;
 }
 
-/* Prevent horizontal overflow from carousel sections — desktop only */
-@media (min-width: 768px) {
-  section:not(#platform-overview) {
-    overflow-x: clip;
-  }
-}
-
-/* On desktop, allow 3D card offsets to show outside the section.
-   On mobile, clip overflow so the dropping card can't break the viewport. */
-@media (min-width: 1024px) {
-  #platform-overview {
-    overflow: visible;
-  }
-}
-@media (max-width: 1023px) {
-  #platform-overview {
-    overflow: clip;
-  }
+/* platform-overview: let 3D card offsets show outside the band */
+#platform-overview {
+  overflow: visible;
 }
 
 /* Reduced motion */

@@ -10,6 +10,8 @@ import {
   Target,
   Eye,
 } from "lucide-react";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 const cards = [
   {
@@ -146,17 +148,28 @@ function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }
   );
 }
 
-export default function Problem() {
+export const ROWS = 13;
+
+export default function Problem({ startRow }: { startRow: number }) {
   return (
-    <section
-      className="py-16 md:py-24"
+    <SheetSection
       id="problem"
-      aria-labelledby="problem-heading"
+      startRow={startRow}
+      rows={ROWS}
+      ariaLabelledby="problem-heading"
     >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+      {/* Heading */}
+      <Cell
+        c={2}
+        span={10}
+        r={2}
+        rowSpan={2}
+        variant="k-title"
+        className="justify-center text-center"
+        formula="=DIAGNOSE(current_workflow)"
+      >
         <motion.h2
           id="problem-heading"
-          className="text-3xl md:text-4xl font-bold text-center text-[#0E1C2B] mb-8 md:mb-16"
           initial={{ opacity: 0, scale: 0.96 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -164,13 +177,42 @@ export default function Problem() {
         >
           Still Manually Extracting Data from Documents?
         </motion.h2>
+      </Cell>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          {cards.map((card, i) => (
-            <ProblemCard key={card.problem.title} card={card} index={i} />
-          ))}
-        </div>
-      </div>
-    </section>
+      {/* Three hover-flip problem → solution cards */}
+      <Cell
+        c={1}
+        span={4}
+        r={5}
+        rowSpan={8}
+        variant="k-bare"
+        interactive={false}
+        formula="=AUTOMATE(data_entry)"
+      >
+        <ProblemCard card={cards[0]} index={0} />
+      </Cell>
+      <Cell
+        c={5}
+        span={4}
+        r={5}
+        rowSpan={8}
+        variant="k-bare"
+        interactive={false}
+        formula="=VALIDATE(every_field)"
+      >
+        <ProblemCard card={cards[1]} index={1} />
+      </Cell>
+      <Cell
+        c={9}
+        span={4}
+        r={5}
+        rowSpan={8}
+        variant="k-bare"
+        interactive={false}
+        formula="=AUDIT(every_edit)"
+      >
+        <ProblemCard card={cards[2]} index={2} />
+      </Cell>
+    </SheetSection>
   );
 }

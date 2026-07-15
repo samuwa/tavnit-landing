@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle, Upload, FileText, Sparkles, UserCheck, Bot, Play, ArrowRight } from "lucide-react";
 import VideoModal from "./VideoModal";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 const steps = [
   {
@@ -38,25 +40,55 @@ const steps = [
   },
 ];
 
-export default function HowItWorks() {
+export const ROWS = 18;
+
+export default function HowItWorks({ startRow }: { startRow: number }) {
   const [videoOpen, setVideoOpen] = useState(false);
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden" id="how-it-works" aria-labelledby="how-it-works-heading">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <motion.div
-          className="text-center mb-8"
+    <SheetSection id="how-it-works" startRow={startRow} rows={ROWS} ariaLabelledby="how-it-works-heading">
+      {/* Heading */}
+      <Cell
+        c={2}
+        span={10}
+        r={2}
+        rowSpan={2}
+        variant="k-title"
+        className="justify-center text-center"
+        formula="=WORKFLOW(document → data → action)"
+      >
+        <motion.h2
+          id="how-it-works-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold text-[#0E1C2B] mb-2">How It Works</h2>
-          <p className="text-base md:text-lg text-[#6B7686] max-w-[600px] mx-auto">
-            From document to structured data to action — in 6 simple steps
-          </p>
-        </motion.div>
+          How It Works
+        </motion.h2>
+      </Cell>
 
-        {/* Workflow Timeline */}
+      {/* Subtitle */}
+      <Cell
+        c={2}
+        span={10}
+        r={4}
+        rowSpan={2}
+        variant="k-sub"
+        className="justify-center text-center"
+        formula="=COUNT(steps)  → 6"
+      >
+        <motion.p
+          className="max-w-[600px] mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          From document to structured data to action — in 6 simple steps
+        </motion.p>
+      </Cell>
+
+      {/* Workflow Timeline */}
+      <Cell c={2} span={10} r={7} rowSpan={8} variant="k-bare" interactive={false} formula="=PIPELINE(steps[1:6])">
         <div className="workflow-timeline my-12 md:my-24">
           {steps.map((step, i) => (
             <div key={step.title} className="contents">
@@ -92,20 +124,29 @@ export default function HowItWorks() {
             </div>
           ))}
         </div>
+      </Cell>
 
-        {/* Watch Video */}
-        <div className="text-center mt-8 md:mt-16">
-          <button
-            onClick={() => setVideoOpen(true)}
-            className="inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-[#FFC53D] text-[#0E1C2B] rounded-lg text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-[0_2px_0_#B9820A] hover:shadow-[0_8px_24px_rgba(255,197,61,0.35)] cursor-pointer"
-          >
-            <Play size={20} />
-            Watch Demo Video
-          </button>
-        </div>
-      </div>
+      {/* Watch Video */}
+      <Cell
+        c={2}
+        span={10}
+        r={16}
+        rowSpan={2}
+        variant="k-bare"
+        interactive={false}
+        className="justify-center"
+        formula="=PLAY(demo_video.mp4)"
+      >
+        <button
+          onClick={() => setVideoOpen(true)}
+          className="inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-[#FFC53D] text-[#0E1C2B] rounded-lg text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-[0_2px_0_#B9820A] hover:shadow-[0_8px_24px_rgba(255,197,61,0.35)] cursor-pointer"
+        >
+          <Play size={20} />
+          Watch Demo Video
+        </button>
+      </Cell>
 
       <VideoModal open={videoOpen} onClose={() => setVideoOpen(false)} />
-    </section>
+    </SheetSection>
   );
 }
