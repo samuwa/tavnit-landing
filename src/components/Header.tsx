@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, FileText } from "lucide-react";
+import { useViewMode } from "./view/ViewModeProvider";
 
 const navLinks = [
   { href: "#how-it-works", label: "How It Works" },
@@ -17,50 +18,48 @@ const navLinks = [
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const { toggle } = useViewMode();
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0a0a1a]/80 backdrop-blur-xl shadow-lg shadow-black/20 border-b border-white/10"
-          : "bg-[#0a0a1a]/50 backdrop-blur-xl border-b border-white/5"
-      }`}
-    >
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 h-16 flex items-center justify-between gap-4 sm:gap-8">
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* Top nav bar — the spreadsheet toolbar */}
+      <div className="bg-white border-b border-[#C9CFD8] h-[56px] flex items-center gap-4 px-4 sm:px-6 select-none shadow-[0_1px_0_rgba(14,28,43,0.03)]">
         <Link href="/" className="flex-shrink-0 hover:opacity-85 transition-opacity">
           <Image
             src="/assets/tavnit_logo.png"
             alt="Tavnit"
             width={232}
             height={80}
-            className="h-9 sm:h-11 w-auto"
+            className="h-8 sm:h-9 w-auto"
             priority
           />
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-10 mx-auto">
+        <nav className="hidden lg:flex items-center gap-7 mx-auto">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-[15px] font-medium text-gray-300 hover:text-white transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-[#667eea] after:to-[#764ba2] after:transition-all hover:after:w-full"
+              className="text-[14px] font-medium text-[#1B2E44] hover:text-[#0E1C2B] transition-colors relative after:content-[''] after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-0.5 after:bg-[#FFC53D] after:transition-all hover:after:w-full"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
+        <button
+          onClick={toggle}
+          className="hidden lg:inline-flex ml-auto items-center gap-2 px-3.5 py-2 bg-white text-[#1B2E44] rounded-md text-[13px] font-semibold shadow-[inset_0_0_0_1px_#C9CFD8] hover:bg-[#FFF6DE] hover:shadow-[inset_0_0_0_1px_#0E1C2B] transition-all flex-shrink-0"
+          title="View the source document"
+        >
+          <FileText size={15} />
+          Document
+        </button>
+
         <Link
           href="https://app.tavnit.io"
-          className="hidden lg:inline-flex px-4 py-2 sm:px-6 sm:py-2.5 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg text-sm sm:text-[15px] font-semibold hover:-translate-y-0.5 transition-all shadow-md hover:shadow-lg flex-shrink-0"
+          className="hidden lg:inline-flex px-4 py-2 bg-[#FFC53D] text-[#0E1C2B] rounded-md text-[14px] font-semibold shadow-[0_2px_0_#B9820A] hover:brightness-105 active:translate-y-px active:shadow-none transition-all flex-shrink-0"
         >
           Get Started
         </Link>
@@ -68,30 +67,40 @@ export default function Header() {
         {/* Mobile Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors text-gray-300"
+          className="lg:hidden ml-auto p-2 rounded-md hover:bg-[#F0F2F5] transition-colors text-[#1B2E44]"
           aria-label="Toggle navigation"
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-[#0a0a1a]/95 backdrop-blur-xl border-t border-white/10 shadow-xl">
-          <nav className="flex flex-col p-6 gap-1">
+        <div className="lg:hidden bg-white border-b border-[#C9CFD8] shadow-xl max-h-[calc(100dvh-56px)] overflow-y-auto">
+          <nav className="flex flex-col p-4 gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg font-medium transition-colors"
+                className="px-4 py-3 text-[#1B2E44] hover:text-[#0E1C2B] hover:bg-[#FFF6DE] rounded-md font-medium transition-colors"
               >
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                toggle();
+              }}
+              className="mt-3 inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-[#1B2E44] rounded-md text-center font-semibold shadow-[inset_0_0_0_1px_#C9CFD8]"
+            >
+              <FileText size={16} />
+              View source document
+            </button>
             <Link
               href="https://app.tavnit.io"
-              className="mt-4 px-6 py-3 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg text-center font-semibold"
+              className="mt-2 px-6 py-3 bg-[#FFC53D] text-[#0E1C2B] rounded-md text-center font-semibold shadow-[0_2px_0_#B9820A]"
             >
               Get Started
             </Link>

@@ -72,12 +72,12 @@ function createPDF(): HTMLDivElement {
   pdf.className = "pdf-doc";
   pdf.id = "pdf-hero";
   pdf.innerHTML = `
-    <div style="display:flex;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.08);">
+    <div style="display:flex;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #E7E9EE;">
       <div>
-        <div id="pdf-header-title-hero" style="height:12px;width:100px;background:rgba(255,255,255,0.15);border-radius:4px;margin-bottom:8px;"></div>
-        <div style="height:8px;width:130px;background:rgba(255,255,255,0.08);border-radius:4px;"></div>
+        <div id="pdf-header-title-hero" style="height:12px;width:100px;background:#D5DAE2;border-radius:4px;margin-bottom:8px;"></div>
+        <div style="height:8px;width:130px;background:#E9ECF1;border-radius:4px;"></div>
       </div>
-      <div style="width:48px;height:48px;border:1px solid rgba(255,255,255,0.12);border-radius:6px;"></div>
+      <div style="width:48px;height:48px;border:1px solid #C9CFD8;border-radius:6px;"></div>
     </div>
     <div id="pdf-fields-hero">
       ${FIELDS.map(
@@ -88,10 +88,10 @@ function createPDF(): HTMLDivElement {
         </div>`
       ).join("")}
     </div>
-    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.08);">
-      <div id="pdf-footer-text-hero" style="height:8px;width:100%;background:rgba(255,255,255,0.08);border-radius:4px;margin-bottom:8px;"></div>
-      <div style="height:8px;width:75%;background:rgba(255,255,255,0.08);border-radius:4px;margin-bottom:8px;"></div>
-      <div style="height:8px;width:85%;background:rgba(255,255,255,0.08);border-radius:4px;"></div>
+    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #E7E9EE;">
+      <div id="pdf-footer-text-hero" style="height:8px;width:100%;background:#E9ECF1;border-radius:4px;margin-bottom:8px;"></div>
+      <div style="height:8px;width:75%;background:#E9ECF1;border-radius:4px;margin-bottom:8px;"></div>
+      <div style="height:8px;width:85%;background:#E9ECF1;border-radius:4px;"></div>
     </div>
     <div class="scan-border" id="scan-border-hero"></div>
   `;
@@ -102,15 +102,15 @@ function createArrow(): HTMLDivElement {
   const section = document.createElement("div");
   section.className = "arrow-section";
   section.innerHTML = `
-    <svg id="arrow-hero" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+    <svg id="arrow-hero" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B9820A" stroke-width="2">
       <path d="M5 12h14M12 5l7 7-7 7"/>
     </svg>
     <div id="processing-hero" style="text-align:center;opacity:0;">
       <div class="processing-text">AI Processing</div>
       <div style="display:flex;gap:4px;justify-content:center;margin-top:4px;">
-        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#667eea,#764ba2);"></div>
-        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#667eea,#764ba2);"></div>
-        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#667eea,#764ba2);"></div>
+        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#FFC53D,#B9820A);"></div>
+        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#FFC53D,#B9820A);"></div>
+        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#FFC53D,#B9820A);"></div>
       </div>
     </div>
   `;
@@ -141,7 +141,7 @@ function createTable(): HTMLDivElement {
 
   table.innerHTML = `
     <table>
-      <thead><tr><th style="color:#94a3b8">Field</th><th style="color:#94a3b8">Value</th></tr></thead>
+      <thead><tr><th>Field</th><th>Value</th></tr></thead>
       <tbody id="table-body-hero">${headerRow}${fieldRows}${footerRow}</tbody>
     </table>
     <div class="complete-banner" id="complete-banner-hero">&#10003; Extraction complete</div>

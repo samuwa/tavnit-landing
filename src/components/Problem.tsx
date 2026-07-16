@@ -10,6 +10,8 @@ import {
   Target,
   Eye,
 } from "lucide-react";
+import SheetSection from "./sheet/SheetSection";
+import Cell from "./sheet/Cell";
 
 const cards = [
   {
@@ -72,7 +74,7 @@ function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }
 
   return (
     <motion.div
-      className={`group relative text-center p-6 sm:p-8 md:p-12 rounded-2xl glass-card transition-all duration-300 overflow-hidden cursor-pointer ${
+      className={`group relative text-center p-6 sm:p-8 md:p-12 rounded-lg glass-card transition-all duration-300 overflow-hidden cursor-pointer ${
         active
           ? "problem-card--active -translate-y-1"
           : "glass-card-hover hover:-translate-y-1"
@@ -87,10 +89,10 @@ function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }
     >
       {/* Icon */}
       <div
-        className={`w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 rounded-xl flex items-center justify-center transition-all duration-300 ${
+        className={`w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 rounded-lg flex items-center justify-center transition-all duration-300 ${
           active
-            ? "bg-emerald-500/10 text-emerald-400"
-            : "bg-red-500/10 text-red-400"
+            ? "bg-[#E6F6F0] text-[#17A67B]"
+            : "bg-[#FCEDE1] text-[#B4530E]"
         }`}
       >
         <div className="relative w-5 h-5 md:w-6 md:h-6">
@@ -110,14 +112,14 @@ function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }
       {/* Title - crossfade */}
       <div className="relative min-h-[3rem] mb-3 md:mb-4">
         <h3
-          className={`text-lg md:text-xl font-bold text-white transition-all duration-300 ${
+          className={`text-lg md:text-xl font-bold text-[#0E1C2B] transition-all duration-300 ${
             active ? "opacity-0 translate-y-[-4px]" : "opacity-100 translate-y-0"
           }`}
         >
           {card.problem.title}
         </h3>
         <h3
-          className={`text-lg md:text-xl font-bold text-emerald-300 absolute inset-0 transition-all duration-300 ${
+          className={`text-lg md:text-xl font-bold text-[#0C6B4C] absolute inset-0 transition-all duration-300 ${
             active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[4px]"
           }`}
         >
@@ -128,14 +130,14 @@ function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }
       {/* Description - crossfade */}
       <div className="relative min-h-[4.5rem]">
         <p
-          className={`text-sm md:text-base text-gray-400 leading-relaxed transition-all duration-300 ${
+          className={`text-sm md:text-base text-[#6B7686] leading-relaxed transition-all duration-300 ${
             active ? "opacity-0 translate-y-[-4px]" : "opacity-100 translate-y-0"
           }`}
         >
           {card.problem.description}
         </p>
         <p
-          className={`text-sm md:text-base text-gray-400 leading-relaxed absolute inset-0 transition-all duration-300 ${
+          className={`text-sm md:text-base text-[#6B7686] leading-relaxed absolute inset-0 transition-all duration-300 ${
             active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[4px]"
           }`}
         >
@@ -146,17 +148,28 @@ function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }
   );
 }
 
-export default function Problem() {
+export const ROWS = 13;
+
+export default function Problem({ startRow }: { startRow: number }) {
   return (
-    <section
-      className="py-16 md:py-24"
+    <SheetSection
       id="problem"
-      aria-labelledby="problem-heading"
+      startRow={startRow}
+      rows={ROWS}
+      ariaLabelledby="problem-heading"
     >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+      {/* Heading (kept within column margins B–K) */}
+      <Cell
+        c={2}
+        span={10}
+        r={2}
+        rowSpan={2}
+        variant="k-title"
+        className="justify-center text-center"
+        formula="=DIAGNOSE(current_workflow)"
+      >
         <motion.h2
           id="problem-heading"
-          className="text-3xl md:text-4xl font-bold text-center text-white mb-8 md:mb-16"
           initial={{ opacity: 0, scale: 0.96 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -164,13 +177,42 @@ export default function Problem() {
         >
           Still Manually Extracting Data from Documents?
         </motion.h2>
+      </Cell>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          {cards.map((card, i) => (
-            <ProblemCard key={card.problem.title} card={card} index={i} />
-          ))}
-        </div>
-      </div>
-    </section>
+      {/* Three hover-flip problem → solution cards, side by side (span 4 each) */}
+      <Cell
+        c={1}
+        span={4}
+        r={5}
+        rowSpan={8}
+        variant="k-bare"
+        interactive={false}
+        formula="=AUTOMATE(data_entry)"
+      >
+        <ProblemCard card={cards[0]} index={0} />
+      </Cell>
+      <Cell
+        c={5}
+        span={4}
+        r={5}
+        rowSpan={8}
+        variant="k-bare"
+        interactive={false}
+        formula="=VALIDATE(every_field)"
+      >
+        <ProblemCard card={cards[1]} index={1} />
+      </Cell>
+      <Cell
+        c={9}
+        span={4}
+        r={5}
+        rowSpan={8}
+        variant="k-bare"
+        interactive={false}
+        formula="=AUDIT(every_edit)"
+      >
+        <ProblemCard card={cards[2]} index={2} />
+      </Cell>
+    </SheetSection>
   );
 }

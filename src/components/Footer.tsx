@@ -26,7 +26,7 @@ const resources = [
 
 export default function Footer() {
   return (
-    <footer className="py-10 pb-6 md:py-16 md:pb-8 bg-black/40 backdrop-blur-sm border-t border-white/5 text-gray-400">
+    <footer className="py-10 pb-6 md:py-16 md:pb-8 bg-[#0E1C2B] border-t border-[#1B2E44] text-[#9FB0C4]">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-8 md:mb-12">
           {/* Logo */}
@@ -40,33 +40,33 @@ export default function Footer() {
                 className="h-[48px] md:h-[60px] w-auto"
               />
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed max-w-[300px]">
+            <p className="text-sm text-[#8FA1B6] leading-relaxed max-w-[300px]">
               AI document operations — extract, clean, review, and act on data from any document.
             </p>
           </div>
 
           {/* Quick Links (visible on mobile, hidden on desktop where we show separate columns) */}
           <div className="lg:hidden">
-            <h4 className="text-base font-semibold text-white mb-6">Quick Links</h4>
+            <h4 className="text-base font-semibold text-[#EAF0F7] mb-6">Quick Links</h4>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
+                  <Link href={link.href} className="text-sm text-[#8FA1B6] hover:text-[#FFC53D] transition-colors">
                     {link.label}
                   </Link>
                 </li>
               ))}
-              <li><Link href="mailto:support@tavnit.com" className="text-sm text-gray-500 hover:text-white transition-colors">Contact</Link></li>
+              <li><Link href="mailto:support@tavnit.com" className="text-sm text-[#8FA1B6] hover:text-[#FFC53D] transition-colors">Contact</Link></li>
             </ul>
           </div>
 
           {/* Desktop columns */}
           <div className="hidden lg:block">
-            <h4 className="text-base font-semibold text-white mb-6">Company</h4>
+            <h4 className="text-base font-semibold text-[#EAF0F7] mb-6">Company</h4>
             <ul className="space-y-2">
               {company.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
+                  <Link href={link.href} className="text-sm text-[#8FA1B6] hover:text-[#FFC53D] transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -75,11 +75,11 @@ export default function Footer() {
           </div>
 
           <div className="hidden lg:block">
-            <h4 className="text-base font-semibold text-white mb-6">Resources</h4>
+            <h4 className="text-base font-semibold text-[#EAF0F7] mb-6">Resources</h4>
             <ul className="space-y-2">
               {resources.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
+                  <Link href={link.href} className="text-sm text-[#8FA1B6] hover:text-[#FFC53D] transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -88,15 +88,15 @@ export default function Footer() {
           </div>
 
           <div className="hidden lg:block">
-            <h4 className="text-base font-semibold text-white mb-6">Connect</h4>
+            <h4 className="text-base font-semibold text-[#EAF0F7] mb-6">Connect</h4>
             <ul className="space-y-2">
-              <li><Link href="https://github.com/tavnit" className="text-sm text-gray-500 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">GitHub</Link></li>
-              <li><Link href="mailto:support@tavnit.com" className="text-sm text-gray-500 hover:text-white transition-colors">support@tavnit.com</Link></li>
+              <li><Link href="https://github.com/tavnit" className="text-sm text-[#8FA1B6] hover:text-[#FFC53D] transition-colors" target="_blank" rel="noopener noreferrer">GitHub</Link></li>
+              <li><Link href="mailto:support@tavnit.com" className="text-sm text-[#8FA1B6] hover:text-[#FFC53D] transition-colors">support@tavnit.com</Link></li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-gray-600">
+        <div className="pt-6 border-t border-[#1B2E44] flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-[#8FA1B6]">
           <p>&copy; 2026 Tavnit. All rights reserved.</p>
         </div>
       </div>

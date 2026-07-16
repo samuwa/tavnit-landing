@@ -1,57 +1,32 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Problem from "@/components/Problem";
-import HowItWorks from "@/components/HowItWorks";
-import Features from "@/components/Features";
-import ExtractionShowcase from "@/components/ExtractionShowcase";
-import AgentsShowcase from "@/components/AgentsShowcase";
-import HumanInTheLoop from "@/components/HumanInTheLoop";
-import PlatformOverview from "@/components/PlatformOverview";
-import UseCases from "@/components/UseCases";
-import Integrations from "@/components/Integrations";
-import Pricing from "@/components/Pricing";
-import FAQ from "@/components/FAQ";
-import FinalCTA from "@/components/FinalCTA";
-import Footer from "@/components/Footer";
+import ViewModeProvider, { useViewMode, ViewMode } from "@/components/view/ViewModeProvider";
+import WipeStage from "@/components/view/WipeStage";
+import SheetSite from "@/components/SheetSite";
+import DocumentSite from "@/components/document/DocumentSite";
 
-const Squares = dynamic(() => import("@/components/Squares"), {
-  ssr: false,
-});
+function Site({ mode }: { mode: ViewMode }) {
+  return mode === "document" ? <DocumentSite /> : <SheetSite />;
+}
+
+function Workbook() {
+  const { mode, leaving } = useViewMode();
+  return (
+    <>
+      <Site mode={mode} />
+      {leaving && (
+        <WipeStage>
+          <Site mode={leaving} />
+        </WipeStage>
+      )}
+    </>
+  );
+}
 
 export default function Home() {
   return (
-    <>
-      {/* Fixed Squares background */}
-      <div className="fixed inset-0 -z-10 bg-[#0a0a1a]">
-        <Squares
-          direction="diagonal"
-          speed={0.17}
-          borderColor="#271E37"
-          squareSize={45}
-          hoverFillColor="#222"
-        />
-      </div>
-
-      <Header />
-      <main role="main">
-        <Hero />
-        <Problem />
-        <HowItWorks />
-        <Features />
-        <ExtractionShowcase />
-        <HumanInTheLoop />
-        <AgentsShowcase />
-        <PlatformOverview />
-        <UseCases />
-        <Integrations />
-        <Pricing />
-        <FAQ />
-        <FinalCTA />
-      </main>
-      <Footer />
-    </>
+    <ViewModeProvider>
+      <Workbook />
+    </ViewModeProvider>
   );
 }
