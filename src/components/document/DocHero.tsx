@@ -24,8 +24,8 @@ export default function DocHero({ n, of }: { n: number; of: number }) {
       <div className="doc-callout">
         <div className="doc-callout-k">Try it — it is actually real</div>
         <p style={{ margin: 0 }}>
-          Hit <strong>Extract to spreadsheet</strong> in the toolbar above and watch this
-          document turn into structured, cleaned rows — the whole point of Tavnit.
+          Hit <strong>Extract to spreadsheet</strong> and watch this document turn into
+          structured, cleaned rows — the whole point of Tavnit.
         </p>
       </div>
 

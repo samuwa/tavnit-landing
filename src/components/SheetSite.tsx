@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "@/components/Header";
 import Hero, { ROWS as HeroRows } from "@/components/Hero";
 import Problem, { ROWS as ProblemRows } from "@/components/Problem";
 import HowItWorks, { ROWS as HowItWorksRows } from "@/components/HowItWorks";
@@ -49,7 +48,6 @@ export default function SheetSite() {
 
   return (
     <SheetProvider>
-      <Header />
       <div className="sheet-wrap">
         <FormulaBar />
         <ColumnHeader />

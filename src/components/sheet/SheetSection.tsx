@@ -33,7 +33,7 @@ export default function SheetSection({
   ariaLabelledby?: string;
   className?: string;
 }) {
-  const { cols, selection } = useSheet();
+  const { cols, selection, select } = useSheet();
 
   const gutter: ReactNode[] = [];
   for (let i = 0; i < rows; i++) {
@@ -53,17 +53,46 @@ export default function SheetSection({
 
   const fillers: ReactNode[] = [];
   for (let r = 0; r < rows; r++) {
+    const absRow = startRow + r;
     for (let c = 0; c < cols; c++) {
+      const col = c + 1;
+      const selEmpty =
+        selection &&
+        selection.rowStart === absRow &&
+        selection.rowEnd === absRow &&
+        selection.colStart === col &&
+        selection.colEnd === col;
       fillers.push(
         <div
           key={`f${r}-${c}`}
-          className="sheet-cell sheet-empty"
+          className={"sheet-cell sheet-empty" + (selEmpty ? " is-selected" : "")}
           style={{ gridColumn: c + 2, gridRow: r + 1 }}
-          aria-hidden
+          data-cell=""
+          data-r={absRow}
+          data-c={col}
+          data-rspan={1}
+          data-cspan={1}
+          data-kind="empty"
         />
       );
     }
   }
+
+  // Clicking an empty graph-paper cell selects it (1×1).
+  const onGridClick = (e: React.MouseEvent) => {
+    const t = (e.target as HTMLElement).closest<HTMLElement>('[data-cell][data-kind="empty"]');
+    if (!t) return;
+    const col = Number(t.dataset.c);
+    const absRow = Number(t.dataset.r);
+    select({
+      ref: colLetter(col) + absRow,
+      formula: "",
+      colStart: col,
+      colEnd: col,
+      rowStart: absRow,
+      rowEnd: absRow,
+    });
+  };
 
   return (
     <section
@@ -71,6 +100,7 @@ export default function SheetSection({
       aria-labelledby={ariaLabelledby}
       className={"sheet-section " + className}
       style={{ "--rows": rows } as React.CSSProperties}
+      onClick={onGridClick}
     >
       <SectionContext.Provider value={{ startRow, rows }}>
         {gutter}

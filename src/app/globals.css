@@ -22,11 +22,10 @@
   --raw-wash: #FCEDE1;
 
   /* fixed spreadsheet chrome heights */
-  --nav-h: 56px;
   --formula-h: 40px;
   --colhead-h: 30px;
-  --chrome-top: 126px;   /* nav 56 + formula 40 + colheader 30 */
-  --chrome-bottom: 64px; /* sheet tabs 38 + status bar 26 */
+  --chrome-top: 70px;    /* formula 40 + colheader 30 (no top nav) */
+  --chrome-bottom: 66px; /* sheet tabs 40 + status bar 26 */
 
   /* sheet grid geometry */
   --gutter: 52px;
@@ -913,14 +912,14 @@ html {
 
 .sheet-wrap {
   width: 100%;
-  padding-top: var(--nav-h);       /* clear the fixed top nav */
+  padding-top: 0;
   padding-bottom: var(--chrome-bottom); /* clear the fixed sheet tabs */
 }
 
 /* ---- formula bar (sticky, directly under the nav) ---- */
 .sheet-formulabar {
   position: sticky;
-  top: var(--nav-h);
+  top: 0;
   z-index: 40;
   height: var(--formula-h);
   display: flex;
@@ -970,7 +969,7 @@ html {
 /* ---- column header (sticky A/B/C… letters) ---- */
 .sheet-colheader {
   position: sticky;
-  top: calc(var(--nav-h) + var(--formula-h));
+  top: var(--formula-h);
   z-index: 39;
   display: grid;
   grid-template-columns: var(--grid-cols);
@@ -1038,6 +1037,17 @@ html {
 }
 .sheet-empty {
   background: var(--paper);
+  cursor: cell;
+}
+.sheet-empty.is-selected {
+  box-shadow: inset 0 0 0 2px var(--ink);
+  background: var(--gold-wash);
+  z-index: 5;
+}
+/* keep keyboard-navigated cells clear of the sticky chrome */
+.sheet-cell {
+  scroll-margin-top: calc(var(--chrome-top) + 10px);
+  scroll-margin-bottom: calc(var(--chrome-bottom) + 10px);
 }
 
 /* content cell */
@@ -1249,28 +1259,53 @@ html {
   min-width: 52px;
   text-align: center;
 }
-.doc-extract-btn {
+@media (max-width: 639px) {
+  .doc-filename, .doc-toolbar-center { display: none; }
+}
+
+/* Floating "Extract to spreadsheet" action next to the pages */
+.doc-fab {
+  position: fixed;
+  z-index: 45;
+  right: clamp(16px, 4vw, 44px);
+  bottom: clamp(20px, 5vh, 40px);
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 9px;
   cursor: pointer;
   border: none;
   background: var(--gold);
   color: var(--ink);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 13px;
-  padding: 8px 14px;
-  border-radius: 7px;
-  box-shadow: 0 2px 0 var(--gold-deep);
-  transition: filter 0.15s, transform 0.1s;
-  white-space: nowrap;
+  font-size: 15px;
+  padding: 14px 22px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.34), 0 3px 0 var(--gold-deep);
+  transition: transform 0.12s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
-.doc-extract-btn:hover { filter: brightness(1.05); }
-.doc-extract-btn:active { transform: translateY(1px); box-shadow: none; }
+.doc-fab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(255, 197, 61, 0.5);
+  animation: fabPulse 2.6s ease-out infinite;
+  pointer-events: none;
+}
+.doc-fab:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 3px 0 var(--gold-deep);
+}
+.doc-fab:active { transform: translateY(0); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.34), 0 1px 0 var(--gold-deep); }
+@keyframes fabPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 197, 61, 0.45); }
+  70% { box-shadow: 0 0 0 16px rgba(255, 197, 61, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 197, 61, 0); }
+}
 @media (max-width: 639px) {
-  .doc-filename, .doc-toolbar-center { display: none; }
-  .doc-extract-btn span { display: none; }
+  .doc-fab { font-size: 14px; padding: 12px 18px; right: 14px; bottom: 16px; }
 }
 
 /* scroll area + paper stack */

@@ -85,6 +85,13 @@ export default function Cell({
         gridRow: `${r} / span ${rowSpan}`,
       }}
       data-ref={ref}
+      data-cell={interactive ? "" : undefined}
+      data-r={absRow}
+      data-c={start}
+      data-rspan={rowSpan}
+      data-cspan={gridSpan}
+      data-kind="content"
+      data-formula={formula ?? `=${colLetter(start)}${absRow}`}
       tabIndex={interactive ? 0 : undefined}
       role={interactive ? "gridcell" : undefined}
       aria-label={ariaLabel}

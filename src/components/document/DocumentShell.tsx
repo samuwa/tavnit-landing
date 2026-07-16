@@ -10,7 +10,6 @@ import { useViewMode } from "../view/ViewModeProvider";
    centered stack of white paper pages passed as children. */
 
 export function DocToolbar({ pages }: { pages: number }) {
-  const { toggle } = useViewMode();
   return (
     <div className="doc-toolbar">
       <div className="doc-toolbar-left">
@@ -45,12 +44,20 @@ export function DocToolbar({ pages }: { pages: number }) {
         <button className="doc-tool-btn doc-tool-icon" aria-label="Download">
           <Download size={15} />
         </button>
-        <button className="doc-extract-btn" onClick={toggle}>
-          <Zap size={15} />
-          Extract to spreadsheet
-        </button>
       </div>
     </div>
+  );
+}
+
+/* Prominent floating action — the primary way to extract the document into the
+   spreadsheet. Sits in the right gutter next to the pages and follows scroll. */
+export function DocExtractFab() {
+  const { toggle } = useViewMode();
+  return (
+    <button className="doc-fab" onClick={toggle}>
+      <Zap size={18} />
+      <span>Extract to spreadsheet</span>
+    </button>
   );
 }
 
@@ -59,6 +66,7 @@ export function DocumentCanvas({ pages, children }: { pages: number; children: R
     <div className="doc-canvas">
       <DocToolbar pages={pages} />
       <div className="doc-scroll">{children}</div>
+      <DocExtractFab />
     </div>
   );
 }

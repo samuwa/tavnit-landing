@@ -1,11 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { FileText } from "lucide-react";
 import { SHEET_SECTIONS } from "./sheetSections";
 import useActiveSection from "./useActiveSection";
+import { useViewMode } from "./view/ViewModeProvider";
+
+/* The bottom sheet-tab bar is the spreadsheet's navigator: brand on the left,
+   the scrollable section tabs in the middle, and the primary actions
+   (view-as-document toggle, Get Started) pinned on the right — plus the
+   status bar. This replaces a top nav entirely, keeping the view on-theme. */
 
 export default function SheetTabs() {
   const active = useActiveSection();
+  const { toggle } = useViewMode();
   const barRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const lastUserInteraction = useRef(0);
@@ -71,39 +81,75 @@ export default function SheetTabs() {
         </div>
       )}
 
-      {/* Sheet tabs */}
-      <div
-        ref={barRef}
-        className="flex items-stretch bg-[#EDEFF2] border-t border-[#C9CFD8] h-[38px] pl-2 overflow-x-auto mobile-carousel [scrollbar-width:none]"
-      >
-        {SHEET_SECTIONS.map((s, i) => (
-          <button
-            key={s.id}
-            ref={(el) => {
-              tabRefs.current[i] = el;
-            }}
-            onClick={() => goTo(s.id)}
-            className={`flex items-center gap-[7px] px-4 text-[13px] whitespace-nowrap border-r border-[#C9CFD8] cursor-pointer transition-colors ${
-              i === active
-                ? "bg-[#FBFBF9] text-[#0E1C2B] font-semibold shadow-[inset_0_2px_0_#FFC53D]"
-                : "text-[#6B7686] hover:text-[#0E1C2B] bg-transparent"
-            }`}
-            aria-current={i === active ? "true" : undefined}
-          >
-            <span
-              className={`w-2 h-2 rounded-[2px] ${i === active ? "bg-[#FFC53D]" : "bg-[#C9CFD8]"}`}
-              aria-hidden
-            />
-            {s.tab}
-          </button>
-        ))}
+      {/* Tab / toolbar row */}
+      <div className="flex items-stretch bg-[#EDEFF2] border-t border-[#C9CFD8] h-[40px]">
+        {/* Brand */}
         <button
-          onClick={onPlus}
-          className="flex items-center px-4 text-[#C9CFD8] font-bold text-[13px] hover:text-[#6B7686] transition-colors"
-          aria-label="New sheet"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="flex-none flex items-center gap-2 pl-3 pr-3 border-r border-[#C9CFD8] hover:bg-[#E4E7EC] transition-colors"
+          aria-label="Tavnit — back to top"
         >
-          ＋
+          <Image src="/assets/tavnit_logo.png" alt="Tavnit" width={150} height={52} className="h-5 w-auto" priority />
         </button>
+
+        {/* Scrollable section tabs */}
+        <div
+          ref={barRef}
+          className="flex items-stretch overflow-x-auto mobile-carousel [scrollbar-width:none] flex-1 min-w-0"
+        >
+          {SHEET_SECTIONS.map((s, i) => (
+            <button
+              key={s.id}
+              ref={(el) => {
+                tabRefs.current[i] = el;
+              }}
+              onClick={() => goTo(s.id)}
+              className={`flex items-center gap-[7px] px-4 text-[13px] whitespace-nowrap border-r border-[#C9CFD8] cursor-pointer transition-colors ${
+                i === active
+                  ? "bg-[#FBFBF9] text-[#0E1C2B] font-semibold shadow-[inset_0_2px_0_#FFC53D]"
+                  : "text-[#6B7686] hover:text-[#0E1C2B] bg-transparent"
+              }`}
+              aria-current={i === active ? "true" : undefined}
+            >
+              <span
+                className={`w-2 h-2 rounded-[2px] ${i === active ? "bg-[#FFC53D]" : "bg-[#C9CFD8]"}`}
+                aria-hidden
+              />
+              {s.tab}
+            </button>
+          ))}
+          <button
+            onClick={onPlus}
+            className="flex items-center px-4 text-[#C9CFD8] font-bold text-[13px] hover:text-[#6B7686] transition-colors"
+            aria-label="New sheet"
+          >
+            ＋
+          </button>
+        </div>
+
+        {/* Pinned actions */}
+        <div className="flex-none flex items-center gap-2 px-2 border-l border-[#C9CFD8] bg-[#EDEFF2]">
+          <Link
+            href="/docs"
+            className="hidden md:inline-flex items-center px-2 text-[13px] text-[#6B7686] hover:text-[#0E1C2B] transition-colors"
+          >
+            Docs
+          </Link>
+          <button
+            onClick={toggle}
+            title="View the source document"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white text-[#1B2E44] text-[12.5px] font-semibold shadow-[inset_0_0_0_1px_#C9CFD8] hover:bg-[#FFF6DE] hover:shadow-[inset_0_0_0_1px_#0E1C2B] transition-all"
+          >
+            <FileText size={14} />
+            <span className="hidden sm:inline">Document</span>
+          </button>
+          <Link
+            href="https://app.tavnit.io"
+            className="inline-flex items-center px-3 py-1.5 rounded-md bg-[#FFC53D] text-[#0E1C2B] text-[12.5px] font-semibold shadow-[0_2px_0_#B9820A] hover:brightness-105 active:translate-y-px active:shadow-none transition-all"
+          >
+            Get Started
+          </Link>
+        </div>
       </div>
 
       {/* Status bar */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, useCallback, ReactNode } from "react";
 
 /* The whole landing page is rendered as one workbook. This provider holds
    the currently-selected cell (drives the formula bar, column-letter and
@@ -51,6 +51,67 @@ export default function SheetProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const select = useCallback((s: Selection) => setSelection(s), []);
+
+  // Latest selection/cols for the (stable) keyboard handler.
+  const selRef = useRef<Selection | null>(selection);
+  selRef.current = selection;
+  const colsRef = useRef(cols);
+  colsRef.current = cols;
+
+  /* Move the selection to the cell covering absolute (R, C): prefer a content
+     cell, else the empty cell at that exact coordinate. Scrolls it into view. */
+  const moveTo = useCallback((R: number, C: number) => {
+    const arr = Array.from(document.querySelectorAll<HTMLElement>("[data-cell]"));
+    const covers = (el: HTMLElement) => {
+      const r = Number(el.dataset.r);
+      const c = Number(el.dataset.c);
+      const rs = Number(el.dataset.rspan || 1);
+      const cs = Number(el.dataset.cspan || 1);
+      return R >= r && R <= r + rs - 1 && C >= c && C <= c + cs - 1;
+    };
+    const el =
+      arr.find((x) => x.dataset.kind === "content" && covers(x)) ||
+      arr.find((x) => x.dataset.kind === "empty" && Number(x.dataset.r) === R && Number(x.dataset.c) === C) ||
+      null;
+    if (!el) return;
+    const r = Number(el.dataset.r);
+    const c = Number(el.dataset.c);
+    const rs = Number(el.dataset.rspan || 1);
+    const cs = Number(el.dataset.cspan || 1);
+    setSelection({
+      ref: el.dataset.ref || colLetter(c) + r,
+      formula: el.dataset.formula ?? "",
+      colStart: c,
+      colEnd: c + cs - 1,
+      rowStart: r,
+      rowEnd: r + rs - 1,
+    });
+    el.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, []);
+
+  // Arrow-key navigation across cells (once a cell is selected).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const sel = selRef.current;
+      if (!sel) return;
+      const ae = document.activeElement as HTMLElement | null;
+      if (ae && (ae.tagName === "INPUT" || ae.tagName === "TEXTAREA" || ae.isContentEditable)) return;
+      let R = 0;
+      let C = 0;
+      switch (e.key) {
+        case "ArrowRight": R = sel.rowStart; C = sel.colEnd + 1; break;
+        case "ArrowLeft": R = sel.rowStart; C = sel.colStart - 1; break;
+        case "ArrowDown": R = sel.rowEnd + 1; C = sel.colStart; break;
+        case "ArrowUp": R = sel.rowStart - 1; C = sel.colStart; break;
+        default: return;
+      }
+      e.preventDefault();
+      if (C < 1 || C > colsRef.current || R < 1) return;
+      moveTo(R, C);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [moveTo]);
 
   return <Ctx.Provider value={{ cols, selection, select }}>{children}</Ctx.Provider>;
 }
