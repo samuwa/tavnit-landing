@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
 import "./globals.css";
 
 const heading = Space_Grotesk({
@@ -18,6 +18,12 @@ const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-mono",
+});
+
+const serif = IBM_Plex_Serif({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-serif",
 });
 
 export const metadata: Metadata = {
@@ -280,7 +286,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${heading.variable} ${body.variable} ${mono.variable} font-body antialiased`}>{children}</body>
+      <body className={`${heading.variable} ${body.variable} ${mono.variable} ${serif.variable} font-body antialiased`}>{children}</body>
     </html>
   );
 }

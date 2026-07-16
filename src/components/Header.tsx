@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, FileText } from "lucide-react";
+import { useViewMode } from "./view/ViewModeProvider";
 
 const navLinks = [
   { href: "#how-it-works", label: "How It Works" },
@@ -17,6 +18,7 @@ const navLinks = [
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { toggle } = useViewMode();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -46,9 +48,18 @@ export default function Header() {
           ))}
         </nav>
 
+        <button
+          onClick={toggle}
+          className="hidden lg:inline-flex ml-auto items-center gap-2 px-3.5 py-2 bg-white text-[#1B2E44] rounded-md text-[13px] font-semibold shadow-[inset_0_0_0_1px_#C9CFD8] hover:bg-[#FFF6DE] hover:shadow-[inset_0_0_0_1px_#0E1C2B] transition-all flex-shrink-0"
+          title="View the source document"
+        >
+          <FileText size={15} />
+          Document
+        </button>
+
         <Link
           href="https://app.tavnit.io"
-          className="hidden lg:inline-flex ml-auto px-4 py-2 bg-[#FFC53D] text-[#0E1C2B] rounded-md text-[14px] font-semibold shadow-[0_2px_0_#B9820A] hover:brightness-105 active:translate-y-px active:shadow-none transition-all flex-shrink-0"
+          className="hidden lg:inline-flex px-4 py-2 bg-[#FFC53D] text-[#0E1C2B] rounded-md text-[14px] font-semibold shadow-[0_2px_0_#B9820A] hover:brightness-105 active:translate-y-px active:shadow-none transition-all flex-shrink-0"
         >
           Get Started
         </Link>
@@ -77,9 +88,19 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                toggle();
+              }}
+              className="mt-3 inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-[#1B2E44] rounded-md text-center font-semibold shadow-[inset_0_0_0_1px_#C9CFD8]"
+            >
+              <FileText size={16} />
+              View source document
+            </button>
             <Link
               href="https://app.tavnit.io"
-              className="mt-3 px-6 py-3 bg-[#FFC53D] text-[#0E1C2B] rounded-md text-center font-semibold shadow-[0_2px_0_#B9820A]"
+              className="mt-2 px-6 py-3 bg-[#FFC53D] text-[#0E1C2B] rounded-md text-center font-semibold shadow-[0_2px_0_#B9820A]"
             >
               Get Started
             </Link>
