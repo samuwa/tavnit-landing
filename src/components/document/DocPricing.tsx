@@ -88,8 +88,7 @@ export default function DocPricing({ n, of }: { n: number; of: number }) {
         Every plan is a flat monthly subscription with a pool of credits. One
         credit processes one page — extraction and cleaning included — so the
         credits you get each month translate directly into pages. Larger plans
-        add <strong>bonus</strong> credits on top of their base allotment, and
-        Enterprise carries the most pages per dollar.
+        add <strong>bonus</strong> credits on top of their base allotment.
       </p>
 
       {/* The four plans, set as a plan-per-column rate card */}
