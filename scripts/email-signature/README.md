@@ -7,9 +7,17 @@ table) rendered as a looping GIF for email signatures.
 
 | File | Size | Use |
 | --- | --- | --- |
-| `public/email-signature.gif` | 460×150 | Default choice — smallest file |
-| `public/email-signature-2x.gif` | 920×300 | Retina-crisp; display at 460px wide |
-| `public/email-signature-still.png` | 920×300 | Static fallback of the completed state |
+| `public/email-signature.gif` | 460×150 | Dark theme (matches the site) — smallest file |
+| `public/email-signature-2x.gif` | 920×300 | Dark, retina-crisp; display at 460px wide |
+| `public/email-signature-still.png` | 920×300 | Dark static fallback of the completed state |
+| `public/email-signature-light.gif` | 460×150 | Light theme — blends into white email backgrounds |
+| `public/email-signature-light-2x.gif` | 920×300 | Light, retina-crisp; display at 460px wide |
+| `public/email-signature-light-still.png` | 920×300 | Light static fallback of the completed state |
+
+Preview either theme by opening `animation.html` (dark) or
+`animation.html?theme=light` in a browser (animations are paused for capture —
+run `window.__seek(<ms>)` in devtools, or temporarily remove the
+`animation-play-state: paused` rule to watch it play).
 
 Once deployed, the files are served from the site, e.g.
 `https://tavnit.io/email-signature.gif`.

@@ -51,13 +51,13 @@ function planFrames() {
   return frames;
 }
 
-async function captureFrames(browser, scale, frames, debugDir) {
+async function captureFrames(browser, theme, scale, frames, debugDir) {
   const context = await browser.newContext({
     viewport: { width: WIDTH, height: HEIGHT },
     deviceScaleFactor: scale,
   });
   const page = await context.newPage();
-  await page.goto("file://" + HTML);
+  await page.goto("file://" + HTML + "?theme=" + theme);
   await page.waitForFunction(() => window.__ready === true);
 
   const captured = [];
@@ -68,7 +68,10 @@ async function captureFrames(browser, scale, frames, debugDir) {
     });
     if (debugDir) {
       fs.writeFileSync(
-        path.join(debugDir, `f${String(i).padStart(3, "0")}-t${frame.t}-${scale}x.png`),
+        path.join(
+          debugDir,
+          `${theme}-f${String(i).padStart(3, "0")}-t${frame.t}-${scale}x.png`
+        ),
         buf
       );
     }
@@ -120,24 +123,30 @@ async function main() {
   });
 
   try {
-    for (const scale of [1, 2]) {
-      const capture = await captureFrames(browser, scale, frames, debugDir);
-      const gifBuf = encodeGif(capture);
-      const name = scale === 1 ? "email-signature.gif" : "email-signature-2x.gif";
-      fs.writeFileSync(path.join(OUT_DIR, name), gifBuf);
-      console.log(
-        `${name}: ${capture.w}x${capture.h}, ${(gifBuf.length / 1024).toFixed(0)} KB`
-      );
-
-      if (scale === 2) {
-        // Static fallback of the completed state (first frame of the plan).
-        const still = PNG.sync.write(
-          Object.assign(new PNG({ width: capture.w, height: capture.h }), {
-            data: Buffer.from(capture.frames[0].rgba),
-          })
+    for (const { theme, suffix } of [
+      { theme: "dark", suffix: "" },
+      { theme: "light", suffix: "-light" },
+    ]) {
+      for (const scale of [1, 2]) {
+        const capture = await captureFrames(browser, theme, scale, frames, debugDir);
+        const gifBuf = encodeGif(capture);
+        const name = `email-signature${suffix}${scale === 2 ? "-2x" : ""}.gif`;
+        fs.writeFileSync(path.join(OUT_DIR, name), gifBuf);
+        console.log(
+          `${name}: ${capture.w}x${capture.h}, ${(gifBuf.length / 1024).toFixed(0)} KB`
         );
-        fs.writeFileSync(path.join(OUT_DIR, "email-signature-still.png"), still);
-        console.log(`email-signature-still.png: ${capture.w}x${capture.h}`);
+
+        if (scale === 2) {
+          // Static fallback of the completed state (first frame of the plan).
+          const still = PNG.sync.write(
+            Object.assign(new PNG({ width: capture.w, height: capture.h }), {
+              data: Buffer.from(capture.frames[0].rgba),
+            })
+          );
+          const stillName = `email-signature${suffix}-still.png`;
+          fs.writeFileSync(path.join(OUT_DIR, stillName), still);
+          console.log(`${stillName}: ${capture.w}x${capture.h}`);
+        }
       }
     }
   } finally {
