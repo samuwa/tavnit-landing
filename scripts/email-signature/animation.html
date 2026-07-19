@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tavnit email signature animation</title>
+<style>
+  /* Compact remix of the landing HeroAnimation (src/components/HeroAnimation.tsx +
+     globals.css) sized for an email signature. Every effect is a CSS keyframe
+     animation on a fixed 4900ms timeline; generate.mjs seeks it frame by frame. */
+
+  @font-face {
+    font-family: "DM Sans";
+    src: url("./dmsans-latin.woff2") format("woff2");
+    font-weight: 100 1000;
+    font-style: normal;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* Paused globally — the capture script drives time via the Web Animations API */
+  *, *::before, *::after { animation-play-state: paused !important; }
+
+  html, body { width: 460px; height: 150px; overflow: hidden; }
+  body {
+    background: #0a0a1a;
+    font-family: "DM Sans", "Liberation Sans", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- timeline ---------------------------------------------------------
+     0     initial state
+     500   scan border + "AI Processing" fade in
+     1200  arrow bounces, rows fly out (150ms stagger, 1.2s flight each)
+     2200  table bars start filling (flight start + 1000ms)
+     3300  "Extraction complete" banner fades in
+     4900  loop
+  ------------------------------------------------------------------------ */
+
+  @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes dimSource { from { opacity: 1; } to { opacity: 0.35; } }
+  @keyframes arrowBounce { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+  @keyframes flyToTable {
+    0%   { opacity: 0; transform: translate(-50%, -50%) translate(0, 0) scale(0.7); }
+    12%  { opacity: 1; transform: translate(-50%, -50%) translate(14px, -8px) scale(1.12); }
+    85%  { opacity: 1; transform: translate(-50%, -50%) translate(var(--end-x), var(--end-y)) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--end-x), var(--end-y)) scale(1); }
+  }
+
+  .stage {
+    position: relative;
+    width: 460px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .field:nth-child(1), tbody tr:nth-child(1) { --start: 1200ms; }
+  .field:nth-child(2), tbody tr:nth-child(2) { --start: 1350ms; }
+  .field:nth-child(3), tbody tr:nth-child(3) { --start: 1500ms; }
+  .field:nth-child(4), tbody tr:nth-child(4) { --start: 1650ms; }
+
+  /* ---- document ---- */
+  .doc {
+    position: relative;
+    width: 148px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+  }
+  .doc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 7px;
+  }
+  .doc-title { width: 42px; height: 5px; background: rgba(255, 255, 255, 0.15); border-radius: 2.5px; margin-bottom: 4px; }
+  .doc-sub   { width: 56px; height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 2px; }
+  .doc-logo  { width: 15px; height: 15px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 3px; }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 6px 0;
+    animation: dimSource 0.3s ease both;
+    animation-delay: var(--start);
+  }
+  .f-label { width: 30px; height: 5px; background: rgba(255, 255, 255, 0.2); border-radius: 2.5px; }
+  .f-value { width: 42px; height: 5px; background: rgba(255, 255, 255, 0.1); border-radius: 2.5px; }
+
+  .doc-foot { border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: 7px; padding-top: 6px; }
+  .foot-line { height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 2px; margin-bottom: 3px; }
+  .foot-line:last-child { margin-bottom: 0; width: 72%; }
+
+  .scan-border {
+    position: absolute;
+    inset: 0;
+    border: 1.5px solid rgba(102, 126, 234, 0.6);
+    border-radius: 9px;
+    box-shadow: inset 0 0 12px rgba(102, 126, 234, 0.12);
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeIn 0.3s ease both;
+    animation-delay: 500ms;
+  }
+
+  /* ---- middle ---- */
+  .mid {
+    width: 66px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+  }
+  .arrow {
+    animation: arrowBounce 925ms ease-in-out both;
+    animation-delay: 1200ms;
+    animation-iteration-count: 2;
+  }
+  .processing {
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 0.3s ease both;
+    animation-delay: 500ms;
+  }
+  .processing-text {
+    font-size: 8.5px;
+    font-family: "DejaVu Sans Mono", monospace;
+    font-weight: 600;
+    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    white-space: nowrap;
+  }
+  .dots { display: flex; gap: 3px; justify-content: center; margin-top: 3px; }
+  .dots i { width: 3px; height: 3px; border-radius: 50%; background: linear-gradient(90deg, #667eea, #764ba2); }
+
+  /* ---- table ---- */
+  .table-card {
+    width: 186px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #94a3b8;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  th:first-child { width: 40%; }
+  td { padding: 5px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+  .t-label, .t-bar {
+    position: relative;
+    height: 5px;
+    border-radius: 2.5px;
+    background: rgba(255, 255, 255, 0.08);
+    animation: pulse 0.3s ease both;
+    animation-delay: calc(var(--start) + 1000ms);
+  }
+  .t-label { width: 30px; }
+  .t-bar   { width: 46px; }
+
+  .fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    animation: fadeIn 0.3s ease both;
+    animation-delay: calc(var(--start) + 1000ms);
+  }
+  .fill-label { background: linear-gradient(90deg, #8b5cf6, #06b6d4); box-shadow: 0 0 6px rgba(139, 92, 246, 0.5); }
+  .fill-value { background: linear-gradient(90deg, #667eea, #764ba2); box-shadow: 0 0 6px rgba(102, 126, 234, 0.5); }
+
+  .banner {
+    padding: 4px 10px;
+    font-size: 9px;
+    font-weight: 600;
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.1);
+    border-top: 1px solid rgba(16, 185, 129, 0.2);
+    opacity: 0;
+    animation: fadeIn 0.3s ease both;
+    animation-delay: 3300ms;
+  }
+
+  /* ---- particles ---- */
+  .particle {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    gap: 3px;
+    opacity: 0;
+    pointer-events: none;
+    animation: flyToTable 1.2s cubic-bezier(0.25, 0.6, 0.35, 1) both;
+  }
+  .pbar { height: 4px; border-radius: 2px; }
+  .plabel { width: 22px; background: linear-gradient(90deg, #8b5cf6, #06b6d4); box-shadow: 0 2px 8px rgba(139, 92, 246, 0.5); }
+  .pv1 { width: 13px; background: linear-gradient(90deg, #667eea, #764ba2); box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4); }
+  .pv2 { width: 16px; background: linear-gradient(90deg, #764ba2, #f093fb); box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4); }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="doc">
+    <div class="doc-head">
+      <div>
+        <div class="doc-title"></div>
+        <div class="doc-sub"></div>
+      </div>
+      <div class="doc-logo"></div>
+    </div>
+    <div class="fields">
+      <div class="field" id="field-0"><div class="f-label"></div><div class="f-value"></div></div>
+      <div class="field" id="field-1"><div class="f-label"></div><div class="f-value"></div></div>
+      <div class="field" id="field-2"><div class="f-label"></div><div class="f-value"></div></div>
+      <div class="field" id="field-3"><div class="f-label"></div><div class="f-value"></div></div>
+    </div>
+    <div class="doc-foot">
+      <div class="foot-line"></div>
+      <div class="foot-line"></div>
+    </div>
+    <div class="scan-border"></div>
+  </div>
+
+  <div class="mid">
+    <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+    <div class="processing">
+      <div class="processing-text">AI Processing</div>
+      <div class="dots"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead><tr><th>Field</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><div class="t-label" id="t-label-0"><div class="fill fill-label"></div></div></td><td><div class="t-bar" id="t-bar-0"><div class="fill fill-value"></div></div></td></tr>
+        <tr><td><div class="t-label" id="t-label-1"><div class="fill fill-label"></div></div></td><td><div class="t-bar" id="t-bar-1"><div class="fill fill-value"></div></div></td></tr>
+        <tr><td><div class="t-label" id="t-label-2"><div class="fill fill-label"></div></div></td><td><div class="t-bar" id="t-bar-2"><div class="fill fill-value"></div></div></td></tr>
+        <tr><td><div class="t-label" id="t-label-3"><div class="fill fill-label"></div></div></td><td><div class="t-bar" id="t-bar-3"><div class="fill fill-value"></div></div></td></tr>
+      </tbody>
+    </table>
+    <div class="banner">&#10003; Extraction complete</div>
+  </div>
+</div>
+
+<script>
+  (async function init() {
+    await document.fonts.ready;
+
+    const stage = document.getElementById("stage");
+    const wrap = stage.getBoundingClientRect();
+
+    const mk = (src, tgt, html, delay) => {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.innerHTML = html;
+      const s = src.getBoundingClientRect();
+      const t = tgt.getBoundingClientRect();
+      const sx = s.left - wrap.left + s.width / 2;
+      const sy = s.top - wrap.top + s.height / 2;
+      p.style.left = sx + "px";
+      p.style.top = sy + "px";
+      p.style.setProperty("--end-x", (t.left - wrap.left + t.width / 2 - sx) + "px");
+      p.style.setProperty("--end-y", (t.top - wrap.top + t.height / 2 - sy) + "px");
+      p.style.animationDelay = delay + "ms";
+      stage.appendChild(p);
+    };
+
+    const LABEL = '<div class="pbar plabel"></div>';
+    const VALUE = '<div class="pbar pv1"></div><div class="pbar pv2"></div>';
+
+    for (let i = 0; i < 4; i++) {
+      const start = 1200 + i * 150;
+      const f = document.getElementById("field-" + i);
+      mk(f.querySelector(".f-label"), document.getElementById("t-label-" + i), LABEL, start);
+      mk(f.querySelector(".f-value"), document.getElementById("t-bar-" + i), VALUE, start);
+    }
+
+    window.__TOTAL = 4900;
+    window.__seek = (t) =>
+      document.getAnimations().forEach((a) => {
+        a.pause();
+        a.currentTime = t;
+      });
+    window.__ready = true;
+  })();
+</script>
+</body>
+</html>
