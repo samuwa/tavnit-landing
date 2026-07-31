@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary: #667eea;
-  --color-primary-dark: #764ba2;
+  --color-primary: #3b82f6;
+  --color-primary-dark: #6c42f0;
   --color-success: #10b981;
   --color-error: #ef4444;
   --font-heading: var(--font-heading), -apple-system, BlinkMacSystemFont, sans-serif;
@@ -39,8 +39,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4); }
-  50% { box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6); }
+  0%, 100% { box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 12px 32px rgba(59, 130, 246, 0.6); }
 }
 
 @keyframes line-flow {
@@ -80,7 +80,7 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #6c42f0 100%);
   opacity: 0;
   filter: blur(16px);
   z-index: -1;
@@ -92,7 +92,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #6c42f0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -129,10 +129,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .glass-card-hover:hover {
   background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(102, 126, 234, 0.25);
+  border-color: rgba(59, 130, 246, 0.25);
   border-top-color: rgba(255, 255, 255, 0.18);
   box-shadow:
-    0 8px 32px rgba(102, 126, 234, 0.08),
+    0 8px 32px rgba(59, 130, 246, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -269,8 +269,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .target-bar.filled {
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+  background: linear-gradient(90deg, #3b82f6, #6c42f0);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 }
 
 .target-label {
@@ -282,8 +282,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .target-label.filled {
-  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
-  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+  background: linear-gradient(90deg, #6c42f0, #06b6d4);
+  box-shadow: 0 0 10px rgba(108, 66, 240, 0.5);
 }
 
 /* Particles */
@@ -299,7 +299,7 @@ h1, h2, h3, h4, h5, h6 {
 .particle-bar {
   height: 8px;
   border-radius: 4px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
 .particle-label {
@@ -313,34 +313,34 @@ h1, h2, h3, h4, h5, h6 {
   height: 8px;
   width: 80px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.5);
+  background: linear-gradient(90deg, #6c42f0, #06b6d4);
+  box-shadow: 0 4px 15px rgba(108, 66, 240, 0.5);
 }
 
 .particle-bar-1 {
   width: 50px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: linear-gradient(90deg, #3b82f6, #6c42f0);
 }
 
 .particle-bar-2 {
   width: 60px;
-  background: linear-gradient(90deg, #764ba2, #f093fb);
+  background: linear-gradient(90deg, #6c42f0, #1990f5);
 }
 
 .scan-border {
   position: absolute;
   inset: 0;
-  border: 2px solid rgba(102, 126, 234, 0.6);
+  border: 2px solid rgba(59, 130, 246, 0.6);
   border-radius: 12px;
   pointer-events: none;
   opacity: 0;
-  box-shadow: inset 0 0 20px rgba(102, 126, 234, 0.1);
+  box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.1);
 }
 
 .processing-text {
   font-size: 12px;
   font-family: monospace;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  background: linear-gradient(90deg, #1990f5, #3b82f6, #6c42f0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -615,17 +615,17 @@ h1, h2, h3, h4, h5, h6 {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: 1;
 }
 
 .workflow-step:hover .step-icon-circle {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #3b82f6;
+  color: #3b82f6;
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3);
 }
 
 .workflow-step:hover .icon-glow {
@@ -659,7 +659,7 @@ h1, h2, h3, h4, h5, h6 {
 .connector-line {
   width: 32px;
   height: 2px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, #667eea 50%, rgba(255,255,255,0.1) 100%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, #3b82f6 50%, rgba(255,255,255,0.1) 100%);
   position: relative;
 }
 
@@ -670,7 +670,7 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: linear-gradient(90deg, #3b82f6, #6c42f0);
   transform: translateY(-50%) scaleX(0);
   transform-origin: left;
   animation: line-flow 3s ease-in-out infinite;
@@ -679,7 +679,7 @@ h1, h2, h3, h4, h5, h6 {
 .connector-arrow {
   position: absolute;
   right: -10px;
-  color: #667eea;
+  color: #3b82f6;
   opacity: 0.7;
   animation: arrow-pulse 2s ease-in-out infinite;
 }

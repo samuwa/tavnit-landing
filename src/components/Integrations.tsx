@@ -21,7 +21,7 @@ function DesktopFeatureTags({ tags }: { tags: string[] }) {
 
 function DesktopCardLink({ href, label }: { href: string; label: string }) {
   return (
-    <Link href={href} className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] hover:text-[#a78bfa] transition-colors group/link text-sm mt-5">
+    <Link href={href} className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] hover:text-[#93c5fd] transition-colors group/link text-sm mt-5">
       {label}
       <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
     </Link>
@@ -33,7 +33,7 @@ function DesktopEmailSteps({ steps, numbered }: { steps: string[]; numbered?: bo
     <div className="space-y-2.5">
       {steps.map((step, i) => (
         <div key={i} className="flex items-start gap-3 text-sm text-gray-300">
-          <span className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 font-bold text-[10px] ${numbered ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white" : "bg-emerald-500/20 text-emerald-400"}`}>
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 font-bold text-[10px] ${numbered ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white" : "bg-emerald-500/20 text-emerald-400"}`}>
             {numbered ? i + 1 : "✓"}
           </span>
           <span className="leading-snug">{step}</span>
@@ -55,7 +55,7 @@ function ApiDesktop() {
     <>
       <div className="bg-black/40 rounded-lg overflow-hidden border border-white/5">
         <div className="flex justify-between items-center px-4 py-2 border-b border-white/5">
-          <span className="text-[10px] font-bold text-[#667eea] uppercase tracking-widest">cURL</span>
+          <span className="text-[10px] font-bold text-[#3b82f6] uppercase tracking-widest">cURL</span>
           <span className="text-[10px] text-gray-500">Quick Example</span>
         </div>
         <pre className="p-4 overflow-x-auto">
@@ -70,7 +70,7 @@ function ApiDesktop() {
         <div className="space-y-1.5">
           {apiEndpoints.map((e) => (
             <div key={e.path} className="flex items-center gap-2.5 text-[12px]">
-              <span className="px-1.5 py-0.5 rounded bg-[#667eea]/10 text-[#667eea] font-mono font-bold text-[9px] flex-shrink-0">POST</span>
+              <span className="px-1.5 py-0.5 rounded bg-[#3b82f6]/10 text-[#3b82f6] font-mono font-bold text-[9px] flex-shrink-0">POST</span>
               <code className="font-mono text-gray-300 flex-shrink-0">{e.path}</code>
               <span className="text-gray-500 truncate">— {e.desc}</span>
             </div>
@@ -127,14 +127,14 @@ function WebhookDesktop() {
           ].map((item, i) => (
             <div key={i} className="flex items-start flex-1">
               <div className="flex flex-col items-center gap-2 flex-1">
-                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#667eea] shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#3b82f6] shadow-sm">
                   <item.icon size={18} />
                 </div>
                 <span className="text-[11px] text-gray-400 font-medium text-center leading-tight max-w-[90px]">{item.label}</span>
               </div>
               {i < 2 && (
                 <div className="h-10 flex items-center flex-shrink-0" aria-hidden="true">
-                  <ArrowRight size={16} className="text-[#667eea]/50" />
+                  <ArrowRight size={16} className="text-[#3b82f6]/50" />
                 </div>
               )}
             </div>
@@ -143,7 +143,7 @@ function WebhookDesktop() {
       </div>
       <div className="mt-4 bg-black/40 rounded-lg overflow-hidden border border-white/5">
         <div className="flex justify-between items-center px-4 py-2 border-b border-white/5">
-          <span className="text-[10px] font-bold text-[#667eea] uppercase tracking-widest">Payload</span>
+          <span className="text-[10px] font-bold text-[#3b82f6] uppercase tracking-widest">Payload</span>
           <span className="text-[10px] text-gray-500">Sent to your URL</span>
         </div>
         <pre className="p-3.5 overflow-x-auto">
@@ -209,7 +209,7 @@ function MobileEmailSteps({ steps, numbered }: { steps: string[]; numbered?: boo
       {steps.map((step, i) => (
         <div key={i} className="flex items-start gap-2 text-xs text-gray-300">
           <span className={`w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 font-bold text-[9px] ${
-            numbered ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white" : "bg-emerald-500/20 text-emerald-400"
+            numbered ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white" : "bg-emerald-500/20 text-emerald-400"
           }`}>
             {numbered ? i + 1 : "✓"}
           </span>
@@ -224,7 +224,7 @@ function ApiMobileCard() {
   return (
     <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-[#667eea]/10 flex items-center justify-center text-[#667eea] flex-shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] flex-shrink-0">
           <Code2 size={20} />
         </div>
         <div>
@@ -235,7 +235,7 @@ function ApiMobileCard() {
 
       <div className="bg-black/40 rounded-lg overflow-hidden border border-white/5 mb-3">
         <div className="flex justify-between items-center px-3 py-1.5 border-b border-white/5">
-          <span className="text-[9px] font-bold text-[#667eea] uppercase tracking-widest">cURL</span>
+          <span className="text-[9px] font-bold text-[#3b82f6] uppercase tracking-widest">cURL</span>
           <span className="text-[9px] text-gray-500">Quick Example</span>
         </div>
         <pre className="p-2.5 overflow-x-auto">
@@ -252,7 +252,7 @@ function ApiMobileCard() {
         ))}
       </div>
 
-      <Link href="/docs#api-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] text-xs mt-auto">
+      <Link href="/docs#api-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
         View API Docs <ArrowRight size={12} />
       </Link>
     </div>
@@ -263,7 +263,7 @@ function EmailMobileCard() {
   return (
     <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-[#667eea]/10 flex items-center justify-center text-[#667eea] flex-shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] flex-shrink-0">
           <Mail size={20} />
         </div>
         <div>
@@ -289,7 +289,7 @@ function EmailMobileCard() {
         ))}
       </div>
 
-      <Link href="/docs#email-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] text-xs mt-auto">
+      <Link href="/docs#email-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
         Setup Email <ArrowRight size={12} />
       </Link>
     </div>
@@ -300,7 +300,7 @@ function WebhookMobileCard() {
   return (
     <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-[#667eea]/10 flex items-center justify-center text-[#667eea] flex-shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] flex-shrink-0">
           <Zap size={20} />
         </div>
         <div>
@@ -318,14 +318,14 @@ function WebhookMobileCard() {
           ].map((item, i) => (
             <div key={i} className="flex items-start flex-1">
               <div className="flex flex-col items-center gap-1.5 flex-1">
-                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#667eea]">
+                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#3b82f6]">
                   <item.icon size={14} />
                 </div>
                 <span className="text-[9px] text-gray-400 font-medium text-center leading-tight max-w-[74px]">{item.label}</span>
               </div>
               {i < 2 && (
                 <div className="h-8 flex items-center flex-shrink-0" aria-hidden="true">
-                  <ArrowRight size={12} className="text-[#667eea]/50" />
+                  <ArrowRight size={12} className="text-[#3b82f6]/50" />
                 </div>
               )}
             </div>
@@ -334,7 +334,7 @@ function WebhookMobileCard() {
       </div>
 
       <div className="flex items-start gap-2 text-xs text-gray-300 mb-3">
-        <span className="w-[18px] h-[18px] rounded-full bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">→</span>
+        <span className="w-[18px] h-[18px] rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">→</span>
         <span className="leading-snug">Configure webhook URL in flow settings</span>
       </div>
 
@@ -344,7 +344,7 @@ function WebhookMobileCard() {
         ))}
       </div>
 
-      <Link href="/docs#webhooks" className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] text-xs mt-auto">
+      <Link href="/docs#webhooks" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
         Configure Webhooks <ArrowRight size={12} />
       </Link>
     </div>
@@ -355,7 +355,7 @@ function McpMobileCard() {
   return (
     <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-[#667eea]/10 flex items-center justify-center text-[#667eea] flex-shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] flex-shrink-0">
           <Plug size={20} />
         </div>
         <div>
@@ -381,7 +381,7 @@ function McpMobileCard() {
         ))}
       </div>
 
-      <Link href="/docs#mcp-connector" className="inline-flex items-center gap-1.5 font-semibold text-[#667eea] text-xs mt-auto">
+      <Link href="/docs#mcp-connector" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
         Connect Your Assistant <ArrowRight size={12} />
       </Link>
     </div>
@@ -471,7 +471,7 @@ export default function Integrations() {
               key={i}
               onClick={() => scrollToCard(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === mobileActive ? "w-6 bg-[#667eea]" : "w-2 bg-gray-600"
+                i === mobileActive ? "w-6 bg-[#3b82f6]" : "w-2 bg-gray-600"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />
@@ -508,15 +508,15 @@ export default function Integrations() {
                   onClick={() => setDesktopActive(i)}
                   className={`glass-card rounded-xl px-4 py-3.5 flex items-center gap-3.5 text-left transition-all duration-300 cursor-pointer flex-1 ${
                     active
-                      ? "border-[#667eea]/50 bg-[#667eea]/[0.07] shadow-lg shadow-[#667eea]/10"
+                      ? "border-[#3b82f6]/50 bg-[#3b82f6]/[0.07] shadow-lg shadow-[#3b82f6]/10"
                       : "hover:border-white/20 hover:bg-white/[0.03]"
                   }`}
                 >
                   <div
                     className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                       active
-                        ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-md shadow-[#667eea]/25"
-                        : "bg-[#667eea]/10 text-[#667eea]"
+                        ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-md shadow-[#3b82f6]/25"
+                        : "bg-[#3b82f6]/10 text-[#3b82f6]"
                     }`}
                   >
                     <m.icon size={19} />
@@ -530,7 +530,7 @@ export default function Integrations() {
                   <ArrowRight
                     size={15}
                     className={`ml-auto flex-shrink-0 transition-all duration-300 ${
-                      active ? "text-[#667eea] opacity-100 translate-x-0" : "opacity-0 -translate-x-1"
+                      active ? "text-[#3b82f6] opacity-100 translate-x-0" : "opacity-0 -translate-x-1"
                     }`}
                   />
                 </button>

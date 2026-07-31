@@ -85,7 +85,7 @@ export default function VideoModal({ open, onClose }: VideoModalProps) {
               onClick={() => handleChapterClick(ch.time, i)}
               className={`flex-1 min-w-[140px] flex flex-col items-center gap-1 px-4 py-3 rounded-lg transition-all cursor-pointer ${
                 i === activeChapter
-                  ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] border-transparent"
+                  ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] border-transparent"
                   : "bg-white/[0.08] border border-white/10 hover:bg-white/15"
               }`}
             >

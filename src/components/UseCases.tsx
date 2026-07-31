@@ -105,7 +105,7 @@ export default function UseCases() {
               style={{ width: "calc(100vw - 4rem)" }}
             >
               <div className="glass-card rounded-xl p-5 border border-white/10 flex flex-col h-full">
-                <span className="inline-block w-fit px-3 py-1 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-full text-[10px] font-semibold mb-3">
+                <span className="inline-block w-fit px-3 py-1 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-full text-[10px] font-semibold mb-3">
                   {uc.badge}
                 </span>
                 <h3 className="text-lg font-bold text-white mb-3">{uc.title}</h3>
@@ -136,7 +136,7 @@ export default function UseCases() {
               key={i}
               onClick={() => scrollToCard(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === mobileActive ? "w-6 bg-[#667eea]" : "w-2 bg-gray-600"
+                i === mobileActive ? "w-6 bg-[#3b82f6]" : "w-2 bg-gray-600"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />
@@ -160,8 +160,8 @@ export default function UseCases() {
               onClick={() => setActive(i)}
               className={`px-6 py-3 rounded-lg text-base font-semibold transition-all cursor-pointer ${
                 i === active
-                  ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-[0_0_20px_rgba(102,126,234,0.3)]"
-                  : "glass-card text-gray-300 hover:border-[#667eea]/40 hover:text-white"
+                  ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                  : "glass-card text-gray-300 hover:border-[#3b82f6]/40 hover:text-white"
               }`}
             >
               {uc.tab}
@@ -179,7 +179,7 @@ export default function UseCases() {
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center glass-card rounded-2xl p-6 md:p-8"
           >
             <div>
-              <span className="inline-block px-3 py-1.5 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-full text-sm font-semibold mb-4">
+              <span className="inline-block px-3 py-1.5 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-full text-sm font-semibold mb-4">
                 {useCases[active].badge}
               </span>
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">{useCases[active].title}</h3>

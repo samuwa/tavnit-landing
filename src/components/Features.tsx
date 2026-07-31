@@ -23,11 +23,11 @@ const features = [
 /* Hero feature card — spans 2 columns on desktop */
 function HeroFeatureCard({ f }: { f: typeof features[number] }) {
   return (
-    <div className="group relative p-6 md:p-8 rounded-2xl glass-card border-[#667eea]/20 hover:border-[#667eea]/40 transition-all duration-300 h-full overflow-hidden">
+    <div className="group relative p-6 md:p-8 rounded-2xl glass-card border-[#3b82f6]/20 hover:border-[#3b82f6]/40 transition-all duration-300 h-full overflow-hidden">
       {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#667eea]/5 to-[#764ba2]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#3b82f6]/5 to-[#6c42f0]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-5">
-        <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg shadow-[#667eea]/20 flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg shadow-[#3b82f6]/20 flex items-center justify-center flex-shrink-0">
           <f.icon size={26} />
         </div>
         <div>
@@ -46,8 +46,8 @@ function FeatureCard({ f }: { f: typeof features[number] }) {
         <div
           className={`w-9 h-9 md:w-10 md:h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
             f.gradient
-              ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg shadow-[#667eea]/20"
-              : "bg-[#667eea]/10 text-[#667eea]"
+              ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg shadow-[#3b82f6]/20"
+              : "bg-[#3b82f6]/10 text-[#3b82f6]"
           }`}
         >
           <f.icon size={20} />
@@ -67,8 +67,8 @@ function MarqueeCard({ f }: { f: typeof features[number] }) {
         <div
           className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
             f.gradient
-              ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg shadow-[#667eea]/20"
-              : "bg-[#667eea]/10 text-[#667eea]"
+              ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg shadow-[#3b82f6]/20"
+              : "bg-[#3b82f6]/10 text-[#3b82f6]"
           }`}
         >
           <f.icon size={16} />

@@ -44,8 +44,8 @@ function StatusPill({ label, tone }: { label: string; tone: "working" | "done" }
       {label}
     </span>
   ) : (
-    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#667eea]/10 border border-[#667eea]/25 text-[#a5b4fc] text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
-      <span className="w-1.5 h-1.5 rounded-full bg-[#667eea] animate-pulse" />
+    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-[#93c5fd] text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
+      <span className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] animate-pulse" />
       {label}
     </span>
   );
@@ -71,7 +71,7 @@ function DemoShell({
   return (
     <div
       ref={demoRef}
-      className="glass-card rounded-2xl overflow-hidden border border-[#667eea]/20 shadow-2xl shadow-[#667eea]/10 w-full h-[360px] flex flex-col"
+      className="glass-card rounded-2xl overflow-hidden border border-[#3b82f6]/20 shadow-2xl shadow-[#3b82f6]/10 w-full h-[360px] flex flex-col"
       aria-hidden="true"
     >
       <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10 flex-shrink-0">
@@ -141,7 +141,7 @@ export function InvoiceDemo() {
                     isDone
                       ? "border-white/5 bg-white/[0.02] text-gray-600 opacity-50"
                       : isCurrent
-                        ? "border-[#667eea]/60 bg-[#667eea]/10 text-white"
+                        ? "border-[#3b82f6]/60 bg-[#3b82f6]/10 text-white"
                         : "border-white/10 bg-black/20 text-gray-400"
                   }`}
                 >
@@ -149,7 +149,7 @@ export function InvoiceDemo() {
                   {isDone ? (
                     <Check size={11} className="text-emerald-400" />
                   ) : isCurrent ? (
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#667eea] animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] animate-pulse" />
                   ) : (
                     <span className="text-gray-600">·</span>
                   )}
@@ -248,7 +248,7 @@ export function ContractDemo() {
                   <div key={c.term} className="space-y-1">
                     <div
                       className={`h-1.5 rounded transition-all duration-500 ${
-                        step > i ? "bg-[#667eea]/40" : "bg-white/5"
+                        step > i ? "bg-[#3b82f6]/40" : "bg-white/5"
                       }`}
                       style={{ width: `${88 - i * 9}%` }}
                     />
@@ -266,7 +266,7 @@ export function ContractDemo() {
                     step > i ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2"
                   }`}
                 >
-                  <span className="text-[#667eea]/80">{c.term}</span>
+                  <span className="text-[#3b82f6]/80">{c.term}</span>
                   <span className="text-gray-300">{c.value}</span>
                 </div>
               ))}
@@ -282,11 +282,11 @@ export function ContractDemo() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex items-center gap-2 rounded-lg border border-[#667eea]/40 bg-black/30 px-3 py-2 mb-3">
-              <Search size={13} className="text-[#667eea] flex-shrink-0" />
+            <div className="flex items-center gap-2 rounded-lg border border-[#3b82f6]/40 bg-black/30 px-3 py-2 mb-3">
+              <Search size={13} className="text-[#3b82f6] flex-shrink-0" />
               <span className="font-mono text-[11px] text-white">
                 {QUERY}
-                {!results && <span className="animate-pulse text-[#667eea]">▎</span>}
+                {!results && <span className="animate-pulse text-[#3b82f6]">▎</span>}
               </span>
             </div>
             <div className="space-y-1.5">
@@ -326,7 +326,7 @@ const skills = [
   { label: "React", category: "Frontend", tone: "bg-sky-500/15 text-sky-300 border-sky-500/30" },
   { label: "Node.js", category: "Backend", tone: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30" },
   { label: "SQL", category: "Data", tone: "bg-amber-500/15 text-amber-300 border-amber-500/30" },
-  { label: "Figma", category: "Design", tone: "bg-[#764ba2]/20 text-[#c4b5fd] border-[#764ba2]/40" },
+  { label: "Figma", category: "Design", tone: "bg-[#6c42f0]/20 text-[#c4b5fd] border-[#6c42f0]/40" },
 ];
 
 export function ResumeDemo() {
@@ -359,22 +359,22 @@ export function ResumeDemo() {
           <div className="flex items-center gap-2 mb-3">
             <div
               className={`w-7 h-7 rounded-full flex-shrink-0 transition-colors duration-500 ${
-                step >= 1 ? "bg-[#667eea]/30" : "bg-white/10"
+                step >= 1 ? "bg-[#3b82f6]/30" : "bg-white/10"
               }`}
             />
             <div
               className={`h-2 w-16 rounded transition-colors duration-500 ${
-                step >= 1 ? "bg-[#667eea]/40" : "bg-white/10"
+                step >= 1 ? "bg-[#3b82f6]/40" : "bg-white/10"
               }`}
             />
           </div>
           <div className="space-y-2" aria-hidden="true">
-            <div className={`h-1.5 w-full rounded transition-colors duration-500 ${step >= 2 ? "bg-[#667eea]/30" : "bg-white/5"}`} />
-            <div className={`h-1.5 w-4/5 rounded transition-colors duration-500 ${step >= 2 ? "bg-[#667eea]/30" : "bg-white/5"}`} />
+            <div className={`h-1.5 w-full rounded transition-colors duration-500 ${step >= 2 ? "bg-[#3b82f6]/30" : "bg-white/5"}`} />
+            <div className={`h-1.5 w-4/5 rounded transition-colors duration-500 ${step >= 2 ? "bg-[#3b82f6]/30" : "bg-white/5"}`} />
             <div className="h-1.5 w-3/5 rounded bg-white/5" />
             <div className="h-2 w-12 rounded bg-white/10 !mt-3" />
-            <div className={`h-1.5 w-full rounded transition-colors duration-500 ${skillsFound ? "bg-[#667eea]/30" : "bg-white/5"}`} />
-            <div className={`h-1.5 w-2/3 rounded transition-colors duration-500 ${skillsFound ? "bg-[#667eea]/30" : "bg-white/5"}`} />
+            <div className={`h-1.5 w-full rounded transition-colors duration-500 ${skillsFound ? "bg-[#3b82f6]/30" : "bg-white/5"}`} />
+            <div className={`h-1.5 w-2/3 rounded transition-colors duration-500 ${skillsFound ? "bg-[#3b82f6]/30" : "bg-white/5"}`} />
             <div className="h-1.5 w-4/5 rounded bg-white/5" />
             <div className="h-1.5 w-1/2 rounded bg-white/5" />
           </div>
@@ -393,7 +393,7 @@ export function ResumeDemo() {
                   step > i ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
                 }`}
               >
-                <span className="text-[#667eea]/80">{f.name}</span>
+                <span className="text-[#3b82f6]/80">{f.name}</span>
                 <span className="text-gray-300 truncate">{f.value}</span>
               </div>
             ))}
@@ -445,7 +445,7 @@ export function ResumeDemo() {
 const receipts = [
   { merchant: "Cafe Rio", amount: 18.4, category: "Meals", tone: "bg-amber-500/15 text-amber-400 border-amber-500/25" },
   { merchant: "Uber", amount: 32.75, category: "Travel", tone: "bg-sky-500/15 text-sky-400 border-sky-500/25" },
-  { merchant: "Office Depot", amount: 64.9, category: "Supplies", tone: "bg-[#764ba2]/20 text-[#c4b5fd] border-[#764ba2]/40" },
+  { merchant: "Office Depot", amount: 64.9, category: "Supplies", tone: "bg-[#6c42f0]/20 text-[#c4b5fd] border-[#6c42f0]/40" },
 ];
 
 export function ExpenseDemo() {
@@ -487,7 +487,7 @@ export function ExpenseDemo() {
                   isDone
                     ? "border-white/5 bg-white/[0.02] opacity-50"
                     : isCurrent
-                      ? "border-[#667eea]/60 bg-[#667eea]/10"
+                      ? "border-[#3b82f6]/60 bg-[#3b82f6]/10"
                       : "border-white/10 bg-black/20"
                 }`}
               >

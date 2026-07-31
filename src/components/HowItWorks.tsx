@@ -97,7 +97,7 @@ export default function HowItWorks() {
         <div className="text-center mt-8 md:mt-16">
           <button
             onClick={() => setVideoOpen(true)}
-            className="inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-full text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-lg hover:shadow-xl hover:shadow-[#667eea]/20 cursor-pointer"
+            className="inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-full text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-lg hover:shadow-xl hover:shadow-[#3b82f6]/20 cursor-pointer"
           >
             <Play size={20} />
             Watch Demo Video

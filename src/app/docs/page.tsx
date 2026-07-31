@@ -542,8 +542,8 @@ function InfoBox({
   children: React.ReactNode;
 }) {
   const styles: Record<string, string> = {
-    purple: "border-[#667eea] bg-[#667eea]/10",
-    violet: "border-[#764ba2] bg-[#764ba2]/10",
+    purple: "border-[#3b82f6] bg-[#3b82f6]/10",
+    violet: "border-[#6c42f0] bg-[#6c42f0]/10",
     green: "border-emerald-500 bg-emerald-500/10",
     blue: "border-blue-500 bg-blue-500/10",
     yellow: "border-yellow-500 bg-yellow-500/10",
@@ -580,7 +580,7 @@ function DocCard({
   return (
     <div className="bg-white/[0.03] border border-white/[0.08] backdrop-blur-sm rounded-xl p-6 md:p-8 mb-6">
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-[#667eea]">{icon}</span>
+        <span className="text-[#3b82f6]">{icon}</span>
         <h2 className="text-xl font-bold text-gray-100">{title}</h2>
       </div>
       <div className="text-gray-300 leading-relaxed space-y-3 text-[15px]">{children}</div>
@@ -593,7 +593,7 @@ function NumberedList({ items }: { items: React.ReactNode[] }) {
     <ol className="space-y-3 my-4">
       {items.map((item, i) => (
         <li key={i} className="flex gap-3">
-          <span className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-[#667eea] to-[#764ba2] flex items-center justify-center text-xs font-bold text-white">
+          <span className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] flex items-center justify-center text-xs font-bold text-white">
             {i + 1}
           </span>
           <span className="text-gray-300 text-[15px] leading-relaxed pt-0.5">{item}</span>
@@ -608,7 +608,7 @@ function BulletList({ items }: { items: React.ReactNode[] }) {
     <ul className="space-y-2 my-3 ml-1">
       {items.map((item, i) => (
         <li key={i} className="flex gap-3 text-gray-300 text-[15px]">
-          <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#667eea] mt-2" />
+          <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#3b82f6] mt-2" />
           <span>{item}</span>
         </li>
       ))}
@@ -646,7 +646,7 @@ function CodeBlock({ lang, code }: { lang: string; code: string }) {
 
 function InlineCode({ children }: { children: string }) {
   return (
-    <code className="px-2.5 py-1 bg-black/40 border border-white/[0.08] rounded text-[#667eea] text-sm font-mono">
+    <code className="px-2.5 py-1 bg-black/40 border border-white/[0.08] rounded text-[#3b82f6] text-sm font-mono">
       {children}
     </code>
   );
@@ -798,7 +798,7 @@ export default function DocsPage() {
     <div className="min-h-screen text-gray-100">
       {/* Fixed Squares background */}
       <div className="fixed inset-0 z-0 bg-[#0a0a1a]">
-        <Squares direction="diagonal" speed={0.17} borderColor="#271E37" squareSize={45} hoverFillColor="#222" />
+        <Squares direction="diagonal" speed={0.17} borderColor="#1E2740" squareSize={45} hoverFillColor="#222" />
       </div>
 
       {/* ─── Header ─── */}
@@ -824,7 +824,7 @@ export default function DocsPage() {
             {/* Logo + Docs badge */}
             <Link href="/" className="flex items-center gap-2 hover:opacity-85 transition-opacity">
               <Image src="/assets/tavnit_logo.png" alt="Tavnit" width={174} height={60} className="h-10 w-auto" priority />
-              <span className="text-sm font-semibold text-[#667eea] bg-[#667eea]/10 px-2.5 py-0.5 rounded-md">
+              <span className="text-sm font-semibold text-[#3b82f6] bg-[#3b82f6]/10 px-2.5 py-0.5 rounded-md">
                 Docs
               </span>
             </Link>
@@ -876,7 +876,7 @@ export default function DocsPage() {
                   onClick={() => navigate(item.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                     activeSection === item.id
-                      ? "bg-[#667eea]/10 text-white border-l-2 border-[#667eea] -ml-[1px]"
+                      ? "bg-[#3b82f6]/10 text-white border-l-2 border-[#3b82f6] -ml-[1px]"
                       : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
                   }`}
                 >
@@ -891,7 +891,7 @@ export default function DocsPage() {
                         onClick={() => navigateApiSub(sub.id)}
                         className={`block w-full text-left px-3 py-1.5 rounded text-sm transition-colors ${
                           activeSection === "api-integration" && apiTab === sub.id
-                            ? "text-[#667eea] font-medium"
+                            ? "text-[#3b82f6] font-medium"
                             : "text-gray-500 hover:text-gray-300"
                         }`}
                       >
@@ -1645,7 +1645,7 @@ export default function DocsPage() {
                   onClick={() => setApiTab("code")}
                   className={`px-5 py-2 rounded-md text-sm font-medium transition-all ${
                     apiTab === "code"
-                      ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg"
+                      ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
                       : "text-gray-400 hover:text-white hover:bg-white/5"
                   }`}
                 >
@@ -1655,7 +1655,7 @@ export default function DocsPage() {
                   onClick={() => setApiTab("no-code")}
                   className={`px-5 py-2 rounded-md text-sm font-medium transition-all ${
                     apiTab === "no-code"
-                      ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg"
+                      ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
                       : "text-gray-400 hover:text-white hover:bg-white/5"
                   }`}
                 >
@@ -1744,7 +1744,7 @@ export default function DocsPage() {
                         onClick={() => setLang("python")}
                         className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                           lang === "python"
-                            ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg"
+                            ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
                             : "text-gray-400 hover:text-white hover:bg-white/5"
                         }`}
                       >
@@ -1754,7 +1754,7 @@ export default function DocsPage() {
                         onClick={() => setLang("javascript")}
                         className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                           lang === "javascript"
-                            ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg"
+                            ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
                             : "text-gray-400 hover:text-white hover:bg-white/5"
                         }`}
                       >
@@ -1911,7 +1911,7 @@ export default function DocsPage() {
                       href="https://www.make.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-[#667eea] hover:text-[#8b9cf0] transition-colors text-sm font-medium mt-1"
+                      className="inline-flex items-center gap-2 text-[#3b82f6] hover:text-[#93c5fd] transition-colors text-sm font-medium mt-1"
                     >
                       Visit Make.com <ExternalLink size={14} />
                     </a>
@@ -1938,7 +1938,7 @@ export default function DocsPage() {
                       either of these two approaches:
                     </p>
 
-                    <h3 className="text-base font-semibold text-[#667eea] mt-6 mb-3">
+                    <h3 className="text-base font-semibold text-[#3b82f6] mt-6 mb-3">
                       Option 1: Multipart/form-data (when you have a File object)
                     </h3>
                     <NumberedList
@@ -1977,7 +1977,7 @@ export default function DocsPage() {
                       ]}
                     />
 
-                    <h3 className="text-base font-semibold text-[#764ba2] mt-8 mb-3">
+                    <h3 className="text-base font-semibold text-[#6c42f0] mt-8 mb-3">
                       Option 2: JSON + base64 (when you have a base64 string)
                     </h3>
                     <p>If your previous module outputs a base64 string instead of a file, use this approach:</p>

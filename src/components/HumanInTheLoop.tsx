@@ -120,7 +120,7 @@ function ReviewDemo() {
                     ? "bg-emerald-400"
                     : e.edit
                       ? "bg-amber-400"
-                      : "bg-[#667eea]/60"
+                      : "bg-[#3b82f6]/60"
                 }`}
               />
               <span className={e.approved ? "text-emerald-300 font-semibold" : "text-gray-400"}>
@@ -173,7 +173,7 @@ export default function HumanInTheLoop() {
             >
               AI does the work.
               <br />
-              Your team has the <span className="gradient-text">final say</span>.
+              Your team has the <span className="text-[#93c5fd]">final say</span>.
             </h2>
             <p className="text-base md:text-lg text-gray-400 mb-8 max-w-[480px]">
               Turn on review for any flow and runs pause before anything moves

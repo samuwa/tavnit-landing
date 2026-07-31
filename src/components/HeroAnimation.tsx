@@ -102,15 +102,15 @@ function createArrow(): HTMLDivElement {
   const section = document.createElement("div");
   section.className = "arrow-section";
   section.innerHTML = `
-    <svg id="arrow-hero" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+    <svg id="arrow-hero" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
       <path d="M5 12h14M12 5l7 7-7 7"/>
     </svg>
     <div id="processing-hero" style="text-align:center;opacity:0;">
       <div class="processing-text">AI Processing</div>
       <div style="display:flex;gap:4px;justify-content:center;margin-top:4px;">
-        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#667eea,#764ba2);"></div>
-        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#667eea,#764ba2);"></div>
-        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#667eea,#764ba2);"></div>
+        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#3b82f6,#6c42f0);"></div>
+        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#3b82f6,#6c42f0);"></div>
+        <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#3b82f6,#6c42f0);"></div>
       </div>
     </div>
   `;

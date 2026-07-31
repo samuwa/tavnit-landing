@@ -43,7 +43,7 @@ function BrowserDemo({ step }: { step: number }) {
   const captured = step >= 5;
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden border border-[#667eea]/20 shadow-2xl shadow-[#667eea]/10">
+    <div className="glass-card rounded-2xl overflow-hidden border border-[#3b82f6]/20 shadow-2xl shadow-[#3b82f6]/10">
       {/* Browser chrome */}
       <div className="flex items-center gap-3 px-4 py-2.5 bg-white/5 border-b border-white/10">
         <div className="flex gap-1.5" aria-hidden="true">
@@ -67,7 +67,7 @@ function BrowserDemo({ step }: { step: number }) {
           <div
             className={`flex-1 rounded-lg border px-3 py-2 text-xs font-mono transition-all duration-500 ${
               filled
-                ? "border-[#667eea]/50 bg-[#667eea]/10 text-white"
+                ? "border-[#3b82f6]/50 bg-[#3b82f6]/10 text-white"
                 : "border-white/10 bg-black/20 text-gray-600"
             }`}
           >
@@ -76,7 +76,7 @@ function BrowserDemo({ step }: { step: number }) {
           <div
             className={`rounded-lg border px-4 py-2 text-xs font-semibold transition-all duration-300 ${
               clicked
-                ? "border-transparent bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white scale-95"
+                ? "border-transparent bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white scale-95"
                 : "border-white/10 bg-white/5 text-gray-400"
             }`}
           >
@@ -114,12 +114,12 @@ function BrowserDemo({ step }: { step: number }) {
               >
                 <span
                   className={`w-3.5 text-center flex-shrink-0 ${
-                    done ? "text-emerald-400" : current ? "text-[#667eea]" : ""
+                    done ? "text-emerald-400" : current ? "text-[#3b82f6]" : ""
                   }`}
                 >
                   {done ? "✓" : current ? "▸" : "·"}
                 </span>
-                <span className={current ? "text-[#a5b4fc] font-bold" : "text-[#667eea]/70"}>
+                <span className={current ? "text-[#93c5fd] font-bold" : "text-[#3b82f6]/70"}>
                   {s.verb}
                 </span>
                 <span className="truncate">{s.detail}</span>
@@ -204,7 +204,7 @@ export default function AgentsShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#667eea]/10 border border-[#667eea]/25 text-[#a5b4fc] text-xs font-bold uppercase tracking-wider mb-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-[#93c5fd] text-xs font-bold uppercase tracking-wider mb-5">
               <Bot size={14} />
               New · Agents
             </div>
@@ -214,7 +214,7 @@ export default function AgentsShowcase() {
             >
               Extraction was step one.
               <br />
-              Now your data <span className="gradient-text">acts</span>.
+              Now your data <span className="text-[#93c5fd]">acts</span>.
             </h2>
             <p className="text-base md:text-lg text-gray-400 mb-8 max-w-[480px]">
               Describe a mission in plain language. A Tavnit Agent opens a real
@@ -225,7 +225,7 @@ export default function AgentsShowcase() {
             <div className="space-y-5 mb-8">
               {highlights.map((h) => (
                 <div key={h.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-lg bg-[#667eea]/10 text-[#667eea] flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-[#3b82f6]/10 text-[#3b82f6] flex items-center justify-center flex-shrink-0">
                     <h.icon size={18} />
                   </div>
                   <div>
@@ -242,7 +242,7 @@ export default function AgentsShowcase() {
 
             <Link
               href="https://app.tavnit.io"
-              className="inline-flex items-center gap-2 font-semibold text-[#667eea] hover:text-[#a78bfa] transition-colors group"
+              className="inline-flex items-center gap-2 font-semibold text-[#3b82f6] hover:text-[#93c5fd] transition-colors group"
             >
               Create your first agent
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

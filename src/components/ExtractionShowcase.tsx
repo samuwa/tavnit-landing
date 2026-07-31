@@ -54,8 +54,8 @@ function StatusBadge({ step }: { step: number }) {
     );
   }
   return (
-    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#667eea]/10 border border-[#667eea]/25 text-[#a5b4fc] text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
-      <span className="w-1.5 h-1.5 rounded-full bg-[#667eea] animate-pulse" />
+    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-[#93c5fd] text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
+      <span className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] animate-pulse" />
       Extracting
     </span>
   );
@@ -66,7 +66,7 @@ function ExtractionDemo({ step }: { step: number }) {
   const done = step >= DONE_STEP;
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden border border-[#667eea]/20 shadow-2xl shadow-[#667eea]/10">
+    <div className="glass-card rounded-2xl overflow-hidden border border-[#3b82f6]/20 shadow-2xl shadow-[#3b82f6]/10">
       {/* Run header */}
       <div className="flex items-center justify-between px-4 sm:px-5 py-3 bg-white/5 border-b border-white/10">
         <div className="min-w-0">
@@ -81,7 +81,7 @@ function ExtractionDemo({ step }: { step: number }) {
         <div className="relative rounded-lg border border-white/10 bg-white/[0.03] p-3 overflow-hidden min-h-[190px]">
           {!done && (
             <div
-              className="absolute left-0 right-0 h-8 bg-gradient-to-b from-transparent via-[#667eea]/25 to-transparent pointer-events-none"
+              className="absolute left-0 right-0 h-8 bg-gradient-to-b from-transparent via-[#3b82f6]/25 to-transparent pointer-events-none"
               style={{
                 animation: "extractionScan 2.2s ease-in-out infinite alternate",
               }}
@@ -94,7 +94,7 @@ function ExtractionDemo({ step }: { step: number }) {
                 key={f.name}
                 className={`rounded px-1.5 py-1 border text-[9px] font-mono truncate transition-all duration-500 ${
                   step > i
-                    ? "border-[#667eea]/60 bg-[#667eea]/10 text-gray-300"
+                    ? "border-[#3b82f6]/60 bg-[#3b82f6]/10 text-gray-300"
                     : "border-transparent bg-white/5 text-transparent"
                 }`}
               >
@@ -123,7 +123,7 @@ function ExtractionDemo({ step }: { step: number }) {
                     extracted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
                   }`}
                 >
-                  <span className="text-[#667eea]/80 truncate">{f.name}</span>
+                  <span className="text-[#3b82f6]/80 truncate">{f.name}</span>
                   <span className="flex items-center gap-2 min-w-0">
                     <span className={`truncate transition-colors duration-500 ${showClean ? "text-emerald-300" : "text-gray-300"}`}>
                       {showClean ? f.clean : f.raw}
@@ -216,7 +216,7 @@ export default function ExtractionShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#667eea]/10 border border-[#667eea]/25 text-[#a5b4fc] text-xs font-bold uppercase tracking-wider mb-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-[#93c5fd] text-xs font-bold uppercase tracking-wider mb-5">
               <Sparkles size={14} />
               AI Extraction
             </div>
@@ -226,7 +226,7 @@ export default function ExtractionShowcase() {
             >
               Any document in.
               <br />
-              Clean, <span className="gradient-text">structured data</span> out.
+              Clean, <span className="text-[#93c5fd]">structured data</span> out.
             </h2>
             <p className="text-base md:text-lg text-gray-400 mb-8 max-w-[480px]">
               Tavnit reads your documents the way a person would — then hands
@@ -237,7 +237,7 @@ export default function ExtractionShowcase() {
             <div className="space-y-5 mb-8">
               {highlights.map((h) => (
                 <div key={h.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-lg bg-[#667eea]/10 text-[#667eea] flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-[#3b82f6]/10 text-[#3b82f6] flex items-center justify-center flex-shrink-0">
                     <h.icon size={18} />
                   </div>
                   <div>
@@ -254,7 +254,7 @@ export default function ExtractionShowcase() {
 
             <Link
               href="https://app.tavnit.io"
-              className="inline-flex items-center gap-2 font-semibold text-[#667eea] hover:text-[#a78bfa] transition-colors group"
+              className="inline-flex items-center gap-2 font-semibold text-[#3b82f6] hover:text-[#93c5fd] transition-colors group"
             >
               Create your first flow
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

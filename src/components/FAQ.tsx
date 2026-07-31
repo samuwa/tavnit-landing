@@ -65,7 +65,7 @@ function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
         <span className="text-sm md:text-base font-semibold text-white">{q}</span>
         <ChevronDown
           size={18}
-          className={`flex-shrink-0 text-[#667eea] transition-transform duration-300 ${
+          className={`flex-shrink-0 text-[#3b82f6] transition-transform duration-300 ${
             open ? "rotate-180" : ""
           }`}
         />

@@ -8,8 +8,8 @@ export default function FinalCTA() {
   return (
     <section className="final-cta-section relative py-20 md:py-32 overflow-hidden" aria-labelledby="cta-heading">
       {/* Radial spotlight */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#667eea]/10 to-transparent" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full bg-[#667eea]/8 blur-[120px]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#3b82f6]/10 to-transparent" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full bg-[#3b82f6]/8 blur-[120px]" />
 
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 text-center relative z-10">
         <motion.div
@@ -28,7 +28,7 @@ export default function FinalCTA() {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8">
             <Link
               href="https://app.tavnit.io"
-              className="hero-cta-primary inline-flex items-center justify-center gap-2 px-7 py-3.5 sm:px-9 sm:py-4 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-xl text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-lg shadow-[#667eea]/25 hover:shadow-xl hover:shadow-[#667eea]/30"
+              className="hero-cta-primary inline-flex items-center justify-center gap-2 px-7 py-3.5 sm:px-9 sm:py-4 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-xl text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30"
             >
               Get Started Free
               <ArrowRight size={20} />

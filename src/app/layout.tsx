@@ -76,8 +76,8 @@ export const metadata: Metadata = {
   },
   category: "technology",
   other: {
-    "theme-color": "#667eea",
-    "msapplication-TileColor": "#667eea",
+    "theme-color": "#3b82f6",
+    "msapplication-TileColor": "#3b82f6",
   },
 };
 

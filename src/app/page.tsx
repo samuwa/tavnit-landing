@@ -29,7 +29,7 @@ export default function Home() {
         <Squares
           direction="diagonal"
           speed={0.17}
-          borderColor="#271E37"
+          borderColor="#1E2740"
           squareSize={45}
           hoverFillColor="#222"
         />

@@ -36,7 +36,7 @@ export default function Pricing() {
               key={plan.name}
               className={`relative py-5 px-4 sm:py-8 sm:px-6 rounded-2xl flex flex-col hover:-translate-y-2 transition-all duration-300 ${
                 plan.featured
-                  ? "glass-card border-[#667eea]/50 shadow-xl shadow-[#667eea]/10 lg:scale-105"
+                  ? "glass-card border-[#3b82f6]/50 shadow-xl shadow-[#3b82f6]/10 lg:scale-105"
                   : "glass-card glass-card-hover"
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -45,14 +45,14 @@ export default function Pricing() {
               transition={{ delay: i * 0.1 }}
             >
               {plan.featured && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 sm:px-4 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-full shadow-md whitespace-nowrap">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 sm:px-4 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-full shadow-md whitespace-nowrap">
                   BEST VALUE
                 </div>
               )}
               <div className="text-center pb-4 sm:pb-6 border-b border-white/10">
                 <h3 className="text-base sm:text-xl font-bold text-white mb-2 sm:mb-4">{plan.name}</h3>
                 <div className="mb-1 sm:mb-3">
-                  <span className="text-2xl sm:text-4xl font-extrabold gradient-text">{plan.price}</span>
+                  <span className="text-2xl sm:text-4xl font-extrabold text-white">{plan.price}</span>
                   <span className="text-sm sm:text-base font-semibold text-gray-400">/mo</span>
                 </div>
                 <div className="flex flex-col items-center mt-1">
@@ -63,7 +63,7 @@ export default function Pricing() {
               <div className="py-4 sm:py-6 text-center flex-grow flex flex-col items-center justify-center">
                 <p className="text-[11px] sm:text-sm text-gray-400 mb-1 sm:mb-2 leading-snug">
                   {plan.breakdown}
-                  {plan.bonus && <span className="text-[#667eea] font-semibold">{plan.bonus}</span>}
+                  {plan.bonus && <span className="text-[#3b82f6] font-semibold">{plan.bonus}</span>}
                 </p>
                 <p className="text-xs sm:text-base text-gray-500 leading-snug">{plan.value}</p>
               </div>
@@ -71,8 +71,8 @@ export default function Pricing() {
                 href="https://app.tavnit.io"
                 className={`w-full py-2.5 sm:py-3 rounded-lg text-center text-sm sm:text-base font-semibold transition-all ${
                   plan.featured
-                    ? "bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#667eea]/20"
-                    : "border border-[#667eea]/50 text-[#667eea] hover:bg-[#667eea] hover:text-white hover:-translate-y-0.5"
+                    ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20"
+                    : "border border-[#3b82f6]/50 text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white hover:-translate-y-0.5"
                 }`}
               >
                 Get Started

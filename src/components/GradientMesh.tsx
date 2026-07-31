@@ -12,7 +12,7 @@ export default function GradientMesh() {
       <div
         className="absolute w-[600px] h-[600px] rounded-full opacity-[0.08] blur-[120px]"
         style={{
-          background: "radial-gradient(circle, #667eea 0%, transparent 70%)",
+          background: "radial-gradient(circle, #3b82f6 0%, transparent 70%)",
           top: "-10%",
           right: "-5%",
           animation: "meshFloat1 25s ease-in-out infinite",
@@ -23,7 +23,7 @@ export default function GradientMesh() {
       <div
         className="absolute w-[500px] h-[500px] rounded-full opacity-[0.06] blur-[100px]"
         style={{
-          background: "radial-gradient(circle, #764ba2 0%, transparent 70%)",
+          background: "radial-gradient(circle, #6c42f0 0%, transparent 70%)",
           bottom: "10%",
           left: "-8%",
           animation: "meshFloat2 30s ease-in-out infinite",

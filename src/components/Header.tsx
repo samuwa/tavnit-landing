@@ -51,7 +51,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-[15px] font-medium text-gray-300 hover:text-white transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-[#667eea] after:to-[#764ba2] after:transition-all hover:after:w-full"
+              className="text-[15px] font-medium text-gray-300 hover:text-white transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-[#3b82f6] after:to-[#6c42f0] after:transition-all hover:after:w-full"
             >
               {link.label}
             </Link>
@@ -60,7 +60,7 @@ export default function Header() {
 
         <Link
           href="https://app.tavnit.io"
-          className="hidden lg:inline-flex px-4 py-2 sm:px-6 sm:py-2.5 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg text-sm sm:text-[15px] font-semibold hover:-translate-y-0.5 transition-all shadow-md hover:shadow-lg flex-shrink-0"
+          className="hidden lg:inline-flex px-4 py-2 sm:px-6 sm:py-2.5 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-lg text-sm sm:text-[15px] font-semibold hover:-translate-y-0.5 transition-all shadow-md hover:shadow-lg flex-shrink-0"
         >
           Get Started
         </Link>
@@ -91,7 +91,7 @@ export default function Header() {
             ))}
             <Link
               href="https://app.tavnit.io"
-              className="mt-4 px-6 py-3 bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white rounded-lg text-center font-semibold"
+              className="mt-4 px-6 py-3 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-lg text-center font-semibold"
             >
               Get Started
             </Link>

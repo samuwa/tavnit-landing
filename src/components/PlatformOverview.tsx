@@ -155,7 +155,7 @@ export default function PlatformOverview() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#667eea]/10 border border-[#667eea]/25 text-[#a5b4fc] text-xs font-bold uppercase tracking-wider mb-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-[#93c5fd] text-xs font-bold uppercase tracking-wider mb-5">
             <AppWindow size={14} />
             Platform tour
           </div>
@@ -163,7 +163,7 @@ export default function PlatformOverview() {
             id="platform-overview-heading"
             className="text-3xl md:text-4xl font-bold text-white mb-3"
           >
-            The whole operation, <span className="gradient-text">one workspace</span>
+            The whole operation, <span className="text-[#93c5fd]">one workspace</span>
           </h2>
           <p className="text-base md:text-lg text-gray-400 max-w-[560px] mx-auto">
             Real screens, real data. Six stops from first upload to finished
@@ -173,7 +173,7 @@ export default function PlatformOverview() {
 
         {/* ── App replica ── */}
         <motion.div
-          className="glass-card rounded-2xl overflow-hidden border border-[#667eea]/20 shadow-2xl shadow-[#667eea]/10"
+          className="glass-card rounded-2xl overflow-hidden border border-[#3b82f6]/20 shadow-2xl shadow-[#3b82f6]/10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -218,16 +218,16 @@ export default function PlatformOverview() {
                     aria-controls="platform-screen"
                     tabIndex={isActive ? 0 : -1}
                     onClick={() => select(i)}
-                    className={`relative shrink-0 lg:w-auto text-left rounded-lg px-3 py-2.5 transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#a5b4fc] ${
+                    className={`relative shrink-0 lg:w-auto text-left rounded-lg px-3 py-2.5 transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
                       isActive
-                        ? "bg-[#667eea]/15 text-white"
+                        ? "bg-[#3b82f6]/15 text-white"
                         : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
                     }`}
                   >
                     <span className="flex items-center gap-2.5">
                       <p.icon
                         size={16}
-                        className={isActive ? "text-[#a5b4fc]" : "text-gray-500"}
+                        className={isActive ? "text-[#93c5fd]" : "text-gray-500"}
                         aria-hidden="true"
                       />
                       <span className="text-sm font-semibold whitespace-nowrap">
@@ -248,7 +248,7 @@ export default function PlatformOverview() {
                     {isActive && showProgress && (
                       <span
                         key={active}
-                        className="absolute left-0 bottom-0 h-[2px] rounded-full bg-gradient-to-r from-[#667eea] to-[#764ba2] platform-progress"
+                        className="absolute left-0 bottom-0 h-[2px] rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] platform-progress"
                         aria-hidden="true"
                       />
                     )}
