@@ -6,78 +6,173 @@ import { motion, useReducedMotion } from "framer-motion";
 import {
   LayoutDashboard,
   Workflow,
-  FileSearch,
-  Table2,
-  Waypoints,
   History,
+  Table2,
+  AudioLines,
+  Waypoints,
   AppWindow,
+  ChevronDown,
 } from "lucide-react";
 
 /* Auto-tour timing */
 const ADVANCE_MS = 6000;
 
-const pages = [
+type Leaf = {
+  key: string;
+  label: string;
+  chip: string;
+  route: string;
+  src: string;
+  alt: string;
+  desc: string;
+};
+
+type Group = {
+  key: string;
+  label: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  pages: Leaf[];
+};
+
+const groups: Group[] = [
   {
     key: "dashboard",
     label: "Dashboard",
-    route: "/dashboard",
     icon: LayoutDashboard,
-    src: "/assets/tour2-dashboard.jpg",
-    alt: "Tavnit dashboard showing documents processed, active flows, extracted pages, available credits, and recent runs",
-    title: "Your operation at a glance",
-    desc: "Documents processed, credits left, and every recent run — the morning check-in screen.",
+    pages: [
+      {
+        key: "dashboard",
+        label: "Dashboard",
+        chip: "Dashboard",
+        route: "/dashboard",
+        src: "/assets/tour2-dashboard.jpg",
+        alt: "Tavnit dashboard showing documents processed, active flows, extracted pages, available credits, and recent runs",
+        desc: "Documents processed, credits left, and every recent run — the morning check-in screen.",
+      },
+    ],
   },
   {
     key: "flows",
     label: "Flows",
-    route: "/flows",
     icon: Workflow,
-    src: "/assets/tour2-flows.jpg",
-    alt: "Flows library with a reusable Invoice Processor extraction workflow",
-    title: "Teach it once",
-    desc: "A flow is a reusable extractor for one document type. Build it once, run it on every file that follows.",
-  },
-  {
-    key: "run-details",
-    label: "Run Details",
-    route: "/runs/2dd822b3",
-    icon: FileSearch,
-    src: "/assets/tour2-run-details.jpg",
-    alt: "Run details page with pages processed, credits used, and a table of extracted rows",
-    title: "Watch every extraction",
-    desc: "Each run shows pages processed, credits used, and the extracted table — cleaned, pivoted, or raw.",
-  },
-  {
-    key: "buckets",
-    label: "Buckets",
-    route: "/buckets/data-set",
-    icon: Table2,
-    src: "/assets/tour2-bucket.jpg",
-    alt: "A bucket holding 1,339 extracted rows in a spreadsheet view with filter, sort, formula, graph, and export tools",
-    title: "Data lands in tables",
-    desc: "Extracted rows accumulate in spreadsheet-style buckets — filter, sort, chart, and export anytime.",
-  },
-  {
-    key: "pipeline-map",
-    label: "Pipeline Map",
-    route: "/pipeline-map",
-    icon: Waypoints,
-    src: "/assets/tour2-pipeline-map.jpg",
-    alt: "Pipeline map in columns view showing splitters, collections, flows, cleaners, and buckets connected across stages",
-    title: "See the whole pipeline",
-    desc: "Every source, flow, and destination on one live map of your document operation.",
+    pages: [
+      {
+        key: "flows",
+        label: "All Flows",
+        chip: "Flows",
+        route: "/flows",
+        src: "/assets/tour2-flows.jpg",
+        alt: "Flows library with a reusable Invoice Processor extraction workflow",
+        desc: "A flow is a reusable extractor for one document type. Build it once, run it on every file that follows.",
+      },
+      {
+        key: "flow-details",
+        label: "Flow Details",
+        chip: "Flow Details",
+        route: "/flows/f6dfcbe7",
+        src: "/assets/tour2-flow-details-b.jpg",
+        alt: "Flow details page showing the Invoice Processor schema with metadata and table fields side by side, plus triggers, cleaners, and outputs",
+        desc: "Every field the extractor captures — plus triggers, cleaners, and outputs — editable in place.",
+      },
+    ],
   },
   {
     key: "runs",
     label: "Runs",
-    route: "/runs",
     icon: History,
-    src: "/assets/tour2-runs.jpg",
-    alt: "Runs history listing every processed document with flow, trigger, source, status, and date",
-    title: "A full audit trail",
-    desc: "Who ran what, when, and how it ended — every document accounted for.",
+    pages: [
+      {
+        key: "runs",
+        label: "All Runs",
+        chip: "Runs",
+        route: "/runs",
+        src: "/assets/tour2-runs.jpg",
+        alt: "Runs history listing every processed document with flow, trigger, source, status, and date",
+        desc: "Who ran what, when, and how it ended — every document accounted for.",
+      },
+      {
+        key: "run-details",
+        label: "Run Details",
+        chip: "Run Details",
+        route: "/runs/2dd822b3",
+        src: "/assets/tour2-run-details.jpg",
+        alt: "Run details page with pages processed, credits used, and a table of extracted rows",
+        desc: "Pages processed, credits used, and the extracted table — cleaned, pivoted, or raw.",
+      },
+    ],
+  },
+  {
+    key: "buckets",
+    label: "Buckets",
+    icon: Table2,
+    pages: [
+      {
+        key: "buckets",
+        label: "Buckets",
+        chip: "Buckets",
+        route: "/buckets/data-set",
+        src: "/assets/tour2-bucket.jpg",
+        alt: "A bucket holding 1,339 extracted rows in a spreadsheet view with filter, sort, formula, graph, and export tools",
+        desc: "Extracted rows accumulate in spreadsheet-style buckets — filter, sort, chart, and export anytime.",
+      },
+    ],
+  },
+  {
+    key: "signals",
+    label: "Signals",
+    icon: AudioLines,
+    pages: [
+      {
+        key: "signals",
+        label: "All Signals",
+        chip: "Signals",
+        route: "/signals",
+        src: "/assets/tour2-signals.jpg",
+        alt: "Signals page with a Customer Service signal that structures audio conversations into data",
+        desc: "Signals turn audio into data. Define what to capture from a call once — every recording that follows becomes rows.",
+      },
+      {
+        key: "wave-conversation",
+        label: "Wave · Conversation",
+        chip: "Conversation",
+        route: "/waves/23648877?tab=conversation",
+        src: "/assets/tour2-wave-conversation.jpg",
+        alt: "Wave conversation view with a per-speaker waveform and a transcript tagged with sentiment and extracted values",
+        desc: "Each call transcribed into speaker turns — tagged with sentiment and extracted values inline.",
+      },
+      {
+        key: "wave-results",
+        label: "Wave · Results",
+        chip: "Results",
+        route: "/waves/23648877?tab=results",
+        src: "/assets/tour2-wave-results.jpg",
+        alt: "Wave results view structuring the call into rows with interaction type, turn, timestamp, and speaker",
+        desc: "The same call as rows — interaction type, turn, timestamp, speaker — ready to filter and export.",
+      },
+    ],
+  },
+  {
+    key: "pipeline-map",
+    label: "Pipeline Map",
+    icon: Waypoints,
+    pages: [
+      {
+        key: "pipeline-map",
+        label: "Pipeline Map",
+        chip: "Pipeline Map",
+        route: "/pipeline-map",
+        src: "/assets/tour2-pipeline-map.jpg",
+        alt: "Pipeline map in columns view showing splitters, collections, flows, cleaners, and buckets connected across stages",
+        desc: "Every source, flow, and destination on one live map of your document operation.",
+      },
+    ],
   },
 ];
+
+/* Flat tour order with back-references to the owning group */
+const leaves: (Leaf & { groupIndex: number })[] = groups.flatMap((g, gi) =>
+  g.pages.map((p) => ({ ...p, groupIndex: gi }))
+);
 
 export default function PlatformOverview() {
   const [active, setActive] = useState(0);
@@ -103,7 +198,7 @@ export default function PlatformOverview() {
   useEffect(() => {
     if (!touring || paused || !inView || reducedMotion) return;
     const t = setTimeout(() => {
-      setActive((i) => (i + 1) % pages.length);
+      setActive((i) => (i + 1) % leaves.length);
     }, ADVANCE_MS);
     return () => clearTimeout(t);
   }, [active, touring, paused, inView, reducedMotion]);
@@ -121,7 +216,7 @@ export default function PlatformOverview() {
     buttons[active]?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
   }, [active]);
 
-  /* Arrow-key navigation within the page list */
+  /* Arrow-key navigation across all leaf tabs */
   const onTablistKeyDown = (e: React.KeyboardEvent) => {
     const dir =
       e.key === "ArrowDown" || e.key === "ArrowRight"
@@ -131,14 +226,38 @@ export default function PlatformOverview() {
           : 0;
     if (!dir) return;
     e.preventDefault();
-    const next = (active + dir + pages.length) % pages.length;
+    const next = (active + dir + leaves.length) % leaves.length;
     select(next);
     const buttons = tablistRef.current?.querySelectorAll<HTMLButtonElement>("[role=tab]");
     buttons?.[next]?.focus();
   };
 
-  const page = pages[active];
+  const page = leaves[active];
+  const activeGroup = page.groupIndex;
   const showProgress = touring && inView && !paused && !reducedMotion;
+
+  /* First leaf index of each group, for parent-row clicks */
+  const groupStart = groups.map((g, gi) => leaves.findIndex((l) => l.groupIndex === gi));
+
+  const progressBar = (
+    <span
+      key={active}
+      className="absolute left-0 bottom-0 h-[2px] rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] platform-progress"
+      aria-hidden="true"
+    />
+  );
+
+  const description = (leaf: Leaf, isActive: boolean) => (
+    <span
+      className={`hidden lg:block overflow-hidden transition-all duration-300 ${
+        isActive ? "max-h-24 opacity-100 mt-1" : "max-h-0 opacity-0"
+      }`}
+    >
+      <span className="block text-xs leading-relaxed text-gray-400 font-normal">
+        {leaf.desc}
+      </span>
+    </span>
+  );
 
   return (
     <section
@@ -166,8 +285,8 @@ export default function PlatformOverview() {
             The whole operation, <span className="text-[#93c5fd]">one workspace</span>
           </h2>
           <p className="text-base md:text-lg text-gray-400 max-w-[560px] mx-auto">
-            Real screens, real data. Six stops from first upload to finished
-            table — no mockups.
+            Real screens, real data. From first upload to finished table — and
+            every call recording in between.
           </p>
         </motion.div>
 
@@ -189,7 +308,7 @@ export default function PlatformOverview() {
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/60" />
             </div>
             <div
-              className="flex-1 max-w-[340px] mx-auto bg-black/30 rounded-md px-3 py-1 text-[11px] text-gray-400 font-mono truncate text-center"
+              className="flex-1 max-w-[360px] mx-auto bg-black/30 rounded-md px-3 py-1 text-[11px] text-gray-400 font-mono truncate text-center"
               aria-hidden="true"
             >
               app.tavnit.io<span className="text-gray-200">{page.route}</span>
@@ -197,62 +316,123 @@ export default function PlatformOverview() {
             <div className="w-[52px]" aria-hidden="true" />
           </div>
 
-          <div className="lg:grid lg:grid-cols-[240px_1fr]">
-            {/* Sidebar — mirrors the app's own navigation */}
+          <div className="lg:grid lg:grid-cols-[250px_1fr]">
+            {/* Sidebar — mirrors the app's own navigation, with sub-pages */}
             <div
               ref={tablistRef}
               role="tablist"
               aria-label="Tavnit app pages"
               aria-orientation="vertical"
               onKeyDown={onTablistKeyDown}
-              className="flex lg:flex-col bg-[#0b0d18]/80 border-b lg:border-b-0 lg:border-r border-white/10 overflow-x-auto lg:overflow-visible p-2 lg:py-4 gap-1"
+              className="flex lg:flex-col bg-[#0b0d18]/80 border-b lg:border-b-0 lg:border-r border-white/10 overflow-x-auto lg:overflow-visible p-2 lg:py-3 gap-1"
             >
-              {pages.map((p, i) => {
-                const isActive = i === active;
-                return (
-                  <button
-                    key={p.key}
-                    role="tab"
-                    id={`platform-tab-${p.key}`}
-                    aria-selected={isActive}
-                    aria-controls="platform-screen"
-                    tabIndex={isActive ? 0 : -1}
-                    onClick={() => select(i)}
-                    className={`relative shrink-0 lg:w-auto text-left rounded-lg px-3 py-2.5 transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
-                      isActive
-                        ? "bg-[#3b82f6]/15 text-white"
-                        : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
-                    }`}
-                  >
-                    <span className="flex items-center gap-2.5">
-                      <p.icon
-                        size={16}
-                        className={isActive ? "text-[#93c5fd]" : "text-gray-500"}
-                        aria-hidden="true"
-                      />
-                      <span className="text-sm font-semibold whitespace-nowrap">
-                        {p.label}
-                      </span>
-                    </span>
-                    {/* Description unfolds under the active item on desktop */}
-                    <span
-                      className={`hidden lg:block overflow-hidden transition-all duration-300 ${
-                        isActive ? "max-h-24 opacity-100 mt-1.5" : "max-h-0 opacity-0"
+              {groups.map((g, gi) => {
+                const isSingle = g.pages.length === 1;
+                const groupActive = gi === activeGroup;
+
+                if (isSingle) {
+                  const li = groupStart[gi];
+                  const leaf = leaves[li];
+                  const isActive = li === active;
+                  return (
+                    <button
+                      key={g.key}
+                      role="tab"
+                      id={`platform-tab-${leaf.key}`}
+                      aria-selected={isActive}
+                      aria-controls="platform-screen"
+                      tabIndex={isActive ? 0 : -1}
+                      onClick={() => select(li)}
+                      className={`relative shrink-0 text-left rounded-lg px-3 py-2 transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
+                        isActive
+                          ? "bg-[#3b82f6]/15 text-white"
+                          : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
                       }`}
                     >
-                      <span className="block text-xs leading-relaxed text-gray-400 font-normal">
-                        {p.desc}
+                      <span className="flex items-center gap-2.5">
+                        <g.icon
+                          size={15}
+                          className={isActive ? "text-[#93c5fd]" : "text-gray-500"}
+                          aria-hidden="true"
+                        />
+                        <span className="text-sm font-semibold whitespace-nowrap">
+                          {g.label}
+                        </span>
                       </span>
-                    </span>
-                    {/* Auto-tour progress along the active item */}
-                    {isActive && showProgress && (
-                      <span
-                        key={active}
-                        className="absolute left-0 bottom-0 h-[2px] rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] platform-progress"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </button>
+                      {description(leaf, isActive)}
+                      {isActive && showProgress && progressBar}
+                    </button>
+                  );
+                }
+
+                /* Group with sub-pages: parent row + expandable children */
+                return (
+                  <div key={g.key} className="shrink-0 flex lg:block gap-1">
+                    <button
+                      type="button"
+                      aria-expanded={groupActive}
+                      onClick={() => select(groupStart[gi])}
+                      className={`hidden lg:block w-full shrink-0 text-left rounded-lg px-3 py-2 transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
+                        groupActive
+                          ? "text-white"
+                          : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2.5">
+                        <g.icon
+                          size={15}
+                          className={groupActive ? "text-[#93c5fd]" : "text-gray-500"}
+                          aria-hidden="true"
+                        />
+                        <span className="text-sm font-semibold whitespace-nowrap">
+                          {g.label}
+                        </span>
+                        <ChevronDown
+                          size={13}
+                          className={`ml-auto hidden lg:block text-gray-500 transition-transform duration-300 ${
+                            groupActive ? "rotate-180" : ""
+                          }`}
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </button>
+
+                    {/* Children: always visible as chips on mobile, accordion on desktop */}
+                    <div
+                      className={`flex lg:block gap-1 lg:ml-[17px] lg:border-l lg:border-white/10 lg:pl-2 lg:overflow-hidden lg:transition-all lg:duration-300 ${
+                        groupActive
+                          ? "lg:max-h-72 lg:opacity-100 lg:mt-0.5"
+                          : "lg:max-h-0 lg:opacity-0"
+                      }`}
+                    >
+                      {g.pages.map((leaf) => {
+                        const li = leaves.findIndex((l) => l.key === leaf.key);
+                        const isActive = li === active;
+                        return (
+                          <button
+                            key={leaf.key}
+                            role="tab"
+                            id={`platform-tab-${leaf.key}`}
+                            aria-selected={isActive}
+                            aria-controls="platform-screen"
+                            tabIndex={isActive ? 0 : -1}
+                            onClick={() => select(li)}
+                            className={`relative lg:w-full shrink-0 text-left rounded-md px-2.5 py-1.5 lg:mb-0.5 transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
+                              isActive
+                                ? "bg-[#3b82f6]/15 text-white"
+                                : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
+                            }`}
+                          >
+                            <span className="text-[13px] font-medium whitespace-nowrap">
+                              {leaf.label}
+                            </span>
+                            {description(leaf, isActive)}
+                            {isActive && showProgress && progressBar}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 );
               })}
             </div>
@@ -264,13 +444,13 @@ export default function PlatformOverview() {
               aria-labelledby={`platform-tab-${page.key}`}
               className="relative aspect-[1327/801] bg-[#0d0f1c]"
             >
-              {pages.map((p, i) => (
+              {leaves.map((leaf, i) => (
                 <Image
-                  key={p.key}
-                  src={p.src}
-                  alt={i === active ? p.alt : ""}
+                  key={leaf.key}
+                  src={leaf.src}
+                  alt={i === active ? leaf.alt : ""}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 930px"
+                  sizes="(max-width: 1024px) 100vw, 920px"
                   className={`object-contain transition-opacity duration-500 ${
                     i === active ? "opacity-100" : "opacity-0"
                   }`}
@@ -283,7 +463,7 @@ export default function PlatformOverview() {
 
         {/* Caption for mobile, where the sidebar collapses to chips */}
         <p className="lg:hidden text-center text-sm text-gray-400 mt-4 px-4" aria-live="polite">
-          <span className="font-semibold text-gray-200">{page.title}.</span>{" "}
+          <span className="font-semibold text-gray-200">{page.chip}.</span>{" "}
           {page.desc}
         </p>
       </div>
