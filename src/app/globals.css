@@ -815,6 +815,26 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Platform overview: auto-tour progress along the active sidebar item */
+@keyframes platformProgress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.platform-progress {
+  animation: platformProgress 6s linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .platform-progress {
+    animation: none;
+  }
+}
+
 /* Extraction showcase: document scan line */
 @keyframes extractionScan {
   from {
