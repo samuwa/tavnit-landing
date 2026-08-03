@@ -1,7 +1,19 @@
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
-import { Eye, Info, Lock, Shield, Star, Table2, UserCog, Users } from "lucide-react";
-import { BulletList, DocCard, InfoBox, PermissionGroupHeader, PermissionRow, RoleBadge } from "@/components/docs/ui";
+import { ClipboardCheck, Eye, Info, Lock, Shield, Star, Table2, UserCog, Users } from "lucide-react";
+import {
+  BulletList,
+  DataTable,
+  DocCard,
+  DocLink,
+  InfoBox,
+  Lead,
+  PermissionGroupHeader,
+  PermissionRow,
+  Related,
+  RoleBadge,
+  WarningBox,
+} from "@/components/docs/ui";
 
 export const metadata = docMetadata("user-roles");
 
@@ -15,17 +27,32 @@ export default function Page() {
         </h1>
 
         <DocCard icon={<Shield size={24} />} title="Overview">
-          <p>
-            Every Tavnit user belongs to an organisation with one of four roles:
-            Owner, Admin, Member, or Viewer. Roles control what each user can see and do
-            across every feature in the app.
-          </p>
+          <Lead>
+            Every Tavnit user belongs to an organisation with exactly one of four roles: Owner,
+            Admin, Member or HITL Only. The role is set when you invite someone and decides what
+            they can see and do across the whole app — there is no per-feature override except for
+            Bucket access grants.
+          </Lead>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-4">
             <RoleBadge label="Owner" color="border-purple-500/30 bg-purple-500/[0.06]" icon={<Star size={22} className="text-purple-400" />} subtitle="Full control" />
             <RoleBadge label="Admin" color="border-blue-500/30 bg-blue-500/[0.06]" icon={<UserCog size={22} className="text-blue-400" />} subtitle="Manages people & content" />
-            <RoleBadge label="Member" color="border-cyan-500/30 bg-cyan-500/[0.06]" icon={<Users size={22} className="text-cyan-400" />} subtitle="Run & view" />
-            <RoleBadge label="Viewer" color="border-gray-500/30 bg-gray-500/[0.06]" icon={<Eye size={22} className="text-gray-400" />} subtitle="Read-only" />
+            <RoleBadge label="Member" color="border-cyan-500/30 bg-cyan-500/[0.06]" icon={<Users size={22} className="text-cyan-400" />} subtitle="Runs flows" />
+            <RoleBadge label="HITL Only" color="border-amber-500/30 bg-amber-500/[0.06]" icon={<ClipboardCheck size={22} className="text-amber-400" />} subtitle="Reviews only" />
           </div>
+          <DataTable
+            head={["Role", "In one line", "Give it to"]}
+            rows={[
+              ["Owner", "Full control, including billing and deleting the organisation.", "The person accountable for the account. Usually one."],
+              ["Admin", "Builds and manages everything except billing and org settings.", "Whoever configures flows, Cleaners and Buckets day to day."],
+              ["Member", "Runs existing flows and reads results. Cannot change configuration.", "People who process documents but should not rewire the pipeline."],
+              ["HITL Only", "Can do nothing but review runs they are assigned to.", "Approvers and auditors who must never touch configuration or data."],
+            ]}
+          />
+          <InfoBox color="blue" icon={<Info size={20} />} title="Roles are per organisation">
+            The same person can be an Owner in one organisation and a Member in another. Switching
+            organisation switches your role with it, so check the switcher before wondering why a
+            button disappeared.
+          </InfoBox>
         </DocCard>
 
         <DocCard icon={<Star size={24} />} title="Owner">
@@ -110,32 +137,48 @@ export default function Page() {
           />
         </DocCard>
 
-        <DocCard icon={<Eye size={24} />} title="Viewer">
-          <InfoBox color="blue" icon={<Info size={20} />} title="Read-only access">
-            Viewers can see flows, runs, buckets, and cleaners but cannot create, edit, delete, or trigger any operation.
+        <DocCard icon={<ClipboardCheck size={24} />} title="HITL Only">
+          <Lead>
+            HITL Only is a deliberately narrow role: the holder can review and decide on the runs
+            they are assigned to, and nothing else. Every processing and data operation is refused,
+            in the app and over the API alike, with an explicit &ldquo;your role only permits HITL
+            reviews&rdquo; response.
+          </Lead>
+          <p>Someone with this role can:</p>
+          <BulletList
+            items={[
+              <>
+                Open the <DocLink href="/docs/human-in-the-loop">Human in the Loop</DocLink> queue
+                and see runs where they are a named reviewer
+              </>,
+              "Read the extracted data next to the source document",
+              "Edit values, add or drop rows and columns during review",
+              "Approve a run, or reject it with a reason",
+            ]}
+          />
+          <p>They cannot:</p>
+          <BulletList
+            items={[
+              "Upload a document or trigger a run of any kind",
+              "See or change flows, Collections, Cleaners, Splitters or Agents",
+              "Read or write Bucket data outside a review",
+              "Call the processing API — those endpoints refuse the role outright",
+              "Invite anyone, or see billing and organisation settings",
+            ]}
+          />
+          <InfoBox color="yellow" icon={<Info size={20} />} title="Assignment is still separate">
+            The role permits reviewing; it does not grant it. A HITL Only user still has to be added
+            to a flow&apos;s reviewer list by an Owner or Admin, or named on a Cleaner&apos;s review
+            action. Without that they sign in to an empty queue.
           </InfoBox>
-          <p>Viewers can:</p>
-          <BulletList
-            items={[
-              "View flow configurations and run history",
-              "View bucket data (subject to bucket visibility settings)",
-              "View cleaner and splitter configurations",
-              "View the Pipeline Map",
-            ]}
-          />
-          <p>Viewers cannot:</p>
-          <BulletList
-            items={[
-              "Create, edit, or delete any resource",
-              "Trigger runs, sweeps, or splits",
-              "Manage team members or billing",
-              "Change organisation settings",
-            ]}
-          />
         </DocCard>
 
         <DocCard icon={<Table2 size={24} />} title="Permissions at a Glance">
-          <p className="mb-4">A summary of who can do what across all features.</p>
+          <Lead>
+            What Owner, Admin and Member can each do, feature by feature. HITL Only is deliberately
+            absent: it is denied every row in this table, and its only capability is reviewing runs
+            it has been assigned.
+          </Lead>
           <div className="overflow-x-auto">
             <div className="min-w-[400px]">
               {/* Table Header */}
@@ -208,7 +251,41 @@ export default function Page() {
           <p>To manage access, open a bucket and tap the settings icon &rarr; Manage Access.
             The access screen groups users by role and lets you set each person&apos;s level
             individually, or use the &ldquo;Set all&rdquo; controls to update an entire group at once.</p>
+          <WarningBox>
+            A Bucket grant widens access, it does not narrow it. Granting a Member editor access to
+            one private Bucket does not stop them reading every org-visible Bucket. If data must
+            stay restricted, the Bucket has to be private in the first place.
+          </WarningBox>
         </DocCard>
+
+        <Related
+          links={[
+            {
+              href: "/docs/human-in-the-loop",
+              label: "Assign reviewers to a flow",
+              description:
+                "How the reviewer list works, and why a HITL Only user needs to be on it.",
+            },
+            {
+              href: "/docs/buckets",
+              label: "Private Buckets and access grants",
+              description:
+                "The second access layer that sits on top of org roles, per Bucket and per person.",
+            },
+            {
+              href: "/docs/mcp-connector",
+              label: "Roles apply to AI assistants too",
+              description:
+                "A connector inherits the permissions of the member who generated it.",
+            },
+            {
+              href: "/docs/api-integration",
+              label: "Roles apply to API keys",
+              description:
+                "Each member has their own key, and it carries their role's limits.",
+            },
+          ]}
+        />
       </section>
     </>
   );

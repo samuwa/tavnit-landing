@@ -12,6 +12,7 @@
 
 export type DocSlug =
   | "getting-started"
+  | "flows"
   | "collections"
   | "cleaners"
   | "splitters"
@@ -48,22 +49,31 @@ export const DOC_SECTIONS: DocSection[] = [
       "Set up your first Tavnit extraction flow: define the fields you want, upload a document, and get structured data back. No templates and no code required.",
   },
   {
+    slug: "flows",
+    label: "Flows",
+    heading: "Flows",
+    href: "/docs/flows",
+    title: "Flows — Define What Tavnit Extracts from Each Document",
+    description:
+      "Build a flow's data schema: metadata and table fields, data types, extraction hints that tell the AI where to look, composite and multi-value fields, and every feature you can attach.",
+  },
+  {
     slug: "collections",
     label: "Collections",
     heading: "Collections",
     href: "/docs/collections",
     title: "Collections — Automatic Document Routing to the Right Flow",
     description:
-      "Group multiple extraction flows behind a single endpoint. Tavnit classifies each incoming document with AI and routes it to the correct flow automatically.",
+      "Group extraction flows and Splitters behind one endpoint. Tavnit classifies each document from its first page and routes it, with a Fallback Flow for anything it cannot place.",
   },
   {
     slug: "cleaners",
     label: "Cleaners",
     heading: "Cleaners",
     href: "/docs/cleaners",
-    title: "Cleaners — Transform and Enrich Extracted Data",
+    title: "Cleaners — Field Type Reference for Extracted Data",
     description:
-      "Standardise formats, translate text, convert currencies and units, compute fields, categorise with AI, match against reference data, and classify HS tariff codes after extraction.",
+      "Every Cleaner field type explained: AI formatting, date and number formats, formulas, categories, lookups, currency and unit conversion, summaries, HS codes and conditional actions.",
   },
   {
     slug: "splitters",
@@ -90,7 +100,7 @@ export const DOC_SECTIONS: DocSection[] = [
     href: "/docs/agents",
     title: "AI Browser Agents — Act on Your Extracted Document Data",
     description:
-      "Give an agent a plain-language mission and a starting URL. It opens a real cloud browser, works through the site, and returns structured results matching your schema.",
+      "Give an agent a plain-language mission and a starting URL. Capture types, chaining an agent to a flow, file downloads, runtime limits and per-minute credit costs.",
   },
   {
     slug: "human-in-the-loop",
@@ -99,7 +109,7 @@ export const DOC_SECTIONS: DocSection[] = [
     href: "/docs/human-in-the-loop",
     title: "Human-in-the-Loop Review with an Append-Only Audit Trail",
     description:
-      "Pause any flow for human review before results are delivered. Assign named reviewers, edit results in place, approve or reject, and record every action in an append-only audit trail.",
+      "Pause a flow for human review before results are delivered — every run, or only the ones a Cleaner rule flags. Assign reviewers, edit in place, approve or reject, and log every action.",
   },
   {
     slug: "pipeline-map",
@@ -117,7 +127,7 @@ export const DOC_SECTIONS: DocSection[] = [
     href: "/docs/email-integration",
     title: "Extract Data from Email Attachments Automatically",
     description:
-      "Forward invoices and other documents to a Tavnit address and have the attachments extracted automatically, with results returned by email, webhook or API.",
+      "Forward documents to a Tavnit flow, Collection or Splitter address and have every attachment extracted automatically. Accepted file types, skip reasons, and email output.",
   },
   {
     slug: "api-integration",
@@ -142,9 +152,9 @@ export const DOC_SECTIONS: DocSection[] = [
     label: "MCP Connector",
     heading: "MCP Connector",
     href: "/docs/mcp-connector",
-    title: "MCP Connector — Use Tavnit from Claude and Cursor",
+    title: "MCP Connector Setup — Connect Tavnit to Claude and Cursor",
     description:
-      "Connect Tavnit to claude.ai, Cursor or any MCP client. Generate a connector URL and let your AI assistant run documents through your flows and query your Buckets directly.",
+      "Step-by-step setup for the Tavnit MCP connector: generate a connector URL, add it to claude.ai or Cursor, handle expiry and refreshes, and fix the common connection errors.",
   },
   {
     slug: "user-roles",

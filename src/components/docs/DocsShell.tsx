@@ -19,6 +19,7 @@ import {
   Plug,
   Shield,
   Split,
+  Sparkles,
   Wand2,
   Webhook,
   Workflow,
@@ -43,6 +44,7 @@ const Squares = dynamic(() => import("@/components/Squares"), { ssr: false });
 
 const ICONS: Record<DocSlug, React.ReactNode> = {
   "getting-started": <Layers size={20} />,
+  flows: <Sparkles size={20} />,
   collections: <FolderInput size={20} />,
   cleaners: <Wand2 size={20} />,
   splitters: <Split size={20} />,

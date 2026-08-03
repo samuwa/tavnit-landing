@@ -472,3 +472,86 @@ export const BUCKETS_JSON_EXAMPLE = `{
     { "column_one": "value", "column_two": 123 }
   ]
 }`;
+
+/* ─── Webhook payloads ─── */
+
+/**
+ * Shape of the POST body a flow's webhook receives. Mirrors the delivery
+ * payload assembled in the backend: the run's output plus its identifiers,
+ * with provenance keys added only when they apply.
+ */
+export const WEBHOOK_RUN_PAYLOAD = `{
+  "run_id": "8f1c2b7e-4d3a-4a91-9c11-2f7b6e0d5a44",
+  "flow_id": "3a9d51c0-77b2-4e18-9f6d-0c4a1b8e2d63",
+  "rows": [
+    {
+      "Description": "Software Platform Subscription — January",
+      "Quantity": 1,
+      "Price": 180.00,
+      "Amount": 180.00,
+      "Invoice Number": "001",
+      "Issued Date": "2026-01-15",
+      "Total": 270.30
+    }
+  ],
+  "metadata": {
+    "Invoice Number": "001",
+    "Billed To": "Acme Ltd",
+    "Total": 270.30
+  }
+}`;
+
+/**
+ * Extra keys that appear only when the run reached the flow indirectly.
+ * Use them to trace a result back to the document that produced it.
+ */
+export const WEBHOOK_PROVENANCE_KEYS = `{
+  "run_id": "...",
+  "flow_id": "...",
+
+  // present when a Collection routed the document
+  "collection_run_id": "b21e9f34-8c55-4d70-a6e2-91f0c7d43a18",
+
+  // present when a Splitter produced this segment
+  "split_id": "c74a0b12-3e69-4f85-b0d7-58e2a9c61f70",
+  "splitter_doc_title": "Commercial Invoice",
+
+  "rows": [],
+  "metadata": {}
+}`;
+
+/** Minimal receiver that acknowledges fast and processes afterwards. */
+export const WEBHOOK_RECEIVER_PYTHON = `from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.post("/tavnit-webhook")
+def receive():
+    payload = request.get_json(silent=True) or {}
+
+    run_id = payload.get("run_id")
+    rows = payload.get("rows", [])
+
+    # Acknowledge immediately. Tavnit waits 10 seconds for a response and
+    # treats a timeout as a failed delivery, so queue the slow work instead
+    # of doing it inline.
+    enqueue_processing(run_id, rows)
+
+    return jsonify({"received": True}), 200`;
+
+/** Same contract in Node/Express. */
+export const WEBHOOK_RECEIVER_JS = `import express from "express";
+
+const app = express();
+app.use(express.json({ limit: "10mb" }));
+
+app.post("/tavnit-webhook", (req, res) => {
+  const { run_id: runId, rows = [] } = req.body ?? {};
+
+  // Respond inside the 10-second window, then do the work.
+  res.status(200).json({ received: true });
+
+  enqueueProcessing(runId, rows).catch(console.error);
+});
+
+app.listen(3000);`;

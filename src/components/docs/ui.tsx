@@ -10,7 +10,9 @@
  */
 
 import { useState } from "react";
-import { AlertTriangle, Check, CheckCircle, Copy, XCircle } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { AlertTriangle, ArrowUpRight, Check, CheckCircle, Copy, XCircle } from "lucide-react";
 
 /* ─── Reusable sub-components ─── */
 
@@ -170,6 +172,184 @@ export function RoleBadge({ label, color, icon, subtitle }: { label: string; col
       <span className="text-sm font-bold text-gray-100">{label}</span>
       <span className="text-xs text-gray-400 mt-1">{subtitle}</span>
     </div>
+  );
+}
+
+/* ─── Added for the docs depth pass ─── */
+
+/**
+ * The direct answer that opens a section.
+ *
+ * Featured snippets and AI answer engines extract the first self-contained
+ * passage under a heading, so every section leads with one. Kept visually
+ * distinct from the body copy (larger, lighter, hairline rule) so a reader
+ * skimming for the answer finds it in the same place on every page.
+ */
+export function Lead({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="border-l-2 border-[#3b82f6]/50 pl-4 text-[16.5px] leading-relaxed text-gray-200">
+      {children}
+    </p>
+  );
+}
+
+/**
+ * Inline cross-link to another docs page.
+ *
+ * A real <Link> so it client-navigates and is crawlable; the accent colour
+ * matches the sidebar's active state rather than introducing a link colour.
+ */
+export function DocLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="text-[#93c5fd] underline decoration-[#93c5fd]/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/50"
+    >
+      {children}
+    </Link>
+  );
+}
+
+/**
+ * Comparison / reference table.
+ *
+ * Tables extract far better than prose for "X vs Y" and parameter-reference
+ * queries. Scrolls inside its own container so a wide table never makes the
+ * page body scroll horizontally on mobile.
+ */
+export function DataTable({
+  head,
+  rows,
+  caption,
+}: {
+  head: string[];
+  rows: React.ReactNode[][];
+  caption?: string;
+}) {
+  return (
+    <div className="my-5">
+      <div className="overflow-x-auto rounded-lg border border-white/[0.08]">
+        <table className="w-full border-collapse text-left text-[14px]">
+          {caption && (
+            <caption className="px-4 py-2.5 text-left text-xs text-gray-500">
+              {caption}
+            </caption>
+          )}
+          <thead>
+            <tr className="bg-white/[0.05]">
+              {head.map((cell) => (
+                <th
+                  key={cell}
+                  scope="col"
+                  className="whitespace-nowrap px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-gray-400"
+                >
+                  {cell}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={i} className="border-t border-white/[0.05] align-top">
+                {row.map((cell, j) => (
+                  <td
+                    key={j}
+                    className={`px-4 py-3 leading-relaxed ${
+                      j === 0 ? "font-medium text-gray-100" : "text-gray-400"
+                    }`}
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Product screenshot with a caption.
+ *
+ * `alt` is required and should describe what the screen shows, not just name
+ * it — it is the only description a crawler or a screen reader gets. No
+ * `quality` prop: Next 16 rejects any value outside `images.qualities`.
+ */
+export function Screenshot({
+  src,
+  alt,
+  caption,
+  width = 1327,
+  height = 801,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+  width?: number;
+  height?: number;
+}) {
+  return (
+    <figure className="my-5">
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        sizes="(max-width: 900px) 100vw, 836px"
+        className="w-full rounded-lg border border-white/[0.08]"
+      />
+      <figcaption className="mt-2 text-[13px] leading-relaxed text-gray-500">
+        {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
+/**
+ * Cross-links to the docs pages a reader most likely needs next.
+ *
+ * Deliberately not an <h2>: it is navigation, not a content section, and the
+ * heading outline should describe what the page actually explains. Anchor text
+ * is descriptive on purpose — "How Cleaners transform extracted data" carries
+ * a relevance signal that "learn more" does not.
+ */
+export function Related({
+  links,
+}: {
+  links: { href: string; label: string; description: string }[];
+}) {
+  return (
+    <nav
+      aria-label="Related documentation"
+      className="mt-10 rounded-xl border border-white/[0.08] bg-white/[0.03] p-6 backdrop-blur-sm"
+    >
+      <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+        Keep reading
+      </span>
+      <ul className="mt-4 space-y-3">
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className="group flex items-start gap-2 text-[15px] text-[#93c5fd] transition-colors hover:text-white"
+            >
+              <ArrowUpRight
+                size={16}
+                className="mt-1 flex-shrink-0 opacity-60 transition-opacity group-hover:opacity-100"
+              />
+              <span>
+                {link.label}
+                <span className="block text-[14px] text-gray-400">
+                  {link.description}
+                </span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
 

@@ -12,7 +12,15 @@ import { DOC_BY_SLUG, type DocSlug } from "./nav";
 export function docMetadata(slug: DocSlug): Metadata {
   const section = DOC_BY_SLUG[slug];
   return {
-    title: section.title,
+    // `absolute` on purpose. The root layout defines a `%s | Tavnit` template,
+    // but a layout title only templates its *immediate* children — so /docs
+    // inherited the suffix while the twelve /docs/<slug> routes did not, and
+    // the section rendered with two different title conventions. Each title in
+    // nav.ts is already written to sit at 49–61 characters, which is the whole
+    // visible width in a SERP; appending the brand would push most of them into
+    // truncation. Opting every docs route out of the template makes the section
+    // consistent and keeps the descriptive tail visible.
+    title: { absolute: section.title },
     description: section.description,
     alternates: { canonical: section.href },
     openGraph: {

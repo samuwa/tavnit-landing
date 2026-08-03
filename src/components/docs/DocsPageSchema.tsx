@@ -1,4 +1,4 @@
-import { docsPageSchema } from "@/lib/schema";
+import { docsPageSchema, type DocsHowTo } from "@/lib/schema";
 import type { DocSlug } from "./nav";
 
 /**
@@ -11,11 +11,22 @@ import type { DocSlug } from "./nav";
  * server component evaluates it exactly once, and keeps the JSON out of the
  * client bundle.
  */
-export default function DocsPageSchema({ slug }: { slug: DocSlug }) {
+export default function DocsPageSchema({
+  slug,
+  howTo,
+  primaryImage,
+}: {
+  slug: DocSlug;
+  /** Only pass when the page renders these steps visibly. */
+  howTo?: DocsHowTo;
+  primaryImage?: { url: string; caption: string; width: number; height: number };
+}) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(docsPageSchema(slug)) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(docsPageSchema(slug, { howTo, primaryImage })),
+      }}
     />
   );
 }

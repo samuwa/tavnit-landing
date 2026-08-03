@@ -1,28 +1,58 @@
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
-import { AlertTriangle, ArrowLeftRight, BarChart3, Database, FileDown, FilePlus, FileUp, Fingerprint, Info, Lock, Shield, Users, Workflow } from "lucide-react";
-import { BulletList, DocCard, InfoBox, NumberedList } from "@/components/docs/ui";
+import { AlertTriangle, ArrowLeftRight, BarChart3, Database, FileDown, FilePlus, FileUp, Fingerprint, Info, Lock, Shield, Table2, Users, Workflow } from "lucide-react";
+import {
+  BulletList,
+  DataTable,
+  DocCard,
+  DocLink,
+  InfoBox,
+  InlineCode,
+  Lead,
+  NumberedList,
+  Related,
+  Screenshot,
+} from "@/components/docs/ui";
 
 export const metadata = docMetadata("buckets");
 
 export default function Page() {
   return (
     <>
-      <DocsPageSchema slug="buckets" />
+      <DocsPageSchema
+        slug="buckets"
+        primaryImage={{
+          url: "/assets/docs-bucket-grid-2026-08.jpg",
+          caption:
+            "A Tavnit Bucket open in the data grid, with typed columns and the Filter, Sort, formula, Graph and Export controls.",
+          width: 1327,
+          height: 692,
+        }}
+      />
       <section>
         <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
           Buckets
         </h1>
 
         <DocCard icon={<Database size={24} />} title="What are Buckets?">
+          <Lead>
+            A Bucket is a structured table that lives inside Tavnit. Flows write their extracted rows
+            into it automatically, you can append to it over the API or from a CSV, and you can
+            filter, sort, compute and chart the result without exporting it anywhere.
+          </Lead>
           <p>
-            Buckets are structured data tables that collect and organize information.
-            They can receive data automatically from your flows or be populated programmatically via the API.
+            A flow run stores the result of <em>one</em> document. A Bucket is where results
+            accumulate across every run, so the question changes from &ldquo;what did this invoice
+            say?&rdquo; to &ldquo;what have we been billed this quarter?&rdquo;. Every row has to
+            match the Bucket&apos;s columns, which is what keeps that aggregate meaningful.
           </p>
-          <p>
-            Think of a bucket as a spreadsheet with defined columns. Each row of data must match
-            the bucket&apos;s column structure, ensuring consistency across all entries.
-          </p>
+          <Screenshot
+            src="/assets/docs-bucket-grid-2026-08.jpg"
+            alt="A Tavnit Bucket named Data Set open in the grid view. Typed columns for age, sex, bmi, children, smoker, region and charges hold 1,339 rows, with Insert, Filter, Sort, formula, Graph and Export controls in the toolbar and a column list plus connected flows in the left panel."
+            caption="A Bucket in the grid. Column types are shown beside each name, and the row count and paging sit along the bottom."
+            width={1327}
+            height={692}
+          />
           <InfoBox color="purple" icon={<Workflow size={20} />} title="Flows + Buckets">
             You can link flows to buckets so that extracted data is automatically written into the bucket
             after each document is processed. This lets you aggregate results from multiple runs into one place.
@@ -75,6 +105,86 @@ export default function Page() {
             The API requires both bucket_id and bucket_name to prevent accidental writes to the wrong bucket.
             If the name doesn&apos;t match the ID, the request is rejected.
           </InfoBox>
+        </DocCard>
+
+        <DocCard icon={<Workflow size={24} />} title="Four ways data gets in">
+          <Lead>
+            Nothing about a Bucket assumes the data came from a document. Flow exports, Cleaner
+            actions, agents, the API and CSV import all write into the same table, which is what
+            makes a Bucket useful as reference data as well as a destination.
+          </Lead>
+          <DataTable
+            head={["Source", "How it works", "Typical use"]}
+            rows={[
+              [
+                "Bucket export on a flow",
+                "Each completed run appends its rows, with extracted fields mapped onto Bucket columns.",
+                "Accumulating every invoice you process into one table.",
+              ],
+              [
+                <>
+                  A <DocLink href="/docs/cleaners">Cleaner</DocLink> action
+                </>,
+                "A conditional action writes a value back into an existing Bucket row that a Lookup matched.",
+                "Marking an order received, or decrementing a stock count.",
+              ],
+              [
+                <>
+                  An <DocLink href="/docs/agents">agent</DocLink>
+                </>,
+                "One row per agent run, with captures mapped onto columns.",
+                "Recording live supplier prices fetched from a portal.",
+              ],
+              [
+                <>
+                  The <DocLink href="/docs/api-integration">REST API</DocLink> or a CSV import
+                </>,
+                "Append rows directly, by request or by upload.",
+                "Loading a price list or customer catalogue to look values up against.",
+              ],
+            ]}
+          />
+          <InfoBox color="violet" icon={<ArrowLeftRight size={20} />} title="Buckets read as well as write">
+            A Bucket is not only a destination. Cleaner <strong>Lookup</strong> fields pull values
+            out of one to enrich a row, and <strong>Bucket Check</strong> fields ask whether a row
+            already exists — which is how de-duplication works. Load your catalogue into a Bucket and
+            every flow can match against it.
+          </InfoBox>
+          <InfoBox color="blue" icon={<Info size={20} />} title="Exports are always un-pivoted">
+            If a Cleaner reshapes rows into wide format for delivery, the Bucket still receives the
+            original long-format rows. Stored data keeps one row per record so aggregates and
+            lookups stay correct.
+          </InfoBox>
+        </DocCard>
+
+        <DocCard icon={<Table2 size={24} />} title="Working with the data">
+          <Lead>
+            The grid is closer to a spreadsheet than a read-only report. You can edit in place,
+            filter and sort, add computed columns, and page through large tables — a Bucket with
+            thousands of rows stays usable in the browser.
+          </Lead>
+          <DataTable
+            head={["Control", "What it does"]}
+            rows={[
+              ["Insert", "Add rows or columns to the table."],
+              ["Filter", "Narrow the view to rows matching conditions you set."],
+              ["Sort", "Order by one or more columns."],
+              [
+                <>
+                  <InlineCode>f(x)</InlineCode>
+                </>,
+                "Add a computed column derived from the others.",
+              ],
+              ["Graph", "Chart the data in place — see below."],
+              ["Export", "Download the current rows as CSV."],
+              ["Undo / redo", "Step back through edits made in the grid."],
+            ]}
+          />
+          <p>
+            Each column carries a type — text, number, date or boolean — shown beside its name.
+            Types are what let sorting, aggregation and charts behave correctly, so a numeric column
+            that arrived as text is worth fixing at the source rather than in the grid.
+          </p>
         </DocCard>
 
         <DocCard icon={<Lock size={24} />} title="Access Control">
@@ -132,6 +242,35 @@ export default function Page() {
           </InfoBox>
           <p>Both import and export are available from the toolbar at the top of the bucket&apos;s data table.</p>
         </DocCard>
+
+        <Related
+          links={[
+            {
+              href: "/docs/cleaners",
+              label: "Look values up in a Bucket, and write back to it",
+              description:
+                "Lookup, Bucket Check and the edit-row action — the field types that read and update stored rows.",
+            },
+            {
+              href: "/docs/api-integration",
+              label: "Append rows over the REST API",
+              description:
+                "The Buckets endpoint, with Python and JavaScript examples and the bucket_id plus bucket_name safety check.",
+            },
+            {
+              href: "/docs/user-roles",
+              label: "Who can see and edit a Bucket",
+              description:
+                "How per-Bucket visibility and access grants layer on top of org roles.",
+            },
+            {
+              href: "/docs/mcp-connector",
+              label: "Ask an AI assistant about your Bucket",
+              description:
+                "The MCP connector lets Claude or Cursor query stored rows in conversation.",
+            },
+          ]}
+        />
       </section>
     </>
   );

@@ -280,10 +280,30 @@ export function docsRootSchema() {
 }
 
 /**
+ * A step-by-step procedure a docs page actually renders on screen.
+ *
+ * Only pass this when the page visibly shows the numbered steps: HowTo markup
+ * that describes steps the reader cannot see is a structured-data violation,
+ * the same rule that keeps FAQPage off pages without a visible Q&A.
+ */
+export type DocsHowTo = {
+  name: string;
+  description: string;
+  steps: { name: string; text: string }[];
+};
+
+/**
  * Per-page docs graph. TechArticle signals developer documentation, and the
  * BreadcrumbList gives each section its own Home > Docs > Section trail.
+ *
+ * `howTo` adds a HowTo node for pages whose primary job is a setup procedure;
+ * `primaryImage` promotes a page's lead screenshot to an ImageObject so the
+ * screenshot is addressable as an entity rather than an anonymous <img>.
  */
-export function docsPageSchema(slug: DocSlug) {
+export function docsPageSchema(
+  slug: DocSlug,
+  options: { howTo?: DocsHowTo; primaryImage?: { url: string; caption: string; width: number; height: number } } = {},
+) {
   const section = DOC_BY_SLUG[slug];
   const url = `${SITE_URL}${section.href}`;
   const isRoot = section.href === "/docs";
@@ -298,6 +318,37 @@ export function docsPageSchema(slug: DocSlug) {
         { name: "Docs", url: `${SITE_URL}/docs` },
         { name: section.label, url },
       ];
+
+  const image = options.primaryImage
+    ? {
+        "@type": "ImageObject",
+        "@id": `${url}#primaryimage`,
+        url: `${SITE_URL}${options.primaryImage.url}`,
+        contentUrl: `${SITE_URL}${options.primaryImage.url}`,
+        caption: options.primaryImage.caption,
+        width: options.primaryImage.width,
+        height: options.primaryImage.height,
+      }
+    : null;
+
+  const howTo = options.howTo
+    ? {
+        "@type": "HowTo",
+        "@id": `${url}#howto`,
+        name: options.howTo.name,
+        description: options.howTo.description,
+        isPartOf: { "@id": `${url}#webpage` },
+        // No per-step `url`: the steps render as a list rather than as
+        // individually anchored sections, and a fragment that resolves to
+        // nothing is worse than an absent optional property.
+        step: options.howTo.steps.map((step, i) => ({
+          "@type": "HowToStep",
+          position: i + 1,
+          name: step.name,
+          text: step.text,
+        })),
+      }
+    : null;
 
   return {
     "@context": "https://schema.org",
@@ -318,7 +369,10 @@ export function docsPageSchema(slug: DocSlug) {
         publisher: { "@id": ORG_ID },
         proficiencyLevel: "Beginner",
         isPartOfCollection: { "@id": `${SITE_URL}/docs#index` },
+        ...(image ? { primaryImageOfPage: { "@id": `${url}#primaryimage` } } : {}),
       },
+      ...(image ? [image] : []),
+      ...(howTo ? [howTo] : []),
       breadcrumbs(trail, url),
     ],
   };
