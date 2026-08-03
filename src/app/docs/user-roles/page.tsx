@@ -1,0 +1,215 @@
+import { docMetadata } from "@/components/docs/meta";
+import DocsPageSchema from "@/components/docs/DocsPageSchema";
+import { Eye, Info, Lock, Shield, Star, Table2, UserCog, Users } from "lucide-react";
+import { BulletList, DocCard, InfoBox, PermissionGroupHeader, PermissionRow, RoleBadge } from "@/components/docs/ui";
+
+export const metadata = docMetadata("user-roles");
+
+export default function Page() {
+  return (
+    <>
+      <DocsPageSchema slug="user-roles" />
+      <section>
+        <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          User Roles &amp; Permissions
+        </h1>
+
+        <DocCard icon={<Shield size={24} />} title="Overview">
+          <p>
+            Every Tavnit user belongs to an organisation with one of four roles:
+            Owner, Admin, Member, or Viewer. Roles control what each user can see and do
+            across every feature in the app.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-4">
+            <RoleBadge label="Owner" color="border-purple-500/30 bg-purple-500/[0.06]" icon={<Star size={22} className="text-purple-400" />} subtitle="Full control" />
+            <RoleBadge label="Admin" color="border-blue-500/30 bg-blue-500/[0.06]" icon={<UserCog size={22} className="text-blue-400" />} subtitle="Manages people & content" />
+            <RoleBadge label="Member" color="border-cyan-500/30 bg-cyan-500/[0.06]" icon={<Users size={22} className="text-cyan-400" />} subtitle="Run & view" />
+            <RoleBadge label="Viewer" color="border-gray-500/30 bg-gray-500/[0.06]" icon={<Eye size={22} className="text-gray-400" />} subtitle="Read-only" />
+          </div>
+        </DocCard>
+
+        <DocCard icon={<Star size={24} />} title="Owner">
+          <InfoBox color="purple" icon={<Info size={20} />} title="One owner per org">
+            There is normally one owner — the person who created the organisation,
+            or someone explicitly promoted to owner. The owner cannot be removed or
+            demoted by anyone except themselves.
+          </InfoBox>
+          <p>Owners have unrestricted access to everything:</p>
+          <BulletList
+            items={[
+              "Create, edit, and delete flows, buckets, collections, cleaners, and matchers",
+              "Trigger runs and view all results",
+              "Invite and remove any team member, including other admins",
+              "Promote or demote members to any role (including admin)",
+              "Edit organisation name and settings",
+              "View and manage billing and subscription",
+              "Delete the organisation",
+              "Set any bucket to private",
+              "Control all bucket access — including changing admin permissions",
+            ]}
+          />
+        </DocCard>
+
+        <DocCard icon={<UserCog size={24} />} title="Admin">
+          <InfoBox color="blue" icon={<Info size={20} />} title="Trusted power users">
+            Admins help run day-to-day operations. They can create and manage content
+            and invite new members, but cannot touch billing, org settings, or other admins.
+          </InfoBox>
+          <p>Admins can:</p>
+          <BulletList
+            items={[
+              "Create, edit, and delete flows, buckets, collections, and cleaners",
+              "Create and manage their own matchers, and edit any matcher",
+              "Trigger runs and view all results",
+              "Invite new members to the org (member role only)",
+              "Remove members from the org",
+              "Edit and delete any flow, collection, or matcher created by members",
+              "Open the bucket access screen and change member access levels",
+            ]}
+          />
+          <p>Admins cannot:</p>
+          <BulletList
+            items={[
+              "Edit org settings or billing",
+              "Delete the organisation",
+              "Set a bucket to private",
+              "Change another admin's permissions or role",
+              "Invite someone as admin or owner (owner only)",
+            ]}
+          />
+        </DocCard>
+
+        <DocCard icon={<Users size={24} />} title="Member">
+          <InfoBox color="green" icon={<Info size={20} />} title="Read and run, with limited create">
+            Members are regular users. They can use flows that already exist and
+            manage their own matchers, but cannot create flows or modify shared resources.
+          </InfoBox>
+          <p>Members can:</p>
+          <BulletList
+            items={[
+              "Trigger runs on existing flows and view all run results",
+              "View flow details — including fields, webhook, email trigger, email output, data cleaning, and export to bucket settings",
+              "Create, edit, and delete their own matchers",
+              "Run matches on existing matchers",
+              "View all org-visible buckets (read-only by default)",
+              "Write data to a bucket if an admin or owner grants them editor access",
+            ]}
+          />
+          <p>Members cannot:</p>
+          <BulletList
+            items={[
+              "Create new flows, buckets, collections, or cleaners",
+              "Edit or delete any flow, or its fields and features",
+              "Toggle or configure flow features (webhook, email trigger, email output, data cleaning, export to bucket)",
+              "Edit or delete matchers created by others",
+              "Invite or remove team members",
+              "See private buckets unless explicitly granted access",
+              "Access the bucket access management screen",
+              "See the billing or org settings pages",
+            ]}
+          />
+        </DocCard>
+
+        <DocCard icon={<Eye size={24} />} title="Viewer">
+          <InfoBox color="blue" icon={<Info size={20} />} title="Read-only access">
+            Viewers can see flows, runs, buckets, and cleaners but cannot create, edit, delete, or trigger any operation.
+          </InfoBox>
+          <p>Viewers can:</p>
+          <BulletList
+            items={[
+              "View flow configurations and run history",
+              "View bucket data (subject to bucket visibility settings)",
+              "View cleaner and splitter configurations",
+              "View the Pipeline Map",
+            ]}
+          />
+          <p>Viewers cannot:</p>
+          <BulletList
+            items={[
+              "Create, edit, or delete any resource",
+              "Trigger runs, sweeps, or splits",
+              "Manage team members or billing",
+              "Change organisation settings",
+            ]}
+          />
+        </DocCard>
+
+        <DocCard icon={<Table2 size={24} />} title="Permissions at a Glance">
+          <p className="mb-4">A summary of who can do what across all features.</p>
+          <div className="overflow-x-auto">
+            <div className="min-w-[400px]">
+              {/* Table Header */}
+              <div className="flex items-center pb-3 border-b border-white/[0.08]">
+                <div className="flex-1" />
+                <div className="w-16 text-center"><span className="text-xs font-bold text-purple-400 bg-purple-500/10 px-2 py-1 rounded">Owner</span></div>
+                <div className="w-16 text-center"><span className="text-xs font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded">Admin</span></div>
+                <div className="w-16 text-center"><span className="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded">Member</span></div>
+              </div>
+
+              <PermissionGroupHeader label="Flows" />
+              <PermissionRow label="Create flows" owner={true} admin={true} member={false} />
+              <PermissionRow label="Edit / delete flows" owner={true} admin={true} member={false} />
+              <PermissionRow label="View flow features & fields" owner={true} admin={true} member={true} />
+              <PermissionRow label="Configure flow features" owner={true} admin={true} member={false} note="Webhook, email, data cleaning, bucket export" />
+              <PermissionRow label="Trigger runs" owner={true} admin={true} member={true} />
+              <PermissionRow label="View run results" owner={true} admin={true} member={true} />
+
+              <PermissionGroupHeader label="Matchers" />
+              <PermissionRow label="Create matchers" owner={true} admin={true} member={true} />
+              <PermissionRow label="Edit / delete own matchers" owner={true} admin={true} member={true} />
+              <PermissionRow label="Edit / delete any matcher" owner={true} admin={true} member={false} />
+              <PermissionRow label="Run matches" owner={true} admin={true} member={true} />
+
+              <PermissionGroupHeader label="Buckets — Configuration" />
+              <PermissionRow label="Create / edit / delete buckets" owner={true} admin={true} member={false} />
+              <PermissionRow label="Set bucket to private" owner={true} admin={false} member={false} />
+              <PermissionRow label="Open access management screen" owner={true} admin={true} member={false} />
+              <PermissionRow label="Change admin access levels" owner={true} admin={false} member={false} />
+              <PermissionRow label="Change member access levels" owner={true} admin={true} member={false} />
+
+              <PermissionGroupHeader label="Buckets — Data" />
+              <PermissionRow label="View org-visible buckets" owner={true} admin={true} member={true} />
+              <PermissionRow label="View private buckets" owner={true} admin={false} member={false} note="Requires explicit grant" />
+              <PermissionRow label="Edit data (org-visible)" owner={true} admin={true} member={false} note="Member needs editor grant" />
+              <PermissionRow label="Edit data (private)" owner={true} admin={false} member={false} note="Requires editor grant" />
+
+              <PermissionGroupHeader label="Collections & Cleaners" />
+              <PermissionRow label="Create collections / cleaners" owner={true} admin={true} member={false} />
+              <PermissionRow label="Edit / delete any" owner={true} admin={true} member={false} />
+
+              <PermissionGroupHeader label="Team" />
+              <PermissionRow label="Invite members" owner={true} admin={true} member={false} />
+              <PermissionRow label="Remove members" owner={true} admin={true} member={false} />
+              <PermissionRow label="Promote to admin" owner={true} admin={false} member={false} />
+              <PermissionRow label="Promote to owner" owner={true} admin={false} member={false} />
+
+              <PermissionGroupHeader label="Organisation" />
+              <PermissionRow label="Edit org settings" owner={true} admin={false} member={false} />
+              <PermissionRow label="View & manage billing" owner={true} admin={false} member={false} />
+              <PermissionRow label="Delete organisation" owner={true} admin={false} member={false} />
+            </div>
+          </div>
+        </DocCard>
+
+        <DocCard icon={<Lock size={24} />} title="Bucket Access System">
+          <p>
+            Buckets have a two-layer access system that lets owners and admins control
+            exactly who can see and edit each bucket independently of their org role.
+          </p>
+          <InfoBox color="purple" icon={<Eye size={20} />} title="Layer 1 — Visibility">
+            Each bucket is either Org-visible (everyone in the org can see it) or Private
+            (only the owner and users with an explicit grant can see it).
+            Only the org owner can toggle a bucket to private.
+          </InfoBox>
+          <InfoBox color="green" icon={<Lock size={20} />} title="Layer 2 — Access Level">
+            Each user can be granted Viewer (read-only) or Editor (read + write) access
+            to a specific bucket. These grants are stored independently of the user&apos;s org role.
+          </InfoBox>
+          <p>To manage access, open a bucket and tap the settings icon &rarr; Manage Access.
+            The access screen groups users by role and lets you set each person&apos;s level
+            individually, or use the &ldquo;Set all&rdquo; controls to update an entire group at once.</p>
+        </DocCard>
+      </section>
+    </>
+  );
+}

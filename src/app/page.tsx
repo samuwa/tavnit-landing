@@ -1,6 +1,4 @@
-"use client";
-
-import dynamic from "next/dynamic";
+import SquaresBackground from "@/components/SquaresBackground";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
@@ -16,24 +14,19 @@ import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
-
-const Squares = dynamic(() => import("@/components/Squares"), {
-  ssr: false,
-});
+import { homeSchema } from "@/lib/schema";
 
 export default function Home() {
   return (
     <>
-      {/* Fixed Squares background */}
-      <div className="fixed inset-0 -z-10 bg-[#0a0a1a]">
-        <Squares
-          direction="diagonal"
-          speed={0.17}
-          borderColor="#1E2740"
-          squareSize={45}
-          hoverFillColor="#222"
-        />
-      </div>
+      {/* Page-level JSON-LD (WebPage, BreadcrumbList, FAQPage). Site-wide
+          entities live in the root layout. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema()) }}
+      />
+
+      <SquaresBackground />
 
       <Header />
       <main role="main">

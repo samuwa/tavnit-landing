@@ -4,17 +4,22 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Link from "next/link";
 
-const plans = [
-  { name: "Starter", price: "$16", credits: "100", breakdown: "100 base credits", value: "= 100 pages (extraction & cleaning)", bonus: null, featured: false },
-  { name: "Growth", price: "$77", credits: "550", breakdown: "450 base + ", value: "= 550 pages (extraction & cleaning)", bonus: "100 bonus", featured: false },
-  { name: "Pro", price: "$138", credits: "1,150", breakdown: "850 base + ", value: "= 1,150 pages (extraction & cleaning)", bonus: "300 bonus", featured: false },
-  { name: "Enterprise", price: "$599", credits: "6,000", breakdown: "4,000 base + ", value: "= 6,000 pages (extraction & cleaning)", bonus: "2,000 bonus", featured: true },
-];
+import { EXTRA_CREDIT_MINIMUM, EXTRA_CREDIT_USD, INCLUDED_FEATURES, PRICING } from "@/lib/site";
 
-const includedFeatures = [
-  "Unlimited flows", "Unlimited team members", "AI field discovery", "CSV exports",
-  "API & webhook access", "Email triggers", "Data cleaning with Cleaners", "Direct database queries (JSONB)",
-];
+/** Presentation shape derived from the shared PRICING source of truth. */
+const plans = PRICING.map((tier) => ({
+  name: tier.name,
+  price: `$${tier.monthlyUsd}`,
+  credits: tier.credits.toLocaleString("en-US"),
+  breakdown: tier.bonusCredits
+    ? `${tier.baseCredits.toLocaleString("en-US")} base + `
+    : `${tier.baseCredits.toLocaleString("en-US")} base credits`,
+  bonus: tier.bonusCredits ? `${tier.bonusCredits.toLocaleString("en-US")} bonus` : null,
+  value: `= ${tier.credits.toLocaleString("en-US")} pages (extraction & cleaning)`,
+  featured: tier.featured,
+}));
+
+const includedFeatures = [...INCLUDED_FEATURES];
 
 export default function Pricing() {
   return (
@@ -82,7 +87,7 @@ export default function Pricing() {
         </div>
 
         <p className="text-center text-sm text-gray-500 mb-8 sm:mb-6">
-          Need more? Buy extra credits at $0.16/credit (minimum 50 credits) on top of any plan.
+          Need more? Buy extra credits at {`$${EXTRA_CREDIT_USD.toFixed(2)}`}/credit (minimum {EXTRA_CREDIT_MINIMUM} credits) on top of any plan.
         </p>
 
         {/* All Plans Include */}

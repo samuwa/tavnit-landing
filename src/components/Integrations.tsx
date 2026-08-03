@@ -78,7 +78,7 @@ function ApiDesktop() {
         </div>
       </div>
       <DesktopFeatureTags tags={["API key auth", "Multipart / JSON", "Python & JS examples", "Zapier · Make · n8n"]} />
-      <DesktopCardLink href="/docs#api-integration" label="View API Docs" />
+      <DesktopCardLink href="/docs/api-integration" label="View API Docs" />
     </>
   );
 }
@@ -110,7 +110,7 @@ function EmailDesktop() {
         </div>
       </div>
       <DesktopFeatureTags tags={["Unique address per flow", "Works with Collections", "One run per attachment", "Auto replies"]} />
-      <DesktopCardLink href="/docs#email-integration" label="Setup Email" />
+      <DesktopCardLink href="/docs/email-integration" label="Setup Email" />
     </>
   );
 }
@@ -162,7 +162,7 @@ function WebhookDesktop() {
         automatically on transient connection failures.
       </p>
       <DesktopFeatureTags tags={["Fires on completion", "JSON results", "Automatic retry", "Make & Zapier triggers"]} />
-      <DesktopCardLink href="/docs#webhooks" label="Configure Webhooks" />
+      <DesktopCardLink href="/docs/webhooks" label="Configure Webhooks" />
     </>
   );
 }
@@ -194,7 +194,7 @@ function McpDesktop() {
         </div>
       </div>
       <DesktopFeatureTags tags={["claude.ai (Pro+)", "Cursor", "Any MCP client", "Org-scoped access"]} />
-      <DesktopCardLink href="/docs#mcp-connector" label="Connect Your Assistant" />
+      <DesktopCardLink href="/docs/mcp-connector" label="Connect Your Assistant" />
     </>
   );
 }
@@ -252,7 +252,7 @@ function ApiMobileCard() {
         ))}
       </div>
 
-      <Link href="/docs#api-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
+      <Link href="/docs/api-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
         View API Docs <ArrowRight size={12} />
       </Link>
     </div>
@@ -289,7 +289,7 @@ function EmailMobileCard() {
         ))}
       </div>
 
-      <Link href="/docs#email-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
+      <Link href="/docs/email-integration" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
         Setup Email <ArrowRight size={12} />
       </Link>
     </div>
@@ -344,7 +344,7 @@ function WebhookMobileCard() {
         ))}
       </div>
 
-      <Link href="/docs#webhooks" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
+      <Link href="/docs/webhooks" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
         Configure Webhooks <ArrowRight size={12} />
       </Link>
     </div>
@@ -381,7 +381,7 @@ function McpMobileCard() {
         ))}
       </div>
 
-      <Link href="/docs#mcp-connector" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
+      <Link href="/docs/mcp-connector" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
         Connect Your Assistant <ArrowRight size={12} />
       </Link>
     </div>

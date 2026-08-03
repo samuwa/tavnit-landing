@@ -5,13 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
+// Root-relative so the header works from every route. Bare "#features" resolves
+// against the current path, so on /pricing or /docs those links went nowhere.
 const navLinks = [
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#features", label: "Features" },
-  { href: "#agents", label: "Agents" },
-  { href: "#use-cases", label: "Use Cases" },
-  { href: "#integrations", label: "Integrations" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "/#how-it-works", label: "How It Works" },
+  { href: "/#features", label: "Features" },
+  { href: "/#agents", label: "Agents" },
+  { href: "/#use-cases", label: "Use Cases" },
+  { href: "/#integrations", label: "Integrations" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/docs", label: "Docs" },
 ];
 

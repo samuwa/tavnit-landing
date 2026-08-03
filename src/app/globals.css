@@ -55,8 +55,25 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
   overflow-y: scroll;
+}
+
+/*
+ * Scroll snapping is a homepage-only behaviour, so it is scoped to pages that
+ * actually contain the hero section.
+ *
+ * It used to sit unscoped on `html`, which made it apply to every route. The
+ * per-section snap targets are ID-based (#hero, #problem, …) and only exist on
+ * the homepage, but `footer` further down is a bare element selector — so on
+ * /pricing, /privacy, /terms and /docs the footer was the *only* snap point on
+ * the page. With `mandatory`, the browser must rest on a snap point, so those
+ * pages loaded scrolled to the bottom.
+ *
+ * If a browser lacks :has() support, snapping simply never engages and every
+ * page scrolls normally. That is the correct way for this to fail.
+ */
+html:has(#hero) {
+  scroll-snap-type: y mandatory;
 }
 
 body {
@@ -963,13 +980,17 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
 }
 
-footer {
+/* Scoped to the homepage: a bare `footer` selector made the footer a snap
+   target on every route, including pages with no other snap points. */
+html:has(#hero) footer {
   scroll-snap-align: start;
 }
 
 /* Tablet: softer scroll snap */
 @media (max-width: 1023px) {
-  html {
+  /* Must match the specificity of the html:has(#hero) rule above, otherwise
+     that rule wins and these responsive overrides never apply. */
+  html:has(#hero) {
     scroll-snap-type: y proximity;
   }
 
@@ -980,7 +1001,7 @@ footer {
 
 /* Disable scroll snap on mobile, remove forced min-height and flex centering */
 @media (max-width: 767px) {
-  html {
+  html:has(#hero) {
     scroll-snap-type: none;
   }
 
