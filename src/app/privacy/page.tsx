@@ -5,7 +5,7 @@ import { legalSchema } from "@/lib/schema";
 import { SUPPORT_EMAIL } from "@/lib/site";
 
 const DESCRIPTION =
-  "How Tavnit handles the documents and data you send through the platform — what we collect, how extraction and review work, how access is controlled, and the choices you have.";
+  "How Tavnit handles the documents and data you send through the platform: what we collect, how access is controlled, and the choices you have.";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",

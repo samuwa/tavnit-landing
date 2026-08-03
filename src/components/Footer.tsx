@@ -43,10 +43,16 @@ const documentation: FooterLink[] = docsForFooterColumn("documentation").map((s)
   href: s.href,
 }));
 
-const integrations: FooterLink[] = docsForFooterColumn("integrations").map((s) => ({
-  label: s.label,
-  href: s.href,
-}));
+const integrations: FooterLink[] = [
+  // The hub and the MCP marketing page lead; the rest are documentation routes.
+  { label: "All Integrations", href: "/integrations" },
+  { label: "MCP Connector", href: "/integrations/mcp" },
+  ...docsForFooterColumn("integrations")
+    // /integrations/mcp supersedes the docs link in this column; the setup guide
+    // is still reachable from that page and from the docs sidebar.
+    .filter((s) => s.slug !== "mcp-connector")
+    .map((s) => ({ label: s.label, href: s.href })),
+];
 
 const company: FooterLink[] = [
   { label: "LinkedIn", href: LINKEDIN_URL, external: true },

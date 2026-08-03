@@ -11,7 +11,7 @@ import {
 } from "@/lib/site";
 
 const DESCRIPTION =
-  "The terms governing use of Tavnit — what the service does, account and credential responsibilities, acceptable use, credit-based billing, data ownership, and the limits of AI-generated output.";
+  "The terms governing use of Tavnit: account and credential responsibilities, acceptable use, credit-based billing, data ownership, and AI output limits.";
 
 export const metadata: Metadata = {
   title: "Terms of Service",

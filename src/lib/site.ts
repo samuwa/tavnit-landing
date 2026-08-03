@@ -28,7 +28,7 @@ export const TWITTER_HANDLE = "@tavnit_io";
 export const SOCIAL_PROFILES = [LINKEDIN_URL, GITHUB_URL];
 
 export const SITE_DESCRIPTION =
-  "Extract structured data from PDFs automatically with AI. Clean and enrich it, route it through human review, and let AI browser agents act on it — with API, webhooks, and an MCP connector for claude.ai and Cursor.";
+  "Extract structured data from PDFs with AI, clean it, review it with your team, then let AI agents act on it. REST API, webhooks and an MCP connector.";
 
 /** Feature list reused by SoftwareApplication schema and llms.txt. */
 export const FEATURES = [

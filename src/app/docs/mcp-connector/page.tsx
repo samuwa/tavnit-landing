@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
@@ -81,6 +82,14 @@ export default function Page() {
             points a client at your organization. It works with <strong>claude.ai</strong> (Pro and
             above), <strong>Cursor</strong>, and any other client that accepts a remote MCP server
             URL.
+          </p>
+          <p>
+            For what the connector is for, and how it compares to pasting a file into a chat, see
+            the{" "}
+            <Link href="/integrations/mcp" className="text-[#3b82f6] hover:underline">
+              MCP connector overview
+            </Link>
+            .
           </p>
           <InfoBox color="blue" icon={<Info size={20} />} title="Setup, not evaluation">
             This page covers connecting an assistant you already have to a Tavnit account you

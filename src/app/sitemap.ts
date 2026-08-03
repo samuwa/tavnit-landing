@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { DOC_SECTIONS } from "@/components/docs/nav";
+import { OWNED_INTEGRATIONS } from "@/lib/integrations";
 
 /**
  * Only real, indexable URLs belong here.
@@ -81,6 +82,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    {
+      url: `${SITE_URL}/integrations`,
+      lastModified: lastCommitDate("src/app/integrations", "src/lib/integrations.ts"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...OWNED_INTEGRATIONS.map((item) => ({
+      url: `${SITE_URL}${item.href}`,
+      lastModified: lastCommitDate(`src/app${item.href}/page.tsx`),
+      changeFrequency: "monthly" as const,
+      // Commercial intent: ranks these above the documentation that supports them.
+      priority: 0.9,
+    })),
     ...DOC_SECTIONS.map((section) => ({
       url: `${SITE_URL}${section.href}`,
       lastModified: lastCommitDate(...docsSources(section.href)),

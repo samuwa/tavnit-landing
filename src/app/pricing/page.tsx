@@ -13,9 +13,9 @@ import {
 import { pricingSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Pricing — Credit-Based Plans for AI Document Extraction",
+  title: "Pricing — Credit-Based Plans from $16/month",
   description:
-    "Tavnit pricing starts at $16/month for 100 pages. Credit-based, not per seat — unlimited flows and unlimited team members on every plan. Compare Starter, Growth, Pro and Enterprise.",
+    "Tavnit pricing starts at $16/month for 100 pages. Credit-based, not per seat, with unlimited flows and unlimited team members on every plan.",
   alternates: { canonical: "/pricing" },
   openGraph: {
     type: "website",

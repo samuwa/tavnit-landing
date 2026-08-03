@@ -224,6 +224,98 @@ export function pricingSchema(faqs: { q: string; a: string }[]) {
   };
 }
 
+/** Graph for the /integrations hub. */
+export function integrationsHubSchema(items: { label: string; href: string }[]) {
+  const url = `${SITE_URL}/integrations`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: "Tavnit Integrations",
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": SOFTWARE_ID },
+        description:
+          "Every way to get documents into Tavnit and extracted data back out: MCP connector, REST API, email, webhooks, no-code platforms and Buckets.",
+        inLanguage: "en-US",
+        dateModified: BUILD_DATE,
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${url}#index`,
+        numberOfItems: items.length,
+        itemListElement: items.map((item, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: item.label,
+          item: `${SITE_URL}${item.href}`,
+        })),
+      },
+      breadcrumbs(
+        [
+          { name: "Home", url: SITE_URL },
+          { name: "Integrations", url },
+        ],
+        url,
+      ),
+    ],
+  };
+}
+
+/**
+ * Graph for a single /integrations page.
+ *
+ * FAQPage is included because these pages render the questions visibly. The
+ * page describes the product capability, so it points `about` at the existing
+ * SoftwareApplication node rather than declaring a second product entity.
+ */
+export function integrationPageSchema(opts: {
+  name: string;
+  path: string;
+  headline: string;
+  description: string;
+  faqs: { q: string; a: string }[];
+}) {
+  const url = `${SITE_URL}${opts.path}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: opts.name,
+        headline: opts.headline,
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": SOFTWARE_ID },
+        description: opts.description,
+        inLanguage: "en-US",
+        dateModified: BUILD_DATE,
+        publisher: { "@id": ORG_ID },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        mainEntity: opts.faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.q,
+          acceptedAnswer: { "@type": "Answer", text: faq.a },
+        })),
+      },
+      breadcrumbs(
+        [
+          { name: "Home", url: SITE_URL },
+          { name: "Integrations", url: `${SITE_URL}/integrations` },
+          { name: opts.name, url },
+        ],
+        url,
+      ),
+    ],
+  };
+}
+
 /** Graph for the legal pages. */
 export function legalSchema(name: string, path: string, description: string) {
   const url = `${SITE_URL}${path}`;
