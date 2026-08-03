@@ -63,7 +63,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: `${SITE_URL}/`,
-      lastModified: lastCommitDate("src/app/page.tsx", "src/components"),
+      // Excludes src/components/docs: those only render /docs/*, so including
+      // the whole components tree made the homepage claim it changed on every
+      // documentation commit — reintroducing, for "/", exactly the inaccuracy
+      // this function exists to remove.
+      lastModified: lastCommitDate(
+        "src/app/page.tsx",
+        "src/components",
+        ":(exclude)src/components/docs",
+      ),
       changeFrequency: "weekly",
       priority: 1,
     },

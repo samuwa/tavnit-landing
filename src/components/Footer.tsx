@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { GITHUB_URL, LINKEDIN_URL, SUPPORT_EMAIL } from "@/lib/site";
+import { docsForFooterColumn } from "@/components/docs/nav";
 
 /**
  * Site footer.
  *
  * This is the primary internal-linking surface. The previous version had four
  * columns of same-page "#anchor" links plus a GitHub URL — so a crawler landing
- * on the homepage found almost no routes to follow, and the 13 documentation
- * pages were reachable only from inside /docs.
+ * on the homepage found almost no routes to follow, and the documentation pages
+ * were reachable only from inside /docs.
  *
  * Two rules here:
  *  - All links are root-relative ("/#features", not "#features") so they resolve
@@ -29,24 +30,23 @@ const product: FooterLink[] = [
   { label: "Pricing", href: "/pricing" },
 ];
 
-const documentation: FooterLink[] = [
-  { label: "Getting Started", href: "/docs" },
-  { label: "Collections", href: "/docs/collections" },
-  { label: "Cleaners", href: "/docs/cleaners" },
-  { label: "Buckets", href: "/docs/buckets" },
-  { label: "Agents", href: "/docs/agents" },
-  { label: "Human in the Loop", href: "/docs/human-in-the-loop" },
-  { label: "Pipeline Map", href: "/docs/pipeline-map" },
-];
+/**
+ * Derived from DOC_SECTIONS rather than duplicated here.
+ *
+ * These were hardcoded lists, so adding /docs/flows to nav.ts put it in the
+ * sidebar, sitemap and llms.txt but left it unlinked from the homepage — the
+ * largest docs page reachable only from inside /docs. Deriving them means a new
+ * section is linked the moment it exists.
+ */
+const documentation: FooterLink[] = docsForFooterColumn("documentation").map((s) => ({
+  label: s.label,
+  href: s.href,
+}));
 
-const integrations: FooterLink[] = [
-  { label: "MCP Connector", href: "/docs/mcp-connector" },
-  { label: "REST API", href: "/docs/api-integration" },
-  { label: "Email Integration", href: "/docs/email-integration" },
-  { label: "Webhooks", href: "/docs/webhooks" },
-  { label: "Splitters", href: "/docs/splitters" },
-  { label: "User Roles", href: "/docs/user-roles" },
-];
+const integrations: FooterLink[] = docsForFooterColumn("integrations").map((s) => ({
+  label: s.label,
+  href: s.href,
+}));
 
 const company: FooterLink[] = [
   { label: "LinkedIn", href: LINKEDIN_URL, external: true },
