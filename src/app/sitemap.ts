@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { DOC_SECTIONS } from "@/components/docs/nav";
 import { OWNED_INTEGRATIONS } from "@/lib/integrations";
+import { USE_CASES } from "@/lib/use-cases";
 
 /**
  * Only real, indexable URLs belong here.
@@ -82,6 +83,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    {
+      url: `${SITE_URL}/use-cases`,
+      lastModified: lastCommitDate("src/app/use-cases", "src/lib/use-cases.ts"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...USE_CASES.map((uc) => ({
+      url: `${SITE_URL}/use-cases/${uc.slug}`,
+      lastModified: lastCommitDate("src/app/use-cases", "src/lib/use-cases.ts"),
+      changeFrequency: "monthly" as const,
+      // Commercial intent, same tier as the integration pages.
+      priority: 0.9,
+    })),
     {
       url: `${SITE_URL}/integrations`,
       lastModified: lastCommitDate("src/app/integrations", "src/lib/integrations.ts"),

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { GITHUB_URL, LINKEDIN_URL, SUPPORT_EMAIL } from "@/lib/site";
 import { docsForFooterColumn } from "@/components/docs/nav";
+import { USE_CASES } from "@/lib/use-cases";
 
 /**
  * Site footer.
@@ -26,8 +27,13 @@ const product: FooterLink[] = [
   { label: "Features", href: "/#features" },
   { label: "Agents", href: "/#agents" },
   { label: "Human in the Loop", href: "/#human-in-the-loop" },
-  { label: "Use Cases", href: "/#use-cases" },
   { label: "Pricing", href: "/pricing" },
+];
+
+// Derived, so a new entry in src/lib/use-cases.ts is linked immediately.
+const useCases: FooterLink[] = [
+  { label: "All use cases", href: "/use-cases" },
+  ...USE_CASES.map((uc) => ({ label: uc.label, href: `/use-cases/${uc.slug}` })),
 ];
 
 /**
@@ -64,6 +70,7 @@ const company: FooterLink[] = [
 
 const columns: { title: string; links: FooterLink[] }[] = [
   { title: "Product", links: product },
+  { title: "Use Cases", links: useCases },
   { title: "Documentation", links: documentation },
   { title: "Integrations", links: integrations },
   { title: "Company", links: company },
@@ -73,7 +80,7 @@ export default function Footer() {
   return (
     <footer className="py-10 pb-6 md:py-16 md:pb-8 bg-black/40 backdrop-blur-sm border-t border-white/5 text-gray-400">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-10 mb-8 md:mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-8 md:gap-10 mb-8 md:mb-12">
           {/* Brand */}
           <div className="col-span-2">
             <div className="mb-6">

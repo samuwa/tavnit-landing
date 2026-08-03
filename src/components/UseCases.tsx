@@ -2,7 +2,8 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { InvoiceDemo, ContractDemo, ResumeDemo, ExpenseDemo } from "./UseCaseAnimations";
 
 const useCases = [
@@ -212,6 +213,18 @@ export default function UseCases() {
             </div>
           </motion.div>
         </AnimatePresence>
+
+        {/* Routes the section to the real pages. Each document type has its own
+            URL now; without this the homepage tabs were the only way to see them. */}
+        <div className="text-center mt-8">
+          <Link
+            href="/use-cases"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#3b82f6]/50 text-[#3b82f6] font-semibold hover:bg-[#3b82f6] hover:text-white hover:-translate-y-0.5 transition-all text-sm md:text-base"
+          >
+            Explore all use cases
+            <ArrowRight size={16} />
+          </Link>
+        </div>
       </div>
     </section>
   );

@@ -316,6 +316,99 @@ export function integrationPageSchema(opts: {
   };
 }
 
+/**
+ * Graph for the /use-cases hub.
+ *
+ * `build` prefix on both use-case builders is deliberate: eslint's
+ * react-hooks/rules-of-hooks treats any identifier starting with `use` as a
+ * Hook, so `useCasePageSchema()` was reported as a Hook called inside an async
+ * server component. The prefix sidesteps the heuristic.
+ */
+export function buildUseCasesHubSchema(items: { label: string; slug: string }[]) {
+  const url = `${SITE_URL}/use-cases`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: "Tavnit Use Cases",
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": SOFTWARE_ID },
+        description:
+          "How teams use Tavnit by document type — invoices, contracts, resumes, receipts, purchase orders and customs paperwork.",
+        inLanguage: "en-US",
+        dateModified: BUILD_DATE,
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${url}#index`,
+        numberOfItems: items.length,
+        itemListElement: items.map((item, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: item.label,
+          item: `${SITE_URL}/use-cases/${item.slug}`,
+        })),
+      },
+      breadcrumbs(
+        [
+          { name: "Home", url: SITE_URL },
+          { name: "Use Cases", url },
+        ],
+        url,
+      ),
+    ],
+  };
+}
+
+/** Graph for one /use-cases page. */
+export function buildUseCasePageSchema(opts: {
+  label: string;
+  slug: string;
+  headline: string;
+  description: string;
+  faqs: { q: string; a: string }[];
+}) {
+  const url = `${SITE_URL}/use-cases/${opts.slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: opts.label,
+        headline: opts.headline,
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": SOFTWARE_ID },
+        description: opts.description,
+        inLanguage: "en-US",
+        dateModified: BUILD_DATE,
+        publisher: { "@id": ORG_ID },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        mainEntity: opts.faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.q,
+          acceptedAnswer: { "@type": "Answer", text: faq.a },
+        })),
+      },
+      breadcrumbs(
+        [
+          { name: "Home", url: SITE_URL },
+          { name: "Use Cases", url: `${SITE_URL}/use-cases` },
+          { name: opts.label, url },
+        ],
+        url,
+      ),
+    ],
+  };
+}
+
 /** Graph for the legal pages. */
 export function legalSchema(name: string, path: string, description: string) {
   const url = `${SITE_URL}${path}`;
