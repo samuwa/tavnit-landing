@@ -194,7 +194,7 @@ function McpDesktop() {
         </div>
       </div>
       <DesktopFeatureTags tags={["claude.ai (Pro+)", "Cursor", "Any MCP client", "Org-scoped access"]} />
-      <DesktopCardLink href="/docs/mcp-connector" label="Connect Your Assistant" />
+      <DesktopCardLink href="/integrations/mcp" label="Connect Your Assistant" />
     </>
   );
 }
@@ -381,7 +381,7 @@ function McpMobileCard() {
         ))}
       </div>
 
-      <Link href="/docs/mcp-connector" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
+      <Link href="/integrations/mcp" className="inline-flex items-center gap-1.5 font-semibold text-[#3b82f6] text-xs mt-auto">
         Connect Your Assistant <ArrowRight size={12} />
       </Link>
     </div>
@@ -559,6 +559,22 @@ export default function Integrations() {
             </AnimatePresence>
           </div>
         </motion.div>
+
+        {/*
+          Routes the section to the real page. Without this the homepage's
+          integrations block dead-ends into /docs — setup instructions written
+          for existing customers — with no path to the hub for someone still
+          evaluating.
+        */}
+        <div className="text-center mt-8">
+          <Link
+            href="/integrations"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#3b82f6]/50 text-[#3b82f6] font-semibold hover:bg-[#3b82f6] hover:text-white hover:-translate-y-0.5 transition-all text-sm md:text-base"
+          >
+            See all integrations
+            <ArrowRight size={16} />
+          </Link>
+        </div>
       </div>
     </section>
   );

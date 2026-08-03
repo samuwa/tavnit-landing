@@ -74,6 +74,21 @@ html {
  */
 html:has(#hero) {
   scroll-snap-type: y mandatory;
+  /*
+   * `scroll-behavior: smooth` must not apply to the snap container.
+   *
+   * Chrome cancels a smooth programmatic scroll when the scroller also has
+   * mandatory snapping — the snap re-targets mid-animation and the scroll is
+   * reverted. The effect was that every in-page anchor on the homepage did
+   * nothing: clicking "Features" or "Use Cases" in the header updated the URL
+   * and left the page at the top. Even window.scrollTo() returned to 0.
+   *
+   * Verified in-browser: proximity + smooth is still broken; mandatory + auto
+   * lands exactly on target. So the fix is dropping smooth here, not relaxing
+   * the snap. Wheel scrolling still animates — that is the snap, not this.
+   * Every other route keeps smooth, since none of them snap.
+   */
+  scroll-behavior: auto;
 }
 
 body {
