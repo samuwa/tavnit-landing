@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -122,15 +123,15 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f0">
                 Open <strong>Collections</strong> and create a new one. Name it after where the
                 documents come from — <em>Acme supplier portal</em>, not <em>Collection 2</em>.
-              </>,
+              </Fragment>,
               "Add every flow that should be a possible destination.",
-              <>
+              <Fragment key="f1">
                 Set a <strong>Fallback Flow</strong> for documents that do not match anything
                 clearly. Leave it empty and unroutable documents are cancelled instead.
-              </>,
+              </Fragment>,
               "Send documents in by email, manual upload, or API.",
               "Open the Collection's runs and read the routing reasons, then sharpen any description that produced a wrong decision.",
             ]}
@@ -147,22 +148,22 @@ export default function Page() {
             head={["Instead of", "Write"]}
             rows={[
               [
-                <><em>Invoices</em></>,
-                <><em>
+                <Fragment key="f2"><em>Invoices</em></Fragment>,
+                <Fragment key="f3"><em>
                   Acme Corp supplier invoices — blue letterhead, &ldquo;TAX INVOICE&rdquo; in the
                   header, line items with part numbers
-                </em></>,
+                </em></Fragment>,
               ],
               [
-                <><em>Shipping</em></>,
-                <><em>
+                <Fragment key="f4"><em>Shipping</em></Fragment>,
+                <Fragment key="f5"><em>
                   Bill of lading from ocean carriers — container numbers, port of loading and
                   discharge
-                </em></>,
+                </em></Fragment>,
               ],
               [
-                <><em>Other docs</em></>,
-                <><em>Delivery notes — no prices, signature block at the bottom</em></>,
+                <Fragment key="f6"><em>Other docs</em></Fragment>,
+                <Fragment key="f7"><em>Delivery notes — no prices, signature block at the bottom</em></Fragment>,
               ],
             ]}
           />
@@ -272,9 +273,9 @@ export default function Page() {
           <NumberedList
             items={[
               "Open the Collection's settings.",
-              <>
+              <Fragment key="f8">
                 Enable the <strong>Email Trigger</strong> and copy the Collection&apos;s address.
-              </>,
+              </Fragment>,
               "Forward documents to it, or point a mailbox rule at it.",
             ]}
           />

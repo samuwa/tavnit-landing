@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -134,15 +135,15 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f0">
                 Open the flow and find the <strong>Human in the Loop</strong> panel in its settings.
-              </>,
-              <>Toggle review on.</>,
-              <>Select one or more reviewers from your org members.</>,
-              <>
+              </Fragment>,
+              <Fragment key="f1">Toggle review on.</Fragment>,
+              <Fragment key="f2">Select one or more reviewers from your org members.</Fragment>,
+              <Fragment key="f3">
                 Process one document and confirm it lands in the reviewers&apos;{" "}
                 <strong>Human in the Loop</strong> queue.
-              </>,
+              </Fragment>,
             ]}
           />
           <WarningBox>
@@ -224,10 +225,10 @@ export default function Page() {
               [
                 "Approve",
                 "Your edited table replaces the extracted output and the run resumes to completion.",
-                <>
+                <Fragment key="f4">
                   Everything the flow is configured to do, in order: email output, webhook,{" "}
                   <DocLink href="/docs/buckets">Bucket</DocLink> export, form filling.
-                </>,
+                </Fragment>,
               ],
               [
                 "Reject",

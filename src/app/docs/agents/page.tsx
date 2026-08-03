@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -65,25 +66,25 @@ export default function Page() {
               [
                 "Mission",
                 "A plain-language instruction. Write it as you would brief a colleague, including how to handle the awkward cases.",
-                <><em>
+                <Fragment key="f0"><em>
                   &ldquo;Log in with the provided credentials, open Orders, and record the current
                   unit price for each part number.&rdquo;
-                </em></>,
+                </em></Fragment>,
               ],
               [
                 "Start point",
                 "The URL the agent opens first.",
-                <><InlineCode>https://portal.acme-supply.com/login</InlineCode></>,
+                <Fragment key="f1"><InlineCode>https://portal.acme-supply.com/login</InlineCode></Fragment>,
               ],
               [
                 "Variables",
                 "Values the mission can refer to. Either fixed literals or pulled from a flow run's extracted fields.",
-                <><InlineCode>part_number</InlineCode></>,
+                <Fragment key="f2"><InlineCode>part_number</InlineCode></Fragment>,
               ],
               [
                 "Captures",
                 "The typed schema of what you want back. The agent's answer is validated against it, so the output is always structured.",
-                <><InlineCode>unit_price</InlineCode></>,
+                <Fragment key="f3"><InlineCode>unit_price</InlineCode></Fragment>,
               ],
               [
                 "Delivery",
@@ -155,11 +156,11 @@ export default function Page() {
               ],
               [
                 "From a flow run",
-                <>
+                <Fragment key="f4">
                   A field from the triggering run&apos;s output. If the flow has a{" "}
                   <DocLink href="/docs/cleaners">Cleaner</DocLink>, the value is taken from the{" "}
                   <em>cleaned</em> output — so conversions and computed columns are already applied.
-                </>,
+                </Fragment>,
               ],
             ]}
           />
@@ -262,17 +263,17 @@ export default function Page() {
               ["Email", "The captured output as formatted JSON, to the addresses you configure."],
               [
                 "Webhook",
-                <>
+                <Fragment key="f5">
                   A POST to your endpoint with the agent, the run, its status and the captured
                   output — see <DocLink href="/docs/webhooks">webhooks</DocLink>.
-                </>,
+                </Fragment>,
               ],
               [
                 "Bucket",
-                <>
+                <Fragment key="f6">
                   One row per run in a <DocLink href="/docs/buckets">Bucket</DocLink>, with captures
                   mapped onto columns.
-                </>,
+                </Fragment>,
               ],
               ["None", "The result stays on the run's page in the app."],
             ]}
@@ -294,10 +295,10 @@ export default function Page() {
               "Only Owners and Admins can create, edit or delete an agent",
               "An inactive agent cannot be run",
               "An agent linked to an active flow must be unlinked before it can be deleted",
-              <>
+              <Fragment key="f7">
                 Runs can also be started from an AI assistant via the{" "}
                 <DocLink href="/docs/mcp-connector">MCP connector</DocLink>, or from a linked flow
-              </>,
+              </Fragment>,
             ]}
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="Triggering from your own code">

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -97,9 +98,9 @@ export default function Page() {
               [
                 "Flow",
                 "The schema for one document type: the fields you want extracted, plus the rules and outputs attached to it. Everything starts here.",
-                <>
+                <Fragment key="f0">
                   <DocLink href="/docs/flows">Flows</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Run",
@@ -109,30 +110,30 @@ export default function Page() {
               [
                 "Collection",
                 "Groups several flows so incoming documents of unknown type are classified and routed to the right one.",
-                <>
+                <Fragment key="f1">
                   <DocLink href="/docs/collections">Collections</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Splitter",
                 "Breaks one file that holds several documents into separate parts, then sends each part onward.",
-                <>
+                <Fragment key="f2">
                   <DocLink href="/docs/splitters">Splitters</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Cleaner",
                 "Rules applied to extracted rows: reformat, convert, compute, look up, and trigger actions when something looks wrong.",
-                <>
+                <Fragment key="f3">
                   <DocLink href="/docs/cleaners">Cleaners</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Bucket",
                 "A structured table where results accumulate across runs, queryable and chartable inside Tavnit.",
-                <>
+                <Fragment key="f4">
                   <DocLink href="/docs/buckets">Buckets</DocLink>
-                </>,
+                </Fragment>,
               ],
             ]}
           />
@@ -152,18 +153,18 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f5">
                 On the <strong>Flows</strong> page, create a new flow and name it.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f6">
                 Upload a sample document. Tavnit suggests the fields it can see, which is faster than
                 typing them from scratch.
-              </>,
-              <>Add, rename or delete fields until the schema is exactly what you need.</>,
-              <>
+              </Fragment>,
+              <Fragment key="f7">Add, rename or delete fields until the schema is exactly what you need.</Fragment>,
+              <Fragment key="f8">
                 Switch the flow to <strong>Active</strong>.
-              </>,
-              <>Send one document through and check the result.</>,
+              </Fragment>,
+              <Fragment key="f9">Send one document through and check the result.</Fragment>,
             ]}
           />
           <p>
@@ -217,23 +218,23 @@ export default function Page() {
             rows={[
               ["Upload in the app", "Testing, and one-off documents", "Nothing"],
               [
-                <>
+                <Fragment key="f10">
                   <DocLink href="/docs/email-integration">Email</DocLink>
-                </>,
+                </Fragment>,
                 "Documents that already arrive in an inbox",
                 "Enable the trigger, forward mail to the address",
               ],
               [
-                <>
+                <Fragment key="f11">
                   <DocLink href="/docs/api-integration">REST API</DocLink>
-                </>,
+                </Fragment>,
                 "Your own systems, and high volume",
                 "An API key and a POST",
               ],
               [
-                <>
+                <Fragment key="f12">
                   <DocLink href="/docs/mcp-connector">MCP connector</DocLink>
-                </>,
+                </Fragment>,
                 "Ad-hoc work from an AI assistant",
                 "Generate a connector URL",
               ],
@@ -262,27 +263,27 @@ export default function Page() {
             rows={[
               ["Extracting a document", "1 credit per page"],
               [
-                <>
+                <Fragment key="f13">
                   <DocLink href="/docs/collections">Collection</DocLink> routing
-                </>,
+                </Fragment>,
                 "1 credit per document, charged whether or not a match is found",
               ],
               [
-                <>
+                <Fragment key="f14">
                   <DocLink href="/docs/splitters">Splitting</DocLink> a bundle
-                </>,
+                </Fragment>,
                 "1 credit per page of the source file",
               ],
               [
-                <>
+                <Fragment key="f15">
                   <DocLink href="/docs/cleaners">Cleaning</DocLink> a sweep
-                </>,
+                </Fragment>,
                 "1 credit per 500 non-empty cells, rounded up",
               ],
               [
-                <>
+                <Fragment key="f16">
                   <DocLink href="/docs/agents">Agent</DocLink> runtime
-                </>,
+                </Fragment>,
                 "3 credits per minute of browser time, rounded up, charged even if the run fails",
               ],
             ]}
@@ -304,46 +305,46 @@ export default function Page() {
             rows={[
               [
                 "Extract more fields, or fix one that comes back wrong",
-                <>
+                <Fragment key="f17">
                   <DocLink href="/docs/flows">Flows</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Fix formats, convert currencies, compute totals, or flag bad rows",
-                <>
+                <Fragment key="f18">
                   <DocLink href="/docs/cleaners">Cleaners</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Have a person check results before they go anywhere",
-                <>
+                <Fragment key="f19">
                   <DocLink href="/docs/human-in-the-loop">Human in the Loop</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Get the data into your own systems",
-                <>
+                <Fragment key="f20">
                   <DocLink href="/docs/webhooks">Webhooks</DocLink> or the{" "}
                   <DocLink href="/docs/api-integration">REST API</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Keep results together and query them",
-                <>
+                <Fragment key="f21">
                   <DocLink href="/docs/buckets">Buckets</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Act on the data somewhere else on the web",
-                <>
+                <Fragment key="f22">
                   <DocLink href="/docs/agents">Agents</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Control who can see and change what",
-                <>
+                <Fragment key="f23">
                   <DocLink href="/docs/user-roles">User roles</DocLink>
-                </>,
+                </Fragment>,
               ],
             ]}
           />

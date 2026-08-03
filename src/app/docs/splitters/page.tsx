@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -142,20 +143,20 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f0">
                 Open <strong>Splitters</strong> and create a new one, named after the bundle it
                 receives — <em>Supplier delivery packets</em> rather than <em>Splitter 2</em>.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f1">
                 Add a <strong>document type</strong> for each kind of document in the bundle, with a
                 title and a description of what appears on the page.
-              </>,
-              <>Give each type a destination (see the table below).</>,
-              <>Upload a bundled PDF, or send one to the Splitter&apos;s email address.</>,
-              <>
+              </Fragment>,
+              <Fragment key="f2">Give each type a destination (see the table below).</Fragment>,
+              <Fragment key="f3">Upload a bundled PDF, or send one to the Splitter&apos;s email address.</Fragment>,
+              <Fragment key="f4">
                 Open the completed split in <strong>Split History</strong> and check each
                 segment&apos;s page range and match.
-              </>,
+              </Fragment>,
             ]}
           />
           <Screenshot
@@ -181,18 +182,18 @@ export default function Page() {
             rows={[
               [
                 "Send to a flow",
-                <>
+                <Fragment key="f5">
                   A normal extraction run is created for that segment, tagged with the Splitter it
                   came from.
-                </>,
+                </Fragment>,
               ],
               [
                 "Send to a Collection",
-                <>
+                <Fragment key="f6">
                   The segment is classified again by the{" "}
                   <DocLink href="/docs/collections">Collection</DocLink> and routed to whichever flow
                   matches.
-                </>,
+                </Fragment>,
               ],
               ["Email it", "The segment is emailed as a PDF to an address you specify."],
               ["Nothing", "The segment is kept in the split result but not dispatched anywhere."],
@@ -249,11 +250,11 @@ export default function Page() {
               ],
               [
                 "1 routing credit per segment",
-                <>
+                <Fragment key="f7">
                   Only when the segment is sent to a{" "}
                   <DocLink href="/docs/collections">Collection</DocLink> rather than straight to a
                   flow.
-                </>,
+                </Fragment>,
               ],
             ]}
           />

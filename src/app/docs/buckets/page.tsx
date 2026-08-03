@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import { AlertTriangle, ArrowLeftRight, BarChart3, Database, FileDown, FilePlus, FileUp, Fingerprint, Info, Lock, Shield, Table2, Users, Workflow } from "lucide-react";
@@ -122,23 +123,23 @@ export default function Page() {
                 "Accumulating every invoice you process into one table.",
               ],
               [
-                <>
+                <Fragment key="f0">
                   A <DocLink href="/docs/cleaners">Cleaner</DocLink> action
-                </>,
+                </Fragment>,
                 "A conditional action writes a value back into an existing Bucket row that a Lookup matched.",
                 "Marking an order received, or decrementing a stock count.",
               ],
               [
-                <>
+                <Fragment key="f1">
                   An <DocLink href="/docs/agents">agent</DocLink>
-                </>,
+                </Fragment>,
                 "One row per agent run, with captures mapped onto columns.",
                 "Recording live supplier prices fetched from a portal.",
               ],
               [
-                <>
+                <Fragment key="f2">
                   The <DocLink href="/docs/api-integration">REST API</DocLink> or a CSV import
-                </>,
+                </Fragment>,
                 "Append rows directly, by request or by upload.",
                 "Loading a price list or customer catalogue to look values up against.",
               ],
@@ -170,9 +171,9 @@ export default function Page() {
               ["Filter", "Narrow the view to rows matching conditions you set."],
               ["Sort", "Order by one or more columns."],
               [
-                <>
+                <Fragment key="f3">
                   <InlineCode>f(x)</InlineCode>
-                </>,
+                </Fragment>,
                 "Add a computed column derived from the others.",
               ],
               ["Graph", "Chart the data in place — see below."],

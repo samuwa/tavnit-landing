@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import { ClipboardCheck, Eye, Info, Lock, Shield, Star, Table2, UserCog, Users } from "lucide-react";
@@ -147,10 +148,10 @@ export default function Page() {
           <p>Someone with this role can:</p>
           <BulletList
             items={[
-              <>
+              <Fragment key="f0">
                 Open the <DocLink href="/docs/human-in-the-loop">Human in the Loop</DocLink> queue
                 and see runs where they are a named reviewer
-              </>,
+              </Fragment>,
               "Read the extracted data next to the source document",
               "Edit values, add or drop rows and columns during review",
               "Approve a run, or reject it with a reason",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { ArrowLeftRight, ArrowRight, CircleDot, Code2, Database, Download, ExternalLink, FolderInput, Info, Layers, Lock, Paperclip, Settings2, Split, Star, Wand2, Zap } from "lucide-react";
 import { BulletList, CodeBlock, DocCard, InfoBox, InlineCode, NumberedList, WarningBox } from "@/components/docs/ui";
 import {
@@ -141,8 +141,8 @@ export default function ApiIntegrationContent() {
           <p>Both methods use the same endpoint and header:</p>
           <BulletList
             items={[
-              <>URL: <InlineCode>https://run.tavnit.io/api/runs/process</InlineCode></>,
-              <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
+              <Fragment key="f0">URL: <InlineCode>https://run.tavnit.io/api/runs/process</InlineCode></Fragment>,
+              <Fragment key="f1">Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></Fragment>,
             ]}
           />
         </DocCard>
@@ -190,9 +190,9 @@ export default function ApiIntegrationContent() {
           <p>The Collections API works the same as the Flows API, but uses a collection_id instead of flow_id:</p>
           <BulletList
             items={[
-              <>URL: <InlineCode>https://run.tavnit.io/api/collections/process</InlineCode></>,
-              <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
-              <>Body: <InlineCode>collection_id</InlineCode> instead of <InlineCode>flow_id</InlineCode></>,
+              <Fragment key="f2">URL: <InlineCode>https://run.tavnit.io/api/collections/process</InlineCode></Fragment>,
+              <Fragment key="f3">Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></Fragment>,
+              <Fragment key="f4">Body: <InlineCode>collection_id</InlineCode> instead of <InlineCode>flow_id</InlineCode></Fragment>,
             ]}
           />
           {lang === "python" ? (
@@ -217,9 +217,9 @@ export default function ApiIntegrationContent() {
           <p>The Cleaners API uses a cleaner_id and accepts a file to sweep:</p>
           <BulletList
             items={[
-              <>URL: <InlineCode>https://run.tavnit.io/api/sweeps/run</InlineCode></>,
-              <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
-              <>Body: <InlineCode>cleaner_id</InlineCode> + file (multipart or base64)</>,
+              <Fragment key="f5">URL: <InlineCode>https://run.tavnit.io/api/sweeps/run</InlineCode></Fragment>,
+              <Fragment key="f6">Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></Fragment>,
+              <Fragment key="f7">Body: <InlineCode>cleaner_id</InlineCode> + file (multipart or base64)</Fragment>,
             ]}
           />
           {lang === "python" ? (
@@ -244,9 +244,9 @@ export default function ApiIntegrationContent() {
           <p>The Splitters API uses a splitter_id to identify which splitter to run:</p>
           <BulletList
             items={[
-              <>URL: <InlineCode>https://run.tavnit.io/api/splits/run</InlineCode></>,
-              <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
-              <>Body: <InlineCode>splitter_id</InlineCode> + file (multipart or base64)</>,
+              <Fragment key="f8">URL: <InlineCode>https://run.tavnit.io/api/splits/run</InlineCode></Fragment>,
+              <Fragment key="f9">Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></Fragment>,
+              <Fragment key="f10">Body: <InlineCode>splitter_id</InlineCode> + file (multipart or base64)</Fragment>,
             ]}
           />
           {lang === "python" ? (
@@ -270,9 +270,9 @@ export default function ApiIntegrationContent() {
           </InfoBox>
           <BulletList
             items={[
-              <>URL: <InlineCode>https://run.tavnit.io/api/buckets/write</InlineCode></>,
-              <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
-              <>Body: <InlineCode>bucket_id</InlineCode>, <InlineCode>bucket_name</InlineCode>, <InlineCode>overwrite</InlineCode> (bool), <InlineCode>rows</InlineCode> (array)</>,
+              <Fragment key="f11">URL: <InlineCode>https://run.tavnit.io/api/buckets/write</InlineCode></Fragment>,
+              <Fragment key="f12">Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></Fragment>,
+              <Fragment key="f13">Body: <InlineCode>bucket_id</InlineCode>, <InlineCode>bucket_name</InlineCode>, <InlineCode>overwrite</InlineCode> (bool), <InlineCode>rows</InlineCode> (array)</Fragment>,
             ]}
           />
           {lang === "python" ? (
@@ -352,7 +352,7 @@ export default function ApiIntegrationContent() {
           <NumberedList
             items={[
               'Add an HTTP "Make a request" module to your scenario',
-              <>
+              <Fragment key="f14">
                 Configure the request:
                 <BulletList
                   items={[
@@ -360,8 +360,8 @@ export default function ApiIntegrationContent() {
                     "Method: POST",
                   ]}
                 />
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f15">
                 In the Headers tab, add:
                 <BulletList
                   items={[
@@ -369,9 +369,9 @@ export default function ApiIntegrationContent() {
                     "Header value: YOUR_API_KEY",
                   ]}
                 />
-              </>,
+              </Fragment>,
               'Set Body type to "multipart/form-data"',
-              <>
+              <Fragment key="f16">
                 Add form fields:
                 <BulletList
                   items={[
@@ -380,7 +380,7 @@ export default function ApiIntegrationContent() {
                     "file: (map from previous module)",
                   ]}
                 />
-              </>,
+              </Fragment>,
               "Run your scenario to test",
             ]}
           />
@@ -392,7 +392,7 @@ export default function ApiIntegrationContent() {
           <NumberedList
             items={[
               'Set Body type to "Raw" and select "JSON (application/json)"',
-              <>
+              <Fragment key="f17">
                 In the Headers tab, also add:
                 <BulletList
                   items={[
@@ -400,7 +400,7 @@ export default function ApiIntegrationContent() {
                     "Header value: application/json",
                   ]}
                 />
-              </>,
+              </Fragment>,
               "Set the JSON body to:",
             ]}
           />
@@ -435,8 +435,8 @@ export default function ApiIntegrationContent() {
           <p>The setup is identical to the Flows API above, with two small changes:</p>
           <BulletList
             items={[
-              <>URL: <InlineCode>https://run.tavnit.io/api/collections/process</InlineCode></>,
-              <>Use <InlineCode>collection_id</InlineCode> instead of <InlineCode>flow_id</InlineCode> in your request body</>,
+              <Fragment key="f18">URL: <InlineCode>https://run.tavnit.io/api/collections/process</InlineCode></Fragment>,
+              <Fragment key="f19">Use <InlineCode>collection_id</InlineCode> instead of <InlineCode>flow_id</InlineCode> in your request body</Fragment>,
             ]}
           />
           <p>Example JSON body for Collections:</p>
@@ -454,8 +454,8 @@ export default function ApiIntegrationContent() {
           <p>Configuration in your HTTP module:</p>
           <BulletList
             items={[
-              <>URL: <InlineCode>https://run.tavnit.io/api/sweeps/run</InlineCode></>,
-              <>Use <InlineCode>cleaner_id</InlineCode> instead of <InlineCode>flow_id</InlineCode> in your request body</>,
+              <Fragment key="f20">URL: <InlineCode>https://run.tavnit.io/api/sweeps/run</InlineCode></Fragment>,
+              <Fragment key="f21">Use <InlineCode>cleaner_id</InlineCode> instead of <InlineCode>flow_id</InlineCode> in your request body</Fragment>,
             ]}
           />
           <p>Example JSON body for Cleaners:</p>
@@ -472,8 +472,8 @@ export default function ApiIntegrationContent() {
           <p>The setup is similar to the Flows API, with these changes:</p>
           <BulletList
             items={[
-              <>URL: <InlineCode>https://run.tavnit.io/api/splits/run</InlineCode></>,
-              <>Use <InlineCode>splitter_id</InlineCode> instead of <InlineCode>flow_id</InlineCode> in your request body</>,
+              <Fragment key="f22">URL: <InlineCode>https://run.tavnit.io/api/splits/run</InlineCode></Fragment>,
+              <Fragment key="f23">Use <InlineCode>splitter_id</InlineCode> instead of <InlineCode>flow_id</InlineCode> in your request body</Fragment>,
             ]}
           />
           <p>Example JSON body for Splitters:</p>
@@ -490,9 +490,9 @@ export default function ApiIntegrationContent() {
           <p>Configuration in your HTTP module:</p>
           <BulletList
             items={[
-              <>URL: <InlineCode>https://run.tavnit.io/api/buckets/write</InlineCode></>,
+              <Fragment key="f24">URL: <InlineCode>https://run.tavnit.io/api/buckets/write</InlineCode></Fragment>,
               "Method: POST, Content-Type: application/json",
-              <>Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></>,
+              <Fragment key="f25">Header: <InlineCode>X-API-Key: YOUR_API_KEY</InlineCode></Fragment>,
             ]}
           />
           <p>Example JSON body:</p>

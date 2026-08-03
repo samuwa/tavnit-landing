@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -121,12 +122,12 @@ export default function Page() {
               ],
               [
                 "In the output",
-                <>
+                <Fragment key="f0">
                   The <InlineCode>metadata</InlineCode> object
-                </>,
-                <>
+                </Fragment>,
+                <Fragment key="f1">
                   One entry per row in <InlineCode>rows</InlineCode>
-                </>,
+                </Fragment>,
               ],
               [
                 "In a Bucket",
@@ -167,10 +168,10 @@ export default function Page() {
               [
                 "Date",
                 "Issue dates, due dates, delivery dates",
-                <>
+                <Fragment key="f2">
                   Reformatting to a consistent output format is a{" "}
                   <DocLink href="/docs/cleaners">Cleaner</DocLink> job, not an extraction one.
-                </>,
+                </Fragment>,
               ],
               [
                 "Mixed / alphanumeric",
@@ -210,10 +211,10 @@ export default function Page() {
               ],
               [
                 "Next to a label",
-                <>
+                <Fragment key="f3">
                   The printed label the value sits beside. List the variants:{" "}
                   <em>Invoice Number, Invoice #, Inv No</em>.
-                </>,
+                </Fragment>,
                 "Header fields that different vendors label differently.",
               ],
               [
@@ -278,11 +279,11 @@ export default function Page() {
           <NumberedList
             items={[
               "Add a table field and switch Composite Field on.",
-              <>
+              <Fragment key="f4">
                 Define the sub-fields that make up the cell — for example{" "}
                 <InlineCode>size</InlineCode> as text and <InlineCode>quantity</InlineCode> as a
                 number.
-              </>,
+              </Fragment>,
               "Add example values showing how the grouping appears in your documents.",
             ]}
           />
@@ -323,26 +324,26 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f5">
                 Create the flow. Give it a name that describes the document (
                 <em>Supplier invoices</em>) and a real description — it improves extraction accuracy
                 and is what a <DocLink href="/docs/collections">Collection</DocLink> matches on
                 later.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f6">
                 Add a <strong>metadata field</strong> for each value that appears once per document,
                 setting the data type as you go.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f7">
                 Add a <strong>table field</strong> for each column of the repeating line-item table.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f8">
                 Add <strong>extraction hints</strong> only to the fields that need them.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f9">
                 Switch the flow to <strong>Active</strong>, process one real document, and compare
                 the result against the source.
-              </>,
+              </Fragment>,
             ]}
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="Let field discovery do the first draft">
@@ -369,30 +370,30 @@ export default function Page() {
             rows={[
               [
                 "Inputs",
-                <>
+                <Fragment key="f10">
                   <DocLink href="/docs/email-integration">Email Trigger</DocLink>
-                </>,
+                </Fragment>,
                 "Gives the flow its own inbox address so forwarded attachments are processed automatically.",
               ],
               [
                 "Inputs",
-                <>
+                <Fragment key="f11">
                   <DocLink href="/docs/collections">Collections</DocLink>
-                </>,
+                </Fragment>,
                 "Lists the Collections that can route documents to this flow.",
               ],
               [
                 "Processing",
-                <>
+                <Fragment key="f12">
                   <DocLink href="/docs/cleaners">Cleaner</DocLink>
-                </>,
+                </Fragment>,
                 "Sweeps every run's rows: reformat, convert, compute, look up, and fire rules.",
               ],
               [
                 "Processing",
-                <>
+                <Fragment key="f13">
                   <DocLink href="/docs/agents">Agent</DocLink>
-                </>,
+                </Fragment>,
                 "Runs after extraction, using extracted fields as its inputs.",
               ],
               [
@@ -402,39 +403,39 @@ export default function Page() {
               ],
               [
                 "Outputs",
-                <>
+                <Fragment key="f14">
                   <DocLink href="/docs/email-integration">Email Output</DocLink>
-                </>,
+                </Fragment>,
                 "Emails results to one or more addresses when a run completes.",
               ],
               [
                 "Outputs",
-                <>
+                <Fragment key="f15">
                   <DocLink href="/docs/webhooks">Webhook</DocLink>
-                </>,
+                </Fragment>,
                 "POSTs results to your endpoint. HTTPS only.",
               ],
               [
                 "Outputs",
-                <>
+                <Fragment key="f16">
                   <DocLink href="/docs/buckets">Bucket Export</DocLink>
-                </>,
+                </Fragment>,
                 "Appends each run's rows to a structured table, with fields mapped onto columns.",
               ],
               [
                 "Settings",
-                <>
+                <Fragment key="f17">
                   <DocLink href="/docs/human-in-the-loop">Human in the Loop</DocLink>
-                </>,
+                </Fragment>,
                 "Pauses runs for a named reviewer before anything is delivered.",
               ],
               [
                 "Settings",
                 "Flow ID",
-                <>
+                <Fragment key="f18">
                   The identifier you pass when calling the{" "}
                   <DocLink href="/docs/api-integration">API</DocLink>.
-                </>,
+                </Fragment>,
               ],
             ]}
           />
@@ -463,10 +464,10 @@ export default function Page() {
               ["Processing / running", "Being extracted, or resuming after an approval."],
               [
                 "Awaiting review",
-                <>
+                <Fragment key="f19">
                   Paused for <DocLink href="/docs/human-in-the-loop">human review</DocLink>. Nothing
                   has been delivered yet.
-                </>,
+                </Fragment>,
               ],
               ["Completed", "Extraction finished and every configured output has run."],
               ["Cancelled", "A reviewer rejected the run, so nothing was delivered."],

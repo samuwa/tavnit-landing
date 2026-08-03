@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -95,17 +96,17 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f0">
                 Go to <strong>Flows</strong> and open the flow you want to receive documents.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f1">
                 Find the <strong>Email Trigger</strong> section and switch it on.
-              </>,
+              </Fragment>,
               "Copy the flow's email address.",
-              <>
+              <Fragment key="f2">
                 Send one PDF to it and check the <strong>Runs</strong> page — a new run appears with
                 the source <strong>Email</strong>.
-              </>,
+              </Fragment>,
               "Once that works, add the forwarding rule in your mail client or shared inbox.",
             ]}
           />
@@ -131,24 +132,24 @@ export default function Page() {
             rows={[
               [
                 "A flow",
-                <><InlineCode>flow-name-&lt;id&gt;@mg.tavnit.io</InlineCode></>,
+                <Fragment key="f3"><InlineCode>flow-name-&lt;id&gt;@mg.tavnit.io</InlineCode></Fragment>,
                 "Each attachment is extracted by that flow.",
               ],
               [
                 "A Collection",
-                <><InlineCode>name-&lt;id&gt;-collection@mg.tavnit.io</InlineCode></>,
-                <>
+                <Fragment key="f4"><InlineCode>name-&lt;id&gt;-collection@mg.tavnit.io</InlineCode></Fragment>,
+                <Fragment key="f5">
                   Each attachment is classified and routed to the right flow — see{" "}
                   <DocLink href="/docs/collections">how Collections route documents</DocLink>.
-                </>,
+                </Fragment>,
               ],
               [
                 "A Splitter",
-                <><InlineCode>name-&lt;id&gt;-splitter@mg.tavnit.io</InlineCode></>,
-                <>
+                <Fragment key="f6"><InlineCode>name-&lt;id&gt;-splitter@mg.tavnit.io</InlineCode></Fragment>,
+                <Fragment key="f7">
                   Each attachment is broken into its separate documents first — see{" "}
                   <DocLink href="/docs/splitters">splitting multi-document PDFs</DocLink>.
-                </>,
+                </Fragment>,
               ],
             ]}
             caption="Copy the exact address from the object's detail page; the shapes above are only there to help you tell them apart."
@@ -170,10 +171,10 @@ export default function Page() {
           <DataTable
             head={["Accepted", "Extensions"]}
             rows={[
-              ["PDF documents", <><InlineCode>.pdf</InlineCode></>],
+              ["PDF documents", <Fragment key="f8"><InlineCode>.pdf</InlineCode></Fragment>],
               [
                 "Images",
-                <><InlineCode>.png .jpg .jpeg .tif .tiff .webp .bmp .gif</InlineCode></>,
+                <Fragment key="f9"><InlineCode>.png .jpg .jpeg .tif .tiff .webp .bmp .gif</InlineCode></Fragment>,
               ],
             ]}
           />
@@ -215,13 +216,13 @@ export default function Page() {
           <NumberedList
             items={[
               "Open the flow's detail page.",
-              <>
+              <Fragment key="f10">
                 Find the <strong>Email Output</strong> section.
-              </>,
+              </Fragment>,
               "Add one or more recipient addresses.",
-              <>
+              <Fragment key="f11">
                 Choose what each message carries under <strong>Attachments</strong>, then save.
-              </>,
+              </Fragment>,
             ]}
           />
           <DataTable
@@ -233,10 +234,10 @@ export default function Page() {
               ],
               [
                 "CSV extraction",
-                <>
+                <Fragment key="f12">
                   The rows as a <InlineCode>rows.csv</InlineCode> attachment — the fastest way to get
                   results into a spreadsheet.
-                </>,
+                </Fragment>,
               ],
               [
                 "Original document",
@@ -257,14 +258,14 @@ export default function Page() {
             items={[
               "Output email only fires on runs that complete successfully. A failed run sends nothing.",
               "The subject line carries the flow name plus a per-run detail, so mail clients do not collapse every run of a flow into one thread.",
-              <>
+              <Fragment key="f13">
                 If the flow has <DocLink href="/docs/human-in-the-loop">human review</DocLink>{" "}
                 enabled, the email waits until a reviewer approves the run.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f14">
                 For machine-to-machine delivery, a{" "}
                 <DocLink href="/docs/webhooks">webhook</DocLink> is a better fit than email.
-              </>,
+              </Fragment>,
             ]}
           />
         </DocCard>
@@ -277,31 +278,31 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f15">
                 Build one flow per document type you receive — for example{" "}
                 <em>Supplier Invoices</em> and <em>Delivery Notes</em> — and give each a clear
                 description.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f16">
                 Put both flows in a <DocLink href="/docs/collections">Collection</DocLink> and enable
                 the Collection&apos;s email trigger.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f17">
                 In the shared mailbox, forward any message with an attachment from your supplier
                 domains to the Collection address.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f18">
                 On each flow, turn on <strong>Email Output</strong> with the CSV attachment for the
                 finance team, and add a{" "}
                 <DocLink href="/docs/buckets">Bucket export</DocLink> so the data accumulates in one
                 table.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f19">
                 Add a <DocLink href="/docs/cleaners">Cleaner</DocLink> with a conditional action that
                 sends anything over your approval threshold to{" "}
                 <DocLink href="/docs/human-in-the-loop">human review</DocLink> before it is
                 delivered.
-              </>,
+              </Fragment>,
             ]}
           />
           <p>

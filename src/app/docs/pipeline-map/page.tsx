@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -70,24 +71,24 @@ export default function Page() {
             rows={[
               [
                 "Input",
-                <>
+                <Fragment key="f0">
                   <DocLink href="/docs/splitters">Splitters</DocLink> and{" "}
                   <DocLink href="/docs/collections">Collections</DocLink>
-                </>,
+                </Fragment>,
                 "Documents arrive here first, to be split apart or classified.",
               ],
               [
                 "Processing",
-                <>
+                <Fragment key="f1">
                   Flows and <DocLink href="/docs/cleaners">Cleaners</DocLink>
-                </>,
+                </Fragment>,
                 "This flow receives documents from that Collection or Splitter; this Cleaner sweeps that flow's output.",
               ],
               [
                 "Data & activity",
-                <>
+                <Fragment key="f2">
                   <DocLink href="/docs/buckets">Buckets</DocLink>
-                </>,
+                </Fragment>,
                 "This flow or Cleaner writes its results into that Bucket.",
               ],
             ]}

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -84,27 +85,27 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f0">
                 Go to <strong>Cleaners</strong> and create a new one. Name it after the data, not the
                 document — <em>Invoice line items</em> rather than <em>Cleaner 3</em>.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f1">
                 Choose a data source for the base fields: <strong>Manual</strong> to define them from
                 scratch, <strong>From Flow</strong> to import an existing flow&apos;s output fields,
                 or <strong>From File</strong> to read them from a CSV or Excel header row.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f2">
                 Add computed fields — the enrichment types in the table below. This step is optional;
                 a Cleaner with only base fields is a valid pass-through.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f3">
                 Configure the sweep output: an email address, a webhook URL, or neither. Also
                 optional.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f4">
                 Link the Cleaner to a flow so every new run is swept automatically, or leave it
                 standalone and run it against uploaded datasets.
-              </>,
+              </Fragment>,
             ]}
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="Keep base fields in step with the flow">
@@ -156,10 +157,10 @@ export default function Page() {
               ],
               [
                 "Lookup",
-                <>
+                <Fragment key="f5">
                   A value pulled from a <DocLink href="/docs/buckets">Bucket</DocLink> by matching
                   this row against it — a catalogue price, a customer code.
-                </>,
+                </Fragment>,
               ],
               [
                 "Bucket Check",
@@ -221,12 +222,12 @@ export default function Page() {
               ],
               [
                 "Send for review",
-                <>
+                <Fragment key="f6">
                   Pauses the run for{" "}
                   <DocLink href="/docs/human-in-the-loop">human review</DocLink> and assigns the
                   reviewers you name on the action. The matching rows and fields are flagged in the
                   review screen.
-                </>,
+                </Fragment>,
               ],
               [
                 "Email",
@@ -238,11 +239,11 @@ export default function Page() {
               ],
               [
                 "Edit a Bucket row",
-                <>
+                <Fragment key="f7">
                   Writes a value back into a <DocLink href="/docs/buckets">Bucket</DocLink> row that
                   a Lookup field matched — marking an order received, decrementing stock, setting a
                   status.
-                </>,
+                </Fragment>,
               ],
             ]}
           />
@@ -276,19 +277,19 @@ export default function Page() {
             head={["Supported", "Notes"]}
             rows={[
               [
-                <><InlineCode>+ − * / % **</InlineCode></>,
+                <Fragment key="f8"><InlineCode>+ − * / % **</InlineCode></Fragment>,
                 "Add, subtract, multiply, divide, remainder, power. Parentheses group as usual.",
               ],
               [
-                <><InlineCode>{"{Field Name}"}</InlineCode></>,
+                <Fragment key="f9"><InlineCode>{"{Field Name}"}</InlineCode></Fragment>,
                 "A reference to another column in the same row. Spaces in the name are fine.",
               ],
               [
                 "Numbers written as text",
-                <>
+                <Fragment key="f10">
                   Coerced automatically, so <InlineCode>&ldquo;1,234.50&rdquo;</InlineCode> behaves
                   as a number.
-                </>,
+                </Fragment>,
               ],
               [
                 "Blank cells",
@@ -372,10 +373,10 @@ export default function Page() {
               ],
               [
                 "Webhook",
-                <>
+                <Fragment key="f11">
                   POSTs the cleaned result to a URL after each sweep. HTTPS only — see{" "}
                   <DocLink href="/docs/webhooks">webhooks</DocLink>.
-                </>,
+                </Fragment>,
               ],
             ]}
           />
@@ -429,15 +430,15 @@ export default function Page() {
               "The flow extracts rows from the document.",
               "The linked Cleaner sweeps those rows: formats, conversions, lookups, computed columns.",
               "Conditional Actions fire — rows are dropped, notifications go out, review may be requested.",
-              <>
+              <Fragment key="f12">
                 If review was triggered, the run pauses and a reviewer sees the{" "}
                 <em>cleaned</em> table.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f13">
                 On completion, results are delivered: email, webhook,{" "}
                 <DocLink href="/docs/buckets">Bucket</DocLink>, form fill, or a chained{" "}
                 <DocLink href="/docs/agents">agent</DocLink>.
-              </>,
+              </Fragment>,
             ]}
           />
           <p>

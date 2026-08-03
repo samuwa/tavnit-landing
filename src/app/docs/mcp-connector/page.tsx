@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -100,34 +101,34 @@ export default function Page() {
             rows={[
               [
                 "Custom Connector card",
-                <>
+                <Fragment key="f0">
                   Visible on the <strong>Integrations</strong> page. The connector is rolling out
                   gradually — if the card is not there, ask support to enable it for your
                   organization.
-                </>,
+                </Fragment>,
               ],
               [
                 "A Tavnit API key",
-                <>
+                <Fragment key="f1">
                   Also on the Integrations page, one per member per organization. If it is missing,
                   sign out and back in.
-                </>,
+                </Fragment>,
               ],
               [
                 "An MCP client",
-                <>
+                <Fragment key="f2">
                   claude.ai on a Pro plan or above, Cursor, or any client that accepts a remote MCP
                   server URL.
-                </>,
+                </Fragment>,
               ],
               [
                 "A role that can act",
-                <>
+                <Fragment key="f3">
                   The assistant inherits your permissions. A Member cannot make the assistant do
                   something a Member cannot do in the app — see{" "}
                   <DocLink href="/docs/user-roles">user roles and permissions</DocLink>
                   .
-                </>,
+                </Fragment>,
               ],
             ]}
           />
@@ -141,23 +142,23 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f4">
                 Open <strong>Integrations</strong> in the Tavnit sidebar. Check the organization
                 switcher first — the connector is bound to whichever organization you are in.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f5">
                 In the <strong>Custom Connector</strong> card, select{" "}
                 <strong>Generate connector URL</strong>.
-              </>,
-              <>Copy the URL with the copy button.</>,
-              <>
+              </Fragment>,
+              <Fragment key="f6">Copy the URL with the copy button.</Fragment>,
+              <Fragment key="f7">
                 In claude.ai, go to <strong>Settings → Connectors → Add custom connector</strong> and
                 paste the URL.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f8">
                 Open a new chat and ask it to list your flows. Getting your real flow names back
                 confirms the connection.
-              </>,
+              </Fragment>,
             ]}
           />
         </DocCard>
@@ -171,14 +172,14 @@ export default function Page() {
           <NumberedList
             items={[
               "Generate and copy the connector URL from the Integrations page, as above.",
-              <>
+              <Fragment key="f9">
                 In Cursor, open the MCP settings and add a new server of the{" "}
                 <strong>remote</strong> / URL type.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f10">
                 Paste the connector URL as the server URL. No separate API key field is needed — the
                 URL already carries the credential.
-              </>,
+              </Fragment>,
               "Reload the client and check that Tavnit appears in its tool list.",
             ]}
           />
@@ -196,14 +197,14 @@ export default function Page() {
           </Lead>
           <BulletList
             items={[
-              <>
+              <Fragment key="f11">
                 <strong>Process documents through your flows</strong> and get the structured result
                 back in the conversation.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f12">
                 <strong>Read and search your Buckets</strong> — ask questions about data you have
                 already extracted, without exporting it first.
-              </>,
+              </Fragment>,
             ]}
           />
           <p className="pt-1">Prompts that work well:</p>
@@ -211,15 +212,15 @@ export default function Page() {
             head={["Ask this", "What happens"]}
             rows={[
               [
-                <><em>&ldquo;Run this invoice through my Supplier Invoices flow.&rdquo;</em></>,
+                <Fragment key="f13"><em>&ldquo;Run this invoice through my Supplier Invoices flow.&rdquo;</em></Fragment>,
                 "The attached document is processed by that flow and the extracted fields come back in the chat.",
               ],
               [
-                <><em>&ldquo;What did we pay Acme Corp last month, from my Invoices bucket?&rdquo;</em></>,
+                <Fragment key="f14"><em>&ldquo;What did we pay Acme Corp last month, from my Invoices bucket?&rdquo;</em></Fragment>,
                 "The assistant queries the Bucket and answers from the stored rows.",
               ],
               [
-                <><em>&ldquo;Which flows do I have?&rdquo;</em></>,
+                <Fragment key="f15"><em>&ldquo;Which flows do I have?&rdquo;</em></Fragment>,
                 "A quick connectivity check — a real list means the connector is working.",
               ],
             ]}
@@ -252,12 +253,12 @@ export default function Page() {
               ],
               [
                 "Expiring soon",
-                <>An amber notice: <em>Connector expires soon — refresh now to avoid disruption.</em></>,
+                <Fragment key="f16">An amber notice: <em>Connector expires soon — refresh now to avoid disruption.</em></Fragment>,
                 "Refresh, then paste the new URL into every client using it.",
               ],
               [
                 "Expired",
-                <>A red notice: <em>This connector has expired. Refresh to generate a new URL.</em></>,
+                <Fragment key="f17">A red notice: <em>This connector has expired. Refresh to generate a new URL.</em></Fragment>,
                 "Refresh and re-paste. Clients using the old URL have already stopped working.",
               ],
             ]}
@@ -301,7 +302,7 @@ export default function Page() {
                 "Contact support to have it turned on.",
               ],
               [
-                <><InlineCode>Custom connectors require a valid Tavnit session</InlineCode></>,
+                <Fragment key="f18"><InlineCode>Custom connectors require a valid Tavnit session</InlineCode></Fragment>,
                 "Your sign-in has lapsed, so Tavnit cannot issue a URL.",
                 "Sign out and back in, then generate the URL again.",
               ],

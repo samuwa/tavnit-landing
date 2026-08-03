@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
@@ -94,17 +95,17 @@ export default function Page() {
             rows={[
               [
                 "You want results in your own system the moment they exist",
-                <>
+                <Fragment key="f0">
                   A person needs to read them —{" "}
                   <DocLink href="/docs/email-integration">email output</DocLink> is better
-                </>,
+                </Fragment>,
               ],
               [
                 "You are wiring Tavnit into Make, Zapier, n8n or Power Automate",
-                <>
+                <Fragment key="f1">
                   You want the data queryable inside Tavnit — use a{" "}
                   <DocLink href="/docs/buckets">Bucket</DocLink>
-                </>,
+                </Fragment>,
               ],
               [
                 "Volume is high enough that polling is wasteful",
@@ -122,20 +123,20 @@ export default function Page() {
           </Lead>
           <NumberedList
             items={[
-              <>
+              <Fragment key="f2">
                 Get an endpoint URL. Automation platforms hand you one when you create a{" "}
                 <em>webhook trigger</em>; otherwise expose your own HTTPS route.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f3">
                 Open the flow in <strong>Flows</strong>.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f4">
                 Find the <strong>Webhook</strong> panel, paste the URL and save.
-              </>,
-              <>
+              </Fragment>,
+              <Fragment key="f5">
                 Process one test document and confirm the POST arrived. The run&apos;s log records
                 whether delivery succeeded and what status code came back.
-              </>,
+              </Fragment>,
             ]}
           />
           <Screenshot
@@ -168,33 +169,33 @@ export default function Page() {
           <DataTable
             head={["Key", "Always present", "What it is"]}
             rows={[
-              [<><InlineCode>run_id</InlineCode></>, "Yes", "The run that produced this result."],
-              [<><InlineCode>flow_id</InlineCode></>, "Yes", "The flow that processed the document."],
+              [<Fragment key="f6"><InlineCode>run_id</InlineCode></Fragment>, "Yes", "The run that produced this result."],
+              [<Fragment key="f7"><InlineCode>flow_id</InlineCode></Fragment>, "Yes", "The flow that processed the document."],
               [
-                <><InlineCode>rows</InlineCode></>,
+                <Fragment key="f8"><InlineCode>rows</InlineCode></Fragment>,
                 "Yes",
                 "One entry per extracted line item. An empty array is valid — some documents have no table.",
               ],
               [
-                <><InlineCode>metadata</InlineCode></>,
+                <Fragment key="f9"><InlineCode>metadata</InlineCode></Fragment>,
                 "Yes",
                 "Single-value fields that describe the document as a whole.",
               ],
               [
-                <><InlineCode>collection_run_id</InlineCode></>,
+                <Fragment key="f10"><InlineCode>collection_run_id</InlineCode></Fragment>,
                 "No",
-                <>
+                <Fragment key="f11">
                   Present when a <DocLink href="/docs/collections">Collection</DocLink> routed the
                   document to this flow.
-                </>,
+                </Fragment>,
               ],
               [
-                <><InlineCode>split_id</InlineCode>, <InlineCode>splitter_doc_title</InlineCode></>,
+                <Fragment key="f12"><InlineCode>split_id</InlineCode>, <InlineCode>splitter_doc_title</InlineCode></Fragment>,
                 "No",
-                <>
+                <Fragment key="f13">
                   Present when a <DocLink href="/docs/splitters">Splitter</DocLink> produced this
                   segment.
-                </>,
+                </Fragment>,
               ],
             ]}
           />
@@ -282,9 +283,9 @@ export default function Page() {
             rows={[
               ["Flow webhook", "A run completes successfully", "The run's rows and metadata"],
               [
-                <>
+                <Fragment key="f14">
                   <DocLink href="/docs/cleaners">Cleaner</DocLink> webhook
-                </>,
+                </Fragment>,
                 "A sweep finishes",
                 "The cleaned dataset",
               ],
@@ -294,9 +295,9 @@ export default function Page() {
                 "A notification you compose, with the matching rows",
               ],
               [
-                <>
+                <Fragment key="f15">
                   <DocLink href="/docs/agents">Agent</DocLink> delivery
-                </>,
+                </Fragment>,
                 "An agent run finishes",
                 "The agent, the run, its status and the captured output",
               ],
@@ -326,9 +327,9 @@ export default function Page() {
               ],
               [
                 "The URL was rejected when saving",
-                <>
+                <Fragment key="f16">
                   It does not start with <InlineCode>https://</InlineCode>.
-                </>,
+                </Fragment>,
                 "Use an HTTPS endpoint. Plain HTTP is not accepted.",
               ],
               [
@@ -344,15 +345,15 @@ export default function Page() {
               [
                 "The same run arrived twice",
                 "A retry followed a timeout on a request your server actually processed.",
-                <>
+                <Fragment key="f17">
                   De-duplicate on <InlineCode>run_id</InlineCode>.
-                </>,
+                </Fragment>,
               ],
               [
                 "Results arrive much later than expected",
-                <>
+                <Fragment key="f18">
                   The flow has <DocLink href="/docs/human-in-the-loop">human review</DocLink> enabled.
-                </>,
+                </Fragment>,
                 "The webhook fires on approval, not on extraction. That is by design.",
               ],
             ]}
