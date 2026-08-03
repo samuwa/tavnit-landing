@@ -30,10 +30,17 @@ const product: FooterLink[] = [
   { label: "Pricing", href: "/pricing" },
 ];
 
-// Derived, so a new entry in src/lib/use-cases.ts is linked immediately.
+/**
+ * Derived, but capped.
+ *
+ * There are more use cases than belong in a footer column — every nav link
+ * appears on every page, so listing all of them would spread link equity thin
+ * across pages of very different value. The hub carries the full set; this
+ * column carries the highest-demand document types plus a route to the rest.
+ */
 const useCases: FooterLink[] = [
   { label: "All use cases", href: "/use-cases" },
-  ...USE_CASES.map((uc) => ({ label: uc.label, href: `/use-cases/${uc.slug}` })),
+  ...USE_CASES.slice(0, 6).map((uc) => ({ label: uc.label, href: `/use-cases/${uc.slug}` })),
 ];
 
 /**
