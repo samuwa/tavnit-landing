@@ -15,7 +15,10 @@ export const UI: Record<
     welcomeBodyEmphasis: string;
     welcomeBody2: string;
     start: string;
+    metaQuestions: string;
+    metaPrivate: string;
     back: string;
+    questionLabel: (n: number) => string;
     lastQuestion: string;
     remaining: (n: number) => string;
     continueLabel: string;
@@ -43,6 +46,7 @@ export const UI: Record<
     recordFiles: (n: number) => string;
     recordDone: string;
     recordWorking: string;
+    recordProgress: (done: number, total: number) => string;
     recordFootnote: string;
     invalidTitle: string;
     invalidBody1: string;
@@ -57,9 +61,12 @@ export const UI: Record<
     welcomeBodyEmphasis: "este formulario no",
     welcomeBody2: ". Son 3 a 5 preguntas y nos ayudan a preparar exactamente lo que necesitas.",
     start: "Empezar",
+    metaQuestions: "3 a 5 preguntas",
+    metaPrivate: "Solo lo ve nuestro equipo",
     back: "Volver",
+    questionLabel: (n) => `Pregunta ${n}`,
     lastQuestion: "Última pregunta",
-    remaining: (n) => `Quedan ~${n} preguntas`,
+    remaining: (n) => `quedan ~${n}`,
     continueLabel: "Continuar",
     readyContinue: "Listo, continuar",
     skip: "Omitir",
@@ -86,6 +93,7 @@ export const UI: Record<
     recordFiles: (n) => `${n} recibido${n > 1 ? "s" : ""}`,
     recordDone: "✓ registro completo — listo para tu demo",
     recordWorking: "estructurando respuestas…",
+    recordProgress: (done, total) => `${done} de ${total} campos`,
     recordFootnote:
       "Así se ve un documento después de pasar por Tavnit: campos estructurados, listos para revisar y actuar.",
     invalidTitle: "Este link no está activo",
@@ -100,9 +108,12 @@ export const UI: Record<
     welcomeBodyEmphasis: "this form won't",
     welcomeBody2: ". It's 3 to 5 questions, and they help us prepare exactly what you need.",
     start: "Start",
+    metaQuestions: "3 to 5 questions",
+    metaPrivate: "Only our team sees it",
     back: "Back",
+    questionLabel: (n) => `Question ${n}`,
     lastQuestion: "Last question",
-    remaining: (n) => `~${n} questions left`,
+    remaining: (n) => `~${n} left`,
     continueLabel: "Continue",
     readyContinue: "Done, continue",
     skip: "Skip",
@@ -129,6 +140,7 @@ export const UI: Record<
     recordFiles: (n) => `${n} received`,
     recordDone: "✓ record complete — ready for your demo",
     recordWorking: "structuring answers…",
+    recordProgress: (done, total) => `${done} of ${total} fields`,
     recordFootnote:
       "This is what a document looks like after Tavnit: structured fields, ready to review and act on.",
     invalidTitle: "This link isn't active",

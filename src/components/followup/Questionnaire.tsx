@@ -26,6 +26,7 @@ import {
   ArrowRight,
   CalendarCheck,
   Check,
+  ChevronRight,
   CircleSlash,
   Clock,
   Compass,
@@ -33,7 +34,9 @@ import {
   FileUp,
   Inbox,
   Layers,
+  ListChecks,
   Loader2,
+  Lock,
   MessageCircle,
   Sparkles,
   Users,
@@ -184,7 +187,7 @@ export default function Questionnaire({
           />
         </div>
 
-        <div className="relative w-full max-w-5xl grid lg:grid-cols-[minmax(0,1fr)_320px] gap-10 items-start">
+        <div className="relative w-full max-w-6xl grid lg:grid-cols-[minmax(0,1fr)_400px] gap-12 xl:gap-16 items-start">
           <div className="min-h-[420px] flex flex-col justify-center">
             {/* Exactly one direct motion child whose key changes per screen —
                 custom wrapper components stall mode="wait" exit tracking. */}
@@ -211,6 +214,20 @@ export default function Questionnaire({
                     <span className="text-slate-200 font-medium">{t.welcomeBodyEmphasis}</span>
                     {t.welcomeBody2}
                   </p>
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 mb-10 text-sm text-slate-400">
+                    <span className="inline-flex items-center gap-2">
+                      <Clock size={15} className="text-[#3b82f6]" aria-hidden />
+                      {t.lessThanAMinute}
+                    </span>
+                    <span className="inline-flex items-center gap-2">
+                      <ListChecks size={15} className="text-[#3b82f6]" aria-hidden />
+                      {t.metaQuestions}
+                    </span>
+                    <span className="inline-flex items-center gap-2">
+                      <Lock size={15} className="text-[#3b82f6]" aria-hidden />
+                      {t.metaPrivate}
+                    </span>
+                  </div>
                   <PrimaryButton onClick={() => setScreen("step")}>
                     {t.start}
                     <ArrowRight size={18} />
@@ -220,20 +237,35 @@ export default function Questionnaire({
 
               {screen === "step" && (
                 <div>
-                  <div className="flex items-center gap-3 mb-6 text-xs font-medium text-slate-500">
-                    {history.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={goBack}
-                        className="flex items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
-                      >
-                        <ArrowLeft size={14} />
-                        {t.back}
-                      </button>
-                    )}
-                    <span className="tracking-wide">
-                      {remaining === 1 ? t.lastQuestion : t.remaining(remaining)}
-                    </span>
+                  {/* Question header: thin progress track, question number,
+                      remaining hint, back — one calm line of metadata. */}
+                  <div className="mb-8 max-w-2xl">
+                    <div className="h-0.5 rounded-full bg-white/[0.07] mb-5 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] transition-[width] duration-500 ease-out"
+                        style={{
+                          width: `${Math.max(6, Math.round((history.length / (history.length + remaining)) * 100))}%`,
+                        }}
+                      />
+                    </div>
+                    <div className="flex items-baseline gap-3 text-xs">
+                      <span className="font-heading font-bold tracking-[0.14em] uppercase text-[#3b82f6]">
+                        {t.questionLabel(history.length + 1)}
+                      </span>
+                      <span className="font-medium text-slate-500">
+                        {remaining === 1 ? t.lastQuestion : t.remaining(remaining)}
+                      </span>
+                      {history.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={goBack}
+                          className="ml-auto flex items-center gap-1 font-medium text-slate-400 hover:text-slate-200 transition-colors cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
+                        >
+                          <ArrowLeft size={13} />
+                          {t.back}
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <h2 className="font-heading text-2xl sm:text-[2rem] font-bold text-slate-100 leading-snug mb-3">
                     {tr(step.title, lang)}
@@ -371,7 +403,7 @@ function ChoiceInput({
   onCommit: (v: unknown) => void;
 }) {
   return (
-    <div className="flex flex-col gap-3 max-w-xl">
+    <div className="flex flex-col gap-3.5 max-w-2xl">
       {step.options?.map((opt, i) => {
         const Icon = opt.icon ? ICONS[opt.icon] : undefined;
         return (
@@ -382,19 +414,24 @@ function ChoiceInput({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.06 * i, duration: 0.25 }}
             onClick={() => onCommit(opt.value)}
-            className="glass-card glass-card-hover group flex items-center gap-4 rounded-xl px-5 py-4 text-left transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
+            className="glass-card glass-card-hover group flex items-center gap-4 rounded-2xl px-6 py-5 text-left transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] hover:-translate-y-px"
           >
             {Icon && (
-              <span className="shrink-0 w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#3b82f6] group-hover:border-[#3b82f6]/40 transition-colors">
-                <Icon size={19} />
+              <span className="shrink-0 w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#3b82f6] group-hover:border-[#3b82f6]/40 group-hover:bg-[#3b82f6]/10 transition-colors">
+                <Icon size={20} />
               </span>
             )}
-            <span>
+            <span className="min-w-0">
               <span className="block font-medium text-slate-100">{tr(opt.label, lang)}</span>
               {opt.hint && (
                 <span className="block text-sm text-slate-400 mt-0.5">{tr(opt.hint, lang)}</span>
               )}
             </span>
+            <ChevronRight
+              size={18}
+              aria-hidden
+              className="ml-auto shrink-0 text-slate-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#3b82f6] transition-all duration-200"
+            />
           </motion.button>
         );
       })}
@@ -424,8 +461,8 @@ function ChipsInput({
   };
 
   return (
-    <div className="max-w-xl">
-      <div className="flex flex-wrap gap-2.5 mb-8">
+    <div className="max-w-2xl">
+      <div className="flex flex-wrap gap-3 mb-8">
         {step.options?.map((opt, i) => {
           const active = selected.includes(opt.value);
           return (
@@ -437,7 +474,7 @@ function ChipsInput({
               transition={{ delay: 0.04 * i, duration: 0.2 }}
               onClick={() => toggle(opt.value)}
               aria-pressed={active}
-              className={`px-4 py-2.5 rounded-full border text-sm font-medium transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
+              className={`px-5 py-3 rounded-full border text-sm font-medium transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
                 active
                   ? "border-[#3b82f6]/60 bg-[#3b82f6]/15 text-slate-100 shadow-[0_0_16px_rgba(59,130,246,0.25)]"
                   : "border-white/10 bg-white/[0.04] text-slate-300 hover:border-white/25 hover:bg-white/[0.07]"
@@ -477,7 +514,7 @@ function TextInput({
   const [value, setValue] = useState(typeof initialValue === "string" ? initialValue : "");
   return (
     <form
-      className="max-w-xl"
+      className="max-w-2xl"
       onSubmit={(e) => {
         e.preventDefault();
         if (value.trim()) onCommit(value.trim());
@@ -525,7 +562,7 @@ function DateInput({
   const today = new Date().toISOString().slice(0, 10);
   return (
     <form
-      className="max-w-xl"
+      className="max-w-2xl"
       onSubmit={(e) => {
         e.preventDefault();
         if (value) onCommit(value);
@@ -593,7 +630,7 @@ function UploadInput({
   };
 
   return (
-    <div className="max-w-xl">
+    <div className="max-w-2xl">
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
@@ -763,59 +800,73 @@ function RecordPanel({
   done: boolean;
 }) {
   const t = UI[lang];
+  const filled = entries.length + (fileCount > 0 ? 1 : 0);
+  const total = filled + pendingRows;
   return (
     <aside className="hidden lg:block sticky top-10" aria-label={t.recordHeader}>
-      <div className="glass-card rounded-2xl overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-white/10 bg-white/[0.03] flex items-center justify-between">
-          <span className="processing-text uppercase tracking-[0.18em]">{t.recordHeader}</span>
-          <span
-            className={`w-2 h-2 rounded-full ${done ? "bg-[#10b981]" : "bg-[#3b82f6] animate-pulse"}`}
-            aria-hidden
-          />
-        </div>
-        <div className="px-5 py-4 font-mono text-[13px] leading-relaxed">
-          <RecordRow label={t.recordClient} value={clientName} />
-          {company && <RecordRow label={t.recordCompany} value={company} />}
-          <div className="my-3 border-t border-dashed border-white/10" />
-          <AnimatePresence initial={false}>
-            {entries.map((e) => (
-              <motion.div
-                key={e.id}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <RecordRow label={e.label.toLowerCase()} value={e.value} highlight />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-          {fileCount > 0 && (
-            <RecordRow
-              label={lang === "es" ? "archivos" : "files"}
-              value={t.recordFiles(fileCount)}
-              highlight
+      {/* Gradient frame gives the record the weight of a real artifact — the
+          thing the meeting produces — without shouting for attention. */}
+      <div className="rounded-3xl p-px bg-gradient-to-b from-white/20 via-white/[0.07] to-white/[0.03] shadow-2xl shadow-black/40">
+        <div className="rounded-[calc(1.5rem-1px)] overflow-hidden bg-[#0c0c1e]/95 backdrop-blur-xl">
+          <div className="px-6 py-4 border-b border-white/10 bg-white/[0.03] flex items-center gap-3">
+            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3b82f6]/25 to-[#6c42f0]/25 border border-[#3b82f6]/30 flex items-center justify-center text-[#93c5fd]">
+              <FileCheck size={16} aria-hidden />
+            </span>
+            <span className="processing-text uppercase tracking-[0.18em] text-[13px]">
+              {t.recordHeader}
+            </span>
+            <span
+              className={`ml-auto w-2 h-2 rounded-full ${done ? "bg-[#10b981]" : "bg-[#3b82f6] animate-pulse"}`}
+              aria-hidden
             />
-          )}
-          {/* Unanswered fields render as the same skeleton bars the homepage
-              "extracts" into a table — the panel visibly fills as they answer. */}
-          {Array.from({ length: pendingRows }).map((_, i) => (
-            <div key={`pending-${i}`} className="flex items-center gap-3 py-1.5" aria-hidden>
-              <span className="h-2.5 w-16 rounded bg-white/[0.07]" />
-              <span className="h-2.5 flex-1 rounded bg-white/[0.04]" />
-            </div>
-          ))}
-        </div>
-        <div
-          className={`px-5 py-2.5 text-xs font-mono border-t transition-colors duration-500 ${
-            done
-              ? "border-[#10b981]/20 bg-[#10b981]/10 text-[#34d399]"
-              : "border-white/10 bg-white/[0.02] text-slate-500"
-          }`}
-        >
-          {done ? t.recordDone : t.recordWorking}
+          </div>
+          <div className="px-6 py-5 font-mono text-sm leading-relaxed">
+            <RecordRow label={t.recordClient} value={clientName} />
+            {company && <RecordRow label={t.recordCompany} value={company} />}
+            <div className="my-4 border-t border-dashed border-white/10" />
+            <AnimatePresence initial={false}>
+              {entries.map((e) => (
+                <motion.div
+                  key={e.id}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <RecordRow label={e.label.toLowerCase()} value={e.value} highlight />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {fileCount > 0 && (
+              <RecordRow
+                label={lang === "es" ? "archivos" : "files"}
+                value={t.recordFiles(fileCount)}
+                highlight
+              />
+            )}
+            {/* Unanswered fields render as the same skeleton bars the homepage
+                "extracts" into a table — the panel visibly fills as they answer. */}
+            {Array.from({ length: pendingRows }).map((_, i) => (
+              <div key={`pending-${i}`} className="flex items-center gap-4 py-2.5" aria-hidden>
+                <span className="h-3 w-24 rounded bg-white/[0.08]" />
+                <span className="h-3 flex-1 rounded bg-white/[0.04]" />
+              </div>
+            ))}
+          </div>
+          <div
+            className={`px-6 py-3 text-xs font-mono border-t flex items-center justify-between gap-3 transition-colors duration-500 ${
+              done
+                ? "border-[#10b981]/20 bg-[#10b981]/10 text-[#34d399]"
+                : "border-white/10 bg-white/[0.02] text-slate-500"
+            }`}
+          >
+            <span>{done ? t.recordDone : t.recordWorking}</span>
+            {!done && total > 0 && (
+              <span className="shrink-0 text-slate-600">{t.recordProgress(filled, total)}</span>
+            )}
+          </div>
         </div>
       </div>
-      <p className="mt-3 text-[11px] text-slate-600 leading-relaxed px-1">{t.recordFootnote}</p>
+      <p className="mt-4 text-xs text-slate-500 leading-relaxed px-2">{t.recordFootnote}</p>
     </aside>
   );
 }
@@ -830,9 +881,9 @@ function RecordRow({
   highlight?: boolean;
 }) {
   return (
-    <div className="flex items-baseline gap-3 py-1.5">
-      <span className="text-slate-500 shrink-0 min-w-16">{label}:</span>
-      <span className={highlight ? "text-[#93c5fd]" : "text-slate-300"}>{value}</span>
+    <div className="flex items-baseline gap-4 py-2">
+      <span className="text-slate-500 shrink-0 min-w-24">{label}:</span>
+      <span className={`min-w-0 ${highlight ? "text-[#93c5fd]" : "text-slate-200"}`}>{value}</span>
     </div>
   );
 }
