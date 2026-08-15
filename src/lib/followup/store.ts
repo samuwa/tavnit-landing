@@ -21,6 +21,10 @@ export type FollowupInvite = {
   sales_rep: string | null;
   /** The rep's inbox — what the prospect sees for uploads and the mailto CTA. */
   sales_rep_email: string | null;
+  /** The rep's booking link (Calendly/Cal.com), resolved at link creation. */
+  scheduler_url: string | null;
+  /** Links stop working past this moment; admin can regenerate. */
+  expires_at: string | null;
   notes: string | null;
   /** Starting language the sales rep picked for this client (es | en). */
   lang: string;

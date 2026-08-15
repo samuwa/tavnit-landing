@@ -48,7 +48,10 @@ export const UI: Record<
     recordWorking: string;
     recordProgress: (done: number, total: number) => string;
     recordFootnote: string;
+    hookKicker: string;
+    hookCta: (label: string | null) => string;
     invalidTitle: string;
+    expiredTitle: string;
     invalidBody1: string;
     invalidBody2: string;
   }
@@ -96,7 +99,13 @@ export const UI: Record<
     recordProgress: (done, total) => `${done} de ${total} campos`,
     recordFootnote:
       "Así se ve un documento después de pasar por Tavnit: campos estructurados, listos para revisar y actuar.",
+    hookKicker: "Mientras llega tu demo",
+    hookCta: (label) =>
+      label
+        ? `Mira cómo Tavnit procesa ${label.toLowerCase()}`
+        : "Explora lo que Tavnit hace con documentos como los tuyos",
     invalidTitle: "Este link no está activo",
+    expiredTitle: "Este link ya expiró",
     invalidBody1: "Puede que haya expirado o que la dirección esté incompleta. Escríbenos a ",
     invalidBody2: " y te lo reenviamos.",
   },
@@ -143,7 +152,13 @@ export const UI: Record<
     recordProgress: (done, total) => `${done} of ${total} fields`,
     recordFootnote:
       "This is what a document looks like after Tavnit: structured fields, ready to review and act on.",
+    hookKicker: "While your demo gets ready",
+    hookCta: (label) =>
+      label
+        ? `See how Tavnit handles ${label.toLowerCase()}`
+        : "Explore what Tavnit does with documents like yours",
     invalidTitle: "This link isn't active",
+    expiredTitle: "This link has expired",
     invalidBody1: "It may have expired, or the address may be incomplete. Write to us at ",
     invalidBody2: " and we'll resend it.",
   },

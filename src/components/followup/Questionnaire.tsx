@@ -68,6 +68,19 @@ const ICONS: Record<string, typeof Sparkles> = {
 
 type UploadedFile = { name: string; size: number };
 
+/**
+ * Post-completion hook: route the prospect to the use-case page closest to
+ * what they told us they handle, so interest survives until the next meeting.
+ */
+const USE_CASE_LINKS: Record<string, string> = {
+  invoices: "/use-cases/invoice-processing",
+  customs: "/use-cases/customs-trade",
+  contracts: "/use-cases/contract-analysis",
+  bank: "/use-cases/bank-statements",
+  hr: "/use-cases/resume-screening",
+  orders: "/use-cases/purchase-orders",
+};
+
 type Props = {
   token: string;
   clientName: string;
@@ -402,6 +415,23 @@ function ChoiceInput({
   lang: Lang;
   onCommit: (v: unknown) => void;
 }) {
+  const options = step.options ?? [];
+
+  // Desktop nicety: press 1/2/3 to pick an option. The kbd badges advertise it.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const target = e.target as HTMLElement | null;
+      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
+      const index = Number(e.key) - 1;
+      if (Number.isInteger(index) && index >= 0 && index < options.length) {
+        onCommit(options[index].value);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [options, onCommit]);
+
   return (
     <div className="flex flex-col gap-3.5 max-w-2xl">
       {step.options?.map((opt, i) => {
@@ -427,11 +457,17 @@ function ChoiceInput({
                 <span className="block text-sm text-slate-400 mt-0.5">{tr(opt.hint, lang)}</span>
               )}
             </span>
-            <ChevronRight
-              size={18}
-              aria-hidden
-              className="ml-auto shrink-0 text-slate-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#3b82f6] transition-all duration-200"
-            />
+            {/* One slot at the far right: the number hint gives way to the
+                directional chevron on hover. */}
+            <span className="relative ml-auto shrink-0 w-6 h-6 hidden sm:block" aria-hidden>
+              <kbd className="absolute inset-0 flex items-center justify-center rounded-md border border-white/10 bg-white/[0.04] text-[11px] font-medium text-slate-500 group-hover:opacity-0 transition-opacity duration-200">
+                {i + 1}
+              </kbd>
+              <ChevronRight
+                size={18}
+                className="absolute inset-0 m-auto text-[#3b82f6] opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
+              />
+            </span>
           </motion.button>
         );
       })}
@@ -735,6 +771,14 @@ function DoneScreen({
         ? t.doneWarmDiscovery
         : t.doneWarmDefault;
 
+  const hints = Array.isArray(answers.usecase_hint) ? (answers.usecase_hint as string[]) : [];
+  const mappedHint = hints.find((h) => USE_CASE_LINKS[h]) ?? null;
+  const hookHref = mappedHint ? USE_CASE_LINKS[mappedHint] : "/use-cases";
+  const hintOption = mappedHint
+    ? STEPS.usecase_hint.options?.find((o) => o.value === mappedHint)
+    : null;
+  const hookLabel = hintOption ? tr(hintOption.label, lang) : null;
+
   return (
     <div>
       <span className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#10b981]/10 border border-[#10b981]/25 text-[#10b981] mb-6">
@@ -776,6 +820,28 @@ function DoneScreen({
           </div>
         </>
       )}
+
+      <a
+        href={hookHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="glass-card glass-card-hover group mt-10 flex items-center gap-4 rounded-2xl px-6 py-5 max-w-xl transition-all duration-200 hover:-translate-y-px"
+      >
+        <span className="shrink-0 w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#3b82f6] group-hover:border-[#3b82f6]/40 transition-colors">
+          <Compass size={20} aria-hidden />
+        </span>
+        <span className="min-w-0">
+          <span className="block text-[11px] font-semibold tracking-widest uppercase text-[#3b82f6] mb-0.5">
+            {t.hookKicker}
+          </span>
+          <span className="block font-medium text-slate-100">{t.hookCta(hookLabel)}</span>
+        </span>
+        <ChevronRight
+          size={18}
+          aria-hidden
+          className="ml-auto shrink-0 text-slate-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#3b82f6] transition-all duration-200"
+        />
+      </a>
     </div>
   );
 }

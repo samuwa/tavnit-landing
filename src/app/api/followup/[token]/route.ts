@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { STEPS } from "@/lib/followup/flow";
+import { sendCompletionEmail } from "@/lib/followup/notify";
 import { getInviteByToken, updateInvite } from "@/lib/followup/store";
 
 export const runtime = "nodejs";
@@ -47,7 +48,12 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ token: str
       return NextResponse.json({ ok: true });
     }
     case "complete": {
-      if (!invite.completed_at) await updateInvite(token, { completed_at: now });
+      if (!invite.completed_at) {
+        await updateInvite(token, { completed_at: now });
+        // Awaited so serverless doesn't kill it mid-send; failures are
+        // swallowed inside — the rep's email must never block the client.
+        await sendCompletionEmail({ ...invite, completed_at: now });
+      }
       return NextResponse.json({ ok: true });
     }
     default:
