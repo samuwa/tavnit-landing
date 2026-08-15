@@ -9,10 +9,11 @@ import type { FollowupInvite } from "./store";
  * questionnaire — the moment of peak interest is right after they answer,
  * so the rep should know within seconds, not at the next panel check.
  *
- * Sends through Resend's HTTP API (same provider tavnit-admin uses, no SDK
- * needed for one endpoint). Configuration is optional by design: without
- * RESEND_API_KEY the questionnaire still works and this quietly no-ops —
- * notification is a bonus, never a dependency of the client's flow.
+ * Sends through Mailgun's HTTP API with the same env names and defaults
+ * tavnit-flask uses (MAILGUN_API_KEY / MAILGUN_DOMAIN / MAILGUN_BASE_URL,
+ * sender no-reply@mg.tavnit.io). Configuration is optional by design:
+ * without MAILGUN_API_KEY the questionnaire still works and this quietly
+ * no-ops — notification is a bonus, never a dependency of the client's flow.
  */
 
 const TEMPERATURE: Record<string, string> = {
@@ -22,9 +23,11 @@ const TEMPERATURE: Record<string, string> = {
 };
 
 export async function sendCompletionEmail(invite: FollowupInvite): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.FOLLOWUP_FROM_EMAIL;
-  if (!apiKey || !from) return;
+  const apiKey = process.env.MAILGUN_API_KEY;
+  if (!apiKey) return;
+  const domain = process.env.MAILGUN_DOMAIN ?? "mg.tavnit.io";
+  const baseUrl = process.env.MAILGUN_BASE_URL ?? "https://api.mailgun.net/v3";
+  const from = process.env.FOLLOWUP_FROM_EMAIL ?? `Tavnit <no-reply@${domain}>`;
 
   const to = invite.sales_rep_email ?? SALES_EMAIL;
   const who = [invite.client_name, invite.company].filter(Boolean).join(" — ");
@@ -48,16 +51,21 @@ export async function sendCompletionEmail(invite: FollowupInvite): Promise<void>
     .filter((l) => l !== null)
     .join("\n");
 
+  const form = new URLSearchParams({
+    from,
+    to,
+    subject: `${temperature} — ${who}`,
+    text: body,
+  });
+
   try {
-    await fetch("https://api.resend.com/emails", {
+    await fetch(`${baseUrl}/${domain}/messages`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to: [to],
-        subject: `${temperature} — ${who}`,
-        text: body,
-      }),
+      headers: {
+        Authorization: `Basic ${Buffer.from(`api:${apiKey}`).toString("base64")}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: form.toString(),
     });
   } catch {
     // Notification is best-effort; the completion itself is already stored.
