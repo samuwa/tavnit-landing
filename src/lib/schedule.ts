@@ -51,18 +51,75 @@ export interface MeetingRequest {
 }
 
 /** Best-effort insert — the visitor still gets the calendar if storage is
- *  down; the notification email below is the second copy of the lead. */
-export async function saveMeetingRequest(req: MeetingRequest): Promise<boolean> {
+ *  down; the notification email below is the second copy of the lead.
+ *  Returns the new row's id so the page can report the booking back. */
+export async function saveMeetingRequest(req: MeetingRequest): Promise<string | null> {
   const headers = serviceHeaders();
   const base = process.env.SUPABASE_URL;
-  if (!headers || !base) return false;
+  if (!headers || !base) return null;
   try {
     const res = await fetch(`${base}/rest/v1/meeting_requests`, {
       method: "POST",
-      headers: { ...headers, Prefer: "return=minimal" },
+      headers: { ...headers, Prefer: "return=representation" },
       body: JSON.stringify(req),
       cache: "no-store",
     });
+    if (!res.ok) return null;
+    const rows = (await res.json()) as Array<{ id: string }>;
+    return rows[0]?.id ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Records that the visitor completed a Calendly booking for their request.
+ * The meeting start time comes from the embed's event payload; when
+ * CALENDLY_API_TOKEN is configured it is re-resolved from the Calendly API
+ * instead, so the stored time is server-verified.
+ */
+export async function markMeetingScheduled(params: {
+  id: string;
+  eventUri: string | null;
+  inviteeUri: string | null;
+  startTime: string | null;
+}): Promise<boolean> {
+  const headers = serviceHeaders();
+  const base = process.env.SUPABASE_URL;
+  if (!headers || !base) return false;
+
+  let meetingAt = params.startTime;
+  const token = process.env.CALENDLY_API_TOKEN;
+  if (token && params.eventUri) {
+    try {
+      const res = await fetch(params.eventUri, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      });
+      if (res.ok) {
+        const body = (await res.json()) as { resource?: { start_time?: string } };
+        meetingAt = body.resource?.start_time ?? meetingAt;
+      }
+    } catch {
+      // Fall back to the embed-reported time.
+    }
+  }
+
+  try {
+    const res = await fetch(
+      `${base}/rest/v1/meeting_requests?id=eq.${encodeURIComponent(params.id)}`,
+      {
+        method: "PATCH",
+        headers: { ...headers, Prefer: "return=minimal" },
+        body: JSON.stringify({
+          scheduled_at: new Date().toISOString(),
+          meeting_at: meetingAt,
+          calendly_event_uri: params.eventUri,
+          calendly_invitee_uri: params.inviteeUri,
+        }),
+        cache: "no-store",
+      },
+    );
     return res.ok;
   } catch {
     return false;

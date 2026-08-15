@@ -35,14 +35,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "That doesn't look like an email" }, { status: 400 });
   }
 
-  const stored = await saveMeetingRequest(req);
-  await notifyMeetingRequest(req, stored);
+  const id = await saveMeetingRequest(req);
+  await notifyMeetingRequest(req, id !== null);
 
-  if (!stored && !process.env.MAILGUN_API_KEY) {
+  if (id === null && !process.env.MAILGUN_API_KEY) {
     return NextResponse.json(
       { error: "Could not submit right now — please try again or email us." },
       { status: 500 },
     );
   }
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, id });
 }

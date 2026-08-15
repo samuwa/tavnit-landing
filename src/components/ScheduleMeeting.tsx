@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowRight, CalendarCheck, Loader2, Mail } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, CalendarCheck, Loader2, Mail, PartyPopper } from "lucide-react";
 
 /**
  * The /schedule flow: a short lead form first, then the sales rep's Calendly
@@ -22,8 +22,9 @@ function embedUrl(
       u.searchParams.set("embed_domain", window.location.hostname);
       u.searchParams.set("embed_type", "Inline");
       u.searchParams.set("hide_gdpr_banner", "1");
-      u.searchParams.set("background_color", "0a0a1a");
-      u.searchParams.set("text_color", "e2e8f0");
+      // Default light theme on purpose: Calendly paints input VALUES with
+      // text_color but keeps the fields white, so a dark-theme text_color
+      // makes everything typed or prefilled look like ghost placeholder text.
       u.searchParams.set("primary_color", "3b82f6");
       // a1 prefills the event's FIRST custom question (a2 the second, …).
       // With no custom questions on the event it's silently ignored, so the
@@ -61,7 +62,47 @@ export default function ScheduleMeeting({
   const [website, setWebsite] = useState(""); // honeypot
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [booked, setBooked] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const requestIdRef = useRef<string | null>(null);
+  const reportedRef = useRef(false);
+
+  // The Calendly iframe posts calendly.event_scheduled to the page when the
+  // visitor books. Report it once so the admin panel can show which requests
+  // became meetings and for when.
+  useEffect(() => {
+    if (!submitted) return;
+    function onMessage(e: MessageEvent) {
+      let host = "";
+      try {
+        host = new URL(e.origin).hostname;
+      } catch {
+        return;
+      }
+      if (!/(^|\.)calendly\.com$/.test(host)) return;
+      const data = e.data as {
+        event?: string;
+        payload?: { event?: { uri?: string; start_time?: string }; invitee?: { uri?: string } };
+      };
+      if (data?.event !== "calendly.event_scheduled" || reportedRef.current) return;
+      reportedRef.current = true;
+      setBooked(true);
+      if (requestIdRef.current) {
+        void fetch("/api/schedule/scheduled", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: requestIdRef.current,
+            eventUri: data.payload?.event?.uri ?? null,
+            inviteeUri: data.payload?.invitee?.uri ?? null,
+            startTime: data.payload?.event?.start_time ?? null,
+          }),
+        }).catch(() => {});
+      }
+    }
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [submitted]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -73,11 +114,14 @@ export default function ScheduleMeeting({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, company, topic, website }),
       });
+      const body = (await res.json().catch(() => null)) as
+        | { error?: string; id?: string | null }
+        | null;
       if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as { error?: string } | null;
         setError(body?.error ?? "Something went wrong — please try again.");
         return;
       }
+      requestIdRef.current = body?.id ?? null;
       setSubmitted(true);
     } catch {
       setError("Something went wrong — please try again.");
@@ -90,10 +134,15 @@ export default function ScheduleMeeting({
     return (
       <div>
         <div className="mb-6 flex items-center gap-3 glass-card rounded-xl px-5 py-4">
-          <CalendarCheck size={20} className="shrink-0 text-[#3b82f6]" aria-hidden />
+          {booked ? (
+            <PartyPopper size={20} className="shrink-0 text-[#3b82f6]" aria-hidden />
+          ) : (
+            <CalendarCheck size={20} className="shrink-0 text-[#3b82f6]" aria-hidden />
+          )}
           <p className="text-sm text-slate-300">
-            Thanks, {name.split(" ")[0] || "there"} — now pick a time that works
-            for you{schedulerUrl ? " below" : ""}.
+            {booked
+              ? `You're booked, ${name.split(" ")[0] || "thanks"} — the invite is on its way to ${email}.`
+              : `Thanks, ${name.split(" ")[0] || "there"} — now pick a time that works for you${schedulerUrl ? " below" : ""}.`}
           </p>
         </div>
 
@@ -111,7 +160,7 @@ export default function ScheduleMeeting({
                   .join(" — "),
               })}
               title="Pick a meeting time"
-              className="h-[min(680px,calc(100svh-200px))] min-h-[420px] w-full"
+              className="h-[min(680px,calc(100svh-200px))] min-h-[420px] w-full bg-white"
               loading="lazy"
             />
           </div>

@@ -80,8 +80,9 @@ function schedulerEmbedUrl(url: string): string {
       u.searchParams.set("embed_domain", window.location.hostname);
       u.searchParams.set("embed_type", "Inline");
       u.searchParams.set("hide_gdpr_banner", "1");
-      u.searchParams.set("background_color", "0a0a1a");
-      u.searchParams.set("text_color", "e2e8f0");
+      // Default light theme on purpose: Calendly paints input VALUES with
+      // text_color but keeps the fields white, so a dark text_color makes
+      // typed/prefilled text look like ghost placeholder text.
       u.searchParams.set("primary_color", "3b82f6");
     } else if (u.hostname.endsWith("cal.com")) {
       u.searchParams.set("embed", "true");

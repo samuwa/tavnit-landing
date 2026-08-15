@@ -16,7 +16,11 @@ export const SUPPORT_EMAIL = "support@tavnit.io";
  *  inbox — Arie; switch to samuel@tavnit.io here if ownership changes). */
 export const SALES_EMAIL = "arie@tavnit.io";
 /** Everyone notified when a meeting is requested on /schedule. */
-export const SALES_NOTIFY_EMAILS = [SALES_EMAIL, "samuel@tavnit.io"] as const;
+export const SALES_NOTIFY_EMAILS = [
+  SALES_EMAIL,
+  "samuel@tavnit.io",
+  "rafael@tavnit.io",
+] as const;
 export const GITHUB_URL = "https://github.com/tavnit";
 export const LINKEDIN_URL = "https://www.linkedin.com/company/tavnit-io";
 export const TWITTER_HANDLE = "@tavnit_io";
