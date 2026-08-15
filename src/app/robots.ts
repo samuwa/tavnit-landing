@@ -30,12 +30,14 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/_next/"],
+        // /s/ are personalized sales follow-up links — private by obscurity,
+        // and worthless in a search index.
+        disallow: ["/api/", "/_next/", "/s/"],
       },
       {
         userAgent: citingAiCrawlers,
         allow: "/",
-        disallow: ["/api/", "/_next/"],
+        disallow: ["/api/", "/_next/", "/s/"],
       },
       {
         // Training-only bulk scraper, no citation benefit.

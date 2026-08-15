@@ -12,6 +12,9 @@ export const MCP_URL = "https://mcp.tavnit.io";
 
 export const SITE_NAME = "Tavnit";
 export const SUPPORT_EMAIL = "support@tavnit.io";
+/** Where prospects send demo documents and scheduling requests (sales lead's
+ *  inbox — Arie; switch to samuel@tavnit.io here if ownership changes). */
+export const SALES_EMAIL = "arie@tavnit.io";
 export const GITHUB_URL = "https://github.com/tavnit";
 export const LINKEDIN_URL = "https://www.linkedin.com/company/tavnit-io";
 export const TWITTER_HANDLE = "@tavnit_io";
