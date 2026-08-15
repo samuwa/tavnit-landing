@@ -902,9 +902,11 @@ function DoneScreen({
 }
 
 /**
- * The rep's calendar, in-page: a full-height overlay with the scheduler in
- * an iframe, so booking never navigates the prospect away from the thank-you
- * screen. Escape, the ✕ and the backdrop all close it.
+ * The rep's calendar, in-page: a near-fullscreen overlay with the scheduler
+ * in an iframe, so booking never navigates the prospect away from the
+ * thank-you screen. Sized to the viewport on purpose — Calendly's inline
+ * widget wants ~700px of height, and anything smaller forces a scrollbar
+ * inside the calendar. Escape, the ✕ and the backdrop all close it.
  */
 function SchedulerModal({
   url,
@@ -931,7 +933,7 @@ function SchedulerModal({
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-label={title}
@@ -951,9 +953,9 @@ function SchedulerModal({
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 16, scale: 0.98 }}
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-        className="relative w-full max-w-[1000px] h-[85dvh] max-h-[820px] rounded-2xl overflow-hidden border border-white/10 bg-[#0c0c1e] shadow-2xl shadow-black/60 flex flex-col"
+        className="relative w-full max-w-[1100px] h-[calc(100dvh-1rem)] sm:h-[calc(100dvh-2rem)] rounded-2xl overflow-hidden border border-white/10 bg-[#0c0c1e] shadow-2xl shadow-black/60 flex flex-col"
       >
-        <div className="flex items-center justify-between px-5 py-3 border-b border-white/10 bg-white/[0.03] shrink-0">
+        <div className="flex items-center justify-between px-5 py-2.5 border-b border-white/10 bg-white/[0.03] shrink-0">
           <span className="flex items-center gap-2.5 font-heading font-semibold text-slate-100">
             <CalendarCheck size={17} className="text-[#3b82f6]" aria-hidden />
             {title}
