@@ -48,6 +48,7 @@ export const UI: Record<
     recordWorking: string;
     recordProgress: (done: number, total: number) => string;
     recordFootnote: string;
+    close: string;
     hookKicker: string;
     hookCta: (label: string | null) => string;
     invalidTitle: string;
@@ -99,6 +100,7 @@ export const UI: Record<
     recordProgress: (done, total) => `${done} de ${total} campos`,
     recordFootnote:
       "Así se ve un documento después de pasar por Tavnit: campos estructurados, listos para revisar y actuar.",
+    close: "Cerrar",
     hookKicker: "Mientras llega tu demo",
     hookCta: (label) =>
       label
@@ -152,6 +154,7 @@ export const UI: Record<
     recordProgress: (done, total) => `${done} of ${total} fields`,
     recordFootnote:
       "This is what a document looks like after Tavnit: structured fields, ready to review and act on.",
+    close: "Close",
     hookKicker: "While your demo gets ready",
     hookCta: (label) =>
       label

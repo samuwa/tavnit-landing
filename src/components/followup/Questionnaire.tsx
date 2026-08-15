@@ -69,6 +69,31 @@ const ICONS: Record<string, typeof Sparkles> = {
 type UploadedFile = { name: string; size: number };
 
 /**
+ * Booking URL tuned for embedding: Calendly and Cal.com both render fine in
+ * a plain iframe; Calendly additionally takes theme params so the widget
+ * matches the page instead of flashing white.
+ */
+function schedulerEmbedUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    if (u.hostname.endsWith("calendly.com")) {
+      u.searchParams.set("embed_domain", window.location.hostname);
+      u.searchParams.set("embed_type", "Inline");
+      u.searchParams.set("hide_gdpr_banner", "1");
+      u.searchParams.set("background_color", "0a0a1a");
+      u.searchParams.set("text_color", "e2e8f0");
+      u.searchParams.set("primary_color", "3b82f6");
+    } else if (u.hostname.endsWith("cal.com")) {
+      u.searchParams.set("embed", "true");
+      u.searchParams.set("theme", "dark");
+    }
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
+
+/**
  * Post-completion hook: route the prospect to the use-case page closest to
  * what they told us they handle, so interest survives until the next meeting.
  */
@@ -758,11 +783,12 @@ function DoneScreen({
 }) {
   const t = UI[lang];
   const cold = sentiment === "not_needed";
-  const scheduleHref =
-    schedulerUrl ??
-    `mailto:${salesEmail}?subject=${encodeURIComponent(
-      lang === "es" ? `Agendar demo — ${clientName}` : `Schedule demo — ${clientName}`,
-    )}`;
+  const [showScheduler, setShowScheduler] = useState(false);
+  // With a booking link the CTA opens the calendar in-page; without one it
+  // falls back to a prefilled mailto.
+  const mailtoHref = `mailto:${salesEmail}?subject=${encodeURIComponent(
+    lang === "es" ? `Agendar demo — ${clientName}` : `Schedule demo — ${clientName}`,
+  )}`;
 
   const warmSubtitle =
     answers.docs_have === "can_get"
@@ -790,15 +816,24 @@ function DoneScreen({
             {t.doneColdTitle(clientName)}
           </h2>
           <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-xl">{t.doneColdBody}</p>
-          <a
-            href={scheduleHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-slate-300 hover:text-slate-100 border border-white/15 hover:border-white/30 rounded-xl px-6 py-3.5 font-medium transition-all duration-200"
-          >
-            <CalendarCheck size={18} />
-            {t.doneColdCta}
-          </a>
+          {schedulerUrl ? (
+            <button
+              type="button"
+              onClick={() => setShowScheduler(true)}
+              className="inline-flex items-center gap-2 text-slate-300 hover:text-slate-100 border border-white/15 hover:border-white/30 rounded-xl px-6 py-3.5 font-medium transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
+            >
+              <CalendarCheck size={18} />
+              {t.doneColdCta}
+            </button>
+          ) : (
+            <a
+              href={mailtoHref}
+              className="inline-flex items-center gap-2 text-slate-300 hover:text-slate-100 border border-white/15 hover:border-white/30 rounded-xl px-6 py-3.5 font-medium transition-all duration-200"
+            >
+              <CalendarCheck size={18} />
+              {t.doneColdCta}
+            </a>
+          )}
         </>
       ) : (
         <>
@@ -807,15 +842,24 @@ function DoneScreen({
           </h2>
           <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-xl">{warmSubtitle}</p>
           <div className="flex flex-wrap items-center gap-5">
-            <a
-              href={scheduleHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hero-cta-primary inline-flex items-center gap-2.5 rounded-xl px-7 py-4 font-heading font-bold text-white bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30 transition-all duration-300 hover:-translate-y-0.5"
-            >
-              <CalendarCheck size={19} />
-              {t.doneWarmCta}
-            </a>
+            {schedulerUrl ? (
+              <button
+                type="button"
+                onClick={() => setShowScheduler(true)}
+                className="hero-cta-primary inline-flex items-center gap-2.5 rounded-xl px-7 py-4 font-heading font-bold text-white bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30 transition-all duration-300 hover:-translate-y-0.5 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3b82f6]"
+              >
+                <CalendarCheck size={19} />
+                {t.doneWarmCta}
+              </button>
+            ) : (
+              <a
+                href={mailtoHref}
+                className="hero-cta-primary inline-flex items-center gap-2.5 rounded-xl px-7 py-4 font-heading font-bold text-white bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                <CalendarCheck size={19} />
+                {t.doneWarmCta}
+              </a>
+            )}
             <span className="text-slate-500 text-sm">{t.seeYouSoon}</span>
           </div>
         </>
@@ -842,7 +886,95 @@ function DoneScreen({
           className="ml-auto shrink-0 text-slate-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#3b82f6] transition-all duration-200"
         />
       </a>
+
+      <AnimatePresence>
+        {showScheduler && schedulerUrl && (
+          <SchedulerModal
+            url={schedulerUrl}
+            title={t.doneWarmCta}
+            closeLabel={t.close}
+            onClose={() => setShowScheduler(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
+  );
+}
+
+/**
+ * The rep's calendar, in-page: a full-height overlay with the scheduler in
+ * an iframe, so booking never navigates the prospect away from the thank-you
+ * screen. Escape, the ✕ and the backdrop all close it.
+ */
+function SchedulerModal({
+  url,
+  title,
+  closeLabel,
+  onClose,
+}: {
+  url: string;
+  title: string;
+  closeLabel: string;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8"
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <button
+        type="button"
+        aria-label={closeLabel}
+        onClick={onClose}
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm cursor-default"
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 24, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 16, scale: 0.98 }}
+        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+        className="relative w-full max-w-[1000px] h-[85dvh] max-h-[820px] rounded-2xl overflow-hidden border border-white/10 bg-[#0c0c1e] shadow-2xl shadow-black/60 flex flex-col"
+      >
+        <div className="flex items-center justify-between px-5 py-3 border-b border-white/10 bg-white/[0.03] shrink-0">
+          <span className="flex items-center gap-2.5 font-heading font-semibold text-slate-100">
+            <CalendarCheck size={17} className="text-[#3b82f6]" aria-hidden />
+            {title}
+          </span>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-100 transition-colors cursor-pointer rounded px-2 py-1 focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
+          >
+            <X size={16} />
+            {closeLabel}
+          </button>
+        </div>
+        <iframe
+          src={schedulerEmbedUrl(url)}
+          title={title}
+          className="w-full flex-1 border-0 bg-[#0a0a1a]"
+          allow="payment"
+        />
+      </motion.div>
+    </motion.div>
   );
 }
 
