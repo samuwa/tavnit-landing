@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/use-cases", label: "Use Cases" },
   { href: "/integrations", label: "Integrations" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/schedule", label: "Book a Demo" },
   { href: "/docs", label: "Docs" },
 ];
 

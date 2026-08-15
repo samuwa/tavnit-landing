@@ -84,6 +84,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${SITE_URL}/schedule`,
+      lastModified: lastCommitDate(
+        "src/app/schedule/page.tsx",
+        "src/components/ScheduleMeeting.tsx",
+      ),
+      changeFrequency: "monthly",
+      // Commercial intent, same tier as pricing.
+      priority: 0.9,
+    },
+    {
       url: `${SITE_URL}/use-cases`,
       lastModified: lastCommitDate("src/app/use-cases", "src/lib/use-cases.ts"),
       changeFrequency: "monthly",

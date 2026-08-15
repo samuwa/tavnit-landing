@@ -34,6 +34,12 @@ export default function FinalCTA() {
               <ArrowRight size={20} />
             </Link>
             <Link
+              href="/schedule"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-white/15 text-gray-300 rounded-xl text-base sm:text-lg font-medium hover:bg-white/5 hover:text-white hover:border-white/30 hover:-translate-y-0.5 transition-all"
+            >
+              Book a Demo
+            </Link>
+            <Link
               href="/docs"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-white/15 text-gray-300 rounded-xl text-base sm:text-lg font-medium hover:bg-white/5 hover:text-white hover:border-white/30 hover:-translate-y-0.5 transition-all"
             >
