@@ -12,7 +12,10 @@ import { ArrowRight, CalendarCheck, Loader2, Mail } from "lucide-react";
 
 /** Calendly/Cal.com URL tuned for a dark in-page embed, with the visitor's
  *  details prefilled so they don't type them twice. */
-function embedUrl(url: string, prefill: { name: string; email: string }): string {
+function embedUrl(
+  url: string,
+  prefill: { name: string; email: string; details: string },
+): string {
   try {
     const u = new URL(url);
     if (u.hostname.endsWith("calendly.com")) {
@@ -22,9 +25,15 @@ function embedUrl(url: string, prefill: { name: string; email: string }): string
       u.searchParams.set("background_color", "0a0a1a");
       u.searchParams.set("text_color", "e2e8f0");
       u.searchParams.set("primary_color", "3b82f6");
+      // a1 prefills the event's FIRST custom question (a2 the second, …).
+      // With no custom questions on the event it's silently ignored, so the
+      // company + topic land in the meeting details as soon as the rep adds
+      // one free-text question ("Anything to help us prepare?") in Calendly.
+      if (prefill.details) u.searchParams.set("a1", prefill.details);
     } else if (u.hostname.endsWith("cal.com")) {
       u.searchParams.set("embed", "true");
       u.searchParams.set("theme", "dark");
+      if (prefill.details) u.searchParams.set("notes", prefill.details);
     }
     if (prefill.name) u.searchParams.set("name", prefill.name);
     if (prefill.email) u.searchParams.set("email", prefill.email);
@@ -94,7 +103,13 @@ export default function ScheduleMeeting({
                 on short screens the widget scrolls internally instead of
                 pushing the page. */}
             <iframe
-              src={embedUrl(schedulerUrl, { name, email })}
+              src={embedUrl(schedulerUrl, {
+                name,
+                email,
+                details: [company && `Company: ${company}`, topic]
+                  .filter(Boolean)
+                  .join(" — "),
+              })}
               title="Pick a meeting time"
               className="h-[min(680px,calc(100svh-200px))] min-h-[420px] w-full"
               loading="lazy"
