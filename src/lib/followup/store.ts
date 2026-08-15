@@ -19,6 +19,8 @@ export type FollowupInvite = {
   company: string | null;
   contact_email: string | null;
   sales_rep: string | null;
+  /** The rep's inbox — what the prospect sees for uploads and the mailto CTA. */
+  sales_rep_email: string | null;
   notes: string | null;
   /** Starting language the sales rep picked for this client (es | en). */
   lang: string;

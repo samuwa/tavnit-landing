@@ -50,7 +50,6 @@ import {
   tr,
 } from "@/lib/followup/flow";
 import { UI } from "@/lib/followup/i18n";
-import { SALES_EMAIL } from "@/lib/site";
 
 const ICONS: Record<string, typeof Sparkles> = {
   sparkles: Sparkles,
@@ -71,6 +70,8 @@ type Props = {
   clientName: string;
   company: string | null;
   lang: Lang;
+  /** The assigned sales rep's inbox — shown for uploads and the mailto CTA. */
+  salesEmail: string;
   schedulerUrl: string | null;
   initialAnswers: Record<string, unknown>;
   alreadyCompleted: boolean;
@@ -81,6 +82,7 @@ export default function Questionnaire({
   clientName,
   company,
   lang: initialLang,
+  salesEmail,
   schedulerUrl,
   initialAnswers,
   alreadyCompleted,
@@ -237,7 +239,9 @@ export default function Questionnaire({
                     {tr(step.title, lang)}
                   </h2>
                   {step.subtitle ? (
-                    <p className="text-slate-400 leading-relaxed mb-8 max-w-xl">{tr(step.subtitle, lang)}</p>
+                    <p className="text-slate-400 leading-relaxed mb-8 max-w-xl">
+                      {tr(step.subtitle, lang).replace("{email}", salesEmail)}
+                    </p>
                   ) : (
                     <div className="mb-8" />
                   )}
@@ -247,6 +251,7 @@ export default function Questionnaire({
                     step={step}
                     lang={lang}
                     token={token}
+                    salesEmail={salesEmail}
                     initialValue={answers[step.id]}
                     files={files}
                     setFiles={setFiles}
@@ -259,6 +264,7 @@ export default function Questionnaire({
                 <DoneScreen
                   clientName={clientName}
                   lang={lang}
+                  salesEmail={salesEmail}
                   sentiment={String(answers.sentiment ?? "")}
                   answers={answers}
                   schedulerUrl={schedulerUrl}
@@ -315,6 +321,7 @@ function StepInput({
   step,
   lang,
   token,
+  salesEmail,
   initialValue,
   files,
   setFiles,
@@ -323,6 +330,7 @@ function StepInput({
   step: Step;
   lang: Lang;
   token: string;
+  salesEmail: string;
   initialValue: unknown;
   files: UploadedFile[];
   setFiles: React.Dispatch<React.SetStateAction<UploadedFile[]>>;
@@ -339,7 +347,14 @@ function StepInput({
       return <DateInput step={step} lang={lang} initialValue={initialValue} onCommit={onCommit} />;
     case "upload":
       return (
-        <UploadInput lang={lang} token={token} files={files} setFiles={setFiles} onCommit={onCommit} />
+        <UploadInput
+          lang={lang}
+          token={token}
+          salesEmail={salesEmail}
+          files={files}
+          setFiles={setFiles}
+          onCommit={onCommit}
+        />
       );
     default:
       return null;
@@ -537,12 +552,14 @@ function DateInput({
 function UploadInput({
   lang,
   token,
+  salesEmail,
   files,
   setFiles,
   onCommit,
 }: {
   lang: Lang;
   token: string;
+  salesEmail: string;
   files: UploadedFile[];
   setFiles: React.Dispatch<React.SetStateAction<UploadedFile[]>>;
   onCommit: (v: unknown) => void;
@@ -559,7 +576,7 @@ function UploadInput({
     setError(null);
     for (const file of Array.from(list).slice(0, 5)) {
       if (file.size > 10 * 1024 * 1024) {
-        setError(t.fileTooLarge(file.name));
+        setError(t.fileTooLarge(file.name, salesEmail));
         continue;
       }
       const body = new FormData();
@@ -569,7 +586,7 @@ function UploadInput({
         if (!res.ok) throw new Error();
         setFiles((f) => [...f, { name: file.name, size: file.size }]);
       } catch {
-        setError(t.uploadFailed(file.name));
+        setError(t.uploadFailed(file.name, salesEmail));
       }
     }
     setBusy(false);
@@ -654,12 +671,14 @@ function UploadInput({
 function DoneScreen({
   clientName,
   lang,
+  salesEmail,
   sentiment,
   answers,
   schedulerUrl,
 }: {
   clientName: string;
   lang: Lang;
+  salesEmail: string;
   sentiment: string;
   answers: Record<string, unknown>;
   schedulerUrl: string | null;
@@ -668,7 +687,7 @@ function DoneScreen({
   const cold = sentiment === "not_needed";
   const scheduleHref =
     schedulerUrl ??
-    `mailto:${SALES_EMAIL}?subject=${encodeURIComponent(
+    `mailto:${salesEmail}?subject=${encodeURIComponent(
       lang === "es" ? `Agendar demo — ${clientName}` : `Schedule demo — ${clientName}`,
     )}`;
 

@@ -54,6 +54,7 @@ export default async function FollowupPage(props: { params: Promise<{ token: str
         clientName={invite.client_name}
         company={invite.company}
         lang={lang}
+        salesEmail={invite.sales_rep_email ?? SALES_EMAIL}
         schedulerUrl={process.env.FOLLOWUP_SCHEDULER_URL ?? null}
         initialAnswers={invite.answers}
         alreadyCompleted={Boolean(invite.completed_at)}

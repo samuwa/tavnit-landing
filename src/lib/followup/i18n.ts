@@ -1,5 +1,4 @@
 import type { Lang } from "./flow";
-import { SALES_EMAIL } from "@/lib/site";
 
 /**
  * UI chrome for the questionnaire (everything that isn't a question — those
@@ -26,8 +25,8 @@ export const UI: Record<
     preferEmail: string;
     dropzoneTitle: string;
     dropzoneHint: string;
-    fileTooLarge: (name: string) => string;
-    uploadFailed: (name: string) => string;
+    fileTooLarge: (name: string, email: string) => string;
+    uploadFailed: (name: string, email: string) => string;
     filesAnswer: (n: number) => string;
     doneColdTitle: (name: string) => string;
     doneColdBody: string;
@@ -68,8 +67,8 @@ export const UI: Record<
     preferEmail: "Prefiero mandarlos por correo",
     dropzoneTitle: "Arrastra tus documentos o haz clic para elegirlos",
     dropzoneHint: "PDF, imágenes o Excel · hasta 10 MB por archivo",
-    fileTooLarge: (name) => `"${name}" pasa de 10 MB — mándalo mejor a ${SALES_EMAIL}.`,
-    uploadFailed: (name) => `No pudimos subir "${name}". Inténtalo de nuevo o mándalo a ${SALES_EMAIL}.`,
+    fileTooLarge: (name, email) => `"${name}" pasa de 10 MB — mándalo mejor a ${email}.`,
+    uploadFailed: (name, email) => `No pudimos subir "${name}". Inténtalo de nuevo o mándalo a ${email}.`,
     filesAnswer: (n) => `${n} archivo(s)`,
     doneColdTitle: (name) => `Muchas gracias por tu tiempo, ${name}.`,
     doneColdBody:
@@ -111,8 +110,8 @@ export const UI: Record<
     preferEmail: "I'd rather send them by email",
     dropzoneTitle: "Drag your documents here or click to choose",
     dropzoneHint: "PDF, images or Excel · up to 10 MB per file",
-    fileTooLarge: (name) => `"${name}" is over 10 MB — better send it to ${SALES_EMAIL}.`,
-    uploadFailed: (name) => `We couldn't upload "${name}". Try again or send it to ${SALES_EMAIL}.`,
+    fileTooLarge: (name, email) => `"${name}" is over 10 MB — better send it to ${email}.`,
+    uploadFailed: (name, email) => `We couldn't upload "${name}". Try again or send it to ${email}.`,
     filesAnswer: (n) => `${n} file(s)`,
     doneColdTitle: (name) => `Thank you so much for your time, ${name}.`,
     doneColdBody:

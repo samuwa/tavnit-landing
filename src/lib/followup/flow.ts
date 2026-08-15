@@ -15,8 +15,6 @@
  * stored in `followup_invites.answers` — renaming one orphans stored data.
  */
 
-import { SALES_EMAIL } from "@/lib/site";
-
 export type Lang = "es" | "en";
 export const DEFAULT_LANG: Lang = "es";
 
@@ -134,8 +132,9 @@ export const STEPS: Record<string, Step> = {
     id: "docs_upload",
     title: { es: "Puedes subir tus documentos aquí", en: "You can upload your documents here" },
     subtitle: {
-      es: `PDF, imágenes o Excel. Si prefieres, mándalos a ${SALES_EMAIL} — como te quede más cómodo.`,
-      en: `PDF, images or Excel. If you prefer, send them to ${SALES_EMAIL} — whatever is easiest.`,
+      // {email} is replaced at render time with the invite's sales rep inbox.
+      es: "PDF, imágenes o Excel. Si prefieres, mándalos a {email} — como te quede más cómodo.",
+      en: "PDF, images or Excel. If you prefer, send them to {email} — whatever is easiest.",
     },
     kind: "upload",
     optional: true,
