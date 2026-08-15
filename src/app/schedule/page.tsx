@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { CalendarDays, Clock, MessageSquare } from "lucide-react";
-import MarketingPage from "@/components/MarketingPage";
+import SquaresBackground from "@/components/SquaresBackground";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import ScheduleMeeting from "@/components/ScheduleMeeting";
 import { getSalesSchedulerUrl } from "@/lib/schedule";
 import { SALES_EMAIL } from "@/lib/site";
@@ -48,30 +50,41 @@ export default async function SchedulePage() {
   const schedulerUrl = await getSalesSchedulerUrl();
 
   return (
-    <MarketingPage>
-      <div className="mx-auto max-w-[880px] px-4 sm:px-6">
-        <div className="mb-10 text-center">
-          <h1 className="mb-4 text-3xl font-bold leading-tight text-white sm:text-5xl">
-            Book a Demo
-          </h1>
-          <p className="mx-auto max-w-[560px] text-base text-gray-300 sm:text-lg">
-            Tell us a little about your documents, then pick a time straight on
-            the calendar.
-          </p>
-        </div>
+    <>
+      <SquaresBackground />
+      <Header />
+      {/* Everything lives in one viewport: the pitch and the form sit side by
+          side, vertically centered, so nothing important needs a scroll. */}
+      <main
+        role="main"
+        className="relative z-10 flex min-h-svh flex-col justify-center px-4 pb-10 pt-24 sm:px-6 lg:pt-16"
+      >
+        <div className="mx-auto grid w-full max-w-[1080px] items-center gap-8 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-12">
+          <div className="text-center lg:text-left">
+            <h1 className="mb-3 text-3xl font-bold leading-tight text-white sm:text-4xl">
+              Book a Demo
+            </h1>
+            <p className="mx-auto mb-6 max-w-[440px] text-base text-gray-300 lg:mx-0">
+              Tell us a little about your documents, then pick a time straight
+              on the calendar.
+            </p>
+            <ul className="hidden space-y-4 lg:block">
+              {EXPECTATIONS.map(({ icon: Icon, title, text }) => (
+                <li key={title} className="flex items-start gap-3">
+                  <Icon size={18} className="mt-0.5 shrink-0 text-[#3b82f6]" aria-hidden />
+                  <p className="text-sm text-slate-400">
+                    <span className="font-semibold text-white">{title}.</span>{" "}
+                    {text}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="mb-10 grid gap-4 sm:grid-cols-3">
-          {EXPECTATIONS.map(({ icon: Icon, title, text }) => (
-            <div key={title} className="glass-card rounded-xl px-5 py-4">
-              <Icon size={18} className="mb-2 text-[#3b82f6]" aria-hidden />
-              <p className="mb-1 text-sm font-semibold text-white">{title}</p>
-              <p className="text-sm text-slate-400">{text}</p>
-            </div>
-          ))}
+          <ScheduleMeeting schedulerUrl={schedulerUrl} salesEmail={SALES_EMAIL} />
         </div>
-
-        <ScheduleMeeting schedulerUrl={schedulerUrl} salesEmail={SALES_EMAIL} />
-      </div>
-    </MarketingPage>
+      </main>
+      <Footer />
+    </>
   );
 }

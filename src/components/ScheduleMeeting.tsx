@@ -90,10 +90,13 @@ export default function ScheduleMeeting({
 
         {schedulerUrl ? (
           <div className="overflow-hidden rounded-2xl border border-white/15">
+            {/* Calendly wants ~700px, but never taller than the viewport —
+                on short screens the widget scrolls internally instead of
+                pushing the page. */}
             <iframe
               src={embedUrl(schedulerUrl, { name, email })}
               title="Pick a meeting time"
-              className="h-[700px] w-full"
+              className="h-[min(680px,calc(100svh-200px))] min-h-[420px] w-full"
               loading="lazy"
             />
           </div>
