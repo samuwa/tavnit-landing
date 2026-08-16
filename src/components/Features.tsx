@@ -486,25 +486,55 @@ function BucketsVignette() {
 }
 
 function ApiVignette() {
-  const lines = [
-    { l: "POST /api/v1/runs", r: "201 created", ok: true },
-    { l: "email → invoices@collect.tavnit.io", r: "queued", ok: true },
-    { l: "webhook → erp.example.com/ap", r: "200 ok", ok: true },
-    { l: "fill → payment_order.pdf", r: "done", ok: true },
-  ];
+  const inCard = "feat-cell rounded-lg border border-white/10 bg-white/[0.04] p-2";
   return (
     <div className={frameC}>
-      <p className="text-white/45">Every way in — and out</p>
-      <div className="mt-2.5 space-y-2">
-        {lines.map((x, i) => (
-          <div key={x.l} className="feat-cell flex items-center justify-between gap-3 rounded-md border border-white/10 bg-white/[0.05] px-2.5 py-1.5" style={{ animationDelay: `${0.3 + i * 0.45}s` }}>
-            <span className="truncate text-white/75">{x.l}</span>
-            <span className="shrink-0 text-emerald-400">{x.r}</span>
+      <p className="text-center text-white/45">One run — every door in, every door out</p>
+      <div className="mt-2.5 grid grid-cols-[1fr_24px_1.15fr] items-center gap-1.5">
+        {/* Documents in */}
+        <div className="space-y-2">
+          <p className="text-[10px] uppercase tracking-wider text-white/40">Documents in</p>
+          <div className={inCard} style={{ animationDelay: "0.3s" }}>
+            <p className="truncate text-white/75">✉ invoices@collect.tavnit.io</p>
+            <p className="mt-0.5 text-[10px] text-white/45">fwd: invoice_2043.pdf</p>
           </div>
-        ))}
+          <div className={inCard} style={{ animationDelay: "0.7s" }}>
+            <p className="truncate text-white/75">POST /api/v1/runs</p>
+            <p className="mt-0.5 text-[10px] text-emerald-400">201 · run #4129 started</p>
+          </div>
+        </div>
+
+        {/* Through Tavnit */}
+        <div className="feat-cell flex flex-col items-center gap-1 text-white/35" style={{ animationDelay: "1.2s" }} aria-hidden="true">
+          <span>→</span>
+        </div>
+
+        {/* Results out */}
+        <div className="space-y-2">
+          <p className="text-[10px] uppercase tracking-wider text-white/40">Extracted results out</p>
+          <div className={inCard} style={{ animationDelay: "1.6s" }}>
+            <p className="truncate text-white/75">webhook → erp.example.com/ap</p>
+            <p className="mt-0.5 truncate text-[10px]">
+              <span className="text-[#93c5fd]">{'{ "total": 1420.00, … }'}</span>{" "}
+              <span className="text-emerald-400">200</span>
+            </p>
+          </div>
+          <div className={inCard} style={{ animationDelay: "2.2s" }}>
+            <p className="truncate text-white/75">payment_order.pdf</p>
+            <p className="mt-0.5 text-[10px] text-white/45">
+              form filled from extracted fields <span className="text-emerald-400">✓</span>
+            </p>
+          </div>
+          <div className={inCard} style={{ animationDelay: "2.8s" }}>
+            <p className="truncate text-white/75">bucket: Invoices</p>
+            <p className="mt-0.5 text-[10px] text-white/45">
+              +1 row appended <span className="text-emerald-400">✓</span>
+            </p>
+          </div>
+        </div>
       </div>
-      <p className="feat-cell mt-3 text-[10px] text-white/40" style={{ animationDelay: "2.3s" }}>
-        REST · email triggers · webhooks · Zapier / Make
+      <p className="feat-cell mt-3 text-center text-[10px] text-white/40" style={{ animationDelay: "3.4s" }}>
+        REST API · email triggers · webhooks · PDF forms · Zapier / Make
       </p>
     </div>
   );
@@ -546,7 +576,7 @@ const features = [
   { icon: UserCheck, title: "Human in the Loop", desc: "Pause runs for review — extracted data next to the source document. Fix values in place, approve or reject, and every action lands in an append-only audit trail.", Vignette: HitlVignette },
   { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can build flows, attach cleaners, run extractions, and query your data.", Vignette: McpVignette },
   { icon: Database, title: "Buckets & Analytics", desc: "Editable tables where extracted data lands. Fix a cell in place, export CSV/Excel, search columns semantically — and open built-in analytics with one click.", Vignette: BucketsVignette },
-  { icon: Code2, title: "API, Email & Webhooks", desc: "REST API, email triggers, webhook callbacks, PDF form filling, and Zapier/Make compatibility.", Vignette: ApiVignette },
+  { icon: Code2, title: "API, Email & Webhooks", desc: "Send documents in by REST API or a forwarding address; results come out as webhook JSON, filled PDF forms, or bucket rows — Zapier and Make included.", Vignette: ApiVignette },
   { icon: Users, title: "Teams & Roles", desc: "Owner, Admin, Member, and Viewer roles with org-level permissions and unlimited seats.", Vignette: TeamsVignette },
 ];
 
