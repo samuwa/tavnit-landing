@@ -942,6 +942,76 @@ h1, h2, h3, h4, h5, h6 {
   animation: featSplit 0.55s ease forwards;
 }
 
+/* A dirty value being struck through and dimmed as its clean
+   replacement appears. Delay via --strike-d. */
+@keyframes featStrike {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes featDim {
+  to {
+    color: rgba(255, 255, 255, 0.28);
+  }
+}
+
+.feat-strike {
+  position: relative;
+  animation: featDim 0.35s ease forwards;
+  animation-delay: var(--strike-d, 0s);
+}
+
+.feat-strike::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: featStrike 0.35s ease forwards;
+  animation-delay: var(--strike-d, 0s);
+}
+
+/* One-shot beam sweeping down a list as rows are cleaned */
+@keyframes featSweepY {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 2px);
+    opacity: 0;
+  }
+}
+
+.feat-sweep {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.8),
+    transparent
+  );
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  opacity: 0;
+  animation: featSweepY 2.5s ease-in-out forwards;
+  animation-delay: 0.35s;
+}
+
 /* Analytics bars growing from the baseline */
 @keyframes featBar {
   from {
@@ -1011,6 +1081,17 @@ h1, h2, h3, h4, h5, h6 {
   .feat-split {
     animation: none;
     opacity: 1;
+  }
+  .feat-strike {
+    animation: none;
+    color: rgba(255, 255, 255, 0.28);
+  }
+  .feat-strike::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+  .feat-sweep {
+    display: none;
   }
   .feat-bar {
     animation: none;

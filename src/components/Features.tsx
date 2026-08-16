@@ -187,25 +187,45 @@ function RoutingVignette() {
 
 function CleaningVignette() {
   const rows = [
-    { dirty: "acme CORP.", clean: "Acme Corp" },
-    { dirty: "07/16/26", clean: "2026-07-16" },
-    { dirty: "1.240,00 EUR", clean: "$1,352.40" },
-    { dirty: "8471.30", clean: "HS 8471.30 · laptops" },
+    { dirty: "acme CORP.", clean: "Acme Corp", op: "format" },
+    { dirty: "07/16/26", clean: "2026-07-16", op: "date" },
+    { dirty: "1.240,00 EUR", clean: "$1,352.40", op: "convert fx" },
+    { dirty: "2 × 1,240.00", clean: "2,480.00", op: "calculate" },
+    { dirty: "hex bolt M8", clean: "HS 7318.15", op: "classify" },
   ];
   return (
     <div className={frameC}>
-      <p className="text-white/45">Cleaners · normalize before anything is stored</p>
-      <div className="mt-3 space-y-2.5">
-        {rows.map((r, i) => (
-          <div key={r.dirty} className="grid grid-cols-[1fr_20px_1.3fr] items-center gap-2">
-            <span className="truncate text-white/40 line-through decoration-white/25">{r.dirty}</span>
-            <span className="text-white/30">→</span>
-            <span className="feat-cell truncate text-white/85" style={{ animationDelay: `${0.4 + i * 0.4}s` }}>{r.clean}</span>
-          </div>
-        ))}
+      <p className="text-white/45">Cleaners · every value normalized before it&apos;s stored</p>
+      <div className="relative mt-3">
+        <div className="space-y-2.5">
+          {rows.map((r, i) => {
+            const delay = 0.5 + i * 0.45;
+            return (
+              <div key={r.dirty} className="grid grid-cols-[1fr_16px_1fr_auto] items-center gap-2">
+                <span
+                  className="feat-strike justify-self-start max-w-full truncate text-white/70"
+                  style={{ "--strike-d": `${delay}s` } as React.CSSProperties}
+                >
+                  {r.dirty}
+                </span>
+                <span className="text-white/30">→</span>
+                <span className="feat-cell truncate text-white/90" style={{ animationDelay: `${delay}s` }}>
+                  {r.clean}
+                </span>
+                <span
+                  className="feat-cell rounded bg-[#3b82f6]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#93c5fd]"
+                  style={{ animationDelay: `${delay}s` }}
+                >
+                  {r.op}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+        <div className="feat-sweep" aria-hidden="true" />
       </div>
-      <p className="feat-cell mt-3 flex items-center gap-1.5 text-emerald-400" style={{ animationDelay: "2.2s" }}>
-        <Check size={12} /> Formatted, converted, classified
+      <p className="feat-cell mt-3.5 flex items-center gap-1.5 text-emerald-400" style={{ animationDelay: "3.1s" }}>
+        <Check size={12} /> Clean, consistent, delivered — nothing edited by hand
       </p>
     </div>
   );
