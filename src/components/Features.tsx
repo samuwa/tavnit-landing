@@ -61,28 +61,55 @@ function ExtractionVignette() {
 }
 
 function FlowBuilderVignette() {
-  const schema = [
+  const metaFields = [
     { k: "vendor", t: "text" },
     { k: "invoice_date", t: "date" },
-    { k: "line_items", t: "table" },
     { k: "total", t: "currency" },
   ];
+  const columns = ["description", "qty", "unit_price", "amount"];
+  const sampleRow = ["Ocean freight", "2", "1,240.00", "2,480.00"];
   return (
     <div className={frameC}>
       <p className="text-white/45">New flow · describe what to capture</p>
-      <div className="mt-2 rounded-lg border border-[#3b82f6]/30 bg-[#3b82f6]/[0.07] px-3 py-2.5 text-white/80">
+      <div className="mt-1.5 rounded-lg border border-[#3b82f6]/30 bg-[#3b82f6]/[0.07] px-3 py-2 text-white/80">
         &ldquo;Capture the vendor, dates, totals and every line item from our supplier invoices&rdquo;
       </div>
-      <div className="mx-auto my-2 h-5 w-px bg-gradient-to-b from-white/35 to-white/10" />
-      <p className="feat-cell text-white/45 uppercase tracking-wider text-[10px]" style={{ animationDelay: "0.5s" }}>Generated schema</p>
-      <div className="mt-2 flex flex-wrap gap-2">
-        {schema.map((f, i) => (
-          <span key={f.k} className={`feat-cell ${chip}`} style={{ animationDelay: `${0.7 + i * 0.3}s` }}>
+      <div className="mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-white/35 to-white/10" />
+
+      {/* Metadata fields: one value per document */}
+      <p className="feat-cell text-[10px] uppercase tracking-wider text-white/45" style={{ animationDelay: "0.4s" }}>
+        Metadata fields <span className="normal-case tracking-normal text-white/30">· one value per document</span>
+      </p>
+      <div className="mt-1.5 flex flex-wrap gap-1.5">
+        {metaFields.map((f, i) => (
+          <span key={f.k} className={`feat-cell ${chip}`} style={{ animationDelay: `${0.6 + i * 0.3}s` }}>
             {f.k}: <span className="text-[#93c5fd]">{f.t}</span>
           </span>
         ))}
       </div>
-      <p className="feat-cell mt-3 flex items-center gap-1.5 text-emerald-400" style={{ animationDelay: "2.1s" }}>
+
+      {/* Table fields: one row per line item */}
+      <p className="feat-cell mt-3 text-[10px] uppercase tracking-wider text-white/45" style={{ animationDelay: "1.7s" }}>
+        Table · line_items <span className="normal-case tracking-normal text-white/30">· one row per line item</span>
+      </p>
+      <div className="feat-cell mt-1.5 overflow-hidden rounded-lg border border-white/10" style={{ animationDelay: "1.9s" }}>
+        <div className="grid grid-cols-[1.6fr_0.6fr_1fr_1fr] divide-x divide-white/10 bg-white/[0.07]">
+          {columns.map((c, i) => (
+            <span key={c} className="feat-cell truncate px-2 py-1 text-white/60" style={{ animationDelay: `${2.1 + i * 0.25}s` }}>
+              {c}
+            </span>
+          ))}
+        </div>
+        <div className="grid grid-cols-[1.6fr_0.6fr_1fr_1fr] divide-x divide-white/10 border-t border-white/10">
+          {sampleRow.map((v, i) => (
+            <span key={i} className="feat-cell truncate px-2 py-1 text-white/80" style={{ animationDelay: `${3.1 + i * 0.15}s` }}>
+              {v}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <p className="feat-cell mt-3 flex items-center gap-1.5 text-emerald-400" style={{ animationDelay: "3.9s" }}>
         <Check size={12} /> Flow ready — no code written
       </p>
     </div>
@@ -336,7 +363,7 @@ function TeamsVignette() {
 
 const features = [
   { icon: Sparkles, title: "AI Extraction", desc: "Multiple leading AI models pull tables, metadata, handwriting, and complex layouts out of any document — with a confidence score on every field.", Vignette: ExtractionVignette },
-  { icon: LayoutGrid, title: "Flow Builder", desc: "Describe what to capture in plain language and get a working extraction pipeline — field hints, validation, and output mapping, no code.", Vignette: FlowBuilderVignette },
+  { icon: LayoutGrid, title: "Flow Builder", desc: "Describe what to capture in plain language and Tavnit builds the schema — metadata fields for single values like vendor and total, table fields for line items. No code.", Vignette: FlowBuilderVignette },
   { icon: GitBranch, title: "Routing & Splitting", desc: "Splitters break multi-document PDFs apart, then Collections route each document to the right flow automatically.", Vignette: RoutingVignette },
   { icon: Lightbulb, title: "AI Data Cleaning", desc: "Cleaners format, translate, convert currencies and units, calculate fields, match reference data — even classify HS tariff codes.", Vignette: CleaningVignette },
   { icon: Bot, title: "AI Agents", desc: "Browser-automation agents act on extracted data across the web — and you can watch every session live.", Vignette: AgentsVignette },
