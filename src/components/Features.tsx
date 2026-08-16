@@ -487,9 +487,10 @@ function BucketsVignette() {
 
 function ApiVignette() {
   const outs = [
-    { title: "webhook", detail: '{ "total": 1420.00 }', note: "erp.example.com · 200", delay: 1.7 },
-    { title: "PDF form", detail: "payment_order.pdf", note: "filled & attached", delay: 2.1 },
-    { title: "bucket", detail: "Invoices", note: "+1 row appended", delay: 2.5 },
+    { title: "webhook", detail: '{ "total": 1420 }', note: "erp · 200", delay: 1.7 },
+    { title: "email", detail: "ap@acme.com", note: "results sent", delay: 2.0 },
+    { title: "PDF form", detail: "payment_order.pdf", note: "filled", delay: 2.3 },
+    { title: "bucket", detail: "Invoices", note: "+1 row", delay: 2.6 },
   ];
   return (
     <div className={frameC}>
@@ -511,7 +512,7 @@ function ApiVignette() {
       <div className="feat-cell mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-white/35 to-white/10" style={{ animationDelay: "1.5s" }} aria-hidden="true" />
 
       {/* Out — one delivery row, left to right */}
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-4 gap-2">
         {outs.map((o) => (
           <div key={o.title} className="feat-cell rounded-lg border border-white/10 bg-white/[0.04] p-2 text-center" style={{ animationDelay: `${o.delay}s` }}>
             <p className="text-[10px] uppercase tracking-wider text-white/40">{o.title}</p>
@@ -524,7 +525,7 @@ function ApiVignette() {
       </div>
 
       <p className="feat-cell mt-3.5 text-center text-[10px] text-white/40" style={{ animationDelay: "3.1s" }}>
-        also in: REST API · UI upload&ensp;·&ensp;also out: email · Zapier / Make
+        also in: REST API · UI upload&ensp;·&ensp;also out: Zapier / Make
       </p>
     </div>
   );
