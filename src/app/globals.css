@@ -878,6 +878,127 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================
+   FEATURE SHOWCASE VIGNETTES
+   ========================================== */
+
+/* Elements of a vignette pop in one by one via animation-delay */
+@keyframes featCell {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.feat-cell {
+  opacity: 0;
+  animation: featCell 0.45s ease forwards;
+}
+
+/* Scan beam sweeping a miniature document */
+@keyframes featScan {
+  from {
+    top: 12%;
+  }
+  to {
+    top: 88%;
+  }
+}
+
+.feat-scan {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.85),
+    transparent
+  );
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+  animation: featScan 2.2s ease-in-out infinite alternate;
+}
+
+/* Analytics bars growing from the baseline */
+@keyframes featBar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.feat-bar {
+  transform-origin: bottom;
+  transform: scaleY(0);
+  animation: featBar 0.6s ease forwards;
+}
+
+/* Agent demo: text typed character by character (7ch = "PN-4471") */
+@keyframes agentType {
+  from {
+    width: 0;
+  }
+  to {
+    width: 7ch;
+  }
+}
+
+.agent-type {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  animation: agentType 0.8s steps(7, end) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-type {
+    animation: none;
+    width: auto;
+  }
+}
+
+/* One-shot button press (delay set inline via animation-delay) */
+@keyframes featPress {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.94);
+    filter: brightness(1.35);
+  }
+}
+
+.feat-press {
+  animation: featPress 0.35s ease 1 both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feat-cell {
+    animation: none;
+    opacity: 1;
+  }
+  .feat-scan {
+    display: none;
+  }
+  .feat-bar {
+    animation: none;
+    transform: none;
+  }
+  .feat-press {
+    animation: none;
+  }
+}
+
+/* ==========================================
    SCROLL SNAPPING
    ========================================== */
 

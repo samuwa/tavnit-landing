@@ -3,15 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Bot, GitBranch, MonitorPlay, PackageCheck, ArrowRight } from "lucide-react";
+import { Bot, GitBranch, MonitorPlay, PackageCheck, ArrowRight, MousePointer2, Target } from "lucide-react";
 
-/* Agent step log — mirrors the real tools an agent has: goto, observe, fill, click, capture */
+/* Agent step log, in plain language: open → find → type → click → read */
 const agentSteps = [
-  { verb: "goto", detail: "portal.acme-suppliers.com" },
-  { verb: "observe", detail: "search form · 12 elements found" },
-  { verb: "fill", detail: 'Part number → "PN-4471"' },
+  { verb: "open", detail: "portal.acme-suppliers.com" },
+  { verb: "find", detail: "the part search form" },
+  { verb: "type", detail: 'part number "PN-4471"' },
   { verb: "click", detail: '"Search"' },
-  { verb: "capture", detail: "unit_price, lead_time_days" },
+  { verb: "read", detail: "price & lead time from the results" },
+];
+
+/* Where the agent cursor hovers during each step (percent of the page area) */
+const cursorPositions: { left: string; top: string; opacity: number }[] = [
+  { left: "50%", top: "115%", opacity: 0 }, // 0 open — offscreen
+  { left: "42%", top: "48%", opacity: 1 }, // 1 find — over the form
+  { left: "28%", top: "44%", opacity: 1 }, // 2 type — over the input
+  { left: "84%", top: "44%", opacity: 1 }, // 3 click — over the button
+  { left: "72%", top: "82%", opacity: 1 }, // 4 read — over the result values
+  { left: "72%", top: "82%", opacity: 0 }, // 5 done — fade out
 ];
 
 /* Timeline: one tick per step, then the output panel holds, then loop */
@@ -38,9 +48,13 @@ const highlights = [
 
 function BrowserDemo({ step }: { step: number }) {
   const outputVisible = step >= agentSteps.length;
+  const finding = step === 1;
+  const typing = step === 2;
   const filled = step >= 3;
   const clicked = step >= 4;
+  const resultVisible = step >= 4;
   const captured = step >= 5;
+  const cursor = cursorPositions[Math.min(step, cursorPositions.length - 1)];
 
   return (
     <div className="glass-card rounded-2xl overflow-hidden border border-[#3b82f6]/20 shadow-2xl shadow-[#3b82f6]/10">
@@ -60,18 +74,35 @@ function BrowserDemo({ step }: { step: number }) {
         </span>
       </div>
 
+      {/* The mission — so every step below reads as progress toward it */}
+      <div className="flex items-center gap-2 px-4 sm:px-5 py-2.5 border-b border-white/10 bg-[#3b82f6]/[0.06] text-xs">
+        <Target size={13} className="text-[#93c5fd] flex-shrink-0" />
+        <span className="text-[#93c5fd] font-bold uppercase tracking-wider text-[10px]">Mission</span>
+        <span className="text-gray-300 truncate">Get the price and lead time for part PN-4471</span>
+      </div>
+
       {/* Page being operated */}
-      <div className="p-4 sm:p-5 bg-[#0d0d20]/60 min-h-[150px]">
+      <div className="relative p-4 sm:p-5 bg-[#0d0d20]/60 min-h-[150px]">
         <div className="h-2.5 w-24 rounded bg-white/10 mb-4" aria-hidden="true" />
-        <div className="flex gap-2 mb-4">
+        <div
+          className={`flex gap-2 mb-4 rounded-xl transition-all duration-500 ${
+            finding ? "ring-2 ring-[#3b82f6]/50 ring-offset-4 ring-offset-[#0d0d20]" : ""
+          }`}
+        >
           <div
             className={`flex-1 rounded-lg border px-3 py-2 text-xs font-mono transition-all duration-500 ${
-              filled
+              typing || filled
                 ? "border-[#3b82f6]/50 bg-[#3b82f6]/10 text-white"
                 : "border-white/10 bg-black/20 text-gray-600"
             }`}
           >
-            {filled ? "PN-4471" : "Part number"}
+            {typing ? (
+              <span className="agent-type">PN-4471</span>
+            ) : filled ? (
+              "PN-4471"
+            ) : (
+              "Part number"
+            )}
           </div>
           <div
             className={`rounded-lg border px-4 py-2 text-xs font-semibold transition-all duration-300 ${
@@ -85,13 +116,37 @@ function BrowserDemo({ step }: { step: number }) {
         </div>
         <div
           className={`rounded-lg border border-white/10 bg-black/20 px-3 py-2.5 flex items-center justify-between text-xs transition-all duration-500 ${
-            captured ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+            resultVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
           }`}
         >
           <span className="text-gray-300 font-mono">PN-4471 · Hex bolt M8</span>
-          <span className="flex gap-3 font-mono">
-            <span className={captured ? "text-emerald-400" : "text-gray-500"}>$12.40</span>
-            <span className="text-gray-400">5 days</span>
+          <span className="flex gap-2 font-mono">
+            <span
+              className={`rounded px-1.5 py-0.5 transition-all duration-500 ${
+                captured ? "bg-emerald-500/15 text-emerald-400" : "text-gray-400"
+              }`}
+            >
+              $12.40
+            </span>
+            <span
+              className={`rounded px-1.5 py-0.5 transition-all duration-500 ${
+                captured ? "bg-emerald-500/15 text-emerald-400" : "text-gray-400"
+              }`}
+            >
+              5 days
+            </span>
+          </span>
+        </div>
+
+        {/* The agent's cursor gliding to whatever it acts on */}
+        <div
+          className="absolute z-10 transition-all duration-1000 ease-in-out pointer-events-none"
+          style={{ left: cursor.left, top: cursor.top, opacity: cursor.opacity }}
+          aria-hidden="true"
+        >
+          <MousePointer2 size={18} className="text-white fill-white drop-shadow-[0_0_6px_rgba(59,130,246,0.9)]" />
+          <span className="absolute -bottom-4 left-4 whitespace-nowrap rounded bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] px-1.5 py-0.5 text-[9px] font-bold text-white shadow-lg">
+            Agent
           </span>
         </div>
       </div>
