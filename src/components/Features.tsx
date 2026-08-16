@@ -498,8 +498,6 @@ export default function Features() {
                 key={f.title}
                 role="tab"
                 aria-selected={i === active}
-                onMouseEnter={() => select(i)}
-                onFocus={() => select(i)}
                 onClick={() => select(i)}
                 className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
                   i === active ? "bg-white/[0.07] text-white" : "text-gray-400 hover:text-white hover:bg-white/[0.04]"
