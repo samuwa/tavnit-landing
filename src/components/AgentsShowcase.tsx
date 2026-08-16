@@ -5,23 +5,33 @@ import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { Bot, GitBranch, MonitorPlay, PackageCheck, ArrowRight, MousePointer2, Target } from "lucide-react";
 
-/* Agent step log, in plain language: open → find → type → click → read */
+/* The fields a flow already extracted — the agent's working material.
+   Each one is typed into the matching form field during its step. */
+const extractedFields = [
+  { key: "vendor", value: "Acme Corp", label: "Vendor name", width: "9ch" },
+  { key: "invoice_no", value: "INV-2043", label: "Invoice number", width: "8ch" },
+  { key: "total", value: "$1,420.00", label: "Amount (USD)", width: "9ch" },
+];
+
+/* Agent step log, in plain language: open → fill ×3 → click → read */
 const agentSteps = [
-  { verb: "open", detail: "portal.acme-suppliers.com" },
-  { verb: "find", detail: "the part search form" },
-  { verb: "type", detail: 'part number "PN-4471"' },
-  { verb: "click", detail: '"Search"' },
-  { verb: "read", detail: "price & lead time from the results" },
+  { verb: "open", detail: "the supplier payment portal" },
+  { verb: "fill", detail: "Vendor name ← extracted vendor" },
+  { verb: "fill", detail: "Invoice number ← extracted invoice_no" },
+  { verb: "fill", detail: "Amount ← extracted total" },
+  { verb: "click", detail: '"Submit payment"' },
+  { verb: "read", detail: "the confirmation number" },
 ];
 
 /* Where the agent cursor hovers during each step (percent of the page area) */
 const cursorPositions: { left: string; top: string; opacity: number }[] = [
   { left: "50%", top: "115%", opacity: 0 }, // 0 open — offscreen
-  { left: "42%", top: "48%", opacity: 1 }, // 1 find — over the form
-  { left: "28%", top: "44%", opacity: 1 }, // 2 type — over the input
-  { left: "84%", top: "44%", opacity: 1 }, // 3 click — over the button
-  { left: "72%", top: "82%", opacity: 1 }, // 4 read — over the result values
-  { left: "72%", top: "82%", opacity: 0 }, // 5 done — fade out
+  { left: "18%", top: "48%", opacity: 1 }, // 1 fill vendor
+  { left: "51%", top: "48%", opacity: 1 }, // 2 fill invoice number
+  { left: "84%", top: "48%", opacity: 1 }, // 3 fill amount
+  { left: "17%", top: "84%", opacity: 1 }, // 4 click submit
+  { left: "68%", top: "84%", opacity: 1 }, // 5 read confirmation
+  { left: "68%", top: "84%", opacity: 0 }, // 6 done — fade out
 ];
 
 /* Timeline: one tick per step, then the output panel holds, then loop */
@@ -48,12 +58,9 @@ const highlights = [
 
 function BrowserDemo({ step }: { step: number }) {
   const outputVisible = step >= agentSteps.length;
-  const finding = step === 1;
-  const typing = step === 2;
-  const filled = step >= 3;
-  const clicked = step >= 4;
-  const resultVisible = step >= 4;
-  const captured = step >= 5;
+  const clicked = step >= 5;
+  const confirmationVisible = step >= 5;
+  const captured = step >= 6;
   const cursor = cursorPositions[Math.min(step, cursorPositions.length - 1)];
 
   return (
@@ -66,7 +73,7 @@ function BrowserDemo({ step }: { step: number }) {
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/60" />
         </div>
         <div className="flex-1 flex items-center gap-2 bg-black/30 rounded-md px-3 py-1 text-[11px] text-gray-400 font-mono truncate">
-          {step >= 1 ? "portal.acme-suppliers.com/parts" : "about:blank"}
+          {step >= 1 ? "portal.acme-suppliers.com/payments/new" : "about:blank"}
         </div>
         <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 uppercase tracking-wider flex-shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -78,32 +85,70 @@ function BrowserDemo({ step }: { step: number }) {
       <div className="flex items-center gap-2 px-4 sm:px-5 py-2.5 border-b border-white/10 bg-[#3b82f6]/[0.06] text-xs">
         <Target size={13} className="text-[#93c5fd] flex-shrink-0" />
         <span className="text-[#93c5fd] font-bold uppercase tracking-wider text-[10px]">Mission</span>
-        <span className="text-gray-300 truncate">Get the price and lead time for part PN-4471</span>
+        <span className="text-gray-300 truncate">Submit invoice INV-2043 for payment on the supplier portal</span>
       </div>
 
-      {/* Page being operated */}
+      {/* What the flow extracted — the agent's inputs. Each chip lights
+          up while its value is being typed into the form below. */}
+      <div className="px-4 sm:px-5 py-2.5 border-b border-white/10 bg-black/20">
+        <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+          Extracted by your flow · invoice_2043.pdf
+        </div>
+        <div className="flex flex-wrap gap-1.5 font-mono text-[10px]">
+          {extractedFields.map((f, i) => {
+            const inUse = step === i + 1;
+            const used = step > i + 1;
+            return (
+              <span
+                key={f.key}
+                className={`rounded-md border px-2 py-1 transition-all duration-300 ${
+                  inUse
+                    ? "border-[#3b82f6]/60 bg-[#3b82f6]/15 text-white"
+                    : used
+                      ? "border-white/10 bg-white/[0.04] text-gray-500"
+                      : "border-white/10 bg-white/[0.06] text-gray-300"
+                }`}
+              >
+                {f.key}: <span className={inUse ? "text-[#93c5fd]" : ""}>{f.value}</span>
+                {used && <span className="ml-1 text-emerald-400">✓</span>}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* The portal form being filled with those fields */}
       <div className="relative p-4 sm:p-5 bg-[#0d0d20]/60 min-h-[150px]">
-        <div className="h-2.5 w-24 rounded bg-white/10 mb-4" aria-hidden="true" />
-        <div
-          className={`flex gap-2 mb-4 rounded-xl transition-all duration-500 ${
-            finding ? "ring-2 ring-[#3b82f6]/50 ring-offset-4 ring-offset-[#0d0d20]" : ""
-          }`}
-        >
-          <div
-            className={`flex-1 rounded-lg border px-3 py-2 text-xs font-mono transition-all duration-500 ${
-              typing || filled
-                ? "border-[#3b82f6]/50 bg-[#3b82f6]/10 text-white"
-                : "border-white/10 bg-black/20 text-gray-600"
-            }`}
-          >
-            {typing ? (
-              <span className="agent-type">PN-4471</span>
-            ) : filled ? (
-              "PN-4471"
-            ) : (
-              "Part number"
-            )}
-          </div>
+        <div className="h-2.5 w-28 rounded bg-white/10 mb-3.5" aria-hidden="true" />
+        <div className="grid grid-cols-3 gap-2 mb-3.5">
+          {extractedFields.map((f, i) => {
+            const typing = step === i + 1;
+            const filled = step > i + 1;
+            return (
+              <div key={f.key}>
+                <p className="text-[9px] text-gray-500 mb-1 truncate">{f.label}</p>
+                <div
+                  className={`rounded-lg border px-2.5 py-2 text-[11px] font-mono truncate transition-all duration-500 ${
+                    typing || filled
+                      ? "border-[#3b82f6]/50 bg-[#3b82f6]/10 text-white"
+                      : "border-white/10 bg-black/20 text-gray-600"
+                  }`}
+                >
+                  {typing ? (
+                    <span className="agent-type" style={{ "--type-w": f.width } as React.CSSProperties}>
+                      {f.value}
+                    </span>
+                  ) : filled ? (
+                    f.value
+                  ) : (
+                    <span aria-hidden="true">&nbsp;</span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex items-center gap-3">
           <div
             className={`rounded-lg border px-4 py-2 text-xs font-semibold transition-all duration-300 ${
               clicked
@@ -111,31 +156,23 @@ function BrowserDemo({ step }: { step: number }) {
                 : "border-white/10 bg-white/5 text-gray-400"
             }`}
           >
-            Search
+            Submit payment
           </div>
-        </div>
-        <div
-          className={`rounded-lg border border-white/10 bg-black/20 px-3 py-2.5 flex items-center justify-between text-xs transition-all duration-500 ${
-            resultVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-          }`}
-        >
-          <span className="text-gray-300 font-mono">PN-4471 · Hex bolt M8</span>
-          <span className="flex gap-2 font-mono">
+          <div
+            className={`flex items-center gap-2 text-[11px] font-mono transition-all duration-500 ${
+              confirmationVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+            }`}
+          >
+            <span className="text-emerald-400">✓</span>
+            <span className="text-gray-300">Payment received —</span>
             <span
               className={`rounded px-1.5 py-0.5 transition-all duration-500 ${
                 captured ? "bg-emerald-500/15 text-emerald-400" : "text-gray-400"
               }`}
             >
-              $12.40
+              confirmation PAY-88231
             </span>
-            <span
-              className={`rounded px-1.5 py-0.5 transition-all duration-500 ${
-                captured ? "bg-emerald-500/15 text-emerald-400" : "text-gray-400"
-              }`}
-            >
-              5 days
-            </span>
-          </span>
+          </div>
         </div>
 
         {/* The agent's cursor gliding to whatever it acts on */}
@@ -207,7 +244,7 @@ function BrowserDemo({ step }: { step: number }) {
             outputVisible ? "text-emerald-300" : "text-gray-700"
           }`}
         >
-          {'{ "part": "PN-4471", "unit_price": 12.40, "lead_time_days": 5 }'}
+          {'{ "invoice": "INV-2043", "confirmation": "PAY-88231", "status": "accepted" }'}
         </code>
       </div>
     </div>

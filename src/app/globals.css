@@ -940,13 +940,14 @@ h1, h2, h3, h4, h5, h6 {
   animation: featBar 0.6s ease forwards;
 }
 
-/* Agent demo: text typed character by character (7ch = "PN-4471") */
+/* Agent demo: text typed character by character.
+   Set the final width per value via --type-w (e.g. "9ch"). */
 @keyframes agentType {
   from {
     width: 0;
   }
   to {
-    width: 7ch;
+    width: var(--type-w, 8ch);
   }
 }
 
@@ -955,7 +956,7 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
   white-space: nowrap;
   vertical-align: bottom;
-  animation: agentType 0.8s steps(7, end) forwards;
+  animation: agentType 0.8s steps(9, end) forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
