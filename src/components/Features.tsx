@@ -532,25 +532,56 @@ function ApiVignette() {
 }
 
 function TeamsVignette() {
-  const members = [
-    { n: "sam@", role: "Owner", cls: "bg-[#3b82f6]/20 text-[#93c5fd]" },
-    { n: "dana@", role: "Admin", cls: "bg-[#6c42f0]/20 text-[#c4b5fd]" },
-    { n: "leo@", role: "Member", cls: "bg-white/10 text-white/70" },
-    { n: "auditor@", role: "Viewer", cls: "bg-white/10 text-white/50" },
+  /* Role subtitles match the in-app docs verbatim */
+  const roles = [
+    { name: "Owner", sub: "full control", cls: "bg-[#3b82f6]/20 text-[#93c5fd]" },
+    { name: "Admin", sub: "people & content", cls: "bg-[#6c42f0]/20 text-[#c4b5fd]" },
+    { name: "Member", sub: "run & view", cls: "bg-white/10 text-white/70" },
+    { name: "Viewer", sub: "read-only", cls: "bg-white/10 text-white/50" },
+  ];
+  /* Descending staircase: each capability is open to fewer roles */
+  const caps = [
+    { label: "View runs & buckets", allowed: 4 },
+    { label: "Trigger runs · review", allowed: 3 },
+    { label: "Build flows · invite team", allowed: 2 },
+    { label: "Billing & org settings", allowed: 1 },
   ];
   return (
     <div className={frameC}>
-      <p className="text-white/45">My Organization · unlimited seats</p>
-      <div className="mt-2.5 space-y-2">
-        {members.map((m, i) => (
-          <div key={m.n} className="feat-cell flex items-center justify-between rounded-md border border-white/10 bg-white/[0.05] px-2.5 py-1.5" style={{ animationDelay: `${0.3 + i * 0.35}s` }}>
-            <span className="text-white/80">{m.n}</span>
-            <span className={`rounded px-2 py-0.5 text-[10px] font-semibold ${m.cls}`}>{m.role}</span>
+      <p className="text-white/45">My Organization · four roles, org-wide permissions</p>
+      <div className="mt-2.5 overflow-hidden rounded-lg border border-white/10">
+        {/* Role headers */}
+        <div className="grid grid-cols-[1.5fr_repeat(4,1fr)] divide-x divide-white/10 bg-white/[0.06]">
+          <span className="px-2 py-1.5" aria-hidden="true" />
+          {roles.map((r, i) => (
+            <div key={r.name} className="feat-cell px-1 py-1.5 text-center" style={{ animationDelay: `${0.3 + i * 0.15}s` }}>
+              <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold ${r.cls}`}>{r.name}</span>
+              <p className="mt-0.5 text-[8px] leading-tight text-white/40">{r.sub}</p>
+            </div>
+          ))}
+        </div>
+        {/* Capability rows — checks draw a staircase toward Owner */}
+        {caps.map((c, ri) => (
+          <div key={c.label} className="grid grid-cols-[1.5fr_repeat(4,1fr)] items-center divide-x divide-white/10 border-t border-white/10">
+            <span className="truncate px-2 py-1.5 text-white/70">{c.label}</span>
+            {roles.map((r, ci) => (
+              <span key={r.name} className="px-1 py-1.5 text-center">
+                {ci < c.allowed ? (
+                  <Check
+                    size={12}
+                    className="feat-cell inline-block text-emerald-400"
+                    style={{ animationDelay: `${1.1 + ri * 0.4}s` }}
+                  />
+                ) : (
+                  <span className="text-white/20">—</span>
+                )}
+              </span>
+            ))}
           </div>
         ))}
       </div>
-      <p className="feat-cell mt-3 text-[10px] text-white/40" style={{ animationDelay: "1.9s" }}>
-        Org-level permissions on flows, buckets and review queues
+      <p className="feat-cell mt-3 text-center text-[10px] text-white/40" style={{ animationDelay: "3.0s" }}>
+        Unlimited seats — invite the whole team, pay for usage
       </p>
     </div>
   );
@@ -568,7 +599,7 @@ const features = [
   { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can build flows, attach cleaners, run extractions, and query your data.", Vignette: McpVignette },
   { icon: Database, title: "Buckets & Analytics", desc: "Editable tables where extracted data lands. Fix a cell in place, export CSV/Excel, search columns semantically — and open built-in analytics with one click.", Vignette: BucketsVignette },
   { icon: Code2, title: "API, Email & Webhooks", desc: "Send documents in by REST API or a forwarding address; results come out as webhook JSON, filled PDF forms, or bucket rows — Zapier and Make included.", Vignette: ApiVignette },
-  { icon: Users, title: "Teams & Roles", desc: "Owner, Admin, Member, and Viewer roles with org-level permissions and unlimited seats.", Vignette: TeamsVignette },
+  { icon: Users, title: "Teams & Roles", desc: "Four roles with clear boundaries: Owners control billing and settings, Admins manage people and content, Members run and view, Viewers read only. Unlimited seats.", Vignette: TeamsVignette },
 ];
 
 /* Compact card for the mobile marquee row */
