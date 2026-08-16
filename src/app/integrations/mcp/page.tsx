@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check, Lock, Plug, Repeat, ShieldCheck, Sparkles, X } from "lucide-react";
+import { ArrowRight, Check, LayoutGrid, Lock, Plug, Repeat, ShieldCheck, Sparkles, Wand2, X } from "lucide-react";
 import MarketingPage from "@/components/MarketingPage";
 import { integrationPageSchema } from "@/lib/schema";
 import { APP_URL, MCP_URL } from "@/lib/site";
 
 const DESCRIPTION =
-  "Connect Tavnit to claude.ai or Cursor over MCP so your assistant runs documents through your own extraction flows and reads the results back, typed and cleaned.";
+  "Connect Tavnit to claude.ai or Cursor over MCP. Your assistant can build extraction flows, run documents through them, and query the results — typed and cleaned.";
 
 export const metadata: Metadata = {
   title: "MCP Document Extraction for Claude and Cursor",
@@ -40,6 +40,10 @@ const faqs = [
     a: "Pasting a PDF asks the assistant to read a document it has never seen, in a format it was not designed to parse, with no schema and no way to check the result. The MCP connector routes the document through an extraction flow you defined, so you get the same named fields every time, in the same types, with the same cleaning rules and the same review step applied. The assistant receives structured data rather than an interpretation.",
   },
   {
+    q: "Can the assistant build flows and cleaners, or only run them?",
+    a: "Both. Over the connector, the assistant can create extraction flows and cleaning rules the same way you would in the app: describe the fields, tables and transformations you want in plain language and they are created in your organisation, ready to run on every future document. Creation follows your role — Owners and Admins can build, Members and Viewers stay run-only or read-only.",
+  },
+  {
     q: "Which AI assistants work with it?",
     a: "claude.ai on a Pro plan or above, Cursor, and any client that accepts a remote MCP server URL. MCP is an open protocol, so support is not limited to a specific vendor.",
   },
@@ -62,6 +66,16 @@ const faqs = [
 ];
 
 const capabilities = [
+  {
+    icon: <LayoutGrid size={20} />,
+    title: "Build a flow by describing it",
+    body: "Tell the assistant what to capture — vendor, dates, totals, line items — and it creates the extraction flow in your organisation, ready to run. Setting up a pipeline becomes a chat message, not an afternoon of configuration.",
+  },
+  {
+    icon: <Wand2 size={20} />,
+    title: "Attach cleaning rules",
+    body: "Ask for totals converted to USD, dates normalised, or values matched against reference data, and the assistant creates the Cleaner and attaches it to the flow — the same rules then run on every future document, however it arrives.",
+  },
   {
     icon: <Sparkles size={20} />,
     title: "Run a document through a flow",
@@ -115,9 +129,10 @@ export default function McpIntegrationPage() {
             likely to be extracted into an AI answer or a featured snippet. */}
         <p className="text-lg text-gray-300 leading-relaxed mb-4">
           Tavnit runs an MCP server. Connect it to claude.ai or Cursor and your
-          assistant can push documents through your own extraction flows and read
-          the results back — returning the exact fields you defined, cleaned and
-          typed, instead of an interpretation of a file it was handed.
+          assistant gets the whole document pipeline: it can build extraction flows,
+          attach cleaning rules, push documents through them, and read the results
+          back — the exact fields you defined, cleaned and typed, instead of an
+          interpretation of a file it was handed.
         </p>
         <p className="text-gray-400 leading-relaxed mb-10">
           Setup is a URL you paste into your assistant&rsquo;s settings. No SDK, no
@@ -223,6 +238,8 @@ export default function McpIntegrationPage() {
             <p className="text-sm text-gray-500 mb-3 font-medium">Things you can ask it:</p>
             <ul className="space-y-2 text-sm text-gray-300">
               {[
+                "Create a flow that captures the vendor, dates, totals and line items from our freight invoices.",
+                "Add a cleaner to that flow that converts every total to USD.",
                 "Run this invoice through my Supplier Invoices flow and show me the line items.",
                 "What did we pay Acme Corp last quarter, according to my Invoices bucket?",
                 "Extract the renewal dates from these three contracts and compare them.",
@@ -244,8 +261,9 @@ export default function McpIntegrationPage() {
           </h2>
           <p className="text-gray-400 leading-relaxed mb-4">
             The connector is not a separate extraction engine. It calls the same flows as
-            the rest of Tavnit, which means every rule you configured still applies when
-            an assistant is the one making the request.
+            the rest of Tavnit — whether you built them in the app or the assistant created
+            them for you — which means every rule you configured still applies when an
+            assistant is the one making the request.
           </p>
           <ul className="space-y-2.5 text-gray-400">
             {[

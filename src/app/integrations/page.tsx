@@ -101,8 +101,9 @@ export default function IntegrationsPage() {
               <strong className="text-gray-200">If you are working alongside an AI assistant</strong>,
               use the{" "}
               <Link href="/integrations/mcp" className="text-[#3b82f6] hover:underline">MCP connector</Link>.
-              It lets claude.ai or Cursor run documents through your flows and query what you have
-              already extracted, without you moving files around by hand.
+              It gives claude.ai or Cursor the whole pipeline, not just a way in: your assistant can
+              build extraction flows, attach cleaning rules, run documents through them, and query
+              what you have already extracted — without you moving files around by hand.
             </p>
           </div>
         </section>

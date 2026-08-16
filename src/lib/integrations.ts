@@ -27,7 +27,7 @@ export const INTEGRATIONS: Integration[] = [
     label: "MCP Connector",
     href: "/integrations/mcp",
     summary:
-      "Add Tavnit to claude.ai, Cursor or any MCP client so your assistant can run documents through your flows and query your extracted data directly.",
+      "Add Tavnit to claude.ai, Cursor or any MCP client. Your assistant can build extraction flows, attach cleaning rules, run documents through them, and query the extracted data — all by chat.",
     own: true,
   },
   {
@@ -41,7 +41,7 @@ export const INTEGRATIONS: Integration[] = [
     label: "Email",
     href: "/docs/email-integration",
     summary:
-      "Forward or auto-forward documents to a dedicated address and have every attachment extracted without anyone opening the app.",
+      "Forward or auto-forward documents to a dedicated address and have every attachment extracted — with results emailed back to whoever needs them, all without opening the app.",
     own: false,
   },
   {
@@ -62,7 +62,7 @@ export const INTEGRATIONS: Integration[] = [
     label: "Buckets",
     href: "/docs/buckets",
     summary:
-      "Keep extracted rows in built-in structured storage, query them, chart them, or export to CSV.",
+      "Keep extracted rows in built-in structured storage — edit them in place, query and chart them, or export to CSV and Excel.",
     own: false,
   },
 ];
