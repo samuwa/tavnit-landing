@@ -377,18 +377,31 @@ function HitlVignette() {
 }
 
 function McpVignette() {
+  const toolCall = (label: string, delay: number) => (
+    <div className="feat-cell flex w-fit items-center gap-1.5" style={{ animationDelay: `${delay}s` }}>
+      <span className={`${chip} text-[10px]`}>⚙ {label}</span>
+      <Check size={11} className="text-emerald-400" />
+    </div>
+  );
   return (
     <div className={frameC}>
       <p className="text-white/45">claude.ai · connected to Tavnit MCP</p>
-      <div className="mt-2.5 space-y-2.5">
-        <div className="ml-auto w-fit max-w-[85%] rounded-lg rounded-br-sm bg-[#3b82f6]/20 px-3 py-2 text-white/85">
-          Pull this week&apos;s supplier invoices into a table
+      <div className="mt-2.5 space-y-2">
+        <div className="ml-auto w-fit max-w-[85%] rounded-lg rounded-br-sm bg-[#3b82f6]/20 px-2.5 py-1.5 text-white/85">
+          Set up extraction for our freight invoices — and convert the totals to USD
         </div>
-        <div className="feat-cell w-fit" style={{ animationDelay: "0.7s" }}>
-          <span className={chip}>⚙ run_flow(&ldquo;Invoice Processor&rdquo;)</span>
+        {toolCall('create_flow("Freight Invoices")', 0.6)}
+        {toolCall('create_cleaner("EUR → USD", field: total)', 1.3)}
+        <div className="feat-cell w-fit max-w-[85%] rounded-lg rounded-bl-sm bg-white/[0.06] px-2.5 py-1.5 text-white/75" style={{ animationDelay: "2.0s" }}>
+          Done — flow with 6 fields + line items, FX cleaner attached. Forward invoices to{" "}
+          <span className="text-[#93c5fd]">freight@collect.tavnit.io</span>
         </div>
-        <div className="feat-cell w-fit max-w-[85%] rounded-lg rounded-bl-sm bg-white/[0.06] px-3 py-2 text-white/75" style={{ animationDelay: "1.6s" }}>
-          Done — 12 documents extracted into <span className="text-[#93c5fd]">Invoices</span>. Total spend: <span className="text-white">$48,211.90</span>
+        <div className="feat-cell ml-auto w-fit max-w-[85%] rounded-lg rounded-br-sm bg-[#3b82f6]/20 px-2.5 py-1.5 text-white/85" style={{ animationDelay: "2.7s" }}>
+          How much freight spend this week?
+        </div>
+        {toolCall('query_bucket("Freight Invoices")', 3.3)}
+        <div className="feat-cell w-fit max-w-[85%] rounded-lg rounded-bl-sm bg-white/[0.06] px-2.5 py-1.5 text-white/75" style={{ animationDelay: "3.9s" }}>
+          <span className="text-white">$48,211.90</span> across 12 invoices
         </div>
       </div>
     </div>
@@ -483,7 +496,7 @@ const features = [
   { icon: Lightbulb, title: "AI Data Cleaning", desc: "Cleaners format, translate, convert currencies and units, calculate fields, match reference data — even classify HS tariff codes.", Vignette: CleaningVignette },
   { icon: Bot, title: "AI Agents", desc: "Browser-automation agents act on extracted data across the web — and you can watch every session live.", Vignette: AgentsVignette },
   { icon: UserCheck, title: "Human in the Loop", desc: "Pause runs for review — extracted data next to the source document. Fix values in place, approve or reject, and every action lands in an append-only audit trail.", Vignette: HitlVignette },
-  { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can run flows and query your data.", Vignette: McpVignette },
+  { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can build flows, attach cleaners, run extractions, and query your data.", Vignette: McpVignette },
   { icon: Database, title: "Buckets & Analytics", desc: "Structured tables with charts, filters, CSV/Excel export, and AI-powered semantic search across columns.", Vignette: BucketsVignette },
   { icon: Code2, title: "API, Email & Webhooks", desc: "REST API, email triggers, webhook callbacks, PDF form filling, and Zapier/Make compatibility.", Vignette: ApiVignette },
   { icon: Users, title: "Teams & Roles", desc: "Owner, Admin, Member, and Viewer roles with org-level permissions and unlimited seats.", Vignette: TeamsVignette },
