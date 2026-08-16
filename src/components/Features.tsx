@@ -4,7 +4,7 @@ import { useRef, useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   LayoutGrid, Sparkles, GitBranch, Lightbulb,
-  Database, Users, Code2, UserCheck, Bot, Plug, Check,
+  Database, Users, Code2, UserCheck, Bot, Plug, Check, Scissors,
 } from "lucide-react";
 
 /* ── Vignettes ──────────────────────────────────────────────
@@ -117,30 +117,67 @@ function FlowBuilderVignette() {
 }
 
 function RoutingVignette() {
+  const docs = [
+    { type: "invoice", pages: "pp. 1–3", fromX: "110%", badge: "bg-[#3b82f6]/15 text-[#93c5fd]", delay: 1.0 },
+    { type: "purchase order", pages: "pp. 4–6", fromX: "0%", badge: "bg-[#6c42f0]/20 text-[#c4b5fd]", delay: 1.25 },
+    { type: "invoice", pages: "pp. 7–9", fromX: "-110%", badge: "bg-[#3b82f6]/15 text-[#93c5fd]", delay: 1.5 },
+  ];
   return (
     <div className={frameC}>
-      <div className="flex items-baseline justify-between">
-        <span className="text-white/45">scans_batch.pdf</span>
-        <span className="text-[10px] text-white/35">3 documents · 9 pages</span>
+      {/* One mixed scan, page edges stacked behind it */}
+      <div className="relative mx-auto w-60">
+        <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-lg border border-white/10 bg-white/[0.02]" aria-hidden="true" />
+        <div className="absolute inset-0 translate-x-1 translate-y-1 rounded-lg border border-white/10 bg-white/[0.03]" aria-hidden="true" />
+        <div className="relative flex items-baseline justify-between rounded-lg border border-white/15 bg-[#131327] px-3 py-2">
+          <span className="text-white/80">scans_batch.pdf</span>
+          <span className="text-[10px] text-white/40">9 pages</span>
+        </div>
       </div>
-      <div className="mt-2 flex gap-2">
-        {["invoice · pp.1-3", "PO · pp.4-6", "invoice · pp.7-9"].map((d, i) => (
-          <span key={d} className={`feat-cell ${chip}`} style={{ animationDelay: `${0.3 + i * 0.3}s` }}>{d}</span>
+
+      <p className="feat-cell mx-auto mt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-white/45" style={{ animationDelay: "0.5s" }}>
+        <Scissors size={11} className="text-[#93c5fd]" /> Splitter · 3 documents found
+      </p>
+
+      {/* The stack splits into typed documents */}
+      <div className="mt-2 grid grid-cols-3 gap-2">
+        {docs.map((d) => (
+          <div
+            key={d.pages}
+            className="feat-split rounded-lg border border-white/10 bg-white/[0.04] px-2 py-1.5 text-center"
+            style={{ "--from-x": d.fromX, animationDelay: `${d.delay}s` } as React.CSSProperties}
+          >
+            <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold ${d.badge}`}>{d.type}</span>
+            <p className="mt-1 text-[10px] text-white/45">{d.pages}</p>
+          </div>
         ))}
       </div>
-      <div className="mx-auto my-2.5 h-5 w-px bg-gradient-to-b from-white/35 to-white/10" />
-      <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-2.5">
-          <p className="text-white/45">Invoice Processor flow</p>
-          <div className="mt-2 space-y-1.5">
-            <div className="feat-cell rounded bg-white/[0.07] px-2 py-1 text-white/75" style={{ animationDelay: "1.5s" }}>invoice · pp.1-3</div>
-            <div className="feat-cell rounded bg-white/[0.07] px-2 py-1 text-white/75" style={{ animationDelay: "2.1s" }}>invoice · pp.7-9</div>
+
+      <p className="feat-cell mx-auto mt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-white/45" style={{ animationDelay: "2.2s" }}>
+        <GitBranch size={11} className="text-[#93c5fd]" /> Collection · each routed to its flow
+      </p>
+
+      {/* Each document lands in the right flow */}
+      <div className="mt-2 grid grid-cols-2 gap-3">
+        <div className="feat-cell rounded-lg border border-[#3b82f6]/25 bg-[#3b82f6]/[0.05] p-2.5" style={{ animationDelay: "2.5s" }}>
+          <p className="text-white/60 font-semibold">Invoice Processor flow</p>
+          <div className="mt-1.5 space-y-1.5">
+            <div className="feat-cell flex items-center justify-between rounded bg-white/[0.07] px-2 py-1 text-white/75" style={{ animationDelay: "2.9s" }}>
+              <span>invoice · pp. 1–3</span>
+              <Check size={11} className="text-emerald-400" />
+            </div>
+            <div className="feat-cell flex items-center justify-between rounded bg-white/[0.07] px-2 py-1 text-white/75" style={{ animationDelay: "3.5s" }}>
+              <span>invoice · pp. 7–9</span>
+              <Check size={11} className="text-emerald-400" />
+            </div>
           </div>
         </div>
-        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-2.5">
-          <p className="text-white/45">Purchase Order flow</p>
-          <div className="mt-2 space-y-1.5">
-            <div className="feat-cell rounded bg-white/[0.07] px-2 py-1 text-white/75" style={{ animationDelay: "1.8s" }}>PO · pp.4-6</div>
+        <div className="feat-cell rounded-lg border border-[#6c42f0]/30 bg-[#6c42f0]/[0.06] p-2.5" style={{ animationDelay: "2.5s" }}>
+          <p className="text-white/60 font-semibold">Purchase Order flow</p>
+          <div className="mt-1.5 space-y-1.5">
+            <div className="feat-cell flex items-center justify-between rounded bg-white/[0.07] px-2 py-1 text-white/75" style={{ animationDelay: "3.2s" }}>
+              <span>purchase order · pp. 4–6</span>
+              <Check size={11} className="text-emerald-400" />
+            </div>
           </div>
         </div>
       </div>

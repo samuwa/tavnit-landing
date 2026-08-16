@@ -924,6 +924,24 @@ h1, h2, h3, h4, h5, h6 {
   animation: featScan 2.2s ease-in-out infinite alternate;
 }
 
+/* A document card spreading out from the source stack.
+   Set the starting offset per card via --from-x. */
+@keyframes featSplit {
+  from {
+    opacity: 0;
+    transform: translateX(var(--from-x, 0)) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.feat-split {
+  opacity: 0;
+  animation: featSplit 0.55s ease forwards;
+}
+
 /* Analytics bars growing from the baseline */
 @keyframes featBar {
   from {
@@ -989,6 +1007,10 @@ h1, h2, h3, h4, h5, h6 {
   }
   .feat-scan {
     display: none;
+  }
+  .feat-split {
+    animation: none;
+    opacity: 1;
   }
   .feat-bar {
     animation: none;
