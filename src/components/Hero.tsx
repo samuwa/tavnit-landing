@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Play } from "lucide-react";
 import HeroAnimation from "./HeroAnimation";
 
 export default function Hero() {
@@ -62,10 +62,13 @@ export default function Hero() {
               <ArrowRight size={20} />
             </Link>
             <Link
-              href="#how-it-works"
+              href="https://demo.tavnit.io"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-white/15 text-gray-300 rounded-xl text-base sm:text-lg font-medium hover:bg-white/5 hover:text-white hover:border-white/30 hover:-translate-y-0.5 transition-all"
             >
-              See How It Works
+              <Play size={18} />
+              Try the Live Demo
             </Link>
           </div>
 

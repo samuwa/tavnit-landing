@@ -904,6 +904,15 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
 }
 
+#live-demo {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #features {
   scroll-snap-align: start;
   scroll-snap-stop: always;

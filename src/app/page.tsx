@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
 import HowItWorks from "@/components/HowItWorks";
+import LiveDemo from "@/components/LiveDemo";
 import Features from "@/components/Features";
 import ExtractionShowcase from "@/components/ExtractionShowcase";
 import AgentsShowcase from "@/components/AgentsShowcase";
@@ -33,6 +34,7 @@ export default function Home() {
         <Hero />
         <Problem />
         <HowItWorks />
+        <LiveDemo />
         <Features />
         <ExtractionShowcase />
         <HumanInTheLoop />
