@@ -486,55 +486,45 @@ function BucketsVignette() {
 }
 
 function ApiVignette() {
-  const inCard = "feat-cell rounded-lg border border-white/10 bg-white/[0.04] p-2";
+  const outs = [
+    { title: "webhook", detail: '{ "total": 1420.00 }', note: "erp.example.com · 200", delay: 1.7 },
+    { title: "PDF form", detail: "payment_order.pdf", note: "filled & attached", delay: 2.1 },
+    { title: "bucket", detail: "Invoices", note: "+1 row appended", delay: 2.5 },
+  ];
   return (
     <div className={frameC}>
-      <p className="text-center text-white/45">One run — every door in, every door out</p>
-      <div className="mt-2.5 grid grid-cols-[1fr_24px_1.15fr] items-center gap-1.5">
-        {/* Documents in */}
-        <div className="space-y-2">
-          <p className="text-[10px] uppercase tracking-wider text-white/40">Documents in</p>
-          <div className={inCard} style={{ animationDelay: "0.3s" }}>
-            <p className="truncate text-white/75">✉ invoices@collect.tavnit.io</p>
-            <p className="mt-0.5 text-[10px] text-white/45">fwd: invoice_2043.pdf</p>
-          </div>
-          <div className={inCard} style={{ animationDelay: "0.7s" }}>
-            <p className="truncate text-white/75">POST /api/v1/runs</p>
-            <p className="mt-0.5 text-[10px] text-emerald-400">201 · run #4129 started</p>
-          </div>
-        </div>
-
-        {/* Through Tavnit */}
-        <div className="feat-cell flex flex-col items-center gap-1 text-white/35" style={{ animationDelay: "1.2s" }} aria-hidden="true">
-          <span>→</span>
-        </div>
-
-        {/* Results out */}
-        <div className="space-y-2">
-          <p className="text-[10px] uppercase tracking-wider text-white/40">Extracted results out</p>
-          <div className={inCard} style={{ animationDelay: "1.6s" }}>
-            <p className="truncate text-white/75">webhook → erp.example.com/ap</p>
-            <p className="mt-0.5 truncate text-[10px]">
-              <span className="text-[#93c5fd]">{'{ "total": 1420.00, … }'}</span>{" "}
-              <span className="text-emerald-400">200</span>
-            </p>
-          </div>
-          <div className={inCard} style={{ animationDelay: "2.2s" }}>
-            <p className="truncate text-white/75">payment_order.pdf</p>
-            <p className="mt-0.5 text-[10px] text-white/45">
-              form filled from extracted fields <span className="text-emerald-400">✓</span>
-            </p>
-          </div>
-          <div className={inCard} style={{ animationDelay: "2.8s" }}>
-            <p className="truncate text-white/75">bucket: Invoices</p>
-            <p className="mt-0.5 text-[10px] text-white/45">
-              +1 row appended <span className="text-emerald-400">✓</span>
-            </p>
-          </div>
-        </div>
+      {/* In */}
+      <div className="feat-cell mx-auto flex w-fit max-w-full items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2" style={{ animationDelay: "0.2s" }}>
+        <span className="truncate text-white/80">✉ invoice_2043.pdf</span>
+        <span className="text-white/30">→</span>
+        <span className="truncate text-white/50">invoices@collect.tavnit.io</span>
       </div>
-      <p className="feat-cell mt-3 text-center text-[10px] text-white/40" style={{ animationDelay: "3.4s" }}>
-        REST API · email triggers · webhooks · PDF forms · Zapier / Make
+
+      <div className="feat-cell mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-white/35 to-white/10" style={{ animationDelay: "0.8s" }} aria-hidden="true" />
+
+      {/* Through Tavnit */}
+      <div className="feat-cell mx-auto flex w-fit items-center gap-2 rounded-lg border border-[#3b82f6]/30 bg-[#3b82f6]/[0.08] px-3 py-2" style={{ animationDelay: "1.0s" }}>
+        <span className="text-white/85">run #4129 · extracted &amp; cleaned</span>
+        <Check size={12} className="text-emerald-400" />
+      </div>
+
+      <div className="feat-cell mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-white/35 to-white/10" style={{ animationDelay: "1.5s" }} aria-hidden="true" />
+
+      {/* Out — one delivery row, left to right */}
+      <div className="grid grid-cols-3 gap-2">
+        {outs.map((o) => (
+          <div key={o.title} className="feat-cell rounded-lg border border-white/10 bg-white/[0.04] p-2 text-center" style={{ animationDelay: `${o.delay}s` }}>
+            <p className="text-[10px] uppercase tracking-wider text-white/40">{o.title}</p>
+            <p className="mt-1 truncate text-[#93c5fd]">{o.detail}</p>
+            <p className="mt-0.5 truncate text-[10px] text-white/45">
+              {o.note} <span className="text-emerald-400">✓</span>
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <p className="feat-cell mt-3.5 text-center text-[10px] text-white/40" style={{ animationDelay: "3.1s" }}>
+        also in: REST API · UI upload&ensp;·&ensp;also out: email · Zapier / Make
       </p>
     </div>
   );
