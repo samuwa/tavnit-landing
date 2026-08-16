@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle, Upload, FileText, Sparkles, UserCheck, Bot, Play, ArrowRight } from "lucide-react";
-import VideoModal from "./VideoModal";
 
 const steps = [
   {
@@ -39,8 +37,6 @@ const steps = [
 ];
 
 export default function HowItWorks() {
-  const [videoOpen, setVideoOpen] = useState(false);
-
   return (
     <section className="py-16 md:py-24 relative overflow-hidden" id="how-it-works" aria-labelledby="how-it-works-heading">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
@@ -93,19 +89,19 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        {/* Watch Video */}
+        {/* Watch Demo */}
         <div className="text-center mt-8 md:mt-16">
-          <button
-            onClick={() => setVideoOpen(true)}
+          <a
+            href="https://demo.tavnit.io"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-full text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-lg hover:shadow-xl hover:shadow-[#3b82f6]/20 cursor-pointer"
           >
             <Play size={20} />
-            Watch Demo Video
-          </button>
+            Watch Demo
+          </a>
         </div>
       </div>
-
-      <VideoModal open={videoOpen} onClose={() => setVideoOpen(false)} />
     </section>
   );
 }
