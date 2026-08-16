@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback, useEffect, useState } from "react";
+import { Fragment, useRef, useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   LayoutGrid, Sparkles, GitBranch, Lightbulb,
@@ -195,36 +195,37 @@ function CleaningVignette() {
   ];
   return (
     <div className={frameC}>
-      <p className="text-white/45">Cleaners · every value normalized before it&apos;s stored</p>
+      <p className="text-center text-white/45">Cleaners · every value normalized before it&apos;s stored</p>
       <div className="relative mt-3">
-        <div className="space-y-2.5">
+        {/* One shared grid so the arrow and tag columns align across rows */}
+        <div className="mx-auto grid w-fit grid-cols-[auto_auto_auto_auto] items-center gap-x-4 gap-y-2.5">
           {rows.map((r, i) => {
             const delay = 0.5 + i * 0.45;
             return (
-              <div key={r.dirty} className="grid grid-cols-[1fr_16px_1fr_auto] items-center gap-2">
+              <Fragment key={r.dirty}>
                 <span
-                  className="feat-strike justify-self-start max-w-full truncate text-white/70"
+                  className="feat-strike text-white/70"
                   style={{ "--strike-d": `${delay}s` } as React.CSSProperties}
                 >
                   {r.dirty}
                 </span>
-                <span className="text-white/30">→</span>
-                <span className="feat-cell truncate text-white/90" style={{ animationDelay: `${delay}s` }}>
+                <span className="text-center text-white/30">→</span>
+                <span className="feat-cell text-white/90" style={{ animationDelay: `${delay}s` }}>
                   {r.clean}
                 </span>
                 <span
-                  className="feat-cell rounded bg-[#3b82f6]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#93c5fd]"
+                  className="feat-cell w-fit rounded bg-[#3b82f6]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#93c5fd]"
                   style={{ animationDelay: `${delay}s` }}
                 >
                   {r.op}
                 </span>
-              </div>
+              </Fragment>
             );
           })}
         </div>
         <div className="feat-sweep" aria-hidden="true" />
       </div>
-      <p className="feat-cell mt-3.5 flex items-center gap-1.5 text-emerald-400" style={{ animationDelay: "3.1s" }}>
+      <p className="feat-cell mt-3.5 flex items-center justify-center gap-1.5 text-emerald-400" style={{ animationDelay: "3.1s" }}>
         <Check size={12} /> Clean, consistent, delivered — nothing edited by hand
       </p>
     </div>
@@ -293,26 +294,83 @@ function AgentsVignette() {
 function HitlVignette() {
   return (
     <div className={frameC}>
-      <p className="text-white/45">Run #4127 · paused for review</p>
-      <div className="mt-2.5 space-y-2">
-        <div className="flex items-center justify-between rounded-md border border-white/10 bg-white/[0.05] px-2.5 py-1.5">
-          <span className="text-[#93c5fd]">vendor</span>
-          <span className="text-white/85">Acme Corp</span>
-        </div>
-        <div className="flex items-center justify-between rounded-md border border-amber-400/30 bg-amber-400/[0.07] px-2.5 py-1.5">
-          <span className="text-[#93c5fd]">total</span>
-          <span className="flex items-center gap-2">
-            <span className="text-white/40 line-through">1,240.00</span>
-            <span className="feat-cell text-white/90" style={{ animationDelay: "0.8s" }}>1,420.00</span>
+      <div className="flex items-center justify-between gap-3">
+        <p className="truncate text-white/45">Run #4127 · Invoice Processor · paused for review</p>
+        <span className="relative shrink-0">
+          <span className="rounded bg-amber-400/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-400">
+            awaiting approval
           </span>
+          <span
+            className="feat-cell absolute inset-0 flex items-center justify-center rounded bg-[#0d2b1c] text-[9px] font-bold uppercase tracking-wider text-emerald-400"
+            style={{ animationDelay: "3.3s" }}
+          >
+            approved
+          </span>
+        </span>
+      </div>
+
+      {/* Source document and extracted data, side by side. The
+          mismatched total highlights in BOTH at the same moment. */}
+      <div className="mt-2.5 grid grid-cols-2 gap-3">
+        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+          <p className="text-white/45">invoice_2043.pdf</p>
+          <div className="mt-2.5 space-y-2">
+            <div className="h-1.5 w-3/4 rounded bg-white/15" />
+            <div className="h-1.5 w-full rounded bg-white/10" />
+            <div className="h-1.5 w-2/3 rounded bg-white/10" />
+            <div className="relative flex h-5 items-center px-1.5">
+              <span className="text-[10px] tracking-wide text-white/65">TOTAL EUR 1.420,00</span>
+              <span
+                className="feat-cell absolute -inset-x-0.5 inset-y-0 rounded border border-amber-400/60 bg-amber-400/10"
+                style={{ animationDelay: "1.0s" }}
+                aria-hidden="true"
+              />
+            </div>
+            <div className="h-1.5 w-1/2 rounded bg-white/10" />
+          </div>
+        </div>
+
+        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+          <p className="text-white/45">Extracted data</p>
+          <div className="mt-2 space-y-1.5">
+            <div className="flex items-center justify-between rounded bg-white/[0.05] px-2 py-1">
+              <span className="text-[#93c5fd]">vendor</span>
+              <span className="text-white/85">Acme Corp</span>
+            </div>
+            <div className="flex items-center justify-between rounded bg-white/[0.05] px-2 py-1">
+              <span className="text-[#93c5fd]">invoice_no</span>
+              <span className="text-white/85">INV-2043</span>
+            </div>
+            <div className="relative flex items-center justify-between rounded bg-white/[0.05] px-2 py-1">
+              <span className="text-[#93c5fd]">total</span>
+              <span className="flex items-center gap-1.5">
+                <span className="feat-strike text-white/80" style={{ "--strike-d": "1.7s" } as React.CSSProperties}>
+                  1,240.00
+                </span>
+                <span className="feat-cell text-white" style={{ animationDelay: "2.0s" }}>1,420.00</span>
+              </span>
+              <span
+                className="feat-cell absolute -inset-x-0.5 inset-y-0 rounded border border-amber-400/60 bg-amber-400/10"
+                style={{ animationDelay: "1.0s" }}
+                aria-hidden="true"
+              />
+            </div>
+            <div className="flex items-center justify-between rounded bg-white/[0.05] px-2 py-1">
+              <span className="text-[#93c5fd]">due_date</span>
+              <span className="text-white/85">2026-04-11</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="feat-cell mt-3 flex items-center gap-2" style={{ animationDelay: "1.6s" }}>
-        <span className="rounded-md bg-emerald-500/15 px-2.5 py-1 font-semibold text-emerald-400">Approve</span>
-        <span className="rounded-md border border-white/10 px-2.5 py-1 text-white/50">Reject</span>
+
+      <div className="feat-cell mt-3 flex items-center gap-2" style={{ animationDelay: "2.5s" }}>
+        <span className="feat-press flex items-center gap-1.5 rounded-md bg-emerald-600 px-3 py-1.5 font-semibold text-white" style={{ animationDelay: "3.0s" }}>
+          <Check size={12} /> Approve run
+        </span>
+        <span className="rounded-md border border-white/10 px-3 py-1.5 text-white/50">Reject</span>
       </div>
-      <p className="feat-cell mt-3 border-l-2 border-white/15 pl-2 text-[10px] text-white/40" style={{ animationDelay: "2.4s" }}>
-        audit · sam@ edited total, approved · 09:41
+      <p className="feat-cell mt-2.5 border-l-2 border-emerald-500/40 pl-2 text-[10px] text-white/40" style={{ animationDelay: "3.7s" }}>
+        audit · append-only · maria@ edited total, approved the run · 09:41
       </p>
     </div>
   );
@@ -424,7 +482,7 @@ const features = [
   { icon: GitBranch, title: "Routing & Splitting", desc: "Splitters break multi-document PDFs apart, then Collections route each document to the right flow automatically.", Vignette: RoutingVignette },
   { icon: Lightbulb, title: "AI Data Cleaning", desc: "Cleaners format, translate, convert currencies and units, calculate fields, match reference data — even classify HS tariff codes.", Vignette: CleaningVignette },
   { icon: Bot, title: "AI Agents", desc: "Browser-automation agents act on extracted data across the web — and you can watch every session live.", Vignette: AgentsVignette },
-  { icon: UserCheck, title: "Human in the Loop", desc: "Pause runs for review. Edit results in place, approve or reject — every action lands in an append-only audit trail.", Vignette: HitlVignette },
+  { icon: UserCheck, title: "Human in the Loop", desc: "Pause runs for review — extracted data next to the source document. Fix values in place, approve or reject, and every action lands in an append-only audit trail.", Vignette: HitlVignette },
   { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can run flows and query your data.", Vignette: McpVignette },
   { icon: Database, title: "Buckets & Analytics", desc: "Structured tables with charts, filters, CSV/Excel export, and AI-powered semantic search across columns.", Vignette: BucketsVignette },
   { icon: Code2, title: "API, Email & Webhooks", desc: "REST API, email triggers, webhook callbacks, PDF form filling, and Zapier/Make compatibility.", Vignette: ApiVignette },
