@@ -4,7 +4,7 @@ import { Fragment, useRef, useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   LayoutGrid, Sparkles, GitBranch, Lightbulb,
-  Database, Users, Code2, UserCheck, Bot, Plug, Check, Scissors,
+  Database, Users, Code2, UserCheck, Bot, Plug, Check, Scissors, BarChart3,
 } from "lucide-react";
 
 /* ── Vignettes ──────────────────────────────────────────────
@@ -409,28 +409,76 @@ function McpVignette() {
 }
 
 function BucketsVignette() {
+  const rows = [
+    ["Nordwind GmbH", "NW-0412", "4,375.63"],
+    ["Halden Marine", "HM-2210", "2,118.00"],
+  ];
   const bars = [35, 60, 45, 80, 65, 95];
   return (
-    <div className={`${frame} grid grid-cols-2 gap-4`}>
-      <div>
-        <p className="text-white/45">bucket: Invoices</p>
-        <div className="mt-2 space-y-1.5">
-          {["Acme Corp · 1,420.00", "Nordwind · 4,375.63", "Halden · 2,118.00"].map((r, i) => (
-            <div key={r} className="feat-cell rounded bg-white/[0.06] px-2 py-1 text-white/70" style={{ animationDelay: `${0.3 + i * 0.25}s` }}>{r}</div>
-          ))}
-        </div>
-        <div className="mt-2.5 flex gap-1.5">
-          {["CSV", "Excel"].map((e, i) => (
-            <span key={e} className={`feat-cell ${chip} text-[10px]`} style={{ animationDelay: `${1.3 + i * 0.2}s` }}>{e}</span>
-          ))}
+    <div className={frameC}>
+      {/* Bucket toolbar */}
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-white/60 font-semibold">bucket: Invoices</p>
+        <div className="flex items-center gap-1.5">
+          <span className={`${chip} text-[10px]`}>CSV</span>
+          <span className={`${chip} text-[10px]`}>Excel</span>
+          <span
+            className="feat-press flex items-center gap-1 rounded-md bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] px-2 py-1 text-[10px] font-semibold text-white"
+            style={{ animationDelay: "2.2s" }}
+          >
+            <BarChart3 size={11} /> Analytics
+          </span>
         </div>
       </div>
-      <div className="flex flex-col">
-        <p className="text-white/45">spend by month</p>
-        <div className="mt-2 flex flex-1 items-end gap-2">
-          {bars.map((h, i) => (
-            <div key={i} className="feat-bar w-full rounded-t bg-gradient-to-t from-[#3b82f6] to-[#6c42f0]" style={{ height: `${h}%`, animationDelay: `${0.5 + i * 0.15}s` }} />
+
+      {/* The bucket itself: an editable table extractions land in */}
+      <div className="mt-2 overflow-hidden rounded-lg border border-white/10">
+        <div className="grid grid-cols-[1.4fr_1fr_0.9fr] divide-x divide-white/10 bg-white/[0.07] text-white/50">
+          {["vendor", "invoice_no", "total"].map((c) => (
+            <span key={c} className="truncate px-2 py-1">{c}</span>
           ))}
+        </div>
+        {rows.map((r) => (
+          <div key={r[1]} className="grid grid-cols-[1.4fr_1fr_0.9fr] divide-x divide-white/10 border-t border-white/10">
+            {r.map((v, i) => (
+              <span key={i} className="truncate px-2 py-1 text-white/75">{v}</span>
+            ))}
+          </div>
+        ))}
+        {/* A fresh extraction drops in as a new row */}
+        <div className="feat-cell grid grid-cols-[1.4fr_1fr_0.9fr] divide-x divide-white/10 border-t border-white/10 bg-[#3b82f6]/[0.08]" style={{ animationDelay: "0.7s" }}>
+          <span className="truncate px-2 py-1 text-white/90">Acme Corp</span>
+          <span className="truncate px-2 py-1 text-white/90">INV-2043</span>
+          <span className="relative truncate px-2 py-1 text-white/90">
+            1,420.00
+            <span className="feat-cell absolute inset-0.5 rounded border border-[#3b82f6]/60" style={{ animationDelay: "1.4s" }} aria-hidden="true" />
+          </span>
+        </div>
+      </div>
+      <p className="mt-1 flex items-center justify-between text-[9px] text-white/35">
+        <span>editable — click any cell</span>
+        <span className="feat-cell" style={{ animationDelay: "0.9s" }}>+ 1 row from run #4128</span>
+      </p>
+
+      {/* Pressing Analytics opens the charts */}
+      <div className="feat-cell mt-2.5 grid grid-cols-[1fr_auto] gap-4 rounded-lg border border-white/10 bg-white/[0.03] p-3" style={{ animationDelay: "2.6s" }}>
+        <div className="flex flex-col">
+          <p className="text-[10px] text-white/45">spend by month</p>
+          <div className="mt-1.5 flex h-14 flex-1 items-end gap-1.5">
+            {bars.map((h, i) => (
+              <div key={i} className="feat-bar w-full rounded-t bg-gradient-to-t from-[#3b82f6] to-[#6c42f0]" style={{ height: `${h}%`, animationDelay: `${2.8 + i * 0.12}s` }} />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col justify-center gap-1.5 text-right">
+          <div>
+            <p className="text-sm font-bold text-white">$48,211.90</p>
+            <p className="text-[9px] text-white/40">total spend</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold text-white">12</p>
+            <p className="text-[9px] text-white/40">rows this week</p>
+          </div>
         </div>
       </div>
     </div>
@@ -497,7 +545,7 @@ const features = [
   { icon: Bot, title: "AI Agents", desc: "Browser-automation agents act on extracted data across the web — and you can watch every session live.", Vignette: AgentsVignette },
   { icon: UserCheck, title: "Human in the Loop", desc: "Pause runs for review — extracted data next to the source document. Fix values in place, approve or reject, and every action lands in an append-only audit trail.", Vignette: HitlVignette },
   { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can build flows, attach cleaners, run extractions, and query your data.", Vignette: McpVignette },
-  { icon: Database, title: "Buckets & Analytics", desc: "Structured tables with charts, filters, CSV/Excel export, and AI-powered semantic search across columns.", Vignette: BucketsVignette },
+  { icon: Database, title: "Buckets & Analytics", desc: "Editable tables where extracted data lands. Fix a cell in place, export CSV/Excel, search columns semantically — and open built-in analytics with one click.", Vignette: BucketsVignette },
   { icon: Code2, title: "API, Email & Webhooks", desc: "REST API, email triggers, webhook callbacks, PDF form filling, and Zapier/Make compatibility.", Vignette: ApiVignette },
   { icon: Users, title: "Teams & Roles", desc: "Owner, Admin, Member, and Viewer roles with org-level permissions and unlimited seats.", Vignette: TeamsVignette },
 ];
