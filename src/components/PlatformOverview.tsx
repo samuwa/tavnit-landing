@@ -208,12 +208,18 @@ export default function PlatformOverview() {
     setTouring(false);
   }, []);
 
-  /* Keep the active chip visible when the sidebar collapses to a horizontal row */
+  /* Keep the active chip visible when the sidebar collapses to a horizontal
+     row. Scroll the strip itself, never scrollIntoView — that scrolls every
+     ancestor too, yanking the page down to this section on mobile load. */
   useEffect(() => {
     const list = tablistRef.current;
     if (!list || list.scrollWidth <= list.clientWidth) return;
-    const buttons = list.querySelectorAll<HTMLButtonElement>("[role=tab]");
-    buttons[active]?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    const btn = list.querySelectorAll<HTMLButtonElement>("[role=tab]")[active];
+    if (!btn) return;
+    const listRect = list.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    const left = btnRect.left - listRect.left + list.scrollLeft - (list.clientWidth - btnRect.width) / 2;
+    list.scrollTo({ left, behavior: "smooth" });
   }, [active]);
 
   /* Arrow-key navigation across all leaf tabs */
