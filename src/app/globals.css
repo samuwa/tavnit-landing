@@ -1243,7 +1243,7 @@ html:has(#hero) footer {
     scroll-snap-type: y proximity;
   }
 
-  #problem, #how-it-works, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
+  #problem, #how-it-works, #live-demo, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
     scroll-snap-stop: normal;
   }
 }
@@ -1254,7 +1254,13 @@ html:has(#hero) footer {
     scroll-snap-type: none;
   }
 
-  #problem, #how-it-works, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
+  /* Without snap, anchor jumps land section tops under the fixed header —
+     reserve room for it. */
+  section[id] {
+    scroll-margin-top: 72px;
+  }
+
+  #problem, #how-it-works, #live-demo, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
     min-height: auto;
     scroll-snap-align: none;
     scroll-snap-stop: normal;

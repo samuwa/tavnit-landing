@@ -209,7 +209,7 @@ export default function ExtractionShowcase() {
       aria-labelledby="extraction-heading"
     >
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center [&>*]:min-w-0">
           {/* Copy */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

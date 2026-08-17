@@ -66,8 +66,8 @@ function ReviewDemo() {
           <div className="grid grid-cols-3 border-t border-white/5 text-gray-300">
             <div className="px-3 py-2 truncate">Acme Corp</div>
             <div className="px-3 py-2 truncate">INV-2043</div>
-            <div className="px-3 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-sm">
-              <span className="text-gray-600 line-through mr-1.5">1,240.00</span>
+            <div className="px-3 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-sm flex flex-wrap items-baseline gap-x-1.5">
+              <span className="text-gray-600 line-through">1,240.00</span>
               <span className="text-emerald-300">1,420.00</span>
             </div>
           </div>
@@ -143,7 +143,7 @@ export default function HumanInTheLoop() {
       aria-labelledby="hitl-heading"
     >
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center [&>*]:min-w-0">
           {/* Review demo — first on desktop, second on mobile */}
           <motion.div
             className="order-2 lg:order-1"
