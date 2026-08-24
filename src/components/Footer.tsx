@@ -83,7 +83,18 @@ const columns: { title: string; links: FooterLink[] }[] = [
   { title: "Company", links: company },
 ];
 
-export default function Footer() {
+export default function Footer({
+  showPricing = true,
+}: {
+  /** False while Stripe self-serve is off platform-wide (platform_config). */
+  showPricing?: boolean;
+}) {
+  const visibleColumns = showPricing
+    ? columns
+    : columns.map((c) => ({
+        ...c,
+        links: c.links.filter((l) => l.href !== "/pricing"),
+      }));
   return (
     <footer className="py-10 pb-6 md:py-16 md:pb-8 bg-black/40 backdrop-blur-sm border-t border-white/5 text-gray-400">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
@@ -104,7 +115,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {columns.map((column) => (
+          {visibleColumns.map((column) => (
             <div key={column.title}>
               <h4 className="text-base font-semibold text-white mb-4 md:mb-6">{column.title}</h4>
               <ul className="space-y-2">

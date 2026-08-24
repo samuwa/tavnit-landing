@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import MarketingPage from "@/components/MarketingPage";
@@ -11,6 +12,7 @@ import {
   SITE_URL,
 } from "@/lib/site";
 import { pricingSchema } from "@/lib/schema";
+import { isStripeEnabled } from "@/lib/platform";
 
 export const metadata: Metadata = {
   title: "Pricing — Credit-Based Plans from $16/month",
@@ -57,7 +59,10 @@ const faqs = [
   },
 ];
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  // While Stripe self-serve is off platform-wide there is nothing to buy —
+  // send visitors to the homepage (book-a-demo motion) instead.
+  if (!(await isStripeEnabled())) redirect("/");
   return (
     <MarketingPage>
       <script

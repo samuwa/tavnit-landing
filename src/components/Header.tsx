@@ -18,9 +18,17 @@ const navLinks = [
   { href: "/docs", label: "Docs" },
 ];
 
-export default function Header() {
+export default function Header({
+  showPricing = true,
+}: {
+  /** False while Stripe self-serve is off platform-wide (platform_config). */
+  showPricing?: boolean;
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const links = showPricing
+    ? navLinks
+    : navLinks.filter((l) => l.href !== "/pricing");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -50,7 +58,7 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-10 mx-auto">
-          {navLinks.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -82,7 +90,7 @@ export default function Header() {
       {mobileOpen && (
         <div className="lg:hidden bg-[#0a0a1a]/95 backdrop-blur-xl border-t border-white/10 shadow-xl">
           <nav className="flex flex-col p-6 gap-1">
-            {navLinks.map((link) => (
+            {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

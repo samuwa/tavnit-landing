@@ -8,6 +8,7 @@ import {
   SITE_URL,
   SUPPORT_EMAIL,
 } from "@/lib/site";
+import { isStripeEnabled } from "@/lib/platform";
 
 /**
  * /pricing.md — machine-readable pricing for AI agents.
@@ -20,9 +21,14 @@ import {
  * the JSON-LD offers use, so the three cannot disagree. Only state what the site
  * actually says: an error here propagates into third-party tool comparisons.
  */
-export const dynamic = "force-static";
+// Revalidated (not force-static) so the platform_config Stripe toggle can
+// hide this file without a deploy, like the rendered pricing surfaces.
+export const revalidate = 300;
 
-export function GET() {
+export async function GET() {
+  if (!(await isStripeEnabled())) {
+    return new Response("Not found", { status: 404 });
+  }
   const tiers = PRICING.map((t) => {
     const breakdown = t.bonusCredits
       ? `${t.baseCredits.toLocaleString("en-US")} base + ${t.bonusCredits.toLocaleString("en-US")} bonus`

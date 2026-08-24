@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { DOC_SECTIONS } from "@/components/docs/nav";
 import { OWNED_INTEGRATIONS } from "@/lib/integrations";
+import { isStripeEnabled } from "@/lib/platform";
 import { USE_CASES } from "@/lib/use-cases";
 
 /**
@@ -61,8 +62,11 @@ function docsSources(href: string): string[] {
   ];
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // /pricing redirects home while Stripe self-serve is off (platform_config);
+  // keep it out of the sitemap in that state.
+  const stripeOn = await isStripeEnabled();
+  const entries: MetadataRoute.Sitemap = [
     {
       url: `${SITE_URL}/`,
       // Excludes src/components/docs: those only render /docs/*, so including
@@ -141,4 +145,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
     },
   ];
+  return stripeOn
+    ? entries
+    : entries.filter((e) => e.url !== `${SITE_URL}/pricing`);
 }
