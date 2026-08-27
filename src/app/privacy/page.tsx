@@ -33,12 +33,12 @@ export default function PrivacyPage() {
       />
       <LegalDocument
         title="Privacy Policy"
-        lastUpdated="2026-08-03"
+        lastUpdated="2026-08-26"
         intro={
           <>
             This policy explains what data Tavnit collects, how it is used, and the
-            controls you have over it. It covers the marketing site at tavnit.io and the
-            Tavnit application. For anything not answered here, contact{" "}
+            controls you have over it. It covers the marketing site at tavnit.io, the
+            interactive demo at demo.tavnit.io, and the Tavnit application. For anything not answered here, contact{" "}
             <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-[#3b82f6] hover:underline">
               {SUPPORT_EMAIL}
             </Link>
@@ -81,7 +81,9 @@ export default function PrivacyPage() {
           </p>
           <p>
             <strong className="text-gray-200">Technical data.</strong> Standard log data
-            generated when you use the site or the application.
+            generated when you use the site or the application, error reports from the
+            application (see below), and — only if you accept the cookie banner — usage
+            analytics on the marketing site and demo.
           </p>
         </LegalSection>
 
@@ -194,10 +196,44 @@ export default function PrivacyPage() {
           </p>
         </LegalSection>
 
-        <LegalSection heading="Cookies">
+        <LegalSection heading="Cookies and analytics">
           <p>
-            The marketing site uses only what is necessary to serve the page. The application
-            uses cookies required for signing in and keeping you signed in.
+            <strong className="text-gray-200">Marketing site and demo</strong> (tavnit.io,
+            demo.tavnit.io). We use Google Analytics 4 to learn which pages, use cases and
+            demo steps people find useful. It runs only after you accept the cookie banner.
+            If you decline, or don&rsquo;t answer, Google Analytics sets no cookies and
+            stores no identifier; we only receive aggregate, cookieless signals that cannot
+            be tied to you. When you accept, Google sets first-party cookies (<code>_ga</code>,
+            <code>_ga_*</code>, up to 2 years) holding a random identifier, and we receive
+            the pages you view, the buttons you click, the demo steps you complete, your
+            approximate location derived from a truncated IP address, and device and
+            browser type. Google processes this on our behalf as a service provider under
+            Google&rsquo;s data processing terms. We have disabled Google Signals and
+            advertising features, do not share the data with Google for its own purposes,
+            and keep event-level data for 14 months.
+          </p>
+          <p>
+            You can change your mind at any time via <em>Cookie settings</em> in the footer
+            of tavnit.io or the demo. You can also block Google Analytics everywhere with
+            Google&rsquo;s{" "}
+            <Link
+              href="https://tools.google.com/dlpage/gaoptout"
+              className="text-[#3b82f6] hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              opt-out browser add-on
+            </Link>
+            .
+          </p>
+          <p>
+            <strong className="text-gray-200">The application</strong> (app.tavnit.io). The
+            application uses only the cookies and local storage required to sign you in,
+            keep you signed in and remember your current organisation. It does not use
+            analytics cookies. It does send error reports to Sentry, an error-monitoring
+            service, when something goes wrong: these contain the technical details of the
+            error together with your user and organisation identifiers so we can reproduce
+            and fix it. They never contain your API key or document content.
           </p>
         </LegalSection>
 

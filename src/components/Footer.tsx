@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import CookieSettingsLink from "@/components/CookieSettingsLink";
 import { GITHUB_URL, LINKEDIN_URL, SUPPORT_EMAIL } from "@/lib/site";
 import { docsForFooterColumn } from "@/components/docs/nav";
 import { USE_CASES } from "@/lib/use-cases";
@@ -139,7 +140,8 @@ export default function Footer({
 
         <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-gray-600">
           <p>&copy; 2026 Tavnit. All rights reserved.</p>
-          <p>
+          <p className="flex items-center gap-4">
+            <CookieSettingsLink className="hover:text-gray-400 transition-colors" />
             <Link href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-gray-400 transition-colors">
               {SUPPORT_EMAIL}
             </Link>

@@ -1,5 +1,7 @@
 "use client";
 
+import { trackEvent } from "@/lib/analytics";
+
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, CalendarCheck, Loader2, Mail, PartyPopper } from "lucide-react";
 
@@ -123,6 +125,7 @@ export default function ScheduleMeeting({
       }
       requestIdRef.current = body?.id ?? null;
       setSubmitted(true);
+      trackEvent("generate_lead", { source: "schedule_form" });
     } catch {
       setError("Something went wrong — please try again.");
     } finally {

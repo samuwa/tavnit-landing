@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { APP_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL, TWITTER_HANDLE } from "@/lib/site";
 import { siteSchema } from "@/lib/schema";
+import Analytics, { CONSENT_DEFAULT_SCRIPT } from "@/components/Analytics";
 
 const heading = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -89,6 +90,8 @@ export default function RootLayout({
   return (
     <html lang="en" dir="ltr">
       <head>
+        {/* Consent Mode v2 defaults must precede gtag.js (loaded by <Analytics />). */}
+        <script dangerouslySetInnerHTML={{ __html: CONSENT_DEFAULT_SCRIPT }} />
         <link rel="dns-prefetch" href={APP_URL} />
         <link rel="preconnect" href={APP_URL} crossOrigin="anonymous" />
         <script
@@ -96,7 +99,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema()) }}
         />
       </head>
-      <body className={`${heading.variable} ${body.variable} font-body antialiased`}>{children}</body>
+      <body className={`${heading.variable} ${body.variable} font-body antialiased`}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
