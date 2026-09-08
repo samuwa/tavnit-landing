@@ -1,5 +1,8 @@
 import { APP_URL, FEATURES, GITHUB_URL, LINKEDIN_URL, MCP_URL, SITE_URL, SUPPORT_EMAIL } from "@/lib/site";
 import { DOC_SECTIONS } from "@/components/docs/nav";
+import { INTEGRATIONS } from "@/lib/integrations";
+import { isStripeEnabled } from "@/lib/platform";
+import { USE_CASES } from "@/lib/use-cases";
 
 /**
  * /llms.txt — see https://llmstxt.org
@@ -10,10 +13,34 @@ import { DOC_SECTIONS } from "@/components/docs/nav";
  * Calibration: this is protocol-layer hygiene, not a ranking signal. Google
  * states explicitly that no AI-specific file is required for AI Overviews or
  * AI Mode. Non-Google engines do parse it, and it costs nothing to serve.
+ *
+ * Every URL listed here must resolve. A dead link in llms.txt is worse than an
+ * omission: the crawler that follows it learns the file is unreliable. Both
+ * pricing entries were dead while the Stripe self-serve toggle was off —
+ * /pricing 307s to the homepage and /pricing.md returns 404 — so the pricing
+ * section is now gated on the same toggle as the pricing surfaces themselves.
  */
-export const dynamic = "force-static";
+// Revalidated rather than force-static so the platform_config Stripe toggle
+// takes effect without a deploy, exactly as /pricing.md does.
+export const revalidate = 300;
 
-export function GET() {
+export async function GET() {
+  const stripeOn = await isStripeEnabled();
+
+  // Pricing is only discoverable when self-serve is actually on. When it is
+  // off, say so in prose rather than linking a page that redirects away.
+  const pricingLines = stripeOn
+    ? `- [Pricing](${SITE_URL}/pricing): plans, credit model, pricing FAQ.
+- [Pricing (machine-readable)](${SITE_URL}/pricing.md): same data as markdown.`
+    : `- [Book a demo](${SITE_URL}/schedule): pricing is quoted per organisation; self-serve checkout is not currently open.`;
+
+  const billingLines = stripeOn
+    ? `Credit-based. 1 credit = 1 page of document processing. Agent runs bill
+separately at 3 credits per minute. See ${SITE_URL}/pricing.md for tiers.`
+    : `Credit-based. 1 credit = 1 page of document processing. Agent runs bill
+separately at 3 credits per minute. Plans are quoted per organisation — contact
+${SUPPORT_EMAIL} or book a demo at ${SITE_URL}/schedule.`;
+
   const body = `# Tavnit
 
 > AI document pipeline: extract structured data from PDFs and images, clean and
@@ -58,11 +85,24 @@ ${FEATURES.map((f) => `- ${f}`).join("\n")}
 
 ## Key pages
 
-- [Homepage](${SITE_URL}/): product overview, pipeline, use cases, pricing.
-- [Pricing](${SITE_URL}/pricing): plans, credit model, pricing FAQ.
-- [Pricing (machine-readable)](${SITE_URL}/pricing.md): same data as markdown.
+- [Homepage](${SITE_URL}/): product overview, pipeline, use cases.
+- [Use cases](${SITE_URL}/use-cases): what Tavnit extracts, by document type.
+- [Integrations](${SITE_URL}/integrations): how data gets in and out.
+${pricingLines}
 - [Application](${APP_URL}): sign-up and workspace.
 - [MCP server](${MCP_URL}): Model Context Protocol endpoint.
+
+## Use cases
+
+Each page documents the fields worth extracting from that document type and the
+specific failure modes that make it hard — the detail an assistant needs to say
+whether Tavnit fits a given job, rather than that it exists.
+
+${USE_CASES.map((uc) => `- [${uc.label}](${SITE_URL}/use-cases/${uc.slug}): ${uc.summary}`).join("\n")}
+
+## Integrations
+
+${INTEGRATIONS.map((i) => `- [${i.label}](${SITE_URL}${i.href}): ${i.summary}`).join("\n")}
 
 ## Documentation
 
@@ -76,8 +116,7 @@ Power Automate. Agents and the MCP connector are gated per organisation.
 
 ## Billing model
 
-Credit-based. 1 credit = 1 page of document processing. Agent runs bill
-separately at 3 credits per minute. See ${SITE_URL}/pricing.md for tiers.
+${billingLines}
 
 ## Contact and profiles
 

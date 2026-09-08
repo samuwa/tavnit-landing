@@ -6,6 +6,7 @@ import MarketingPage from "@/components/MarketingPage";
 import { buildUseCasePageSchema } from "@/lib/schema";
 import { USE_CASES, USE_CASE_BY_SLUG } from "@/lib/use-cases";
 import { APP_URL } from "@/lib/site";
+import { isStripeEnabled } from "@/lib/platform";
 
 /**
  * One route per document type, rendered from src/lib/use-cases.ts.
@@ -54,6 +55,11 @@ export default async function UseCasePage({
   const uc = USE_CASE_BY_SLUG[slug];
   if (!uc) notFound();
 
+  // /pricing 307s to the homepage while Stripe self-serve is off. Header and
+  // Footer already hide their pricing links in that state; the CTA here did
+  // not, so every use-case page carried an internal link into a redirect.
+  const stripeOn = await isStripeEnabled();
+
   const others = USE_CASES.filter((u) => u.slug !== uc.slug).slice(0, 3);
 
   return (
@@ -101,10 +107,10 @@ export default async function UseCasePage({
             Start free <ArrowRight size={17} />
           </Link>
           <Link
-            href="/pricing"
+            href={stripeOn ? "/pricing" : "/schedule"}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-white/15 text-gray-300 font-semibold hover:bg-white/5 hover:text-white transition-all"
           >
-            See pricing
+            {stripeOn ? "See pricing" : "Book a demo"}
           </Link>
         </div>
 

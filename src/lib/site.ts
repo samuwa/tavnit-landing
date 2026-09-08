@@ -6,7 +6,24 @@
  * value can never drift between the rendered page and its structured data.
  */
 
-export const SITE_URL = "https://tavnit.io";
+/**
+ * Canonical origin. MUST match the host Vercel actually serves.
+ *
+ * Vercel is configured with www.tavnit.io as the production domain and apex
+ * tavnit.io redirecting to it. This constant used to say "https://tavnit.io",
+ * which meant every canonical tag, every sitemap <loc>, the robots.txt Host and
+ * Sitemap lines, the OpenGraph URLs and the JSON-LD all pointed at a host that
+ * immediately redirects somewhere else.
+ *
+ * Google resolved that as a contradiction: it crawled www (200), read a
+ * canonical pointing to apex, followed it, and was redirected back to www. The
+ * result was a split index — Search Console showed the homepage indexed at
+ * tavnit.io while /use-cases/purchase-orders was indexed at www.tavnit.io, plus
+ * 19 URLs dropped as "Alternate page with proper canonical tag".
+ *
+ * Which host wins is arbitrary for SEO; agreeing with the server is not.
+ */
+export const SITE_URL = "https://www.tavnit.io";
 export const APP_URL = "https://app.tavnit.io";
 export const MCP_URL = "https://mcp.tavnit.io";
 

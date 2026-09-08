@@ -17,9 +17,6 @@ import { USE_CASES } from "@/lib/use-cases";
  * so a new documentation section is listed here automatically.
  */
 
-/** Evaluated once per build; the fallback when git history is unavailable. */
-const BUILD_DATE = new Date();
-
 /**
  * Last commit date for the files that render a route.
  *
@@ -29,22 +26,26 @@ const BUILD_DATE = new Date();
  * site's values stay trustworthy, so stamping unchanged pages spends a signal
  * the docs section actually benefits from.
  *
- * Deliberately best-effort: a shallow clone or a build image without git falls
- * back to the build date, which is exactly the previous behaviour. It degrades,
- * it never fails the build.
+ * Deliberately best-effort, and it degrades by omission: when git is not
+ * available the entry simply has no <lastmod>. This route is dynamic (it reads
+ * the Stripe toggle), so on Vercel it renders inside a serverless function
+ * where there is no .git directory. The old fallback stamped `new Date()` on
+ * every URL — the production sitemap showed all 38 entries changed at the
+ * moment of the request, which is exactly the untrustworthy signal Google says
+ * makes it stop reading <lastmod> for the whole site. No date beats a wrong one.
  */
-function lastCommitDate(...paths: string[]): Date {
+function lastCommitDate(...paths: string[]): Date | undefined {
   try {
     const iso = execFileSync(
       "git",
       ["log", "-1", "--format=%cI", "--", ...paths],
       { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
     ).trim();
-    if (!iso) return BUILD_DATE;
+    if (!iso) return undefined;
     const date = new Date(iso);
-    return Number.isNaN(date.getTime()) ? BUILD_DATE : date;
+    return Number.isNaN(date.getTime()) ? undefined : date;
   } catch {
-    return BUILD_DATE;
+    return undefined;
   }
 }
 

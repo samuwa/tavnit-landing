@@ -4,6 +4,7 @@ import { ArrowRight, Check, LayoutGrid, Lock, Plug, Repeat, ShieldCheck, Sparkle
 import MarketingPage from "@/components/MarketingPage";
 import { integrationPageSchema } from "@/lib/schema";
 import { APP_URL, MCP_URL } from "@/lib/site";
+import { isStripeEnabled } from "@/lib/platform";
 
 const DESCRIPTION =
   "Connect Tavnit to claude.ai or Cursor over MCP. Your assistant can build extraction flows, run documents through them, and query the results — typed and cleaned.";
@@ -88,7 +89,9 @@ const capabilities = [
   },
 ];
 
-export default function McpIntegrationPage() {
+export default async function McpIntegrationPage() {
+  // See src/app/use-cases/[slug]/page.tsx — same reasoning.
+  const stripeOn = await isStripeEnabled();
   return (
     <MarketingPage>
       <script
@@ -364,10 +367,10 @@ export default function McpIntegrationPage() {
               Start free <ArrowRight size={17} />
             </Link>
             <Link
-              href="/pricing"
+              href={stripeOn ? "/pricing" : "/schedule"}
               className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-white/15 text-gray-300 font-semibold hover:bg-white/5 hover:text-white transition-all"
             >
-              See pricing
+              {stripeOn ? "See pricing" : "Book a demo"}
             </Link>
           </div>
         </div>
