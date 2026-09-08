@@ -243,50 +243,65 @@ export const USE_CASES: UseCase[] = [
   {
     slug: "purchase-orders",
     label: "Purchase Orders",
-    badge: "Procurement & Ops",
-    h1: "Purchase order processing",
-    title: "Purchase Order Automation and PO Matching",
+    badge: "Procurement & AP",
+    // Search Console: this URL earns ~700 impressions a quarter for "po matching",
+    // "purchase order matching", "po matching software" and "automated
+    // po-to-invoice matching" — at position 55–65. The page used to be about PO
+    // *processing* and mentioned matching in passing; the demand is for matching.
+    // The URL keeps its equity; the page now answers the query it is shown for.
+    h1: "PO matching software: match invoices to purchase orders automatically",
+    title: "Automated PO Matching — Invoices to Purchase Orders",
     description:
-      "Extract PO numbers, ship-to details and full line items from incoming purchase orders, so orders reach your system already matched and checkable.",
+      "PO matching software: extract purchase orders and invoices into the same fields, pair line items automatically, and route only mismatches to a reviewer.",
     summary:
-      "PO numbers, ship-to details and line items extracted from incoming orders, ready to match against invoices.",
-    lede: "Tavnit reads incoming purchase orders and returns PO number, buyer, ship-to details, requested dates and every line item as typed fields. Because invoices are extracted into the same shape, matching an invoice to its PO becomes a query rather than a manual comparison.",
+      "Purchase orders and invoices extracted into one shape, paired line by line, with only the mismatches sent to a reviewer.",
+    lede: "Tavnit reads purchase orders and the invoices that follow them, extracts PO number, supplier, SKUs, quantities and prices as typed fields, and pairs invoice lines to PO lines automatically — even when the supplier describes an item differently. Header-level matching is a lookup on the PO number; line-level matching is a Matcher comparison; anything that does not agree goes to a named reviewer instead of to your ledger.",
     problem: [
-      "Purchase orders arrive as PDF attachments from customers who each use their own ERP output, and somebody re-keys them into your order system. The re-keying is the bottleneck, and it is also where quantity and SKU errors enter — the two errors that turn into a shipping problem.",
-      "The second half of the problem is matching. When the invoice eventually arrives, someone compares two documents by eye to confirm that what was ordered is what was billed.",
+      "PO matching is the check that what was billed is what was ordered. In most teams it is still done by eye: an AP clerk opens the invoice PDF, finds the purchase order, and compares quantities and prices line by line. It is slow, and it is where the two expensive errors — a wrong quantity and a wrong unit price — slip through because they look exactly like right ones.",
+      "Automated PO matching tools in ERPs assume both documents are already structured. They are not. The purchase order came out of your system, but the invoice came out of the supplier's, as a PDF, with their part numbers and their layout. Getting it into a comparable shape is the unsolved half of the problem, and it is the half Tavnit does.",
     ],
     fields: [
-      { name: "PO number", note: "The key everything else joins on. Text, not numeric — prefixes and leading zeros are significant." },
-      { name: "Buyer and ship-to address", note: "Frequently different, and the difference matters for fulfilment." },
-      { name: "Line items with SKU and quantity", note: "A repeating table. Customer part numbers often differ from yours, which is a lookup problem." },
-      { name: "Unit price and extended amount", note: "Both, so the arithmetic can be verified rather than assumed." },
-      { name: "Requested delivery date", note: "Sometimes per line rather than per order." },
-      { name: "Payment and incoterms", note: "Short fields with outsized downstream consequences." },
+      { name: "PO number", note: "The key everything joins on. Extract it as text — prefixes and leading zeros are significant, and suppliers put it in different places on the invoice." },
+      { name: "Supplier and buyer", note: "The supplier's own name on the invoice rarely matches the vendor record verbatim. A lookup Cleaner resolves it to your vendor ID." },
+      { name: "Line items: description, SKU, quantity", note: "A repeating table on both documents. Supplier part numbers usually differ from yours; descriptions differ in wording — this is what makes line matching hard." },
+      { name: "Unit price and extended amount", note: "Both, so unit price × quantity can be verified on the invoice itself before it is compared to the PO." },
+      { name: "Invoice and PO totals", note: "Header-level match. A total that agrees while a line disagrees is a quantity/price swap — the case a total-only check misses." },
+      { name: "Delivery date and delivery note reference", note: "The third document in a three-way match. Delivery notes are extracted the same way; see the delivery-notes page." },
+      { name: "Payment terms and currency", note: "Short fields with outsized consequences when the invoice disagrees with the PO." },
     ],
     gotchas: [
       {
-        title: "Customer part numbers are not your part numbers",
-        body: "A PO lists what the buyer calls the item. Your system knows a different SKU. A lookup Cleaner matches customer part numbers against your reference data during processing, so the order arrives already translated rather than needing manual mapping.",
+        title: "Two-way, three-way: the match only works if the shapes agree",
+        body: "A two-way match compares the invoice to the PO; a three-way match adds the goods-received note. Both fall apart when the documents are extracted into different field names. Running POs, invoices and delivery notes through flows that share the same field schema — PO number, SKU, quantity, unit price — is what turns matching into a comparison rather than a document read.",
       },
       {
-        title: "Matching is the point, and it only works if shapes agree",
-        body: "Three-way matching falls apart when the PO and the invoice are extracted into different field names. Using the same field naming across both flows is what makes matching a query on the PO number rather than a document comparison.",
+        title: "Supplier part numbers are not your part numbers",
+        body: "The PO lists your SKU; the invoice lists the supplier's. A lookup Cleaner maps supplier part numbers to your SKUs against your reference data during processing, so the invoice arrives already translated. Where no reference exists, a Matcher pairs lines by the meaning of the description — semantic, not exact — with an LLM tiebreaker for borderline pairs.",
       },
       {
-        title: "Quantity errors are the expensive ones",
-        body: "A wrong price is an invoicing correction. A wrong quantity is a shipment. A formula Cleaner checking that unit price times quantity equals the extended amount catches a large share of misreads before anything is picked.",
+        title: "Line-level matching, not just totals",
+        body: "Set the PO run as the benchmark and the invoice as the run compared against it. The Matcher pairs each invoice line to a PO line and lays quantity and unit price side by side, with unmatched lines listed as warnings rather than silently dropped. A total-only check would pass an invoice that billed the right amount for the wrong items.",
+      },
+      {
+        title: "Only the exceptions should reach a human",
+        body: "Review on every invoice recreates the manual process. A formula Cleaner verifies that unit price × quantity equals the line amount on the invoice itself, and a condition flags lines outside your tolerance. Human-in-the-Loop review is triggered only for flagged runs, so the reviewer sees the three invoices that disagree, not the three hundred that match.",
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/docs/collections", why: "Customers send POs, invoices and delivery notes to the same address. Collections classifies each and routes it to the right flow." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Maps customer part numbers to your SKUs by lookup, and verifies line arithmetic." },
-      { label: "Buckets", href: "/docs/buckets", why: "Holds POs and invoices in the same shape, so matching is a query on the PO number." },
-      { label: "API Integration", href: "/docs/api-integration", why: "Pushes confirmed orders into your ERP without a manual step." },
+      { label: "Collections", href: "/docs/collections", why: "Suppliers send POs, invoices and delivery notes to one address. Collections classifies each document and routes it to the right flow." },
+      { label: "Cleaners", href: "/docs/cleaners", why: "Maps supplier part numbers and vendor names to your master data by lookup, verifies line arithmetic, and flags values outside tolerance." },
+      { label: "Buckets", href: "/docs/buckets", why: "Holds POs and invoices in the same shape, so header-level matching is a query on the PO number." },
+      { label: "Human in the Loop", href: "/docs/human-in-the-loop", why: "Only flagged invoices pause for a named reviewer, with an append-only audit trail of who approved what." },
+      { label: "API Integration", href: "/docs/api-integration", why: "Pushes matched, approved invoices into your ERP or AP system without a manual step." },
     ],
     faqs: [
-      { q: "Can it match invoices to purchase orders?", a: "Extract both into the same field structure and matching becomes a query on the PO number in your Bucket. Tavnit produces the structured data that makes matching possible; the comparison then runs against your own data rather than against two PDFs." },
-      { q: "What if the customer uses their own part numbers?", a: "A lookup Cleaner matches customer part numbers against your reference data during processing, so orders arrive already translated to your SKUs." },
-      { q: "Do line items come through separately?", a: "Yes. Line items are table fields, so each row returns SKU, quantity, unit price and extended amount as separate typed values." },
+      { q: "What is PO matching?", a: "PO matching is the check that an invoice agrees with the purchase order it bills against — same supplier, same items, same quantities and prices. A two-way match compares invoice to PO; a three-way match also checks the goods-received note. It is the control that stops a supplier being paid for something that was not ordered or not delivered." },
+      { q: "Can Tavnit match invoices to purchase orders automatically?", a: "Yes. Extract both into the same field structure and header-level matching becomes a query on the PO number in your Bucket. For line-level matching, a Matcher in benchmark mode takes the PO as the baseline and pairs each invoice line to it, showing quantity and unit price side by side. Lines that cannot be paired are listed as warnings." },
+      { q: "What if the supplier uses their own part numbers or descriptions?", a: "A lookup Cleaner maps supplier part numbers to your SKUs during processing when you have reference data. When you do not, the Matcher pairs lines by the meaning of the description rather than the exact text, with an LLM tiebreaker for borderline pairs, so \"Blue widget 10pk\" and \"WIDGET-BLU x10\" land on the same row." },
+      { q: "What happens when an invoice does not match?", a: "It stops. A condition Cleaner flags the run and Human-in-the-Loop review routes it to a named reviewer, who sees the invoice, the extracted values and the disagreement. Matching invoices pass straight through to your ERP by API or webhook. Every view, edit and approval is written to an append-only audit trail." },
+      { q: "Does it do three-way matching with delivery notes?", a: "Delivery notes and goods-received notes are extracted the same way as POs and invoices — including handwritten quantities on signed PODs — into the same field shape, so the third leg of the match is a third run compared against the PO." },
+      { q: "Do we need to change our ERP?", a: "No. Tavnit sits in front of it: documents arrive by email or API, are extracted and matched, and approved results are delivered to your ERP or AP system by REST API or webhook. Zapier, Make and n8n recipes exist for teams that prefer not to write code." },
+      { q: "Do line items come through separately?", a: "Yes. Line items are table fields, so each row returns SKU, description, quantity, unit price and extended amount as separate typed values — which is what makes line-level comparison possible at all." },
     ],
   },
   {
