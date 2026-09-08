@@ -69,6 +69,10 @@ const integrations: FooterLink[] = [
 ];
 
 const company: FooterLink[] = [
+  { label: "Guides", href: "/guides" },
+  // The Spanish landing is linked site-wide so it is one click from every
+  // page; without an internal link it would be reachable only via sitemap.
+  { label: "Español", href: "/es" },
   { label: "LinkedIn", href: LINKEDIN_URL, external: true },
   { label: "GitHub", href: GITHUB_URL, external: true },
   { label: "Contact", href: `mailto:${SUPPORT_EMAIL}` },

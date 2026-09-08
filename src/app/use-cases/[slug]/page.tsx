@@ -5,7 +5,7 @@ import { ArrowRight, Check, TriangleAlert } from "lucide-react";
 import MarketingPage from "@/components/MarketingPage";
 import { buildUseCasePageSchema } from "@/lib/schema";
 import { USE_CASES, USE_CASE_BY_SLUG } from "@/lib/use-cases";
-import { APP_URL } from "@/lib/site";
+import { APP_URL, SITE_URL } from "@/lib/site";
 import { isStripeEnabled } from "@/lib/platform";
 
 /**
@@ -33,7 +33,20 @@ export async function generateMetadata({
   return {
     title: uc.title,
     description: uc.description,
-    alternates: { canonical: `/use-cases/${uc.slug}` },
+    alternates: {
+      canonical: `/use-cases/${uc.slug}`,
+      // Only customs has a Spanish equivalent so far. The pair must be
+      // reciprocal — /es/aduanas declares the same two URLs — or Google drops it.
+      ...(uc.slug === "customs-trade"
+        ? {
+            languages: {
+              en: `${SITE_URL}/use-cases/customs-trade`,
+              es: `${SITE_URL}/es/aduanas`,
+              "x-default": `${SITE_URL}/use-cases/customs-trade`,
+            },
+          }
+        : {}),
+    },
     openGraph: {
       type: "article",
       url: `/use-cases/${uc.slug}`,

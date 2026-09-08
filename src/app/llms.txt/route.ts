@@ -3,6 +3,7 @@ import { DOC_SECTIONS } from "@/components/docs/nav";
 import { INTEGRATIONS } from "@/lib/integrations";
 import { isStripeEnabled } from "@/lib/platform";
 import { USE_CASES } from "@/lib/use-cases";
+import { GUIDES } from "@/lib/guides";
 
 /**
  * /llms.txt — see https://llmstxt.org
@@ -91,6 +92,14 @@ ${FEATURES.map((f) => `- ${f}`).join("\n")}
 ${pricingLines}
 - [Application](${APP_URL}): sign-up and workspace.
 - [MCP server](${MCP_URL}): Model Context Protocol endpoint.
+- [En español](${SITE_URL}/es): Spanish-language overview, with a dedicated page on customs and Panama tariff classification at ${SITE_URL}/es/aduanas.
+
+## Guides
+
+Explanatory articles on the problems Tavnit is used for — vendor-neutral where
+the topic is, specific about Tavnit where it is not.
+
+${GUIDES.map((g) => `- [${g.h1}](${SITE_URL}/guides/${g.slug}): ${g.description}`).join("\n")}
 
 ## Use cases
 

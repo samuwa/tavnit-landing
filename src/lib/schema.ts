@@ -409,6 +409,108 @@ export function buildUseCasePageSchema(opts: {
   };
 }
 
+/**
+ * Graph for a standalone marketing page in a language other than English.
+ *
+ * The other builders hardcode inLanguage "en-US" because every page was
+ * English. The Spanish pages declare their own language so the WebPage node
+ * agrees with the visible content and the hreflang annotations; disagreement
+ * between the three is what makes Google ignore the localisation.
+ */
+export function buildLocalizedPageSchema(opts: {
+  path: string;
+  name: string;
+  headline: string;
+  description: string;
+  inLanguage: string;
+  breadcrumb: { name: string; url: string }[];
+  faqs?: { q: string; a: string }[];
+}) {
+  const url = `${SITE_URL}${opts.path}`;
+  const graph: object[] = [
+    {
+      "@type": "WebPage",
+      "@id": `${url}#webpage`,
+      url,
+      name: opts.name,
+      headline: opts.headline,
+      isPartOf: { "@id": WEBSITE_ID },
+      about: { "@id": SOFTWARE_ID },
+      description: opts.description,
+      inLanguage: opts.inLanguage,
+      dateModified: BUILD_DATE,
+      publisher: { "@id": ORG_ID },
+    },
+    breadcrumbs(opts.breadcrumb, url),
+  ];
+  if (opts.faqs?.length) {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${url}#faq`,
+      mainEntity: opts.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.q,
+        acceptedAnswer: { "@type": "Answer", text: faq.a },
+      })),
+    });
+  }
+  return { "@context": "https://schema.org", "@graph": graph };
+}
+
+/**
+ * Graph for a /guides article: TechArticle rather than WebPage, because the
+ * page is explanatory content with a publication date, not a product surface.
+ * `datePublished` is fixed in the guide's source so it does not drift with
+ * deploys; only dateModified tracks the build.
+ */
+export function buildGuideSchema(opts: {
+  slug: string;
+  headline: string;
+  description: string;
+  datePublished: string;
+  faqs?: { q: string; a: string }[];
+}) {
+  const url = `${SITE_URL}/guides/${opts.slug}`;
+  const graph: object[] = [
+    {
+      "@type": "TechArticle",
+      "@id": `${url}#article`,
+      url,
+      mainEntityOfPage: url,
+      headline: opts.headline,
+      description: opts.description,
+      inLanguage: "en-US",
+      datePublished: opts.datePublished,
+      dateModified: BUILD_DATE,
+      author: { "@id": ORG_ID },
+      publisher: { "@id": ORG_ID },
+      isPartOf: { "@id": WEBSITE_ID },
+      about: { "@id": SOFTWARE_ID },
+      image: `${SITE_URL}/opengraph-image`,
+    },
+    breadcrumbs(
+      [
+        { name: "Home", url: SITE_URL },
+        { name: "Guides", url: `${SITE_URL}/guides` },
+        { name: opts.headline, url },
+      ],
+      url,
+    ),
+  ];
+  if (opts.faqs?.length) {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${url}#faq`,
+      mainEntity: opts.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.q,
+        acceptedAnswer: { "@type": "Answer", text: faq.a },
+      })),
+    });
+  }
+  return { "@context": "https://schema.org", "@graph": graph };
+}
+
 /** Graph for the legal pages. */
 export function legalSchema(name: string, path: string, description: string) {
   const url = `${SITE_URL}${path}`;

@@ -5,6 +5,7 @@ import { DOC_SECTIONS } from "@/components/docs/nav";
 import { OWNED_INTEGRATIONS } from "@/lib/integrations";
 import { isStripeEnabled } from "@/lib/platform";
 import { USE_CASES } from "@/lib/use-cases";
+import { GUIDES } from "@/lib/guides";
 
 /**
  * Only real, indexable URLs belong here.
@@ -110,6 +111,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       // Commercial intent, same tier as the integration pages.
       priority: 0.9,
+    })),
+    // Spanish landing pages. Only the customs page has an English twin; the
+    // pairs are declared via alternates.languages on both sides.
+    {
+      url: `${SITE_URL}/es`,
+      lastModified: lastCommitDate("src/app/es/page.tsx"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/es/aduanas`,
+      lastModified: lastCommitDate("src/app/es/aduanas/page.tsx"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/guides`,
+      lastModified: lastCommitDate("src/app/guides", "src/lib/guides.ts"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    ...GUIDES.map((g) => ({
+      url: `${SITE_URL}/guides/${g.slug}`,
+      lastModified: new Date(g.updated),
+      changeFrequency: "monthly" as const,
+      // Informational; sits below the commercial pages it links to.
+      priority: 0.7,
     })),
     {
       url: `${SITE_URL}/integrations`,

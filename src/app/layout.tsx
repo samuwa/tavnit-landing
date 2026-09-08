@@ -70,8 +70,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
+    // Only the homepage inherits this block: every other route defines its
+    // own `alternates`, and Next replaces the object rather than merging it.
+    // /es is the Spanish equivalent of "/"; x-default stays English.
     languages: {
       en: `${SITE_URL}/`,
+      es: `${SITE_URL}/es`,
       "x-default": `${SITE_URL}/`,
     },
   },
