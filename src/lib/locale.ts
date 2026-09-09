@@ -32,6 +32,8 @@ export const STATIC_ROUTE_PAIRS: { en: string; es: string }[] = [
   { en: "/integrations", es: "/es/integraciones" },
   { en: "/integrations/mcp", es: "/es/integraciones/mcp" },
   { en: "/guides", es: "/es/guias" },
+  { en: "/privacy", es: "/es/privacidad" },
+  { en: "/terms", es: "/es/terminos" },
 ];
 
 export const ES_PATH_BY_EN: Record<string, string> = Object.fromEntries(

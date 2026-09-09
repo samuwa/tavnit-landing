@@ -218,6 +218,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    {
+      url: `${SITE_URL}/es/privacidad`,
+      lastModified: lastCommitDate("src/app/es/privacidad/page.tsx"),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${SITE_URL}/es/terminos`,
+      lastModified: lastCommitDate("src/app/es/terminos/page.tsx"),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
   return stripeOn
     ? entries

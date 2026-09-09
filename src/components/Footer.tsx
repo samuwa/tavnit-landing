@@ -23,7 +23,7 @@ import type { Locale } from "@/lib/locale";
  *    which meant mobile users never saw Connect, and the two lists drifted.
  *
  * The Spanish footer links Spanish routes where they exist and says so where
- * they do not (docs, legal): a Spanish visitor sent to an English page without
+ * they do not (docs): a Spanish visitor sent to an English page without
  * warning reads it as a broken site.
  */
 
@@ -131,8 +131,8 @@ const COLUMNS_ES: FooterColumn[] = [
       { label: "LinkedIn", href: LINKEDIN_URL, external: true },
       { label: "GitHub", href: GITHUB_URL, external: true },
       { label: "Contacto", href: `mailto:${SUPPORT_EMAIL}` },
-      { label: "Política de privacidad (en inglés)", href: "/privacy" },
-      { label: "Términos de servicio (en inglés)", href: "/terms" },
+      { label: "Política de privacidad", href: "/es/privacidad" },
+      { label: "Términos de servicio", href: "/es/terminos" },
     ],
   },
 ];

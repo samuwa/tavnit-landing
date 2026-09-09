@@ -47,7 +47,7 @@ const BANNER_COPY = {
   es: {
     title: "Cookies en tavnit.io",
     body: "Usamos Google Analytics para saber qué páginas y funciones son útiles. Solo se activa si aceptas. Nunca cookies de publicidad.",
-    privacy: "Política de privacidad (en inglés)",
+    privacy: "Política de privacidad",
     decline: "Rechazar",
     accept: "Aceptar",
     aria: "Preferencias de cookies",
@@ -82,7 +82,7 @@ function CookieBanner() {
       <p className="font-heading font-semibold text-white mb-1.5">{copy.title}</p>
       <p className="leading-relaxed">
         {copy.body}{" "}
-        <Link href="/privacy" className="text-[#8fa2ff] hover:text-white underline underline-offset-2">
+        <Link href={copy === BANNER_COPY.es ? "/es/privacidad" : "/privacy"} className="text-[#8fa2ff] hover:text-white underline underline-offset-2">
           {copy.privacy}
         </Link>
       </p>

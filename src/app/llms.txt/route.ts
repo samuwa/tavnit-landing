@@ -136,7 +136,9 @@ ${USE_CASES_ES.map((uc) => `- [${uc.label}](${SITE_URL}${esUseCasePath(uc)}): ${
 - [Guías](${SITE_URL}/es/guias): guías en español.
 ${GUIDES_ES.map((g) => `- [${g.h1}](${SITE_URL}${esGuidePath(g)}): ${g.description}`).join("\n")}
 
-Documentation and legal pages are English-only.
+- [Política de privacidad](${SITE_URL}/es/privacidad) y [Términos de servicio](${SITE_URL}/es/terminos): traducciones; la versión en inglés prevalece.
+
+Documentation is English-only.
 
 ## Integration surface
 
