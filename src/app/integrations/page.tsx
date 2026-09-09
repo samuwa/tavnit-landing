@@ -5,6 +5,7 @@ import MarketingPage from "@/components/MarketingPage";
 import { integrationsHubSchema } from "@/lib/schema";
 import { INTEGRATIONS } from "@/lib/integrations";
 import { APP_URL } from "@/lib/site";
+import { languageAlternates } from "@/lib/locale";
 
 const DESCRIPTION =
   "Every way into Tavnit and back out: an MCP connector for AI assistants, a REST API, email forwarding, webhooks, and Zapier, Make and n8n recipes.";
@@ -12,7 +13,10 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: "Integrations — API, Email, Webhooks and MCP",
   description: DESCRIPTION,
-  alternates: { canonical: "/integrations" },
+  alternates: {
+    canonical: "/integrations",
+    languages: languageAlternates("/integrations", "/es/integraciones"),
+  },
   openGraph: {
     type: "website",
     url: "/integrations",
@@ -20,6 +24,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     siteName: "Tavnit",
     locale: "en_US",
+    alternateLocale: ["es_PA"],
     images: ["/opengraph-image"],
   },
 };
@@ -34,7 +39,7 @@ export const metadata: Metadata = {
  */
 export default function IntegrationsPage() {
   return (
-    <MarketingPage>
+    <MarketingPage alternatePath="/es/integraciones">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

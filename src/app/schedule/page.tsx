@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import ScheduleMeeting from "@/components/ScheduleMeeting";
 import { getSalesSchedulerUrl } from "@/lib/schedule";
 import { SALES_EMAIL } from "@/lib/site";
+import { isStripeEnabled } from "@/lib/platform";
+import { languageAlternates } from "@/lib/locale";
 
 /** ISR so a booking-link change in tavnit-admin → Settings shows up within
  *  minutes without a redeploy. */
@@ -15,7 +17,10 @@ export const metadata: Metadata = {
   title: "Book a Demo — Schedule a Meeting",
   description:
     "Book a 30-minute demo of Tavnit. Tell us about your documents, pick a time on the calendar, and see your own PDFs turned into structured data live.",
-  alternates: { canonical: "/schedule" },
+  alternates: {
+    canonical: "/schedule",
+    languages: languageAlternates("/schedule", "/es/agendar"),
+  },
   openGraph: {
     type: "website",
     url: "/schedule",
@@ -24,6 +29,7 @@ export const metadata: Metadata = {
       "Tell us about your documents, pick a time, and see your own PDFs turned into structured data live.",
     siteName: "Tavnit",
     locale: "en_US",
+    alternateLocale: ["es_PA"],
     images: ["/opengraph-image"],
   },
 };
@@ -47,12 +53,14 @@ const EXPECTATIONS = [
 ];
 
 export default async function SchedulePage() {
-  const schedulerUrl = await getSalesSchedulerUrl();
+  // Header/Footer hide their pricing links while Stripe self-serve is off;
+  // this page rendered them with the default (visible) before.
+  const [schedulerUrl, stripeOn] = await Promise.all([getSalesSchedulerUrl(), isStripeEnabled()]);
 
   return (
     <>
       <SquaresBackground />
-      <Header />
+      <Header alternateHref="/es/agendar" showPricing={stripeOn} />
       {/* Everything lives in one viewport: the pitch and the form sit side by
           side, vertically centered, so nothing important needs a scroll. */}
       <main
@@ -84,7 +92,7 @@ export default async function SchedulePage() {
           <ScheduleMeeting schedulerUrl={schedulerUrl} salesEmail={SALES_EMAIL} />
         </div>
       </main>
-      <Footer />
+      <Footer showPricing={stripeOn} />
     </>
   );
 }

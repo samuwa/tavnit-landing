@@ -5,12 +5,16 @@ import MarketingPage from "@/components/MarketingPage";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
 import { GUIDES } from "@/lib/guides";
+import { languageAlternates } from "@/lib/locale";
 
 export const metadata: Metadata = {
   title: "Guides — PO Matching, Line Items, HS Codes and Document Automation",
   description:
     "Plain-language guides to the problems behind document automation: matching invoices to purchase orders, extracting invoice line items, classifying HS codes, and more.",
-  alternates: { canonical: "/guides" },
+  alternates: {
+    canonical: "/guides",
+    languages: languageAlternates("/guides", "/es/guias"),
+  },
   openGraph: {
     type: "website",
     url: "/guides",
@@ -19,13 +23,14 @@ export const metadata: Metadata = {
       "Plain-language guides to PO matching, line-item extraction, HS code classification and the rest of document operations.",
     siteName: "Tavnit",
     locale: "en_US",
+    alternateLocale: ["es_PA"],
     images: ["/opengraph-image"],
   },
 };
 
 export default function GuidesHubPage() {
   return (
-    <MarketingPage>
+    <MarketingPage alternatePath="/es/guias">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

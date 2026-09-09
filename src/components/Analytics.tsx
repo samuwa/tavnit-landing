@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import Script from "next/script";
+import { usePathname } from "next/navigation";
 import { GA_ID, bannerStore, writeConsent, type ConsentChoice } from "@/lib/analytics";
 
 /** Inline in <head> before anything else — see root layout. */
@@ -34,7 +35,30 @@ gtag('config','${GA_ID}',{anonymize_ip:true,linker:{domains:['tavnit.io','demo.t
   );
 }
 
+const BANNER_COPY = {
+  en: {
+    title: "Cookies on tavnit.io",
+    body: "We use Google Analytics to understand which pages and features are useful. It only runs if you accept. No advertising cookies, ever.",
+    privacy: "Privacy policy",
+    decline: "Decline",
+    accept: "Accept",
+    aria: "Cookie preferences",
+  },
+  es: {
+    title: "Cookies en tavnit.io",
+    body: "Usamos Google Analytics para saber qué páginas y funciones son útiles. Solo se activa si aceptas. Nunca cookies de publicidad.",
+    privacy: "Política de privacidad (en inglés)",
+    decline: "Rechazar",
+    accept: "Aceptar",
+    aria: "Preferencias de cookies",
+  },
+} as const;
+
 function CookieBanner() {
+  // The banner is mounted once in the root layout, so it cannot take a locale
+  // prop; the path is the only signal, and every Spanish route lives under /es.
+  const pathname = usePathname();
+  const copy = pathname === "/es" || pathname?.startsWith("/es/") ? BANNER_COPY.es : BANNER_COPY.en;
   // Server snapshot is "closed", so returning visitors never see a flash and
   // SSR/CSR markup stay identical; the client snapshot reads localStorage.
   const open = useSyncExternalStore(
@@ -51,15 +75,15 @@ function CookieBanner() {
     <div
       role="dialog"
       aria-live="polite"
-      aria-label="Cookie preferences"
+      aria-label={copy.aria}
+      lang={copy === BANNER_COPY.es ? "es" : "en"}
       className="fixed inset-x-3 bottom-3 sm:inset-x-auto sm:right-5 sm:bottom-5 sm:max-w-md z-[100] rounded-2xl border border-white/10 bg-[#0b0d16]/95 backdrop-blur-md p-5 shadow-2xl shadow-black/50 text-sm text-gray-300"
     >
-      <p className="font-heading font-semibold text-white mb-1.5">Cookies on tavnit.io</p>
+      <p className="font-heading font-semibold text-white mb-1.5">{copy.title}</p>
       <p className="leading-relaxed">
-        We use Google Analytics to understand which pages and features are useful.
-        It only runs if you accept. No advertising cookies, ever.{" "}
+        {copy.body}{" "}
         <Link href="/privacy" className="text-[#8fa2ff] hover:text-white underline underline-offset-2">
-          Privacy policy
+          {copy.privacy}
         </Link>
       </p>
       <div className="mt-4 flex gap-2 justify-end">
@@ -68,14 +92,14 @@ function CookieBanner() {
           onClick={() => choose("denied")}
           className="px-4 py-2 rounded-lg border border-white/15 text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
         >
-          Decline
+          {copy.decline}
         </button>
         <button
           type="button"
           onClick={() => choose("granted")}
           className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold hover:opacity-90 transition-opacity"
         >
-          Accept
+          {copy.accept}
         </button>
       </div>
     </div>

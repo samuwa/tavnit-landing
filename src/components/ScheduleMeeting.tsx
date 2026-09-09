@@ -4,6 +4,7 @@ import { trackEvent } from "@/lib/analytics";
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, CalendarCheck, Loader2, Mail, PartyPopper } from "lucide-react";
+import type { Locale } from "@/lib/locale";
 
 /**
  * The /schedule flow: a short lead form first, then the sales rep's Calendly
@@ -46,6 +47,46 @@ function embedUrl(
   }
 }
 
+/** UI strings only — the API payload and the sales notification are unchanged. */
+const COPY = {
+  en: {
+    genericError: "Something went wrong — please try again.",
+    booked: (first: string, email: string) => `You're booked, ${first || "thanks"} — the invite is on its way to ${email}.`,
+    thanks: (first: string, below: boolean) => `Thanks, ${first || "there"} — now pick a time that works for you${below ? " below" : ""}.`,
+    iframeTitle: "Pick a meeting time",
+    noScheduler: "We got your request and will reach out shortly to find a time.",
+    name: "Name *",
+    namePlaceholder: "Ana García",
+    email: "Work email *",
+    emailPlaceholder: "ana@company.com",
+    company: "Company",
+    companyPlaceholder: "Company name",
+    topic: "What would you like to discuss?",
+    topicPlaceholder: "e.g. We process ~500 supplier invoices a month and want them in our ERP without re-typing.",
+    sending: "Sending…",
+    submit: "Continue to pick a time",
+    preferEmail: "Prefer email?",
+  },
+  es: {
+    genericError: "Algo salió mal — inténtalo de nuevo.",
+    booked: (first: string, email: string) => `Listo, ${first || "gracias"} — la invitación va en camino a ${email}.`,
+    thanks: (first: string, below: boolean) => `Gracias${first ? `, ${first}` : ""} — ahora elige la hora que te convenga${below ? " aquí abajo" : ""}.`,
+    iframeTitle: "Elige la hora de la reunión",
+    noScheduler: "Recibimos tu solicitud y te escribimos en breve para coordinar la hora.",
+    name: "Nombre *",
+    namePlaceholder: "Ana García",
+    email: "Correo de trabajo *",
+    emailPlaceholder: "ana@empresa.com",
+    company: "Empresa",
+    companyPlaceholder: "Nombre de la empresa",
+    topic: "¿De qué te gustaría hablar?",
+    topicPlaceholder: "ej. Procesamos unas 500 facturas de proveedores al mes y queremos pasarlas al ERP sin re-tipear.",
+    sending: "Enviando…",
+    submit: "Continuar y elegir hora",
+    preferEmail: "¿Prefieres escribirnos?",
+  },
+} as const;
+
 const inputClass =
   "w-full glass-card rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-500 " +
   "focus:outline-none focus:border-[#3b82f6]/50 focus-visible:outline-2 focus-visible:outline-[#3b82f6]";
@@ -53,10 +94,13 @@ const inputClass =
 export default function ScheduleMeeting({
   schedulerUrl,
   salesEmail,
+  locale = "en",
 }: {
   schedulerUrl: string | null;
   salesEmail: string;
+  locale?: Locale;
 }) {
+  const t = COPY[locale];
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
@@ -120,14 +164,14 @@ export default function ScheduleMeeting({
         | { error?: string; id?: string | null }
         | null;
       if (!res.ok) {
-        setError(body?.error ?? "Something went wrong — please try again.");
+        setError(body?.error ?? t.genericError);
         return;
       }
       requestIdRef.current = body?.id ?? null;
       setSubmitted(true);
-      trackEvent("generate_lead", { source: "schedule_form" });
+      trackEvent("generate_lead", { source: "schedule_form", locale });
     } catch {
-      setError("Something went wrong — please try again.");
+      setError(t.genericError);
     } finally {
       setSubmitting(false);
     }
@@ -144,8 +188,8 @@ export default function ScheduleMeeting({
           )}
           <p className="text-sm text-slate-300">
             {booked
-              ? `You're booked, ${name.split(" ")[0] || "thanks"} — the invite is on its way to ${email}.`
-              : `Thanks, ${name.split(" ")[0] || "there"} — now pick a time that works for you${schedulerUrl ? " below" : ""}.`}
+              ? t.booked(name.split(" ")[0], email)
+              : t.thanks(name.split(" ")[0], Boolean(schedulerUrl))}
           </p>
         </div>
 
@@ -162,7 +206,7 @@ export default function ScheduleMeeting({
                   .filter(Boolean)
                   .join(" — "),
               })}
-              title="Pick a meeting time"
+              title={t.iframeTitle}
               className="h-[min(680px,calc(100svh-200px))] min-h-[420px] w-full bg-white"
               loading="lazy"
             />
@@ -170,7 +214,7 @@ export default function ScheduleMeeting({
         ) : (
           <div className="glass-card rounded-2xl px-6 py-8 text-center">
             <p className="mb-4 text-slate-300">
-              We got your request and will reach out shortly to find a time.
+              {t.noScheduler}
             </p>
             <a
               href={`mailto:${salesEmail}`}
@@ -189,19 +233,19 @@ export default function ScheduleMeeting({
     <form onSubmit={submit} className="glass-card rounded-2xl p-6 sm:p-8">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="mb-1.5 block text-sm font-medium text-slate-300">Name *</span>
+          <span className="mb-1.5 block text-sm font-medium text-slate-300">{t.name}</span>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
             maxLength={120}
             autoComplete="name"
-            placeholder="Ana García"
+            placeholder={t.namePlaceholder}
             className={inputClass}
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-sm font-medium text-slate-300">Work email *</span>
+          <span className="mb-1.5 block text-sm font-medium text-slate-300">{t.email}</span>
           <input
             type="email"
             value={email}
@@ -209,31 +253,29 @@ export default function ScheduleMeeting({
             required
             maxLength={200}
             autoComplete="email"
-            placeholder="ana@company.com"
+            placeholder={t.emailPlaceholder}
             className={inputClass}
           />
         </label>
         <label className="block sm:col-span-2">
-          <span className="mb-1.5 block text-sm font-medium text-slate-300">Company</span>
+          <span className="mb-1.5 block text-sm font-medium text-slate-300">{t.company}</span>
           <input
             value={company}
             onChange={(e) => setCompany(e.target.value)}
             maxLength={160}
             autoComplete="organization"
-            placeholder="Company name"
+            placeholder={t.companyPlaceholder}
             className={inputClass}
           />
         </label>
         <label className="block sm:col-span-2">
-          <span className="mb-1.5 block text-sm font-medium text-slate-300">
-            What would you like to discuss?
-          </span>
+          <span className="mb-1.5 block text-sm font-medium text-slate-300">{t.topic}</span>
           <textarea
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             maxLength={2000}
             rows={3}
-            placeholder="e.g. We process ~500 supplier invoices a month and want them in our ERP without re-typing."
+            placeholder={t.topicPlaceholder}
             className={`${inputClass} resize-none`}
           />
         </label>
@@ -267,10 +309,10 @@ export default function ScheduleMeeting({
           ) : (
             <ArrowRight size={18} aria-hidden />
           )}
-          {submitting ? "Sending…" : "Continue to pick a time"}
+          {submitting ? t.sending : t.submit}
         </button>
         <p className="text-xs text-slate-500">
-          Prefer email?{" "}
+          {t.preferEmail}{" "}
           <a href={`mailto:${salesEmail}`} className="text-slate-400 hover:text-white">
             {salesEmail}
           </a>

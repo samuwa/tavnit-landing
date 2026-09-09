@@ -6,6 +6,8 @@ import { OWNED_INTEGRATIONS } from "@/lib/integrations";
 import { isStripeEnabled } from "@/lib/platform";
 import { USE_CASES } from "@/lib/use-cases";
 import { GUIDES } from "@/lib/guides";
+import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
+import { GUIDES_ES, esGuidePath } from "@/lib/guides.es";
 
 /**
  * Only real, indexable URLs belong here.
@@ -107,22 +109,65 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...USE_CASES.map((uc) => ({
       url: `${SITE_URL}/use-cases/${uc.slug}`,
-      lastModified: lastCommitDate("src/app/use-cases", "src/lib/use-cases.ts"),
+      lastModified: lastCommitDate("src/app/use-cases", "src/lib/use-cases.ts", "src/components/UseCaseArticle.tsx"),
       changeFrequency: "monthly" as const,
       // Commercial intent, same tier as the integration pages.
       priority: 0.9,
     })),
-    // Spanish landing pages. Only the customs page has an English twin; the
-    // pairs are declared via alternates.languages on both sides.
+    // Spanish site. Every entry here has an English twin declared via
+    // alternates.languages on both sides; the sitemap lists both URLs as
+    // ordinary entries rather than xhtml:link pairs (Next's sitemap type does
+    // not emit those), which Google accepts.
     {
       url: `${SITE_URL}/es`,
-      lastModified: lastCommitDate("src/app/es/page.tsx"),
+      lastModified: lastCommitDate("src/app/es/page.tsx", "src/lib/use-cases.es.ts"),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/es/aduanas`,
-      lastModified: lastCommitDate("src/app/es/aduanas/page.tsx"),
+      url: `${SITE_URL}/es/agendar`,
+      lastModified: lastCommitDate("src/app/es/agendar/page.tsx", "src/components/ScheduleMeeting.tsx"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/es/casos-de-uso`,
+      lastModified: lastCommitDate("src/app/es/casos-de-uso", "src/lib/use-cases.es.ts"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...USE_CASES_ES.map((uc) => ({
+      url: `${SITE_URL}${esUseCasePath(uc)}`,
+      lastModified: lastCommitDate(
+        "src/app/es/casos-de-uso",
+        "src/app/es/aduanas",
+        "src/components/UseCaseArticle.tsx",
+        "src/lib/use-cases.es.ts",
+      ),
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    })),
+    {
+      url: `${SITE_URL}/es/guias`,
+      lastModified: lastCommitDate("src/app/es/guias", "src/lib/guides.es.ts"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    ...GUIDES_ES.map((g) => ({
+      url: `${SITE_URL}${esGuidePath(g)}`,
+      lastModified: new Date(g.updated),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    {
+      url: `${SITE_URL}/es/integraciones`,
+      lastModified: lastCommitDate("src/app/es/integraciones/page.tsx", "src/lib/integrations.es.ts"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/es/integraciones/mcp`,
+      lastModified: lastCommitDate("src/app/es/integraciones/mcp/page.tsx"),
       changeFrequency: "monthly",
       priority: 0.9,
     },

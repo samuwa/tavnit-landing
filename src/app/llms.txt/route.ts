@@ -4,6 +4,8 @@ import { INTEGRATIONS } from "@/lib/integrations";
 import { isStripeEnabled } from "@/lib/platform";
 import { USE_CASES } from "@/lib/use-cases";
 import { GUIDES } from "@/lib/guides";
+import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
+import { GUIDES_ES, esGuidePath } from "@/lib/guides.es";
 
 /**
  * /llms.txt — see https://llmstxt.org
@@ -92,7 +94,7 @@ ${FEATURES.map((f) => `- ${f}`).join("\n")}
 ${pricingLines}
 - [Application](${APP_URL}): sign-up and workspace.
 - [MCP server](${MCP_URL}): Model Context Protocol endpoint.
-- [En español](${SITE_URL}/es): Spanish-language overview, with a dedicated page on customs and Panama tariff classification at ${SITE_URL}/es/aduanas.
+- [En español](${SITE_URL}/es): Spanish-language site — use cases, integrations, guides and the demo form; see the section below.
 
 ## Guides
 
@@ -116,6 +118,25 @@ ${INTEGRATIONS.map((i) => `- [${i.label}](${SITE_URL}${i.href}): ${i.summary}`).
 ## Documentation
 
 ${DOC_SECTIONS.map((s) => `- [${s.label}](${SITE_URL}${s.href}): ${s.description}`).join("\n")}
+
+## En español (Spanish site)
+
+Tavnit's primary market is Spanish-speaking (Panama first, then Latin America)
+and the product is fully bilingual. The pages below are Spanish equivalents of
+the English ones, paired by hreflang; the customs page is the primary version
+of its topic rather than a translation, because the HS classifier is built on
+Panama's Arancel Nacional (VII Enmienda, HS 2022).
+
+- [Inicio](${SITE_URL}/es): resumen del producto en español.
+- [Agendar una demostración](${SITE_URL}/es/agendar): formulario de demo en español.
+- [Casos de uso](${SITE_URL}/es/casos-de-uso): índice de casos de uso en español.
+${USE_CASES_ES.map((uc) => `- [${uc.label}](${SITE_URL}${esUseCasePath(uc)}): ${uc.summary}`).join("\n")}
+- [Integraciones](${SITE_URL}/es/integraciones): API, correo, webhooks y MCP.
+- [Conector MCP](${SITE_URL}/es/integraciones/mcp): servidor MCP para claude.ai y Cursor, en español.
+- [Guías](${SITE_URL}/es/guias): guías en español.
+${GUIDES_ES.map((g) => `- [${g.h1}](${SITE_URL}${esGuidePath(g)}): ${g.description}`).join("\n")}
+
+Documentation and legal pages are English-only.
 
 ## Integration surface
 

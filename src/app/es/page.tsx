@@ -4,6 +4,7 @@ import { ArrowRight, Check, Mail, Plug, ShieldCheck, Sparkles } from "lucide-rea
 import MarketingPage from "@/components/MarketingPage";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { APP_URL, SITE_URL } from "@/lib/site";
+import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
 
 /**
  * Spanish landing page.
@@ -14,10 +15,10 @@ import { APP_URL, SITE_URL } from "@/lib/site";
  * country by clicks (all on the brand name) and there is not one Spanish
  * query in three months of data, because there was nothing for one to land on.
  *
- * Scope, deliberately: this is a standalone landing page, not a translated
- * site. It pairs with "/" via hreflang; /es/aduanas pairs with the customs
- * use case. Header, footer and docs stay English for now. `lang="es"` is set
- * on the content wrapper because the root layout owns <html lang="en"> and a
+ * It pairs with "/" via hreflang and is the entry point of the Spanish site:
+ * use cases, integrations, guides and the demo form all have Spanish routes
+ * (see src/lib/locale.ts). Docs and legal pages stay English. MarketingPage
+ * sets lang="es" because the root layout owns <html lang="en"> and a
  * per-route root layout would mean restructuring the whole app tree.
  *
  * Register follows .agents/product-marketing.md: "tú", concrete, product
@@ -75,44 +76,8 @@ const STEPS = [
   },
 ];
 
-const USE_CASES_ES = [
-  {
-    label: "Aduanas y comercio exterior",
-    body: "Factura comercial, lista de empaque y BL extraídos, con clasificación arancelaria de Panamá integrada en el proceso.",
-    href: "/es/aduanas",
-    es: true,
-  },
-  {
-    label: "Facturas de proveedores",
-    body: "Proveedor, número, fechas, totales y líneas de cualquier diseño — con revisión antes de que lleguen a tu contabilidad.",
-    href: "/use-cases/invoice-processing",
-    es: false,
-  },
-  {
-    label: "Órdenes de compra y conciliación",
-    body: "Órdenes y facturas extraídas con la misma estructura y emparejadas línea por línea; solo las diferencias llegan a un revisor.",
-    href: "/use-cases/purchase-orders",
-    es: false,
-  },
-  {
-    label: "Cotizaciones de proveedores",
-    body: "Varias cotizaciones comparadas ítem por ítem, con el mejor precio marcado por línea.",
-    href: "/use-cases/supplier-quotes",
-    es: false,
-  },
-  {
-    label: "Notas de entrega",
-    body: "Lo que realmente se entregó, capturado de notas firmadas — incluso a mano.",
-    href: "/use-cases/delivery-notes",
-    es: false,
-  },
-  {
-    label: "Llenado de formularios",
-    body: "Formularios PDF oficiales completados automáticamente con datos de varios documentos fuente.",
-    href: "/use-cases/form-filling",
-    es: false,
-  },
-];
+/** The six highest-demand document types for this market; the hub has all. */
+const FEATURED_USE_CASES = USE_CASES_ES.slice(0, 6);
 
 const FAQS = [
   {
@@ -139,7 +104,7 @@ const FAQS = [
 
 export default function SpanishLandingPage() {
   return (
-    <MarketingPage>
+    <MarketingPage locale="es" alternatePath="/">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -160,9 +125,9 @@ export default function SpanishLandingPage() {
         }}
       />
 
-      <div lang="es" className="max-w-[900px] mx-auto px-4 sm:px-6">
+      <div className="max-w-[900px] mx-auto px-4 sm:px-6">
         <p className="text-sm text-gray-500 mb-6">
-          <Link href="/" className="hover:text-gray-300 transition-colors">
+          <Link href="/" hrefLang="en" lang="en" className="hover:text-gray-300 transition-colors">
             Read this page in English
           </Link>
         </p>
@@ -183,7 +148,7 @@ export default function SpanishLandingPage() {
 
         <div className="flex flex-wrap gap-3 mb-20">
           <Link
-            href="/schedule"
+            href="/es/agendar"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20 transition-all"
           >
             Agendar una demostración <ArrowRight size={17} />
@@ -225,34 +190,32 @@ export default function SpanishLandingPage() {
           </div>
         </section>
 
-        <section className="mb-20">
+        <section id="casos-de-uso" className="mb-20 scroll-mt-24">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Casos de uso</h2>
           <p className="text-gray-400 mb-6 max-w-[720px] leading-relaxed">
-            Empezamos por aduanas, porque es donde un error cuesta más. Las demás páginas están en
-            inglés por ahora; la aplicación es bilingüe.
+            Empezamos por aduanas, porque es donde un error cuesta más. Cada página cubre qué
+            campos importan en ese tipo de documento y qué suele salir mal.
           </p>
           <div className="grid sm:grid-cols-2 gap-3">
-            {USE_CASES_ES.map((uc) => (
+            {FEATURED_USE_CASES.map((uc) => (
               <Link
-                key={uc.href}
-                href={uc.href}
+                key={uc.slug}
+                href={esUseCasePath(uc)}
                 className="glass-card glass-card-hover rounded-xl p-5 transition-all"
               >
-                <span className="flex items-center justify-between gap-2 mb-1.5">
-                  <span className="text-base font-semibold text-white">{uc.label}</span>
-                  {!uc.es && (
-                    <span className="text-[10px] uppercase tracking-wide text-gray-500 border border-white/10 rounded px-1.5 py-0.5">
-                      EN
-                    </span>
-                  )}
-                </span>
-                <span className="block text-sm text-gray-400 leading-relaxed">{uc.body}</span>
+                <span className="block text-base font-semibold text-white mb-1.5">{uc.label}</span>
+                <span className="block text-sm text-gray-400 leading-relaxed">{uc.summary}</span>
               </Link>
             ))}
           </div>
+          <p className="mt-5 text-sm">
+            <Link href="/es/casos-de-uso" className="inline-flex items-center gap-1 text-[#3b82f6] font-medium hover:underline">
+              Ver los {USE_CASES_ES.length} casos de uso <ArrowRight size={14} />
+            </Link>
+          </p>
         </section>
 
-        <section className="mb-20">
+        <section id="integraciones" className="mb-20 scroll-mt-24">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">Se integra con lo que ya usas</h2>
           <ul className="space-y-3 max-w-[760px]">
             {[
@@ -267,9 +230,14 @@ export default function SpanishLandingPage() {
               </li>
             ))}
           </ul>
+          <p className="mt-5 text-sm">
+            <Link href="/es/integraciones" className="inline-flex items-center gap-1 text-[#3b82f6] font-medium hover:underline">
+              Todas las integraciones <ArrowRight size={14} />
+            </Link>
+          </p>
         </section>
 
-        <section className="mb-16">
+        <section id="preguntas" className="mb-16 scroll-mt-24">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Preguntas frecuentes</h2>
           <dl className="space-y-4">
             {FAQS.map((faq) => (
@@ -289,7 +257,7 @@ export default function SpanishLandingPage() {
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link
-              href="/schedule"
+              href="/es/agendar"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 transition-all"
             >
               Agendar una demostración <ArrowRight size={17} />

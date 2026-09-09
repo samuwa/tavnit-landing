@@ -5,6 +5,7 @@ import MarketingPage from "@/components/MarketingPage";
 import { integrationPageSchema } from "@/lib/schema";
 import { APP_URL, MCP_URL } from "@/lib/site";
 import { isStripeEnabled } from "@/lib/platform";
+import { languageAlternates } from "@/lib/locale";
 
 const DESCRIPTION =
   "Connect Tavnit to claude.ai or Cursor over MCP. Your assistant can build extraction flows, run documents through them, and query the results — typed and cleaned.";
@@ -12,7 +13,10 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: "MCP Document Extraction for Claude and Cursor",
   description: DESCRIPTION,
-  alternates: { canonical: "/integrations/mcp" },
+  alternates: {
+    canonical: "/integrations/mcp",
+    languages: languageAlternates("/integrations/mcp", "/es/integraciones/mcp"),
+  },
   openGraph: {
     type: "website",
     url: "/integrations/mcp",
@@ -20,6 +24,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     siteName: "Tavnit",
     locale: "en_US",
+    alternateLocale: ["es_PA"],
     images: ["/opengraph-image"],
   },
 };
@@ -93,7 +98,7 @@ export default async function McpIntegrationPage() {
   // See src/app/use-cases/[slug]/page.tsx — same reasoning.
   const stripeOn = await isStripeEnabled();
   return (
-    <MarketingPage>
+    <MarketingPage alternatePath="/es/integraciones/mcp">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

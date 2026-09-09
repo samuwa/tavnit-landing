@@ -5,6 +5,7 @@ import MarketingPage from "@/components/MarketingPage";
 import { buildUseCasesHubSchema } from "@/lib/schema";
 import { USE_CASES } from "@/lib/use-cases";
 import { APP_URL } from "@/lib/site";
+import { languageAlternates } from "@/lib/locale";
 
 const DESCRIPTION =
   "How teams use Tavnit by document type — invoices, contracts, resumes, receipts, purchase orders and customs paperwork, with what each one gets wrong.";
@@ -12,7 +13,10 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: "Use Cases — Invoices, Contracts, Resumes and More",
   description: DESCRIPTION,
-  alternates: { canonical: "/use-cases" },
+  alternates: {
+    canonical: "/use-cases",
+    languages: languageAlternates("/use-cases", "/es/casos-de-uso"),
+  },
   openGraph: {
     type: "website",
     url: "/use-cases",
@@ -20,13 +24,14 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     siteName: "Tavnit",
     locale: "en_US",
+    alternateLocale: ["es_PA"],
     images: ["/opengraph-image"],
   },
 };
 
 export default function UseCasesPage() {
   return (
-    <MarketingPage>
+    <MarketingPage alternatePath="/es/casos-de-uso">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

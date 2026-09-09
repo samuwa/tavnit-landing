@@ -44,7 +44,7 @@ function organization() {
       "@type": "ContactPoint",
       email: SUPPORT_EMAIL,
       contactType: "customer support",
-      availableLanguage: "English",
+      availableLanguage: ["English", "Spanish"],
     },
     sameAs: SOCIAL_PROFILES,
   };
@@ -425,11 +425,14 @@ export function buildLocalizedPageSchema(opts: {
   inLanguage: string;
   breadcrumb: { name: string; url: string }[];
   faqs?: { q: string; a: string }[];
+  /** For hub pages: the listed children. Switches the node to CollectionPage
+   *  and adds an ItemList, mirroring the English hub builders. */
+  items?: { name: string; url: string }[];
 }) {
   const url = `${SITE_URL}${opts.path}`;
   const graph: object[] = [
     {
-      "@type": "WebPage",
+      "@type": opts.items ? "CollectionPage" : "WebPage",
       "@id": `${url}#webpage`,
       url,
       name: opts.name,
@@ -443,6 +446,19 @@ export function buildLocalizedPageSchema(opts: {
     },
     breadcrumbs(opts.breadcrumb, url),
   ];
+  if (opts.items?.length) {
+    graph.push({
+      "@type": "ItemList",
+      "@id": `${url}#index`,
+      numberOfItems: opts.items.length,
+      itemListElement: opts.items.map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        item: item.url,
+      })),
+    });
+  }
   if (opts.faqs?.length) {
     graph.push({
       "@type": "FAQPage",
@@ -469,8 +485,13 @@ export function buildGuideSchema(opts: {
   description: string;
   datePublished: string;
   faqs?: { q: string; a: string }[];
+  /** Spanish guides pass their own path, language and trail; the defaults
+   *  describe an English guide under /guides. */
+  path?: string;
+  inLanguage?: string;
+  breadcrumb?: { name: string; url: string }[];
 }) {
-  const url = `${SITE_URL}/guides/${opts.slug}`;
+  const url = `${SITE_URL}${opts.path ?? `/guides/${opts.slug}`}`;
   const graph: object[] = [
     {
       "@type": "TechArticle",
@@ -479,7 +500,7 @@ export function buildGuideSchema(opts: {
       mainEntityOfPage: url,
       headline: opts.headline,
       description: opts.description,
-      inLanguage: "en-US",
+      inLanguage: opts.inLanguage ?? "en-US",
       datePublished: opts.datePublished,
       dateModified: BUILD_DATE,
       author: { "@id": ORG_ID },
@@ -489,7 +510,7 @@ export function buildGuideSchema(opts: {
       image: `${SITE_URL}/opengraph-image`,
     },
     breadcrumbs(
-      [
+      opts.breadcrumb ?? [
         { name: "Home", url: SITE_URL },
         { name: "Guides", url: `${SITE_URL}/guides` },
         { name: opts.headline, url },
