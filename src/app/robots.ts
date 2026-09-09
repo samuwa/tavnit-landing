@@ -32,12 +32,19 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         // /s/ are personalized sales follow-up links — private by obscurity,
         // and worthless in a search index.
-        disallow: ["/api/", "/_next/", "/s/"],
+        //
+        // /_next/ is deliberately NOT here any more. It used to be, and Search
+        // Console listed the JS chunks under "Blocked by robots.txt": Google
+        // renders pages before indexing them, and a blocked script means the
+        // rendered page can differ from what visitors see. Google's guidance
+        // is explicit that JS and CSS must be crawlable. The chunks are
+        // immutable, hashed assets — nothing to index, nothing to hide.
+        disallow: ["/api/", "/s/"],
       },
       {
         userAgent: citingAiCrawlers,
         allow: "/",
-        disallow: ["/api/", "/_next/", "/s/"],
+        disallow: ["/api/", "/s/"],
       },
       {
         // Training-only bulk scraper, no citation benefit.

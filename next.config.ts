@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        // Search Console reports /index.html (on both hosts) as a 404 Google
+        // keeps recrawling — a leftover from the pre-Next static site that
+        // something still links to. Permanent redirect so the request
+        // consolidates onto "/" instead of returning a 404 every month.
+        source: "/index.html",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
