@@ -9,6 +9,7 @@ import { InvoiceDemo, ContractDemo, ResumeDemo, ExpenseDemo } from "./UseCaseAni
 const useCases = [
   {
     id: "invoice",
+    href: "/use-cases/invoice-processing",
     tab: "Invoice Processing",
     badge: "Finance Teams",
     title: "Invoice Processing",
@@ -19,6 +20,7 @@ const useCases = [
   },
   {
     id: "contract",
+    href: "/use-cases/contract-analysis",
     tab: "Contract Analysis",
     badge: "Legal & Procurement",
     title: "Contract Analysis",
@@ -29,6 +31,7 @@ const useCases = [
   },
   {
     id: "form",
+    href: "/use-cases/resume-screening",
     tab: "Resume Screening",
     badge: "HR & Recruiting",
     title: "Resume Screening",
@@ -39,6 +42,7 @@ const useCases = [
   },
   {
     id: "expense",
+    href: "/use-cases/expense-reports",
     tab: "Expense Reports",
     badge: "Finance & Employees",
     title: "Expense Report Processing",
@@ -199,6 +203,14 @@ export default function UseCases() {
                 <CheckCircle2 size={20} className="text-emerald-400 flex-shrink-0" />
                 <span className="text-base font-semibold text-white">{useCases[active].result}</span>
               </div>
+
+              <Link
+                href={useCases[active].href}
+                className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-[#3b82f6] hover:underline"
+              >
+                Read the {useCases[active].tab.toLowerCase()} page
+                <ArrowRight size={15} />
+              </Link>
             </div>
 
             <div className="hidden lg:flex items-center justify-center">
@@ -215,7 +227,11 @@ export default function UseCases() {
         </AnimatePresence>
 
         {/* Routes the section to the real pages. Each document type has its own
-            URL now; without this the homepage tabs were the only way to see them. */}
+            URL now; without this the homepage tabs were the only way to see them.
+            The second row links the pages with the most search demand (Search
+            Console: PO matching is ~half of all non-brand impressions) straight
+            from the homepage — the only page on the site with any link equity —
+            because the tabs above only cover four document types. */}
         <div className="text-center mt-8">
           <Link
             href="/use-cases"
@@ -224,6 +240,22 @@ export default function UseCases() {
             Explore all use cases
             <ArrowRight size={16} />
           </Link>
+          <p className="mt-4 text-sm text-gray-500">
+            Also:{" "}
+            {[
+              ["PO matching", "/use-cases/purchase-orders"],
+              ["Customs & HS classification", "/use-cases/customs-trade"],
+              ["Supplier quote comparison", "/use-cases/supplier-quotes"],
+              ["Delivery notes", "/use-cases/delivery-notes"],
+            ].map(([label, href], i) => (
+              <span key={href}>
+                {i > 0 && <span aria-hidden="true"> · </span>}
+                <Link href={href} className="text-gray-300 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white">
+                  {label}
+                </Link>
+              </span>
+            ))}
+          </p>
         </div>
       </div>
     </section>
