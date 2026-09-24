@@ -6,19 +6,20 @@ import { ArrowRight, CheckCircle2, Play } from "lucide-react";
 import HeroAnimation from "./HeroAnimation";
 
 /**
- * No entrance animation here on purpose. This is the first thing on the page
- * and it is what Lighthouse measures as LCP: the framer-motion fade-ins it used
- * to have rendered the H1, the mock-up and the CTAs at opacity 0 in the server
- * HTML, so nothing became visible until the client bundle had downloaded and
- * hydrated. On a throttled phone that put LCP at ~5 s for a page that is
- * otherwise light. Sections below the fold keep their whileInView reveals; the
- * "... In Seconds" line keeps its CSS-only typing effect.
+ * The entrance fade here is CSS (.hero-enter in globals.css), not
+ * framer-motion. This is the first thing on the page and what Lighthouse
+ * measures as LCP: the framer-motion fade-ins it used to have rendered the H1,
+ * the mock-up and the CTAs at opacity 0 in the server HTML, so nothing became
+ * visible until the client bundle had downloaded and hydrated — ~5 s LCP on a
+ * throttled phone for an otherwise light page. A CSS animation starts on first
+ * paint, so the fade costs its own 0.6 s and nothing more. Sections below the
+ * fold keep their whileInView reveals.
  */
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-16" id="hero" aria-labelledby="hero-heading">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center py-4 md:py-8 w-full">
-        <div>
+        <div className="hero-enter">
           <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight tracking-tight text-white">
             <span>Documents to <span className="gradient-text">Structured Data</span></span>
             <span className="sr-only"> — AI-Powered PDF Extraction In Seconds</span>
@@ -26,7 +27,11 @@ export default function Hero() {
         </div>
 
         {/* Animation */}
-        <div className="w-full my-4 md:my-8" aria-hidden="true">
+        <div
+          className="hero-enter w-full my-4 md:my-8"
+          style={{ "--hero-delay": "0.15s" } as React.CSSProperties}
+          aria-hidden="true"
+        >
           <HeroAnimation />
         </div>
 
@@ -36,12 +41,18 @@ export default function Hero() {
         </div>
 
         {/* Subtitle */}
-        <p className="text-base sm:text-lg text-gray-400 max-w-[540px] mb-8">
+        <p
+          className="hero-enter text-base sm:text-lg text-gray-400 max-w-[540px] mb-8"
+          style={{ "--hero-delay": "0.3s" } as React.CSSProperties}
+        >
           Extract, clean, and store data from any document — then review it with your team and let AI agents act on it. No code required.
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-col items-center gap-5">
+        <div
+          className="hero-enter flex flex-col items-center gap-5"
+          style={{ "--hero-delay": "0.4s" } as React.CSSProperties}
+        >
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto justify-center">
             <Link
               href="https://app.tavnit.io"
