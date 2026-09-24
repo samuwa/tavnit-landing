@@ -244,6 +244,11 @@ export interface HubCopy {
   intro: string;
   breadcrumbHome: string;
   breadcrumbHub: string;
+  /** Section titles of the grid, by tool kind. */
+  groups: { extract: string; compare: string; split: string };
+  /** Under the grid: the line that sends people to the product. */
+  outro: string;
+  outroCta: string;
 }
 
 
