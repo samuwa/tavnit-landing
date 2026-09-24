@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import type { Locale } from "@/lib/locale";
-import ThemeToggle from "@/components/ThemeToggle";
+import SiteSettings from "@/components/SiteSettings";
 import Logo from "@/components/Logo";
 
 // Root-relative so the header works from every route. Bare "#features" resolves
@@ -43,48 +43,6 @@ const DEMO: Record<Locale, { href: string; label: string }> = {
   es: { href: "/es/agendar", label: "Agendar demo" },
 };
 const HOME: Record<Locale, string> = { en: "/", es: "/es" };
-const SWITCH_LABEL: Record<Locale, string> = {
-  en: "Leer en español",
-  es: "Read in English",
-};
-
-/**
- * EN/ES toggle. Rendered as two pills so the current language is visible and
- * the other one is a plain link — no JS, no cookie, no auto-redirect, which
- * is what Google asks for: never redirect a crawler by Accept-Language, let
- * hreflang do the routing.
- */
-function LanguageSwitch({
-  locale,
-  alternateHref,
-  className = "",
-}: {
-  locale: Locale;
-  alternateHref: string;
-  className?: string;
-}) {
-  const other: Locale = locale === "en" ? "es" : "en";
-  return (
-    <span
-      className={`inline-flex items-center rounded-lg border border-tint/10 text-xs font-semibold uppercase tracking-wide ${className}`}
-      aria-label="Language"
-    >
-      <span className="px-2.5 py-1.5 text-fg bg-tint/10 rounded-l-lg" aria-current="true">
-        {locale}
-      </span>
-      <Link
-        href={alternateHref}
-        hrefLang={other}
-        lang={other}
-        title={SWITCH_LABEL[locale]}
-        className="px-2.5 py-1.5 text-fg-4 hover:text-fg transition-colors"
-      >
-        {other}
-      </Link>
-    </span>
-  );
-}
-
 export default function Header({
   showPricing = true,
   locale = "en",
@@ -118,13 +76,16 @@ export default function Header({
           : "bg-bg/50 backdrop-blur-xl border-b border-tint/5"
       }`}
     >
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 h-16 flex items-center justify-between gap-4 sm:gap-8">
-        <Link href={HOME[locale]} className="flex-shrink-0 hover:opacity-85 transition-opacity">
+      {/* Three columns on desktop: the outer two share the leftover width
+          equally, so the nav sits on the true centre of the page whatever
+          the logo and the buttons measure. */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 h-16 flex items-center justify-between gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-8">
+        <Link href={HOME[locale]} className="flex-shrink-0 justify-self-start hover:opacity-85 transition-opacity">
           <Logo height={32} priority />
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-10 mx-auto">
+        <nav className="hidden lg:flex items-center gap-9">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -136,9 +97,8 @@ export default function Header({
           ))}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-          <ThemeToggle locale={locale} />
-          <LanguageSwitch locale={locale} alternateHref={alternate} />
+        <div className="hidden lg:flex items-center gap-2 justify-self-end">
+          <SiteSettings locale={locale} alternateHref={alternate} />
           <Link
             href={DEMO[locale].href}
             className="inline-flex px-4 py-2 sm:py-2.5 rounded-lg text-sm sm:text-[15px] font-semibold text-fg-3 border border-tint/15 hover:text-fg hover:border-tint/30 hover:bg-tint/5 transition-colors"
@@ -155,8 +115,7 @@ export default function Header({
 
         {/* Mobile Toggle */}
         <div className="lg:hidden flex items-center gap-2">
-          <ThemeToggle locale={locale} className="h-8 w-8" />
-          <LanguageSwitch locale={locale} alternateHref={alternate} />
+          <SiteSettings locale={locale} alternateHref={alternate} />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-2 rounded-lg hover:bg-tint/10 transition-colors text-fg-3"
