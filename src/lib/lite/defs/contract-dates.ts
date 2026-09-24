@@ -6,6 +6,7 @@ const contractDates: LiteTool = {
   id: "contract-dates",
   kind: "extract",
   paths: { en: "/tools/contract-renewal-date-extractor", es: "/es/herramientas/fechas-de-renovacion-de-contratos" },
+  related: { useCase: "contract-analysis" },
   flow: {
     env: { es: "TAVNIT_LITE_CONTRACT_FLOW_ID", en: "TAVNIT_LITE_CONTRACT_FLOW_ID_EN" },
     value: { es: "362045dc-1e57-4f45-9d0d-3f20ea90aede", en: "96dce8f8-9da0-4554-bb8f-dc47026f5d16" },

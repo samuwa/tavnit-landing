@@ -25,7 +25,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
       this_doc: "este PDF",
     },
     overrides: {
-      title: "Separar un PDF escaneado en documentos, gratis: la IA encuentra dónde empieza cada uno",
+      title: "Separar un PDF escaneado en documentos, gratis",
       description:
         "Sube un PDF con varios documentos escaneados juntos (facturas, órdenes de compra, recibos, contratos) y recibe cada documento por separado, clasificado por tipo. Gratis, sin marcar páginas a mano.",
       label: "Separar PDF escaneado",
@@ -163,7 +163,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
       this_doc: "this PDF",
     },
     overrides: {
-      title: "Split a scanned PDF into documents, free: AI finds where each one starts",
+      title: "Split a Scanned PDF into Documents, Free (AI)",
       description:
         "Upload one PDF with several documents scanned together (invoices, purchase orders, receipts, contracts) and get each document back on its own, classified by type. Free, no page marking.",
       label: "Split a scanned PDF",

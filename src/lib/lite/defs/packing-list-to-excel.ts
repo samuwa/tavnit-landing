@@ -5,6 +5,7 @@ const packingListToExcel: LiteTool = {
   id: "packing-list-to-excel",
   kind: "extract",
   paths: { en: "/tools/packing-list-to-excel", es: "/es/herramientas/packing-list-a-excel" },
+  related: { useCase: "customs-trade", guide: "hs-code-classification-explained" },
   flow: {
     env: { es: "TAVNIT_LITE_PACKING_FLOW_ID", en: "TAVNIT_LITE_PACKING_FLOW_ID_EN" },
     value: { es: "66894dc3-f46e-4a81-a27f-19dbd0bde093", en: "7c89abd1-2474-4d4e-ae75-359361165b05" },

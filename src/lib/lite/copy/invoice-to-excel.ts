@@ -1,7 +1,8 @@
 import type { ToolCopyDef } from "@/lib/lite/copy-base";
 import type { Locale } from "@/lib/locale";
 
-/** Invoice → Excel. The base copy was written for this tool, so only the words. */
+/** Invoice → Excel. The base copy was written for this tool, so only the
+ *  words — plus a <title> short enough not to be cut in search results. */
 const invoiceToExcel: Record<Locale, ToolCopyDef> = {
   es: {
     vocab: {
@@ -18,6 +19,7 @@ const invoiceToExcel: Record<Locale, ToolCopyDef> = {
       another_doc: "otra factura",
       this_doc: "esta factura",
     },
+    overrides: { title: "Factura a Excel gratis: la IA extrae las líneas" },
   },
   en: {
     vocab: {
@@ -34,6 +36,7 @@ const invoiceToExcel: Record<Locale, ToolCopyDef> = {
       another_doc: "another invoice",
       this_doc: "this invoice",
     },
+    overrides: { title: "Invoice to Excel Converter, Free: AI Reads Line Items" },
   },
 };
 

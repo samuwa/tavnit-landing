@@ -7,6 +7,7 @@ const invoiceLineItems: LiteTool = {
   ...invoiceToExcel,
   id: "invoice-line-items",
   paths: { en: "/tools/invoice-line-item-extractor", es: "/es/herramientas/extraer-lineas-de-factura" },
+  related: { useCase: "invoice-processing", guide: "line-item-extraction-from-invoices" },
 };
 
 export default invoiceLineItems;

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Check, TriangleAlert } from "lucide-react";
 import type { UseCase } from "@/lib/use-cases";
 import type { Locale } from "@/lib/locale";
+import { toolsForUseCase } from "@/lib/lite/related";
 import { APP_URL } from "@/lib/site";
 
 /**
@@ -71,6 +72,13 @@ const COPY = {
 
 export type RelatedUseCase = { label: string; badge: string; href: string };
 
+
+/** The free tool(s) built for this document type, from the Lite registry. */
+const TRY_COPY: Record<Locale, { heading: string; body: string }> = {
+  es: { heading: "Pruébalo gratis, sin registro", body: "Sube un documento y ve el resultado en pantalla." },
+  en: { heading: "Try it free, no sign-up", body: "Upload one document and see the result on screen." },
+};
+
 export default function UseCaseArticle({
   uc,
   locale,
@@ -97,31 +105,31 @@ export default function UseCaseArticle({
 
   return (
     <div className="max-w-[860px] mx-auto px-4 sm:px-6">
-      <nav aria-label={t.breadcrumbAria} className="mb-6 text-sm text-gray-500 flex flex-wrap items-center gap-x-2">
-        <Link href={homeHref} className="hover:text-gray-300 transition-colors">{t.home}</Link>
+      <nav aria-label={t.breadcrumbAria} className="mb-6 text-sm text-fg-5 flex flex-wrap items-center gap-x-2">
+        <Link href={homeHref} className="hover:text-fg-3 transition-colors">{t.home}</Link>
         <span aria-hidden="true">/</span>
-        <Link href={hubHref} className="hover:text-gray-300 transition-colors">{t.hub}</Link>
+        <Link href={hubHref} className="hover:text-fg-3 transition-colors">{t.hub}</Link>
         <span aria-hidden="true">/</span>
-        <span className="text-gray-400">{uc.label}</span>
+        <span className="text-fg-4">{uc.label}</span>
         {t.readOther && (
           <span className="ml-auto">
-            <Link href={alternateHref} hrefLang="en" lang="en" className="hover:text-gray-300 transition-colors">
+            <Link href={alternateHref} hrefLang="en" lang="en" className="hover:text-fg-3 transition-colors">
               {t.readOther}
             </Link>
           </span>
         )}
       </nav>
 
-      <span className="inline-block text-xs font-semibold text-[#3b82f6] bg-[#3b82f6]/10 px-2.5 py-1 rounded-md mb-4">
+      <span className="inline-block text-xs font-semibold text-accent bg-[#3b82f6]/10 px-2.5 py-1 rounded-md mb-4">
         {uc.badge}
       </span>
 
-      <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-5 tracking-tight leading-tight">
+      <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight leading-tight">
         {uc.h1}
       </h1>
 
       {/* Self-contained lead answer — the passage most likely to be extracted. */}
-      <p className="text-lg text-gray-300 leading-relaxed mb-10">{uc.lede}</p>
+      <p className="text-lg text-fg-3 leading-relaxed mb-10">{uc.lede}</p>
 
       <div className="flex flex-wrap gap-3 mb-16">
         <Link
@@ -132,15 +140,15 @@ export default function UseCaseArticle({
         </Link>
         <Link
           href={secondaryHref}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-white/15 text-gray-300 font-semibold hover:bg-white/5 hover:text-white transition-all"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg transition-all"
         >
           {secondaryLabel}
         </Link>
       </div>
 
       <section className="mb-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">{t.painful}</h2>
-        <div className="space-y-4 text-gray-400 leading-relaxed">
+        <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">{t.painful}</h2>
+        <div className="space-y-4 text-fg-4 leading-relaxed">
           {uc.problem.map((p, i) => (
             <p key={i}>{p}</p>
           ))}
@@ -148,19 +156,19 @@ export default function UseCaseArticle({
       </section>
 
       <section className="mb-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">{t.extract}</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">{t.extract}</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="border-b border-white/10">
-                <th className="text-left py-3 pr-4 font-semibold text-gray-300 whitespace-nowrap">{t.field}</th>
-                <th className="text-left py-3 font-semibold text-gray-300">{t.care}</th>
+              <tr className="border-b border-tint/10">
+                <th className="text-left py-3 pr-4 font-semibold text-fg-3 whitespace-nowrap">{t.field}</th>
+                <th className="text-left py-3 font-semibold text-fg-3">{t.care}</th>
               </tr>
             </thead>
-            <tbody className="text-gray-400">
+            <tbody className="text-fg-4">
               {uc.fields.map((f) => (
-                <tr key={f.name} className="border-b border-white/5 align-top">
-                  <td className="py-3 pr-4 font-medium text-gray-200">{f.name}</td>
+                <tr key={f.name} className="border-b border-tint/5 align-top">
+                  <td className="py-3 pr-4 font-medium text-fg-2">{f.name}</td>
                   <td className="py-3 leading-relaxed">{f.note}</td>
                 </tr>
               ))}
@@ -170,28 +178,28 @@ export default function UseCaseArticle({
       </section>
 
       <section className="mb-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">{t.hard(uc.label)}</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">{t.hard(uc.label)}</h2>
         <div className="space-y-4">
           {uc.gotchas.map((g) => (
             <div key={g.title} className="glass-card rounded-xl p-5">
               <div className="flex items-center gap-2.5 mb-2">
                 <TriangleAlert size={18} className="text-amber-400 flex-shrink-0" />
-                <h3 className="text-base font-semibold text-white">{g.title}</h3>
+                <h3 className="text-base font-semibold text-fg">{g.title}</h3>
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">{g.body}</p>
+              <p className="text-sm text-fg-4 leading-relaxed">{g.body}</p>
             </div>
           ))}
         </div>
       </section>
 
       <section className="mb-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">{t.pipeline}</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">{t.pipeline}</h2>
         <ul className="space-y-3">
           {uc.pipeline.map((step) => (
             <li key={step.label} className="flex gap-3 leading-relaxed">
-              <Check size={18} className="text-emerald-400 flex-shrink-0 mt-1" />
-              <span className="text-gray-400">
-                <Link href={step.href} className="text-[#3b82f6] font-medium hover:underline">
+              <Check size={18} className="text-ok flex-shrink-0 mt-1" />
+              <span className="text-fg-4">
+                <Link href={step.href} className="text-accent font-medium hover:underline">
                   {step.label}
                 </Link>{" "}
                 — {step.why}
@@ -199,16 +207,16 @@ export default function UseCaseArticle({
             </li>
           ))}
         </ul>
-        {t.docsNote && <p className="text-xs text-gray-500 mt-4">{t.docsNote}</p>}
+        {t.docsNote && <p className="text-xs text-fg-5 mt-4">{t.docsNote}</p>}
       </section>
 
       <section className="mb-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">{t.faq}</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-fg mb-6">{t.faq}</h2>
         <dl className="space-y-4">
           {uc.faqs.map((faq) => (
             <div key={faq.q} className="glass-card rounded-xl p-5">
-              <dt className="text-base font-semibold text-white mb-2">{faq.q}</dt>
-              <dd className="text-sm text-gray-400 leading-relaxed">{faq.a}</dd>
+              <dt className="text-base font-semibold text-fg mb-2">{faq.q}</dt>
+              <dd className="text-sm text-fg-4 leading-relaxed">{faq.a}</dd>
             </div>
           ))}
         </dl>
@@ -216,7 +224,7 @@ export default function UseCaseArticle({
 
       {others.length > 0 && (
         <section className="mb-14">
-          <h2 className="text-xl font-bold text-white mb-4">{t.others}</h2>
+          <h2 className="text-xl font-bold text-fg mb-4">{t.others}</h2>
           <div className="grid sm:grid-cols-3 gap-3">
             {others.map((o) => (
               <Link
@@ -224,8 +232,26 @@ export default function UseCaseArticle({
                 href={o.href}
                 className="glass-card glass-card-hover rounded-xl p-4 transition-all"
               >
-                <span className="text-sm font-semibold text-white">{o.label}</span>
-                <span className="block text-xs text-gray-500 mt-1 leading-relaxed">{o.badge}</span>
+                <span className="text-sm font-semibold text-fg">{o.label}</span>
+                <span className="block text-xs text-fg-5 mt-1 leading-relaxed">{o.badge}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {toolsForUseCase(uc.slug, locale).length > 0 && (
+        <section className="mb-14 glass-card rounded-2xl p-6 border border-emerald-400/30">
+          <h2 className="text-xl font-bold text-fg mb-2">{TRY_COPY[locale].heading}</h2>
+          <p className="text-sm text-fg-4 mb-4">{TRY_COPY[locale].body}</p>
+          <div className="flex flex-wrap gap-3">
+            {toolsForUseCase(uc.slug, locale).map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/15 text-sm font-semibold text-fg hover:bg-white/5 transition-colors"
+              >
+                {tool.label} <ArrowRight size={15} />
               </Link>
             ))}
           </div>
@@ -233,8 +259,8 @@ export default function UseCaseArticle({
       )}
 
       <div className="glass-card rounded-2xl p-8 text-center">
-        <h2 className="text-2xl font-bold text-white mb-3">{t.finalTitle}</h2>
-        <p className="text-gray-400 mb-6 max-w-[520px] mx-auto leading-relaxed">{t.finalBody(uc.label)}</p>
+        <h2 className="text-2xl font-bold text-fg mb-3">{t.finalTitle}</h2>
+        <p className="text-fg-4 mb-6 max-w-[520px] mx-auto leading-relaxed">{t.finalBody(uc.label)}</p>
         <Link
           href={t.finalHref}
           className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 transition-all"

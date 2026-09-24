@@ -39,12 +39,16 @@ export default function robots(): MetadataRoute.Robots {
         // rendered page can differ from what visitors see. Google's guidance
         // is explicit that JS and CSS must be crawlable. The chunks are
         // immutable, hashed assets — nothing to index, nothing to hide.
-        disallow: ["/api/", "/s/"],
+        //
+        // /auth/ is the sign-in callback (a redirect, nothing to index) and
+        // /lite/ holds the free tools' sample PDFs — useful inside the tool,
+        // junk as search results.
+        disallow: ["/api/", "/s/", "/auth/", "/lite/"],
       },
       {
         userAgent: citingAiCrawlers,
         allow: "/",
-        disallow: ["/api/", "/s/"],
+        disallow: ["/api/", "/s/", "/auth/", "/lite/"],
       },
       {
         // Training-only bulk scraper, no citation benefit.

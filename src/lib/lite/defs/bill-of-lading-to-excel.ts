@@ -7,6 +7,7 @@ const billOfLadingToExcel: LiteTool = {
   id: "bill-of-lading-to-excel",
   kind: "extract",
   paths: { en: "/tools/bill-of-lading-to-excel", es: "/es/herramientas/bl-a-excel" },
+  related: { useCase: "customs-trade", guide: "hs-code-classification-explained" },
   flow: {
     env: { es: "TAVNIT_LITE_BL_FLOW_ID", en: "TAVNIT_LITE_BL_FLOW_ID_EN" },
     value: { es: "d93ac748-3fcc-4092-93f1-c4a62bba1b0f", en: "fe48e725-0762-4062-a53a-53f32f438508" },

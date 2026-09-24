@@ -6,6 +6,7 @@ const invoiceToExcel: LiteTool = {
   id: "invoice-to-excel",
   kind: "extract",
   paths: { en: "/tools/invoice-to-excel", es: "/es/herramientas/factura-a-excel" },
+  related: { useCase: "invoice-processing", guide: "line-item-extraction-from-invoices" },
   flow: { env: { es: "TAVNIT_LITE_INVOICE_FLOW_ID", en: "TAVNIT_LITE_INVOICE_FLOW_ID_EN" }, value: { es: "105a016a-c21d-4b07-9b29-89399bd00cf4", en: "d20676f1-4183-4dd0-bac6-a32727d4d7f5" } },
   columnOrder: {
     es: ["proveedor", "ruc_proveedor", "numero_factura", "fecha", "moneda", "descripcion", "cantidad", "unidad", "precio_unitario", "total_linea", "subtotal", "impuesto", "total"],

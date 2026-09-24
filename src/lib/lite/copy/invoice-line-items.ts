@@ -12,7 +12,7 @@ const invoiceLineItems: Record<Locale, ToolCopyDef> = {
   es: {
     vocab: invoiceToExcel.es.vocab,
     overrides: {
-      title: "Extractor de líneas de factura gratis: cada renglón de la tabla, en filas de Excel",
+      title: "Extraer líneas de factura a Excel, gratis",
       description:
         "Extrae las líneas de una factura (descripción, cantidad, precio unitario e importe) como filas de Excel, con el proveedor, número y fecha en cada fila. PDF o foto, sin plantillas, sin registro para ver el resultado.",
       label: "Extractor de líneas de factura",
@@ -89,7 +89,7 @@ const invoiceLineItems: Record<Locale, ToolCopyDef> = {
   en: {
     vocab: invoiceToExcel.en.vocab,
     overrides: {
-      title: "Free invoice line item extractor: every row of the table as Excel rows",
+      title: "Free Invoice Line Item Extractor: Rows to Excel",
       description:
         "Extract invoice line items (description, quantity, unit price and amount) as Excel rows, with vendor, number and date on every row. PDF or photo, no templates, no sign-up to see the result.",
       label: "Invoice line item extractor",

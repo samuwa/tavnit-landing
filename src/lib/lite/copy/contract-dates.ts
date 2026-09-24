@@ -22,7 +22,7 @@ const contractDates: Record<Locale, ToolCopyDef> = {
       this_doc: "este contrato",
     },
     overrides: {
-      title: "Fechas de renovación de contratos gratis: extrae vencimiento, preaviso y partes con IA",
+      title: "Fechas de renovación de contratos, gratis (IA)",
       description:
         "Sube un contrato en PDF y obtén sus fechas clave en una fila de Excel: partes, inicio, vencimiento, renovación automática, preaviso y fecha límite para avisar. Gratis, sin plantillas y sin registro para ver el resultado.",
       label: "Fechas de contratos",
@@ -120,7 +120,7 @@ const contractDates: Record<Locale, ToolCopyDef> = {
       this_doc: "this contract",
     },
     overrides: {
-      title: "Contract renewal date extractor, free: end date, notice period and parties with AI",
+      title: "Contract Renewal Date Extractor, Free (AI)",
       description:
         "Upload a contract as PDF and get its key dates in one Excel row: parties, start, end, auto-renewal, notice period and the deadline to give notice. Free, no templates, no sign-up to see the result.",
       label: "Contract dates",

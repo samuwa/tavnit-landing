@@ -10,6 +10,23 @@ import { SITE_URL } from "@/lib/site";
 import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/lib/locale";
 import { LITE_HUB_PATHS, LITE_TOOLS, type LiteToolId } from "@/lib/lite/tools";
 import { HUB_COPY, TOOL_COPY } from "@/lib/lite/copy";
+import { pagesForTool } from "@/lib/lite/related";
+
+/** Strings for the block that sends the visitor on to the product pages. */
+const RELATED_COPY: Record<Locale, { heading: string; lead: string; useCase: string; guide: string }> = {
+  es: {
+    heading: "Cuando sean todos tus documentos",
+    lead: "Esta herramienta procesa uno a la vez. El mismo motor puede recibirlos por correo o API, revisarlos con tu equipo y entregarlos a tu sistema.",
+    useCase: "Cómo se automatiza:",
+    guide: "Guía:",
+  },
+  en: {
+    heading: "When it is every document, not one",
+    lead: "This tool runs one document at a time. The same engine can take them in by email or API, route them through your team\u2019s review and deliver them to your systems.",
+    useCase: "How it is automated:",
+    guide: "Guide:",
+  },
+};
 
 /**
  * One free-tool page, either language. The two routes per tool are thin
@@ -81,6 +98,8 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
   });
 
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || null;
+  const related = pagesForTool(toolId, locale);
+  const relatedCopy = RELATED_COPY[locale];
 
   return (
     <LiteShell locale={locale} alternatePath={alternatePath}>
@@ -151,6 +170,33 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
           </h2>
           <LiteFaq items={copy.faqs} />
         </section>
+
+        {(related.useCase || related.guide) && (
+          <section aria-labelledby="lite-related-heading" className="mt-24">
+            <h2 id="lite-related-heading" className="font-heading text-xl font-bold text-[var(--lite-muted)] sm:text-2xl">
+              {relatedCopy.heading}
+            </h2>
+            <p className="mt-4 max-w-[640px] text-sm leading-relaxed text-[var(--lite-muted)]">{relatedCopy.lead}</p>
+            <ul className="mt-6 space-y-3 text-sm">
+              {related.useCase && (
+                <li>
+                  <span className="text-[var(--lite-muted)]">{relatedCopy.useCase} </span>
+                  <Link href={related.useCase.href} className="font-semibold text-[var(--lite-blue)] underline underline-offset-4">
+                    {related.useCase.label}
+                  </Link>
+                </li>
+              )}
+              {related.guide && (
+                <li>
+                  <span className="text-[var(--lite-muted)]">{relatedCopy.guide} </span>
+                  <Link href={related.guide.href} className="font-semibold text-[var(--lite-blue)] underline underline-offset-4">
+                    {related.guide.label}
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </section>
+        )}
       </div>
     </LiteShell>
   );

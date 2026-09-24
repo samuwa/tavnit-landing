@@ -68,6 +68,11 @@ export interface LiteTool {
   id: LiteToolId;
   kind: LiteToolKind;
   paths: Record<Locale, string>;
+  /** The commercial pages this tool feeds, by English slug; the Spanish
+   *  twins resolve through the data files (see ./related.ts). A tool page
+   *  links to them and they link back with "try it free", so a visitor who
+   *  arrives on the tool can find the product and vice versa. */
+  related?: { useCase?: string; guide?: string };
   /** The Flow in the Lite org (extract and compare tools). Its field names
    *  are the column names the visitor sees; a missing English id falls back
    *  to the Spanish flow. */

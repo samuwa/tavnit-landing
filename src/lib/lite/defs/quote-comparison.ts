@@ -6,6 +6,7 @@ const quoteComparison: LiteTool = {
   id: "quote-comparison",
   kind: "compare",
   paths: { en: "/tools/compare-supplier-quotes", es: "/es/herramientas/comparar-cotizaciones" },
+  related: { useCase: "supplier-quotes" },
   flow: {
     env: { es: "TAVNIT_LITE_QUOTE_FLOW_ID", en: "TAVNIT_LITE_QUOTE_FLOW_ID_EN" },
     value: { es: "a42ada9c-1cfd-485b-b9af-b1747edd300f", en: "80b9fab0-5322-4e48-a004-dbcedc09223c" },

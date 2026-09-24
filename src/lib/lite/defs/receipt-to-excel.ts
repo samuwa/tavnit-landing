@@ -5,6 +5,7 @@ const receiptToExcel: LiteTool = {
   id: "receipt-to-excel",
   kind: "extract",
   paths: { en: "/tools/receipt-to-excel", es: "/es/herramientas/recibos-a-excel" },
+  related: { useCase: "expense-reports" },
   flow: {
     env: { es: "TAVNIT_LITE_RECEIPT_FLOW_ID", en: "TAVNIT_LITE_RECEIPT_FLOW_ID_EN" },
     value: { es: "9a1c4c22-8563-4e93-8ac2-aceee1c6d639", en: "d708a645-53b6-434e-b3f3-3bff8e52a094" },

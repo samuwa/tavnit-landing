@@ -26,7 +26,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
       this_doc: "esta factura",
     },
     overrides: {
-      title: "Comparar factura con orden de compra gratis: cotejo línea por línea con IA",
+      title: "Comparar factura con orden de compra, gratis",
       description:
         "Sube la orden de compra y la factura y Tavnit las coteja línea por línea: precios distintos, cantidades distintas, líneas que faltan y líneas que sobran. Gratis, sin plantillas y sin registro para ver el resultado.",
       label: "Comparar factura con OC",
@@ -174,7 +174,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
       this_doc: "this invoice",
     },
     overrides: {
-      title: "PO vs invoice check, free: match a purchase order to its invoice line by line with AI",
+      title: "Free PO vs Invoice Checker: Line-by-Line Match",
       description:
         "Upload the purchase order and the invoice and Tavnit matches them line by line: price differences, quantity differences, lines missing on the invoice and lines not on the PO. Free, no templates, no sign-up to see the result.",
       label: "PO vs invoice check",

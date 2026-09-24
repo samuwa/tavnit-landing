@@ -26,7 +26,7 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
       this_doc: "este packing list",
     },
     overrides: {
-      title: "Packing list a Excel gratis: extrae la lista de empaque con IA",
+      title: "Packing list a Excel gratis: cada línea con IA",
       description:
         "Sube un packing list (lista de empaque) en PDF o foto y recibe cada línea en Excel: descripción, cantidad, bultos, peso neto, peso bruto y dimensiones, con exportador, consignatario y puertos. Gratis, sin plantillas.",
       label: "Packing list a Excel",
@@ -126,7 +126,7 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
       this_doc: "this packing list",
     },
     overrides: {
-      title: "Packing list to Excel, free: extract every line with AI",
+      title: "Packing List to Excel, Free: AI Extracts Every Line",
       description:
         "Upload a packing list as PDF or photo and get every line as an Excel table: description, quantity, packages, net and gross weight, dimensions, with shipper, consignee and ports. Free, no templates, no sign-up to see the result.",
       label: "Packing list to Excel",

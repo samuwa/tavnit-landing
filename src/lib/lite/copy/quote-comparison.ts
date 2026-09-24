@@ -25,7 +25,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
       this_doc: "esta cotización",
     },
     overrides: {
-      title: "Comparar cotizaciones de proveedores gratis: cuadro comparativo línea por línea con IA",
+      title: "Comparar cotizaciones de proveedores, gratis",
       description:
         "Sube dos o tres cotizaciones en PDF o foto y recibe un cuadro comparativo: cada línea con el precio de cada proveedor y la más barata marcada. Gratis, sin plantillas y sin registro para ver el resultado.",
       label: "Comparar cotizaciones",
@@ -167,7 +167,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
       this_doc: "this quote",
     },
     overrides: {
-      title: "Compare supplier quotes, free: a line-by-line quote comparison table with AI",
+      title: "Compare Supplier Quotes, Free: Line-by-Line Table",
       description:
         "Upload two or three quotes as PDF or photo and get one comparison table: every line with each supplier's price and the cheapest marked. Free, no templates, no sign-up to see the result.",
       label: "Compare supplier quotes",

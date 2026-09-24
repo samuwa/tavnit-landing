@@ -41,7 +41,7 @@ export const TOOL_COPY: Record<LiteToolId, Record<Locale, ToolCopy>> = Object.fr
 
 export const HUB_COPY: Record<Locale, HubCopy> = {
   es: {
-    title: "Herramientas gratis: factura a Excel y más, con la IA de Tavnit",
+    title: "Herramientas gratis con IA: factura a Excel y más",
     description:
       "Herramientas gratis de un solo uso hechas con el mismo motor de Tavnit: convierte una factura en Excel y más. Sin plantillas, sin registro para ver el resultado.",
     h1: "Herramientas gratis",
@@ -49,9 +49,12 @@ export const HUB_COPY: Record<Locale, HubCopy> = {
       "Cada herramienta hace una sola cosa con un documento y te muestra el resultado real. Son el mismo motor que usan las empresas que automatizan sus documentos con Tavnit, en versión de una a la vez.",
     breadcrumbHome: "Inicio",
     breadcrumbHub: "Herramientas",
+    groups: { extract: "De documento a Excel", compare: "Comparar documentos", split: "Organizar escaneos" },
+    outro: "Todas funcionan con el mismo motor que usan las empresas que automatizan sus documentos con Tavnit. Cuando quieras que pase solo, con todos tus documentos, está tu cuenta.",
+    outroCta: "Crear cuenta gratis",
   },
   en: {
-    title: "Free tools: invoice to Excel and more, powered by Tavnit's AI",
+    title: "Free AI Document Tools: Invoice to Excel & More",
     description:
       "Free single-purpose tools built on Tavnit's own engine: turn an invoice into Excel and more. No templates, no sign-up to see the result.",
     h1: "Free tools",
@@ -59,6 +62,9 @@ export const HUB_COPY: Record<Locale, HubCopy> = {
       "Each tool does one thing to one document and shows you the real result. They run on the same engine companies use to automate their documents with Tavnit, one at a time.",
     breadcrumbHome: "Home",
     breadcrumbHub: "Tools",
+    groups: { extract: "Document to Excel", compare: "Compare documents", split: "Organise scans" },
+    outro: "All of them run on the same engine companies use to automate their documents with Tavnit. When you want it to happen on its own, for all your documents, there is your account.",
+    outroCta: "Create a free account",
   },
 };
 

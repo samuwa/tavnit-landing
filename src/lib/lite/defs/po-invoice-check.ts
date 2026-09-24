@@ -8,6 +8,7 @@ const poInvoiceCheck: LiteTool = {
   id: "po-invoice-check",
   kind: "compare",
   paths: { en: "/tools/po-vs-invoice-check", es: "/es/herramientas/comparar-factura-con-orden-de-compra" },
+  related: { useCase: "purchase-orders", guide: "how-to-match-invoices-to-purchase-orders" },
   flow: {
     env: { es: "TAVNIT_LITE_PURCHASE_FLOW_ID", en: "TAVNIT_LITE_PURCHASE_FLOW_ID_EN" },
     value: { es: "c7ceb372-091f-42cf-806a-935130bed96e", en: "be5e1230-9163-435d-a6b3-76c7ba11da6c" },
