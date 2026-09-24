@@ -76,7 +76,9 @@ export function safeFilename(raw: string | null | undefined, kind: LiteFileKind)
 export async function validateUpload(
   bytes: Uint8Array,
   rawFilename: string | null | undefined,
+  opts: { maxPages?: number } = {},
 ): Promise<ValidatedFile> {
+  const maxPages = opts.maxPages ?? LITE_LIMITS.maxPages;
   if (bytes.length === 0) throw new LiteValidationError("empty");
   if (bytes.length > LITE_LIMITS.maxBytes) throw new LiteValidationError("too_large");
 
@@ -96,7 +98,7 @@ export async function validateUpload(
       throw new LiteValidationError("unreadable");
     }
     if (pages < 1) throw new LiteValidationError("unreadable");
-    if (pages > LITE_LIMITS.maxPages) throw new LiteValidationError("too_many_pages");
+    if (pages > maxPages) throw new LiteValidationError("too_many_pages");
   }
 
   return {

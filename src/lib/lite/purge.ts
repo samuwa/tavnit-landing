@@ -12,6 +12,9 @@ import "server-only";
  *  - the rows themselves are in runs.output_json, so deleting the row is
  *    what deletes the results.
  *
+ * Splitter jobs (segments at files/<org>/splits/<split>/…, row in `splits`)
+ * and Matcher jobs (row in `matches`) are purged the same way.
+ *
  * Safety: every delete is scoped to TAVNIT_LITE_ORG_ID, a dedicated org
  * that holds nothing but free-tool runs; runs still queued/running are
  * left for the worker to finish or the backend's stale sweep to fail;
@@ -47,6 +50,7 @@ interface Candidate {
   run_id: string;
   status: string;
   source: "lite" | "orphan";
+  kind: "run" | "split" | "match";
 }
 
 /** Storage objects under <org>/<run>/ in one bucket (recursive: the API
@@ -111,11 +115,16 @@ async function markPurged(base: string, key: string, runId: string): Promise<voi
 async function candidates(base: string, key: string, org: string, cutoffIso: string, limit: number): Promise<Candidate[]> {
   const h = headers(key);
   const lite = await fetch(
-    `${base}/rest/v1/lite_runs?select=run_id,status&purged_at=is.null&created_at=lt.${encodeURIComponent(cutoffIso)}&order=created_at.asc&limit=${limit}`,
+    `${base}/rest/v1/lite_runs?select=run_id,status,kind&purged_at=is.null&created_at=lt.${encodeURIComponent(cutoffIso)}&order=created_at.asc&limit=${limit}`,
     { headers: h, cache: "no-store" },
   );
   if (!lite.ok) throw new Error(`lite_runs select failed (${lite.status})`);
-  const fromLite = ((await lite.json()) as { run_id: string; status: string }[]).map((r) => ({ ...r, source: "lite" as const }));
+  const fromLite = ((await lite.json()) as { run_id: string; status: string; kind?: string }[]).map((r) => ({
+    run_id: r.run_id,
+    status: r.status,
+    source: "lite" as const,
+    kind: (r.kind === "split" || r.kind === "match" ? r.kind : "run") as Candidate["kind"],
+  }));
 
   const orphans = await fetch(
     `${base}/rest/v1/runs?select=id,status&org_id=eq.${encodeURIComponent(org)}&created_at=lt.${encodeURIComponent(cutoffIso)}&status=in.(${FINISHED.join(",")})&order=created_at.asc&limit=${limit}`,
@@ -125,7 +134,7 @@ async function candidates(base: string, key: string, org: string, cutoffIso: str
   const known = new Set(fromLite.map((r) => r.run_id));
   const fromOrg = ((await orphans.json()) as { id: string; status: string }[])
     .filter((r) => !known.has(r.id))
-    .map((r) => ({ run_id: r.id, status: r.status, source: "orphan" as const }));
+    .map((r) => ({ run_id: r.id, status: r.status, source: "orphan" as const, kind: "run" as const }));
   return [...fromLite, ...fromOrg].slice(0, limit);
 }
 
@@ -151,6 +160,35 @@ export async function purgeExpiredRuns(opts: { maxAgeHours?: number; limit?: num
 
   for (const c of list) {
     try {
+      if (c.kind !== "run") {
+        // A Splitter job: its segments under <org>/splits/<id>/ and the row.
+        // A Matcher job: only a row (its inputs are runs, purged on their own).
+        const table = c.kind === "split" ? "splits" : "matches";
+        const live = await fetch(`${base}/rest/v1/${table}?select=status&id=eq.${encodeURIComponent(c.run_id)}&org_id=eq.${encodeURIComponent(org)}&limit=1`, { headers: headers(key), cache: "no-store" });
+        const rows = live.ok ? ((await live.json()) as { status: string }[]) : [];
+        const status = rows[0]?.status;
+        const done = c.kind === "split" ? ["completed", "failed"] : FINISHED;
+        if (status && !done.includes(status)) {
+          report.skippedRunning++;
+          continue;
+        }
+        let removed = 0;
+        if (c.kind === "split") {
+          const paths = await listObjects(base, key, "files", `${org}/splits/${c.run_id}`);
+          if (!dryRun) await removeObjects(base, key, "files", paths);
+          removed = paths.length;
+        }
+        if (!dryRun) {
+          if (rows[0]) {
+            const del = await fetch(`${base}/rest/v1/${table}?id=eq.${encodeURIComponent(c.run_id)}&org_id=eq.${encodeURIComponent(org)}`, { method: "DELETE", headers: { ...headers(key), Prefer: "return=minimal" }, cache: "no-store" });
+            if (!del.ok) throw new Error(`${table} delete ${c.run_id} failed (${del.status})`);
+          }
+          await markPurged(base, key, c.run_id);
+        }
+        report.objectsRemoved += removed;
+        report.purged++;
+        continue;
+      }
       // Anything the backend may still be writing to is left alone. lite_runs
       // can lag (it only learns the status when the visitor polls), so the
       // live status is what the run row says; the DELETE re-checks it.

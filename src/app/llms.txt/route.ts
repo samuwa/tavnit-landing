@@ -91,7 +91,7 @@ ${FEATURES.map((f) => `- ${f}`).join("\n")}
 - [Homepage](${SITE_URL}/): product overview, pipeline, use cases.
 - [Use cases](${SITE_URL}/use-cases): what Tavnit extracts, by document type.
 - [Integrations](${SITE_URL}/integrations): how data gets in and out.
-- [Free tools](${SITE_URL}/tools): single-purpose free tools on Tavnit's engine — e.g. [Invoice to Excel](${SITE_URL}/tools/invoice-to-excel) extracts an invoice's line items into a spreadsheet, no sign-up to see the result.
+- [Free tools](${SITE_URL}/tools): single-purpose free tools on Tavnit's engine, no sign-up to see the result: [Invoice to Excel](${SITE_URL}/tools/invoice-to-excel), [Invoice line item extractor](${SITE_URL}/tools/invoice-line-item-extractor), [PO vs invoice check](${SITE_URL}/tools/po-vs-invoice-check), [Compare supplier quotes](${SITE_URL}/tools/compare-supplier-quotes), [Split a scanned PDF](${SITE_URL}/tools/split-scanned-pdf), [Packing list to Excel](${SITE_URL}/tools/packing-list-to-excel), [Bill of lading to Excel](${SITE_URL}/tools/bill-of-lading-to-excel), [Contract renewal date extractor](${SITE_URL}/tools/contract-renewal-date-extractor), [Receipt to Excel](${SITE_URL}/tools/receipt-to-excel).
 ${pricingLines}
 - [Application](${APP_URL}): sign-up and workspace.
 - [MCP server](${MCP_URL}): Model Context Protocol endpoint.
@@ -134,7 +134,7 @@ Panama's Arancel Nacional (VII Enmienda, HS 2022).
 ${USE_CASES_ES.map((uc) => `- [${uc.label}](${SITE_URL}${esUseCasePath(uc)}): ${uc.summary}`).join("\n")}
 - [Integraciones](${SITE_URL}/es/integraciones): API, correo, webhooks y MCP.
 - [Conector MCP](${SITE_URL}/es/integraciones/mcp): servidor MCP para claude.ai y Cursor, en español.
-- [Herramientas gratis](${SITE_URL}/es/herramientas): herramientas de un solo uso; [Factura a Excel](${SITE_URL}/es/herramientas/factura-a-excel) extrae las líneas de una factura a una hoja de cálculo sin registro.
+- [Herramientas gratis](${SITE_URL}/es/herramientas): herramientas de un solo uso, sin registro para ver el resultado: [Factura a Excel](${SITE_URL}/es/herramientas/factura-a-excel), [Extraer líneas de factura](${SITE_URL}/es/herramientas/extraer-lineas-de-factura), [Comparar factura con orden de compra](${SITE_URL}/es/herramientas/comparar-factura-con-orden-de-compra), [Comparar cotizaciones](${SITE_URL}/es/herramientas/comparar-cotizaciones), [Separar PDF escaneado](${SITE_URL}/es/herramientas/separar-pdf-escaneado), [Packing list a Excel](${SITE_URL}/es/herramientas/packing-list-a-excel), [BL a Excel](${SITE_URL}/es/herramientas/bl-a-excel), [Fechas de renovación de contratos](${SITE_URL}/es/herramientas/fechas-de-renovacion-de-contratos), [Recibos a Excel](${SITE_URL}/es/herramientas/recibos-a-excel).
 - [Guías](${SITE_URL}/es/guias): guías en español.
 ${GUIDES_ES.map((g) => `- [${g.h1}](${SITE_URL}${esGuidePath(g)}): ${g.description}`).join("\n")}
 

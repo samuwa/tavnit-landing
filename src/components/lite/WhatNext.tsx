@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -22,7 +22,7 @@ import type { Locale } from "@/lib/locale";
 import { APP_URL } from "@/lib/site";
 import { useLiteSession } from "@/components/lite/session";
 import Scene from "@/components/lite/Scene";
-import { SCENES } from "@/components/lite/scenes";
+import { FlowScene, SCENES, type FlowExtra } from "@/components/lite/scenes";
 import { INPUT_SCENES } from "@/components/lite/scenes-in";
 import { LogoMark } from "@/components/lite/LogoMark";
 
@@ -30,12 +30,12 @@ import { LogoMark } from "@/components/lite/LogoMark";
  * "And then what?" — drawn, not listed.
  *
  * Appears only once a result exists. The diagram reads left to right: the
- * document the visitor just uploaded, the Tavnit node (the one place the
- * brand gradient appears on a Lite page), and six places the lines can go
- * from there, each line labelled with how. Connectors draw themselves on
- * arrival; reduced-motion users get the finished drawing. Below the sm
- * breakpoint the SVG would be too small to read, so a vertical version
- * with the same items takes over.
+ * document the visitor just uploaded, the Tavnit chip (the Flow: click it
+ * to see that its fields are the visitor's to choose), and seven places the
+ * lines can go from there, each line labelled with how. Connectors draw
+ * themselves on arrival; reduced-motion users get the finished drawing.
+ * Below the sm breakpoint the SVG would be too small to read, so a vertical
+ * version with the same items takes over.
  */
 
 const ICONS = [Mail, Plug, UserCheck, GitCompareArrows, ShieldCheck, Bot, MessageSquareText];
@@ -69,6 +69,9 @@ export default function WhatNext({
   compact = false,
   heading,
   lead,
+  columns = [],
+  lineFields = [],
+  flowSignal = 0,
 }: {
   copy: ToolCopy["next"];
   locale: Locale;
@@ -79,31 +82,75 @@ export default function WhatNext({
   /** Override the heading and lead (the dialog has its own). */
   heading?: string;
   lead?: string;
+  /** The visitor's columns and which of them are the flow's table fields,
+   *  for the Flow scene. */
+  columns?: string[];
+  lineFields?: string[];
+  /** Incremented by the page to open the Flow scene from elsewhere. */
+  flowSignal?: number;
 }) {
   const demoHref = locale === "es" ? "/es/agendar" : "/schedule";
   const shortName = fileName.length > 22 ? `${fileName.slice(0, 20)}…` : fileName;
   const { email } = useLiteSession();
   const [active, setActive] = useState<number | null>(null);
   const [activeInput, setActiveInput] = useState<number | null>(null);
+  const [activeFlow, setActiveFlow] = useState(false);
+  const [nodeHover, setNodeHover] = useState(false);
   const [playKey, setPlayKey] = useState(0);
   const [showInputs, setShowInputs] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const chooseInput = (i: number) => {
     setActive(null);
+    setActiveFlow(false);
     setActiveInput(i);
     setPlayKey((k) => k + 1);
   };
+  const chooseFlow = () => {
+    setActive(null);
+    setActiveInput(null);
+    setActiveFlow(true);
+    setPlayKey((k) => k + 1);
+  };
+  // The page asks for the Flow scene (from the table's "+ Tu campo" or its
+  // note): the state changes during render, the scroll in an effect.
+  const [seenSignal, setSeenSignal] = useState(flowSignal);
+  if (flowSignal !== seenSignal) {
+    setSeenSignal(flowSignal);
+    setActive(null);
+    setActiveInput(null);
+    setActiveFlow(true);
+    setPlayKey((k) => k + 1);
+  }
+  useEffect(() => {
+    if (flowSignal) sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [flowSignal]);
+  const fieldCount = columns.length || 13;
+  const lineSet = new Set(lineFields);
+  const flowExtra: FlowExtra | undefined = columns.length
+    ? {
+        doc: columns.filter((c) => !lineSet.has(c)),
+        line: columns.filter((c) => lineSet.has(c)),
+        name: copy.flow.name,
+        kinds: copy.flow.kinds,
+        add: copy.flow.add,
+        activate: copy.flow.activate,
+      }
+    : undefined;
+  const flowItem = { ...copy.flow, body: copy.flow.body.replace("{fields}", String(fieldCount)) };
   const docX = showInputs ? DOC.x + DOC_SHIFT : DOC.x;
   const docW = showInputs ? DOC_W_COMPACT : DOC.w;
   const docLabel = showInputs ? (fileName.length > 12 ? `${fileName.slice(0, 11)}…` : fileName) : shortName;
   const inputsY0 = NODE.y + NODE.h / 2 - (copy.inputs.items.length * IN_H + (copy.inputs.items.length - 1) * IN_GAP) / 2;
   const choose = (i: number) => {
     setActiveInput(null);
+    setActiveFlow(false);
     setActive(i);
     setPlayKey((k) => k + 1);
   };
+  const nodeOn = activeFlow || nodeHover;
 
   return (
-    <section aria-labelledby="lite-next-heading" className="lite-pop">
+    <section ref={sectionRef} aria-labelledby="lite-next-heading" className="lite-pop scroll-mt-6">
       <div className="max-w-[620px]">
         <h2 id="lite-next-heading" className={`lite-display ${compact ? "text-2xl sm:text-3xl" : "text-3xl sm:text-4xl"}`}>
           {heading ?? copy.heading}
@@ -137,6 +184,9 @@ export default function WhatNext({
             </linearGradient>
             <filter id="lite-chip-shadow" x="-30%" y="-30%" width="160%" height="170%">
               <feDropShadow dx="0" dy="6" stdDeviation="8" floodColor="#1c2321" floodOpacity="0.25" />
+            </filter>
+            <filter id="lite-chip-glow" x="-40%" y="-40%" width="180%" height="180%">
+              <feDropShadow dx="0" dy="0" stdDeviation="5" floodColor="#3b82f6" floodOpacity="0.55" />
             </filter>
           </defs>
 
@@ -285,8 +335,27 @@ export default function WhatNext({
           </g>
 
           {/* Tavnit node: a compact graphite chip with the T in white; name and
-              role beneath. Flat and quiet, no gradient of the brand. */}
-          <g className="lite-pop" style={{ animationDelay: "150ms" }}>
+              role beneath. Flat and quiet, no gradient of the brand. Click it
+              for the Flow scene. */}
+          <g
+            className="lite-pop cursor-pointer outline-none"
+            style={{ animationDelay: "150ms" }}
+            role="button"
+            tabIndex={0}
+            aria-pressed={activeFlow}
+            aria-label={`${copy.node} · ${copy.nodeSub}`}
+            onClick={chooseFlow}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                chooseFlow();
+              }
+            }}
+            onMouseEnter={() => setNodeHover(true)}
+            onMouseLeave={() => setNodeHover(false)}
+            onFocus={() => setNodeHover(true)}
+            onBlur={() => setNodeHover(false)}
+          >
             {Array.from({ length: 5 }).map((_, i) => {
               const px = NODE.x + 13 + i * ((NODE.w - 26) / 4) - 2.5;
               return (
@@ -300,6 +369,19 @@ export default function WhatNext({
             <rect x={NODE.x} y={NODE.y} width={NODE.w} height={NODE.h} rx="18" fill="url(#lite-chip-sheen)" />
             <rect x={NODE.x + 1} y={NODE.y + 1} width={NODE.w - 2} height={NODE.h - 2} rx="17" fill="none" stroke="#ffffff" strokeOpacity="0.14" />
             <rect x={NODE.x + 9} y={NODE.y + 9} width={NODE.w - 18} height={NODE.h - 18} rx="11" fill="none" stroke="#ffffff" strokeOpacity="0.07" />
+            {/* chosen / hovered: a thin blue edge with a soft glow, like a powered chip */}
+            <rect
+              x={NODE.x - 1}
+              y={NODE.y - 1}
+              width={NODE.w + 2}
+              height={NODE.h + 2}
+              rx="19"
+              fill="none"
+              stroke="var(--lite-blue)"
+              strokeWidth={activeFlow ? 2 : 1.5}
+              filter="url(#lite-chip-glow)"
+              style={{ opacity: nodeOn ? 1 : 0, transition: "opacity .2s" }}
+            />
             {/* the mark, in white: the logo's T silhouette */}
             <svg
               x={NODE.x + NODE.w / 2 - 15}
@@ -315,7 +397,7 @@ export default function WhatNext({
             <text x={NODE.x + NODE.w / 2} y={NODE.y + NODE.h + 26} textAnchor="middle" fontSize="14" fontWeight="700" fill="var(--lite-ink)" fontFamily="var(--font-heading)">
               {copy.node}
             </text>
-            <text x={NODE.x + NODE.w / 2} y={NODE.y + NODE.h + 41} textAnchor="middle" fontSize="11" fill="var(--lite-muted)" fontFamily="var(--font-body)">
+            <text x={NODE.x + NODE.w / 2} y={NODE.y + NODE.h + 41} textAnchor="middle" fontSize="11" fill={activeFlow ? "var(--lite-blue-ink)" : "var(--lite-muted)"} fontWeight={activeFlow ? 600 : 400} fontFamily="var(--font-body)" style={{ transition: "fill .2s" }}>
               {copy.nodeSub}
             </text>
           </g>
@@ -400,12 +482,20 @@ export default function WhatNext({
         <div className="flex items-center gap-3 text-sm">
           <span className="rounded-lg border border-[var(--lite-line)] px-3 py-2 font-semibold">{copy.source}</span>
           <ArrowRight size={16} className="text-[var(--lite-blue)]" aria-hidden />
-          <span className="inline-flex items-center gap-2 font-semibold">
+          <button
+            type="button"
+            onClick={chooseFlow}
+            aria-pressed={activeFlow}
+            className={`inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg pr-2 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50 ${activeFlow ? "bg-[var(--lite-blue-soft)] pl-1" : ""}`}
+          >
             <span className="grid h-9 w-9 place-items-center rounded-[10px] border border-white/10 bg-gradient-to-b from-[#262c31] to-[#15191c] shadow-md shadow-[#1c2321]/25">
               <LogoMark size={18} className="[filter:brightness(0)_invert(1)]" />
             </span>
-            {copy.node}
-          </span>
+            <span className="flex flex-col items-start leading-tight">
+              {copy.node}
+              <span className="text-[10px] font-normal text-[var(--lite-muted)]">{copy.nodeSub}</span>
+            </span>
+          </button>
         </div>
         <ul className="mt-4 space-y-2 border-l-2 border-[var(--lite-blue)] pl-4">
           {copy.items.map((item, i) => {
@@ -449,6 +539,9 @@ export default function WhatNext({
           playKey={playKey}
           onReplay={() => setPlayKey((k) => k + 1)}
         />
+      )}
+      {activeFlow && (
+        <Scene Stage={FlowScene} item={flowItem} copy={copy} playKey={playKey} onReplay={() => setPlayKey((k) => k + 1)} flow={flowExtra} />
       )}
       {activeInput !== null && (
         <Scene

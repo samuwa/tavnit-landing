@@ -1,10 +1,14 @@
 import "server-only";
 
+import type { Locale } from "@/lib/locale";
+import type { LocalizedId } from "@/lib/lite/tools";
+
 /**
  * The only bridge between the public site and the product backend.
  *
- * Calls two existing endpoints of the Tavnit API with the "Tavnit Lite" org's
- * key: submit a document to a flow, and read a run back. The key never leaves
+ * Calls existing endpoints of the Tavnit API with the "Tavnit Lite" org's
+ * key: submit a document to a flow, read a run back, run a matcher over
+ * runs, run a splitter over a bundle. The key never leaves
  * the server; the browser only ever sees run ids that the store has tied to
  * its own session (see store.ts / session.ts).
  *
@@ -22,9 +26,22 @@ export function liteApiConfigured(): boolean {
   return apiKey() !== null;
 }
 
-export function liteFlowId(envName: string): string | null {
-  const v = process.env[envName];
-  return v && v.trim() ? v.trim() : null;
+/** An id from the tool definition, unless the environment overrides it. */
+export function resolveId(id: LocalizedId | undefined, locale: Locale): string | null {
+  if (!id) return null;
+  const pick = (l: Locale) => {
+    const env = process.env[id.env[l]];
+    if (env && env.trim()) return env.trim();
+    return id.value[l];
+  };
+  return pick(locale) ?? pick("es");
+}
+
+export function resolveSingleId(id: { env: string; value: string | null } | undefined): string | null {
+  if (!id) return null;
+  const env = process.env[id.env];
+  if (env && env.trim()) return env.trim();
+  return id.value;
 }
 
 export class LiteApiError extends Error {
@@ -150,4 +167,56 @@ export async function fetchRunSource(runId: string): Promise<{ url: string; mime
     mimeType: typeof body.mime_type === "string" ? body.mime_type : "application/octet-stream",
     byteSize: typeof body.byte_size === "number" ? body.byte_size : null,
   };
+}
+
+/**
+ * Matcher: pairs the lines of two or more completed runs of the matcher's
+ * flow. 202 with the match id; the result is read from the product's
+ * `matches` row (there is no status endpoint), see product.ts.
+ */
+export async function runMatcher(params: { matcherId: string; runIds: string[]; benchmarkRunId?: string }): Promise<{ matchId: string }> {
+  const key = apiKey();
+  if (!key) throw new LiteApiError("Lite API key not configured", 503);
+  const res = await fetch(`${BASE_URL}/api/matchers/${encodeURIComponent(params.matcherId)}/run`, {
+    method: "POST",
+    headers: { "X-API-Key": key, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      run_ids: params.runIds,
+      ...(params.benchmarkRunId ? { benchmark_run_id: params.benchmarkRunId } : {}),
+      source: "api",
+    }),
+    cache: "no-store",
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (res.status === 402) throw new LiteApiError("Lite credits exhausted", 503);
+  if (res.status === 400) throw new LiteApiError(`Matcher rejected the runs: ${(await res.text()).slice(0, 300)}`, 400);
+  if (!res.ok) throw new LiteApiError(`Matcher run failed (${res.status})`, 502);
+  const body = (await res.json()) as { match_id?: string };
+  if (!body.match_id || typeof body.match_id !== "string") throw new LiteApiError("Matcher returned no match id", 502);
+  return { matchId: body.match_id };
+}
+
+/**
+ * Splitter: finds the documents inside one bundle and classifies each
+ * against the splitter's document types. 202 with the split id; the
+ * segments are read from the product's `splits` row, see product.ts.
+ */
+export async function runSplit(params: { splitterId: string; bytes: Uint8Array; filename: string; contentType: string }): Promise<{ splitId: string; pages: number }> {
+  const key = apiKey();
+  if (!key) throw new LiteApiError("Lite API key not configured", 503);
+  const form = new FormData();
+  form.append("splitter_id", params.splitterId);
+  form.append("file", new Blob([params.bytes as BlobPart], { type: params.contentType }), params.filename);
+  const res = await fetch(`${BASE_URL}/api/splits/run`, {
+    method: "POST",
+    headers: { "X-API-Key": key },
+    body: form,
+    cache: "no-store",
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (res.status === 402) throw new LiteApiError("Lite credits exhausted", 503);
+  if (!res.ok) throw new LiteApiError(`Split failed (${res.status})`, 502);
+  const body = (await res.json()) as { split_id?: string; pages_count?: number };
+  if (!body.split_id || typeof body.split_id !== "string") throw new LiteApiError("Split returned no id", 502);
+  return { splitId: body.split_id, pages: typeof body.pages_count === "number" ? body.pages_count : 0 };
 }

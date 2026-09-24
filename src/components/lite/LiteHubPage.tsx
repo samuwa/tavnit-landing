@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, FileSpreadsheet } from "lucide-react";
+import { ArrowRight, FileSpreadsheet, GitCompareArrows, Layers } from "lucide-react";
 import LiteShell from "@/components/lite/LiteShell";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
@@ -44,6 +44,7 @@ export default function LiteHubPage({ locale }: { locale: Locale }) {
   const items = LITE_TOOL_IDS.map((id) => ({
     id,
     href: LITE_TOOLS[id].paths[locale],
+    kind: LITE_TOOLS[id].kind,
     label: TOOL_COPY[id][locale].label,
     h1: TOOL_COPY[id][locale].h1,
     description: TOOL_COPY[id][locale].description,
@@ -85,7 +86,7 @@ export default function LiteHubPage({ locale }: { locale: Locale }) {
               className="flex items-start gap-5 rounded-2xl border border-[var(--lite-line)] bg-[var(--lite-white)] p-6 transition-colors hover:border-[var(--lite-blue)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
             >
               <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[var(--lite-blue-soft)] text-[var(--lite-blue)]">
-                <FileSpreadsheet size={22} aria-hidden />
+                {t.kind === "compare" ? <GitCompareArrows size={22} aria-hidden /> : t.kind === "split" ? <Layers size={22} aria-hidden /> : <FileSpreadsheet size={22} aria-hidden />}
               </span>
               <span className="min-w-0">
                 <span className="block font-heading text-xl font-bold">{t.h1}</span>

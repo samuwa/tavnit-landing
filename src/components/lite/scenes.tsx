@@ -16,6 +16,7 @@ import { LogoLockup } from "@/components/lite/LogoMark";
  *  5 cleaner        — date/number formats, calculated check
  *  6 agent          — a browser agent with a mission, a start URL and vaulted credentials, typed captures
  *  7 prompting      — question → constrained plan → database → the figure
+ *  + flow           — the chip itself: a flow's fields in two kinds, a field added, a column that appears
  *
  * Every stage is the same three-column grid: what enters | what Tavnit does
  * | what comes out. Each column centres one composite element and carries
@@ -28,6 +29,19 @@ import { LogoLockup } from "@/components/lite/LogoMark";
 export interface SceneProps {
   labels: [string, string, string];
   result: string;
+  /** Only the Flow scene uses it: the visitor's own columns, split the way
+   *  the flow editor splits them, and the field the animation adds. */
+  flow?: FlowExtra;
+}
+
+export interface FlowExtra {
+  doc: string[];
+  line: string[];
+  name: string;
+  kinds: [string, string];
+  add: { name: string; type: string; hint: string; save: string; value: string };
+  /** The switch label once the flow is on. */
+  activate: string;
 }
 
 const SPRING: Transition = { type: "spring", stiffness: 260, damping: 26 };
@@ -674,6 +688,246 @@ export function AskScene({ labels, result }: SceneProps) {
         </div>
       </Col>
       <Result text={result} delay={4.2} at={at} />
+    </Stage>
+  );
+}
+
+/* ---------- the chip: what a Flow is ---------- */
+
+const FALLBACK_FLOW: FlowExtra = {
+  doc: ["proveedor", "numero_factura", "fecha", "moneda", "subtotal", "impuesto", "total"],
+  line: ["descripcion", "cantidad", "unidad", "precio_unitario", "total_linea"],
+  name: "Factura",
+  kinds: ["Campos del documento", "Campos de la tabla"],
+  add: { name: "orden_compra", type: "Text", hint: 'Junto a "OC" · ej. OC-2291', save: "Guardar", value: "OC-2291" },
+  activate: "Activo",
+};
+
+/** A rough data type from the field's name: the demo has no schema to read. */
+function guessType(name: string): string {
+  if (/fecha|date|vencimiento|due/i.test(name)) return "Date";
+  if (/total|cantidad|precio|subtotal|impuesto|tax|quantity|price|amount|qty|monto|importe/i.test(name)) return "Number";
+  return "Text";
+}
+
+/** One line of the flow editor: name · type. */
+function FieldRow({ name, type, delay, at, typed, reduced }: { name: React.ReactNode; type: string; delay: number; at: At; typed?: boolean; reduced?: boolean | null }) {
+  return (
+    <motion.div
+      className={`grid grid-cols-[1fr_auto] items-center gap-1 px-2 py-[2.5px] text-[9px] ${typed ? "bg-[var(--lite-blue-soft)]/50" : ""}`}
+      initial={{ opacity: 0, x: -6 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={at(delay)}
+    >
+      <span className="truncate font-mono text-[var(--lite-ink)]">
+        {name}
+        {typed && !reduced && (
+          <motion.span className="ml-px inline-block h-2.5 w-px translate-y-px bg-[var(--lite-ink)]" animate={{ opacity: [1, 0, 1, 0] }} transition={{ duration: 0.7, repeat: 1, delay: delay + 0.1 }} />
+        )}
+      </span>
+      <motion.span className="rounded-sm bg-[#f3f6fa] px-1 text-[8px] font-medium text-[var(--lite-muted)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={at(delay + (typed ? 0.7 : 0.1))}>
+        {type}
+      </motion.span>
+    </motion.div>
+  );
+}
+
+function PanelLabel({ text, tone, delay, at }: { text: string; tone: "muted" | "blue"; delay: number; at: At }) {
+  return (
+    <motion.div
+      className={`px-2 pb-0.5 pt-1 text-[7.5px] font-semibold uppercase tracking-[0.08em] ${tone === "blue" ? "bg-[var(--lite-blue-soft)]/40 text-[var(--lite-blue-ink)]" : "text-[var(--lite-muted)]"}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={at(delay)}
+    >
+      {text}
+    </motion.div>
+  );
+}
+
+/** A demo value for a document field, the same on every row. */
+function docValue(name: string, type: string): string {
+  if (/moneda|currency/i.test(name)) return "USD";
+  if (/numero|number|factura|invoice|folio/i.test(name)) return "4417";
+  if (/ruc|tax_id|nit|rfc/i.test(name)) return "155-2";
+  if (type === "Date") return "12/09";
+  if (type === "Number") return "5,033";
+  return "Istmo";
+}
+const LINE_QTY = ["120", "48", "300", "36"];
+const LINE_W = ["82%", "60%", "70%", "48%"];
+
+/**
+ * The Flow, built and then used. Left: the editor, fields typed into two
+ * panels (once per document / once per line) as the real one has them, one
+ * more added with a hint, the flow switched on. Middle: one document being
+ * read — the header once, the table row by row. Right: the table that comes
+ * out, one column per field, where the document fields repeat on every row
+ * and the table fields change per row. Checked against the flow editor and
+ * the docs, not imagined.
+ */
+export function FlowScene({ labels, result, flow = FALLBACK_FLOW }: SceneProps) {
+  const { at, reduced } = useTiming();
+  // Two of the visitor's document fields (the first and the last: vendor and total) and two line fields.
+  const docPick = [flow.doc[0], flow.doc[flow.doc.length - 1]].filter((v, i, a): v is string => Boolean(v) && a.indexOf(v) === i);
+  const linePick = flow.line.slice(0, 2);
+  type F = { name: string; type: string; added?: boolean };
+  const docFields: F[] = [...docPick.map((n) => ({ name: n, type: guessType(n) })), { name: flow.add.name, type: flow.add.type, added: true }];
+  const lineFields: F[] = linePick.map((n) => ({ name: n, type: guessType(n) }));
+  // Output columns in the flow's order: document fields, then line fields (the added one last among the document fields).
+  const columns = [...docFields.map((f) => ({ ...f, line: false })), ...lineFields.map((f) => ({ ...f, line: true }))];
+  const T_LINE = 0.3 + docPick.length * 0.2 + 0.2; // the table panel
+  const T_TYPE = T_LINE + linePick.length * 0.2 + 0.3; // the new field is typed
+  const T_ON = T_TYPE + 1.5; // the flow goes active
+  const T_READ = T_ON + 0.4; // the document is read
+  const T_OUT = T_READ + 1.9; // the table
+  const ROWS = lineFields.length ? 4 : 1;
+  const cols = `repeat(${columns.length}, minmax(0, 1fr))`;
+  return (
+    <Stage>
+      <Col i={0} caption={labels[0]} delay={0} at={at}>
+        <Window
+          title={
+            <>
+              <span className="inline-flex items-center rounded-sm bg-white px-1 py-0.5 shadow-sm">
+                <LogoLockup size={11} tone="light" label="Flow" />
+              </span>
+              <span className="truncate font-normal">{flow.name}</span>
+              <motion.span className="ml-auto inline-flex items-center gap-1 text-[8px] font-semibold" initial={{ color: "var(--lite-muted)" }} animate={{ color: "var(--lite-blue-ink)" }} transition={at(T_ON, { duration: 0.2 })}>
+                <span className="relative inline-block h-2.5 w-[18px] rounded-full" style={{ background: "var(--lite-line)" }}>
+                  <motion.span className="absolute left-0 top-0 h-2.5 w-[18px] rounded-full bg-[var(--lite-blue)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={at(T_ON, { duration: 0.2 })} />
+                  <motion.span className="absolute top-[1px] h-2 w-2 rounded-full bg-white shadow-sm" initial={{ left: 1 }} animate={{ left: 9 }} transition={at(T_ON)} />
+                </span>
+                {flow.activate}
+              </motion.span>
+            </>
+          }
+        >
+          <PanelLabel text={flow.kinds[0]} tone="muted" delay={0.2} at={at} />
+          {docFields.map((f, i) =>
+            f.added ? (
+              <FieldRow key={f.name} name={<Typed text={f.name} delay={T_TYPE} reduced={reduced} step={0.04} />} type={f.type} delay={T_TYPE - 0.1} at={at} typed reduced={reduced} />
+            ) : (
+              <FieldRow key={f.name} name={f.name} type={f.type} delay={0.3 + i * 0.2} at={at} />
+            ),
+          )}
+          <motion.div className="flex items-center gap-1 px-2 pb-1 text-[8px] text-[var(--lite-muted)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={at(T_TYPE + 0.95)}>
+            <span className="rounded-sm border border-dashed border-[var(--lite-line)] px-1">hint</span>
+            <span className="truncate">
+              <Typed text={flow.add.hint} delay={T_TYPE + 1.0} reduced={reduced} step={0.02} />
+            </span>
+          </motion.div>
+          {lineFields.length > 0 && <PanelLabel text={flow.kinds[1]} tone="blue" delay={T_LINE} at={at} />}
+          {lineFields.map((f, i) => (
+            <FieldRow key={f.name} name={f.name} type={f.type} delay={T_LINE + 0.15 + i * 0.2} at={at} />
+          ))}
+        </Window>
+      </Col>
+
+      {/* one document, read: header once, table row by row */}
+      <Col i={1} caption={labels[1]} delay={T_READ} at={at}>
+        <div className="flex flex-col items-center gap-2">
+          <Tile label="Flow" />
+          <div className="relative w-[116px] rounded-md border border-[var(--lite-line)] bg-white p-2 shadow-sm">
+            {/* header block */}
+            <motion.div
+              className="rounded-sm border px-1 py-0.5"
+              initial={{ borderColor: "transparent", backgroundColor: "#ffffff" }}
+              animate={{ borderColor: "var(--lite-blue)", backgroundColor: "var(--lite-blue-soft)" }}
+              transition={at(T_READ + 0.3, { duration: 0.25 })}
+            >
+              <span className="mb-1 block h-1.5 w-12 rounded-sm bg-[#c9d1d9]" />
+              <span className="block h-1 w-16 rounded-sm bg-[#e1e6ec]" />
+              <span className="mt-0.5 block h-1 w-10 rounded-sm bg-[#e1e6ec]" />
+            </motion.div>
+            <motion.span
+              className="absolute -right-1 top-1 rounded-sm bg-[var(--lite-blue)] px-1 text-[7px] font-semibold text-white shadow-sm"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={at(T_READ + 0.45)}
+            >
+              ×1
+            </motion.span>
+            {/* table block */}
+            <div className="mt-1.5 space-y-[3px]">
+              {Array.from({ length: lineFields.length ? ROWS : 0 }).map((_, r) => (
+                <motion.div
+                  key={r}
+                  className="grid grid-cols-[2fr_1fr_1fr] gap-1 rounded-sm border px-1 py-[2px]"
+                  initial={{ borderColor: "transparent", backgroundColor: "#ffffff" }}
+                  animate={{ borderColor: "var(--lite-blue)", backgroundColor: "var(--lite-blue-soft)" }}
+                  transition={at(T_READ + 0.8 + r * 0.22, { duration: 0.2 })}
+                >
+                  <span className="h-1 rounded-sm bg-[#c9d1d9]" style={{ width: LINE_W[r] }} />
+                  <span className="h-1 rounded-sm bg-[#e1e6ec]" />
+                  <span className="h-1 rounded-sm bg-[#e1e6ec]" />
+                </motion.div>
+              ))}
+            </div>
+            {lineFields.length > 0 && (
+              <motion.span
+                className="absolute -right-1 bottom-1 rounded-sm bg-[var(--lite-blue)] px-1 text-[7px] font-semibold text-white shadow-sm"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={at(T_READ + 0.8 + ROWS * 0.22)}
+              >
+                ×{ROWS}
+              </motion.span>
+            )}
+          </div>
+        </div>
+      </Col>
+      <Packet from={CX[1]} to={CX[2]} delay={T_OUT - 0.9} reduced={reduced} />
+
+      <Col i={2} caption={labels[2]} delay={T_OUT} at={at}>
+        <Window
+          title={
+            <div className="grid w-full gap-px text-[7.5px]" style={{ gridTemplateColumns: cols }}>
+              {columns.map((f, i) => (
+                <motion.span
+                  key={f.name}
+                  title={f.name}
+                  className={`truncate rounded-sm px-0.5 font-mono font-normal ${f.added ? "bg-[var(--lite-blue-soft)] font-semibold text-[var(--lite-blue-ink)]" : f.line ? "text-[var(--lite-blue-ink)]" : ""}`}
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={at(T_OUT + 0.15 + i * 0.08)}
+                >
+                  {f.name}
+                </motion.span>
+              ))}
+            </div>
+          }
+        >
+          <div className="p-1.5">
+            {Array.from({ length: ROWS }).map((_, r) => (
+              <div key={r} className="grid items-center gap-px border-b border-[var(--lite-rule)] py-[3px] last:border-b-0" style={{ gridTemplateColumns: cols }}>
+                {columns.map((f) =>
+                  f.line ? (
+                    f.type === "Number" ? (
+                      <motion.span key={f.name} className="px-0.5 text-right text-[8px] tabular-nums text-[var(--lite-blue-ink)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={at(T_OUT + 0.5 + r * 0.14)}>
+                        {LINE_QTY[r]}
+                      </motion.span>
+                    ) : (
+                      <motion.span key={f.name} className="mx-0.5 h-1.5 rounded-sm bg-[var(--lite-blue)]/45" style={{ width: LINE_W[r] }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={at(T_OUT + 0.5 + r * 0.14)} />
+                    )
+                  ) : (
+                    <motion.span
+                      key={f.name}
+                      className={`whitespace-nowrap px-0.5 text-[8px] tabular-nums ${f.added ? "rounded-sm bg-[var(--lite-blue-soft)] font-semibold text-[var(--lite-blue-ink)]" : "text-[var(--lite-muted)]"}`}
+                      initial={{ opacity: 0, x: f.added ? 6 : 0 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={at(T_OUT + 0.5 + r * 0.14)}
+                    >
+                      {f.added ? flow.add.value : docValue(f.name, f.type)}
+                    </motion.span>
+                  ),
+                )}
+              </div>
+            ))}
+          </div>
+        </Window>
+      </Col>
+      <Result text={result} delay={T_OUT + 1.4} at={at} />
     </Stage>
   );
 }

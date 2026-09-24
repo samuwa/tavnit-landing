@@ -1386,6 +1386,44 @@ html:has(#hero) footer {
   font-weight: 500;
   letter-spacing: -0.02em;
 }
+/* Result tables: the horizontal scrollbar is always there, thin, and takes
+   its own strip below the content instead of floating over it (macOS
+   overlay bars hide until you scroll, so people miss the columns to the
+   right). Styled the same on every engine that lets us. */
+.lite-scroll {
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+/* Chrome and Safari drop the ::-webkit-scrollbar styling as soon as the
+   standard properties are set, and the standard "thin" bar on macOS is an
+   overlay that hides itself. So: WebKit rules alone where they exist, the
+   standard properties only where they do not (Firefox). */
+@supports not selector(::-webkit-scrollbar) {
+  .lite-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #b9c3cf #f3f6f8;
+  }
+}
+.lite-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.lite-scroll::-webkit-scrollbar-track {
+  background: #f3f6f8;
+  border-top: 1px solid var(--lite-line);
+}
+.lite-scroll::-webkit-scrollbar-thumb {
+  background: #b9c3cf;
+  border-radius: 999px;
+  border: 2px solid #f3f6f8;
+}
+.lite-scroll::-webkit-scrollbar-thumb:hover {
+  background: #8f9cab;
+}
+.lite-scroll::-webkit-scrollbar-corner {
+  background: #f3f6f8;
+}
+
 .lite-sheet {
   box-shadow:
     inset 0 1px 0 #ffffff,

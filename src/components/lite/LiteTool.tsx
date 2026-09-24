@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Check, Download, ExternalLink, FileText, Loader2, RotateCcw, Sparkles, TriangleAlert } from "lucide-react";
+import { Check, Download, ExternalLink, FileText, Loader2, Plus, RotateCcw, Sparkles, TriangleAlert, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { LiteToolId } from "@/lib/lite/tools";
-import { LITE_ACCEPT } from "@/lib/lite/tools";
+import { LITE_ACCEPT, LITE_TOOLS } from "@/lib/lite/tools";
 import type { Locale } from "@/lib/locale";
 import AuthModal from "@/components/lite/AuthModal";
 import CleanerIdeas from "@/components/lite/CleanerIdeas";
@@ -73,6 +73,8 @@ interface Stash {
   file: string;
   startedAt: number;
   savedAt: number;
+  /** Columns the visitor had removed, so the round trip keeps them removed. */
+  hidden?: string[];
 }
 function readStash(toolId: string): Stash | null {
   try {
@@ -149,6 +151,11 @@ export default function LiteTool({
   const afterShownFor = useRef<string | null>(null);
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
+  /** Bumped to open the Flow scene in "and then what?" from the table. */
+  const [flowSignal, setFlowSignal] = useState(0);
+  /** Columns the visitor removed from the table; the Excel leaves them out too. */
+  const [hidden, setHidden] = useState<string[]>([]);
+  const lineFields = LITE_TOOLS[toolId].lineFields[locale];
   const inputRef = useRef<HTMLInputElement>(null);
   const turnstileEl = useRef<HTMLDivElement>(null);
   const widgetId = useRef<string | null>(null);
@@ -279,6 +286,7 @@ export default function LiteTool({
       setDownloadError(null);
       clearStash();
       const startedAt = Date.now();
+      setHidden([]);
       setPhase({ kind: "processing", file: displayName, stage: 0, runId: null, startedAt });
 
       const form = new FormData();
@@ -365,6 +373,7 @@ export default function LiteTool({
     clearStash();
     abort.current?.abort();
     setPhase({ kind: "idle" });
+    setHidden([]);
     setDownloadError(null);
     if (inputRef.current) inputRef.current.value = "";
   };
@@ -375,7 +384,8 @@ export default function LiteTool({
     setDownloading(true);
     setDownloadError(null);
     try {
-      const res = await fetch(`/api/lite/runs/${encodeURIComponent(phase.runId)}/download`, {
+      const hide = hidden.length ? `?hide=${encodeURIComponent(hidden.join(","))}` : "";
+      const res = await fetch(`/api/lite/runs/${encodeURIComponent(phase.runId)}/download${hide}`, {
         cache: "no-store",
       });
       if (res.status === 401) {
@@ -409,7 +419,7 @@ export default function LiteTool({
     } finally {
       setDownloading(false);
     }
-  }, [phase, copy.errors]);
+  }, [phase, copy.errors, hidden]);
 
   // After a sign-in from the dialog, retry the download once.
   const onAuthed = useCallback(() => {
@@ -427,9 +437,9 @@ export default function LiteTool({
   /** The dialog is about to leave the page: keep the run so we can return to it. */
   const stashForRedirect = useCallback(() => {
     if (phase.kind === "done") {
-      writeStash({ toolId, runId: phase.runId, file: phase.file, startedAt: Date.now() - phase.seconds * 1000 });
+      writeStash({ toolId, runId: phase.runId, file: phase.file, startedAt: Date.now() - phase.seconds * 1000, hidden });
     }
-  }, [phase, toolId]);
+  }, [phase, toolId, hidden]);
 
   const onFiles = (files: FileList | null) => {
     const f = files?.[0];
@@ -575,7 +585,12 @@ export default function LiteTool({
   }
 
   // ---- done: document + spreadsheet ---------------------------------------------
-  const { columns, rows, total, truncated, pages, file, seconds, mime, runId } = phase;
+  const { columns: allColumns, rows, total, truncated, pages, file, seconds, mime, runId } = phase;
+  const hiddenSet = new Set(hidden);
+  const columns = allColumns.filter((c) => !hiddenSet.has(c));
+  const hiddenInOrder = allColumns.filter((c) => hiddenSet.has(c));
+  const hide = (c: string) => setHidden((h) => (columns.length > 1 && !h.includes(c) ? [...h, c] : h));
+  const restore = (c: string) => setHidden((h) => h.filter((x) => x !== c));
   const summary =
     fill(copy.result.summary, {
       rows: plural(total, copy.result.rowWord),
@@ -604,6 +619,8 @@ export default function LiteTool({
     return n >= Math.max(2, Math.ceil(rows.length / 2)) ? Math.round(sum * 100) / 100 : null;
   });
   const hasSums = sums.some((s) => s !== null);
+  const openFlow = () => setFlowSignal((n) => n + 1);
+  const GHOST_TH = "border-b border-[var(--lite-line)] bg-[#f3f6f4] px-3 py-2 text-xs font-semibold";
 
   return (
     <>
@@ -662,7 +679,7 @@ export default function LiteTool({
             role="region"
             aria-label={summary}
             tabIndex={0}
-            className={`${SHEET} mt-4 max-h-[70vh] overflow-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50`}
+            className={`${SHEET} lite-scroll mt-4 max-h-[70vh] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50`}
           >
             <table className="min-w-full border-collapse text-left text-sm">
               <thead className="sticky top-0 z-20">
@@ -672,11 +689,14 @@ export default function LiteTool({
                     <th
                       key={c}
                       scope="col"
-                      className="border-b border-r border-[var(--lite-line)] bg-[var(--lite-blue-soft)] px-3 py-1.5 font-semibold last:border-r-0"
+                      className="border-b border-r border-[var(--lite-line)] bg-[var(--lite-blue-soft)] px-3 py-1.5 font-semibold"
                     >
                       {colLetter(i)}
                     </th>
                   ))}
+                  <th scope="col" className="w-[132px] border-b border-[var(--lite-line)] bg-[var(--lite-blue-soft)] px-3 py-1.5 font-semibold text-[var(--lite-blue)]/45">
+                    {colLetter(columns.length)}
+                  </th>
                 </tr>
                 <tr className="bg-[#f3f6f4]">
                   <th scope="col" className="sticky left-0 z-30 border-b border-r border-[var(--lite-line)] bg-[#f3f6f4]" />
@@ -684,11 +704,35 @@ export default function LiteTool({
                     <th
                       key={c}
                       scope="col"
-                      className="whitespace-nowrap border-b border-r border-[var(--lite-line)] bg-[#f3f6f4] px-3 py-2 text-xs font-semibold last:border-r-0"
+                      className="group/th whitespace-nowrap border-b border-r border-[var(--lite-line)] bg-[#f3f6f4] py-1 pl-3 pr-1 text-xs font-semibold"
                     >
-                      {c}
+                      <span className="inline-flex items-center gap-1">
+                        {c}
+                        {columns.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => hide(c)}
+                            title={copy.result.hideColumn}
+                            aria-label={`${copy.result.hideColumn}: ${c}`}
+                            className="grid h-6 w-6 cursor-pointer place-items-center rounded-md text-[var(--lite-muted)] opacity-0 transition-opacity hover:bg-[var(--lite-line)] hover:text-[var(--lite-ink)] focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50 group-hover/th:opacity-100 [@media(hover:none)]:opacity-100"
+                          >
+                            <X size={12} aria-hidden />
+                          </button>
+                        )}
+                      </span>
                     </th>
                   ))}
+                  {/* the ghost column: the field the visitor would add in their own Flow */}
+                  <th scope="col" className={`${GHOST_TH} whitespace-nowrap p-0`}>
+                    <button
+                      type="button"
+                      onClick={openFlow}
+                      title={copy.result.ghostHint}
+                      className="flex h-full w-full min-h-9 cursor-pointer items-center px-3 text-left text-xs font-semibold text-[var(--lite-blue-ink)] transition-colors hover:bg-[var(--lite-blue-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--lite-blue)]/50"
+                    >
+                      {copy.result.ghostColumn}
+                    </button>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -712,6 +756,7 @@ export default function LiteTool({
                         </td>
                       );
                     })}
+                    <td aria-hidden className="border-b border-[var(--lite-rule)] bg-[#fbfcfd] px-3 py-2 group-hover:bg-[#fafcfa]" />
                   </tr>
                 ))}
               </tbody>
@@ -731,14 +776,45 @@ export default function LiteTool({
                         {sums[ci] !== null ? formatNumber(sums[ci] as number) : ci === 0 ? copy.result.sum : ""}
                       </td>
                     ))}
+                    <td className="border-t border-[var(--lite-line)] bg-[#f3f6f4]" />
                   </tr>
                 </tfoot>
               )}
             </table>
           </div>
         )}
+        {hiddenInOrder.length > 0 && (
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-[var(--lite-muted)]">
+            <span>{fill(copy.result.hiddenCols[hiddenInOrder.length === 1 ? 0 : 1], { n: hiddenInOrder.length })}</span>
+            <span className="flex flex-wrap gap-1.5">
+              {hiddenInOrder.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => restore(c)}
+                  aria-label={fill(copy.result.restoreOne, { col: c })}
+                  className="lite-press inline-flex min-h-7 cursor-pointer items-center gap-1 rounded-md border border-dashed border-[var(--lite-line)] bg-white px-2 font-medium text-[var(--lite-ink)] transition-colors hover:border-[var(--lite-blue)] hover:text-[var(--lite-blue-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
+                >
+                  <Plus size={11} aria-hidden />
+                  {c}
+                </button>
+              ))}
+            </span>
+            <button type="button" onClick={() => setHidden([])} className="cursor-pointer font-semibold text-[var(--lite-blue-ink)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50">
+              {copy.result.restoreAll}
+            </button>
+          </div>
+        )}
         {truncated && (
           <p className="mt-3 text-xs text-[var(--lite-muted)]">{fill(copy.result.truncated, { shown: rows.length, total })}</p>
+        )}
+        {rows.length > 0 && (
+          <p className="mt-3 text-xs text-[var(--lite-muted)]">
+            {fill(copy.result.flowNote, { fields: columns.length })}{" "}
+            <button type="button" onClick={openFlow} className="cursor-pointer font-semibold text-[var(--lite-blue-ink)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50">
+              {copy.result.flowNoteCta}
+            </button>
+          </p>
         )}
 
         {rows.length > 0 && (
@@ -749,7 +825,7 @@ export default function LiteTool({
       </section>
 
       <div className="mt-24">
-        <WhatNext copy={copy.next} locale={locale} fileName={file} rows={total} />
+        <WhatNext copy={copy.next} locale={locale} fileName={file} rows={total} columns={columns} lineFields={lineFields} flowSignal={flowSignal} />
       </div>
 
       {/* the document viewer: the visitor's upload, large, on demand */}
@@ -814,7 +890,9 @@ export default function LiteTool({
               rows={total}
               compact
               heading={copy.after.title}
-              lead={copy.after.lead}
+              lead={fill(copy.after.lead, { fields: columns.length })}
+              columns={columns}
+              lineFields={lineFields}
             />
           )}
           <button type="button" onClick={() => setAfterOpen(false)} className={`${BTN_QUIET} mt-4`}>

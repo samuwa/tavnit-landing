@@ -25,7 +25,21 @@ function columnOrderFor(tool: string, locale: string): string[] {
   return LITE_TOOLS[tool].columnOrder[locale === "en" ? "en" : "es"];
 }
 
-export async function GET(_request: Request, ctx: { params: Promise<{ id: string }> }) {
+/** `?hide=a,b` — columns the visitor removed in the table; the Excel leaves
+ *  them out. Only names the run actually has count, and at least one
+ *  column always stays. */
+function hiddenColumns(request: Request): Set<string> {
+  const raw = new URL(request.url).searchParams.get("hide") || "";
+  return new Set(
+    raw
+      .split(",")
+      .map((c) => c.trim())
+      .filter((c) => c.length > 0 && c.length <= 120)
+      .slice(0, 200),
+  );
+}
+
+export async function GET(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
   if (!ID_RE.test(id)) return NextResponse.json({ error: "not_found" }, { status: 404 });
 
@@ -50,12 +64,15 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
   }
 
   const table = normalizeRows(run.columns, run.rows ?? [], columnOrderFor(owned.tool, owned.locale));
+  const hide = hiddenColumns(request);
+  const kept = table.columns.filter((c) => !hide.has(c));
+  const columns = kept.length ? kept : table.columns;
   const locale = owned.locale === "en" ? "en" : "es";
   const toolPath = isLiteToolId(owned.tool) ? LITE_TOOLS[owned.tool].paths[locale] : "/tools";
   const sourceName = owned.filename || "document";
 
   const xlsx = buildXlsx({
-    columns: table.columns,
+    columns,
     rows: table.rows,
     locale,
     sourceName,

@@ -5,7 +5,7 @@ import { ArrowRight, RotateCcw } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import { APP_URL } from "@/lib/site";
 import { useLiteSession } from "@/components/lite/session";
-import type { SceneProps } from "@/components/lite/scenes";
+import type { FlowExtra, SceneProps } from "@/components/lite/scenes";
 
 /**
  * What happens when you pick an outcome in "and then what?": the outcome's
@@ -27,6 +27,7 @@ export default function Scene({
   copy,
   playKey,
   onReplay,
+  flow,
 }: {
   /** The outcome's or input's own stage (see scenes.tsx / scenes-in.tsx). */
   Stage: (props: SceneProps) => React.JSX.Element;
@@ -35,6 +36,8 @@ export default function Scene({
   /** Changing this restarts the animation. */
   playKey: number;
   onReplay: () => void;
+  /** Extra data for the Flow scene (the visitor's own columns). */
+  flow?: FlowExtra;
 }) {
   const { email } = useLiteSession();
 
@@ -57,7 +60,7 @@ export default function Scene({
 
       {/* the stage: a bespoke choreography per outcome, restarted by playKey */}
       <div key={playKey} className="mt-6">
-        <Stage labels={[item.scene[0].label, item.scene[1].label, item.scene[2].label]} result={item.scene[2].result} />
+        <Stage labels={[item.scene[0].label, item.scene[1].label, item.scene[2].label]} result={item.scene[2].result} flow={flow} />
       </div>
 
       <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">

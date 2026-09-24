@@ -1,3 +1,5 @@
+import { LITE_HUB_PATHS, LITE_TOOLS, LITE_TOOL_IDS } from "@/lib/lite/tools";
+import { TOOL_COPY } from "@/lib/lite/copy";
 import Image from "next/image";
 import Link from "next/link";
 import CookieSettingsLink from "@/components/CookieSettingsLink";
@@ -77,9 +79,13 @@ const integrations: FooterLink[] = [
   ...integrationDocs,
 ];
 
+/** The free tools, from the registry: adding a tool adds its link here. */
+const freeTools = (locale: "en" | "es"): FooterLink[] => [
+  { label: locale === "es" ? "Todas las herramientas" : "All free tools", href: LITE_HUB_PATHS[locale] },
+  ...LITE_TOOL_IDS.map((id) => ({ label: TOOL_COPY[id][locale].label, href: LITE_TOOLS[id].paths[locale] })),
+];
+
 const company: FooterLink[] = [
-  { label: "Free tools", href: "/tools" },
-  { label: "Invoice to Excel", href: "/tools/invoice-to-excel" },
   { label: "Guides", href: "/guides" },
   // The Spanish landing is linked site-wide so it is one click from every
   // page; without an internal link it would be reachable only via sitemap.
@@ -93,6 +99,7 @@ const company: FooterLink[] = [
 
 const COLUMNS_EN: FooterColumn[] = [
   { title: "Product", links: product },
+  { title: "Free tools", links: freeTools("en") },
   { title: "Use Cases", links: useCases },
   { title: "Documentation", links: documentation },
   { title: "Integrations", links: integrations },
@@ -104,14 +111,13 @@ const COLUMNS_ES: FooterColumn[] = [
     title: "Producto",
     links: [
       { label: "Cómo funciona", href: "/es#como-funciona" },
-      { label: "Herramientas gratis", href: "/es/herramientas" },
-      { label: "Factura a Excel", href: "/es/herramientas/factura-a-excel" },
       { label: "Integraciones", href: "/es/integraciones" },
       { label: "Guías", href: "/es/guias" },
       { label: "Precios", href: "/pricing" },
       { label: "Agendar una demostración", href: "/es/agendar" },
     ],
   },
+  { title: "Herramientas gratis", links: freeTools("es") },
   {
     title: "Casos de uso",
     links: [

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import LiteShell from "@/components/lite/LiteShell";
 import LiteTool from "@/components/lite/LiteTool";
+import LiteCompare from "@/components/lite/LiteCompare";
+import LiteSplit from "@/components/lite/LiteSplit";
 import LiteFaq from "@/components/lite/LiteFaq";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
@@ -93,13 +95,36 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
           <span>{copy.label}</span>
         </nav>
 
-        <LiteTool
-          toolId={toolId}
-          locale={locale}
-          copy={copy}
-          turnstileSiteKey={turnstileSiteKey}
-          hasSample={Boolean(tool.samplePath)}
-        />
+        {tool.kind === "compare" && tool.compare ? (
+          <LiteCompare
+            toolId={toolId}
+            locale={locale}
+            copy={copy}
+            turnstileSiteKey={turnstileSiteKey}
+            minDocs={tool.compare.minDocs}
+            maxDocs={tool.compare.maxDocs}
+            sampleNames={(tool.samplePaths ?? []).map((p) => p.split("/").pop() ?? p)}
+            columns={tool.columnOrder[locale]}
+            lineFields={tool.lineFields[locale]}
+          />
+        ) : tool.kind === "split" ? (
+          <LiteSplit
+            toolId={toolId}
+            locale={locale}
+            copy={copy}
+            turnstileSiteKey={turnstileSiteKey}
+            hasSample={Boolean(tool.samplePaths?.length)}
+            sampleName={tool.samplePaths?.[0]?.split("/").pop() ?? "sample.pdf"}
+          />
+        ) : (
+          <LiteTool
+            toolId={toolId}
+            locale={locale}
+            copy={copy}
+            turnstileSiteKey={turnstileSiteKey}
+            hasSample={Boolean(tool.samplePaths?.length)}
+          />
+        )}
 
         <section aria-labelledby="lite-how-heading" className="mt-28">
           <h2 id="lite-how-heading" className="font-heading text-xl font-bold text-[var(--lite-muted)] sm:text-2xl">

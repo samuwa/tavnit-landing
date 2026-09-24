@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, BadgeDollarSign, CalendarCheck, Check, Sigma, TriangleAlert, UserCheck, Wand2 } from "lucide-react";
+import { ArrowRight, BadgeDollarSign, CalendarCheck, CalendarClock, Check, Mail, Sigma, TriangleAlert, Type, UserCheck, Wand2 } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { Locale } from "@/lib/locale";
 import { APP_URL } from "@/lib/site";
@@ -60,7 +60,7 @@ export default function CleanerIdeas({
   const first = rows[0] ?? {};
 
   // dates
-  const dateCol = findCol(columns, /^(fecha|invoice_date|date)$/i);
+  const dateCol = findCol(columns, /^(fecha|invoice_date|date)$/i) ?? findCol(columns, /fecha|date/i);
   const rawDate = dateCol ? first[dateCol] : null;
   const iso = toIso(rawDate);
   const dateVars =
@@ -81,7 +81,7 @@ export default function CleanerIdeas({
   }
 
   // currency + approval
-  const totalCol = findCol(columns, /^total$/i);
+  const totalCol = findCol(columns, /^total$/i) ?? findCol(columns, /^(total_general|grand_total|monto|amount|importe)$/i);
   const curCol = findCol(columns, /^(moneda|currency)$/i);
   const total = totalCol && typeof first[totalCol] === "number" ? (first[totalCol] as number) : 5033.4;
   const currency = curCol && typeof first[curCol] === "string" ? (first[curCol] as string) : "USD";
@@ -89,37 +89,16 @@ export default function CleanerIdeas({
   const threshold = Math.floor(total / mag) * mag || mag;
   const moneyVars = { total: money.format(total), currency, threshold: money.format(threshold) };
 
-  const rules: Rule[] = [
-    {
-      Icon: CalendarCheck,
-      title: copy.dates.title,
-      from: fill(copy.dates.from, dateVars),
-      to: fill(copy.dates.to, dateVars),
-      note: copy.dates.note,
-    },
-    {
-      Icon: Sigma,
-      title: copy.sums.title,
-      from: fill(copy.sums.from, sumVars),
-      to: fill(copy.sums.to, sumVars),
-      note: copy.sums.note,
-      verdict: { ok: sumOk, label: sumOk ? copy.sums.ok : copy.sums.off },
-    },
-    {
-      Icon: BadgeDollarSign,
-      title: copy.currency.title,
-      from: fill(copy.currency.from, moneyVars),
-      to: fill(copy.currency.to, moneyVars),
-      note: fill(copy.currency.note, moneyVars),
-    },
-    {
-      Icon: UserCheck,
-      title: copy.approval.title,
-      from: fill(copy.approval.from, moneyVars),
-      to: fill(copy.approval.to, moneyVars),
-      note: fill(copy.approval.note, moneyVars),
-    },
-  ];
+  const vars = { ...dateVars, ...sumVars, ...moneyVars };
+  const ICONS = { date: CalendarCheck, sum: Sigma, money: BadgeDollarSign, approve: UserCheck, alert: TriangleAlert, calendar: CalendarClock, mail: Mail, text: Type } as const;
+  const rules: Rule[] = copy.ideas.slice(0, 4).map((idea) => ({
+    Icon: ICONS[idea.icon] ?? Sigma,
+    title: fill(idea.title, vars),
+    from: fill(idea.from, vars),
+    to: fill(idea.to, vars),
+    note: fill(idea.note, vars),
+    verdict: idea.check === "sum" ? { ok: sumOk, label: sumOk ? copy.ok : copy.off } : undefined,
+  }));
 
   return (
     <section

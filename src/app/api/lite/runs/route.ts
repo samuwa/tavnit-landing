@@ -2,11 +2,11 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { NextResponse } from "next/server";
 import { LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
-import { LiteApiError, liteApiConfigured, liteFlowId, submitRun } from "@/lib/lite/api";
+import { LiteApiError, liteApiConfigured, resolveId, submitRun } from "@/lib/lite/api";
 import { clientIp, getOrCreateSessionId, hashIp } from "@/lib/lite/session";
 import { insertRun, quotaSnapshot, storeConfigured } from "@/lib/lite/store";
 import { LiteValidationError, validateUpload } from "@/lib/lite/validate";
-import { verifyTurnstile } from "@/lib/lite/turnstile";
+import { isHumanSession, markHumanSession, verifyTurnstile } from "@/lib/lite/turnstile";
 
 /**
  * Starts a free-tool run.
@@ -14,8 +14,10 @@ import { verifyTurnstile } from "@/lib/lite/turnstile";
  * multipart/form-data:
  *   tool      — a LiteToolId
  *   locale    — "en" | "es" (only stored, for the lead record)
- *   file      — the document (omit when sample=1)
- *   sample    — "1" to run the bundled sample instead of an upload
+ *   file      — the document (omit when sample is set)
+ *   sample    — "1" (or a slot index, "0".."n") to run a bundled sample
+ *               instead of an upload
+ *   slot      — compare tools: which document this is (0 = the reference)
  *   cf-turnstile-response — Turnstile token (when the widget is configured)
  *   website   — honeypot; real users never see it
  *
@@ -61,18 +63,26 @@ export async function POST(request: Request) {
   const tool = LITE_TOOLS[toolId];
   const localeRaw = form.get("locale");
   const locale = localeRaw === "en" ? "en" : "es";
-  const flowId = liteFlowId(tool.flowEnv[locale]) ?? liteFlowId(tool.flowEnv.es);
+  if (tool.kind === "split") return ERR("bad_request", 400);
+  const flowId = resolveId(tool.flow, locale);
   if (!flowId) return ERR("unavailable", 503);
-  const isSample = form.get("sample") === "1";
+  const sampleRaw = form.get("sample");
+  const slotRaw = form.get("slot");
+  const slot = typeof slotRaw === "string" && /^\d{1,2}$/.test(slotRaw) ? Number(slotRaw) : 0;
+  const isSample = typeof sampleRaw === "string" && sampleRaw !== "" && sampleRaw !== "0" ? true : sampleRaw === "0";
+  // "1" on a single-document tool means its one sample; on a compare tool the
+  // sample for this slot.
+  const sampleIndex = typeof sampleRaw === "string" && /^\d{1,2}$/.test(sampleRaw) && tool.kind === "compare" ? Number(sampleRaw) : slot;
 
   // ---- file -------------------------------------------------------------
   let bytes: Uint8Array;
   let rawName: string | null = null;
   if (isSample) {
-    if (!tool.samplePath) return ERR("bad_request", 400);
+    const samplePath = tool.samplePaths?.[tool.kind === "compare" ? sampleIndex : 0];
+    if (!samplePath) return ERR("bad_request", 400);
     try {
-      bytes = new Uint8Array(await readFile(path.join(process.cwd(), "public", tool.samplePath)));
-      rawName = path.basename(tool.samplePath);
+      bytes = new Uint8Array(await readFile(path.join(process.cwd(), "public", samplePath)));
+      rawName = path.basename(samplePath);
     } catch {
       return ERR("unavailable", 503);
     }
@@ -85,7 +95,7 @@ export async function POST(request: Request) {
 
   let validated;
   try {
-    validated = await validateUpload(bytes, rawName);
+    validated = await validateUpload(bytes, rawName, { maxPages: tool.maxPages });
   } catch (e) {
     if (e instanceof LiteValidationError) return ERR(e.code, 400);
     return ERR("unreadable", 400);
@@ -97,8 +107,9 @@ export async function POST(request: Request) {
   const sessionId = await getOrCreateSessionId();
 
   const token = form.get("cf-turnstile-response");
-  if (!(await verifyTurnstile(typeof token === "string" ? token : null, ip))) {
-    return ERR("captcha", 400);
+  if (!(await isHumanSession(sessionId))) {
+    if (!(await verifyTurnstile(typeof token === "string" ? token : null, ip))) return ERR("captcha", 400);
+    await markHumanSession(sessionId);
   }
 
   // ---- quota ---------------------------------------------------------------
@@ -138,6 +149,7 @@ export async function POST(request: Request) {
       byte_size: validated.bytes.length,
       pages: validated.pages,
       is_sample: isSample,
+      kind: "run",
     });
   } catch {
     // The run exists in the backend but the ownership row failed: without it
