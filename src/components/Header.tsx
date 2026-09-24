@@ -43,6 +43,58 @@ const DEMO: Record<Locale, { href: string; label: string }> = {
   es: { href: "/es/agendar", label: "Agendar demo" },
 };
 const HOME: Record<Locale, string> = { en: "/", es: "/es" };
+
+/**
+ * Back to the top, animated by hand.
+ *
+ * The homepage snaps to its sections (html:has(#hero) in globals.css), and
+ * Chrome re-targets a native smooth scroll to whatever snap point it crosses,
+ * so `scrollTo({ behavior: "smooth" })` stuttered and stopped halfway. Here
+ * snapping is switched off for the length of the animation and restored on
+ * arrival; a wheel or touch from the visitor hands control back at once.
+ */
+function scrollToTop() {
+  const root = document.documentElement;
+  const start = window.scrollY;
+  if (start <= 0) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    window.scrollTo(0, 0);
+    return;
+  }
+  const prevSnap = root.style.scrollSnapType;
+  const prevBehavior = root.style.scrollBehavior;
+  root.style.scrollSnapType = "none";
+  root.style.scrollBehavior = "auto";
+  const duration = Math.min(900, Math.max(450, start * 0.25));
+  const t0 = performance.now();
+  let done = false;
+  const finish = () => {
+    if (done) return;
+    done = true;
+    root.style.scrollSnapType = prevSnap;
+    root.style.scrollBehavior = prevBehavior;
+    window.removeEventListener("wheel", finish);
+    window.removeEventListener("touchstart", finish);
+  };
+  window.addEventListener("wheel", finish, { passive: true, once: true });
+  window.addEventListener("touchstart", finish, { passive: true, once: true });
+  const ease = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+  const step = (now: number) => {
+    if (done) return;
+    const p = Math.min(1, (now - t0) / duration);
+    window.scrollTo(0, Math.round(start * (1 - ease(p))));
+    if (p < 1) requestAnimationFrame(step);
+    else finish();
+  };
+  requestAnimationFrame(step);
+  // A background tab does not run animation frames: land anyway.
+  window.setTimeout(() => {
+    if (!done) {
+      window.scrollTo(0, 0);
+      finish();
+    }
+  }, duration + 400);
+}
 export default function Header({
   showPricing = true,
   locale = "en",
@@ -80,7 +132,21 @@ export default function Header({
           equally, so the nav sits on the true centre of the page whatever
           the logo and the buttons measure. */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 h-16 flex items-center justify-between gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-8">
-        <Link href={HOME[locale]} className="flex-shrink-0 justify-self-start hover:opacity-85 transition-opacity">
+        <Link
+          href={HOME[locale]}
+          onClick={(e) => {
+            // Already on the homepage: Next does nothing for a same-route
+            // link, so glide back up to the hero instead.
+            if (window.location.pathname === HOME[locale] || window.location.pathname === `${HOME[locale]}/`) {
+              e.preventDefault();
+              setMobileOpen(false);
+              scrollToTop();
+              window.history.replaceState(null, "", HOME[locale]);
+            }
+          }}
+          aria-label="Tavnit"
+          className="flex-shrink-0 justify-self-start hover:opacity-85 transition-opacity"
+        >
           <Logo height={32} priority />
         </Link>
 

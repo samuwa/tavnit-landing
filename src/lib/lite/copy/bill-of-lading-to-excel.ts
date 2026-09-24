@@ -31,7 +31,6 @@ const billOfLadingToExcel: Record<Locale, ToolCopyDef> = {
       h1: "Convierte un conocimiento de embarque (BL) en Excel",
       intro:
         "Sube el PDF o la foto del bill of lading. Tavnit lee el encabezado (número de BL, naviera, embarcador, consignatario, buque, viaje, puertos, fecha de embarque) y cada línea de carga con su contenedor, sello, bultos, peso bruto y volumen, y te lo devuelve como hoja de cálculo. Sin plantillas por naviera: el mismo Flow sirve para MSC, Maersk, Hapag-Lloyd o cualquier NVOCC.",
-      trust: ["PDF, JPG o PNG de hasta 5 páginas", "{limit} documentos al día, con el resultado completo", "Tu archivo y sus resultados se borran solos a las 24 horas"],
       drop: {
         title: "Arrastra tu BL aquí",
         sample: "Probar con un BL de ejemplo",
@@ -133,7 +132,6 @@ const billOfLadingToExcel: Record<Locale, ToolCopyDef> = {
       h1: "Turn a bill of lading into Excel",
       intro:
         "Upload the PDF or photo of the B/L. Tavnit reads the header (B/L number, carrier, shipper, consignee, vessel, voyage, ports, shipped-on-board date) and every cargo line with its container, seal, packages, gross weight and volume, and hands it back as a spreadsheet. No per-carrier templates: the same Flow reads MSC, Maersk, Hapag-Lloyd or any NVOCC.",
-      trust: ["PDF, JPG or PNG up to 5 pages", "3 documents a day, with the full result", "Your file and its results delete themselves after 24 hours"],
       drop: {
         title: "Drop your bill of lading here",
         sample: "Try it with a sample B/L",

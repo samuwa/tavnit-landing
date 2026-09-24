@@ -74,6 +74,20 @@ export interface ShellCopy {
   site: string;
   cta: string;
   ctaSignedIn: string;
+  /** Header links to the main site. */
+  nav: { product: string; productHref: string; useCases: string; useCasesHref: string; docs: string };
+  demo: string;
+  demoHref: string;
+  signin: string;
+  /** The tools menu. */
+  allTools: string;
+  groups: { extract: string; compare: string; split: string };
+  /** The account menu, once signed in. */
+  account: { signedInAs: string; open: string; openHint: string; signOut: string; menu: string };
+  /** The sign-in dialog opened from the header. */
+  auth: { title: string; body: string; submitSignin: string; submitSignup: string };
+  menu: string;
+  close: string;
   privacy: string;
   terms: string;
   contact: string;
@@ -87,8 +101,29 @@ export const SHELL_COPY: Record<Locale, ShellCopy> = {
     lite: "Lite",
     tools: "Herramientas",
     site: "Conoce Tavnit",
-    cta: "Crear cuenta",
-    ctaSignedIn: "Abrir mi cuenta",
+    cta: "Crear cuenta gratis",
+    ctaSignedIn: "Ir a Tavnit",
+    nav: { product: "Producto", productHref: "/es#como-funciona", useCases: "Casos de uso", useCasesHref: "/es/casos-de-uso", docs: "Docs" },
+    demo: "Agendar demo",
+    demoHref: "/es/agendar",
+    signin: "Iniciar sesión",
+    allTools: "Ver todas las herramientas",
+    groups: { extract: "De documento a Excel", compare: "Comparar documentos", split: "Organizar escaneos" },
+    account: {
+      signedInAs: "Conectado como",
+      open: "Ir a Tavnit",
+      openHint: "La plataforma completa: Flows, automatizaciones y todo tu volumen",
+      signOut: "Cerrar sesión",
+      menu: "Tu cuenta",
+    },
+    auth: {
+      title: "Crea tu cuenta gratis",
+      body: "La misma cuenta sirve aquí para descargar tus resultados y en Tavnit para automatizar todos tus documentos.",
+      submitSignin: "Entrar",
+      submitSignup: "Crear cuenta",
+    },
+    menu: "Menú",
+    close: "Cerrar",
     privacy: "Privacidad",
     terms: "Términos",
     contact: "Contacto",
@@ -100,8 +135,29 @@ export const SHELL_COPY: Record<Locale, ShellCopy> = {
     lite: "Lite",
     tools: "Tools",
     site: "About Tavnit",
-    cta: "Create account",
-    ctaSignedIn: "Open my account",
+    cta: "Create free account",
+    ctaSignedIn: "Go to Tavnit",
+    nav: { product: "Product", productHref: "/#features", useCases: "Use cases", useCasesHref: "/use-cases", docs: "Docs" },
+    demo: "Book a demo",
+    demoHref: "/schedule",
+    signin: "Sign in",
+    allTools: "See all tools",
+    groups: { extract: "Document to Excel", compare: "Compare documents", split: "Organise scans" },
+    account: {
+      signedInAs: "Signed in as",
+      open: "Go to Tavnit",
+      openHint: "The full platform: Flows, automations and all your volume",
+      signOut: "Sign out",
+      menu: "Your account",
+    },
+    auth: {
+      title: "Create your free account",
+      body: "The same account downloads your results here and automates all your documents in Tavnit.",
+      submitSignin: "Sign in",
+      submitSignup: "Create account",
+    },
+    menu: "Menu",
+    close: "Close",
     privacy: "Privacy",
     terms: "Terms",
     contact: "Contact",

@@ -354,11 +354,7 @@ export const BASE_ES: ToolCopy = {
   h1: "Convierte {a_doc} en Excel",
   intro:
     "Sube el PDF o la foto. Tavnit lee el encabezado y cada línea de la tabla y te la devuelve como hoja de cálculo. Sin plantillas por proveedor: la misma herramienta sirve para {all_your_docs}.",
-  trust: [
-    "PDF, JPG o PNG de hasta 5 páginas",
-    "{limit} documentos al día, con el resultado completo",
-    "Tu archivo y sus resultados se borran solos a las 24 horas",
-  ],
+  trust: ["PDF, JPG o PNG · hasta 5 páginas", "{limit} documentos gratis al día", "Se borra todo a las 24 h"],
   drop: {
     title: "Arrastra {your_doc} aquí",
     hint: "o elige un archivo de tu computadora",
@@ -573,7 +569,7 @@ export const BASE_ES: ToolCopy = {
     tryIt: "Probar esto en Tavnit",
     tryItSignedIn: "Hacer esto en mi cuenta",
     primary: "Crear cuenta gratis",
-    primarySignedIn: "Abrir mi cuenta en Tavnit",
+    primarySignedIn: "Ir a Tavnit",
     sameLogin: "Ya tienes cuenta. En Tavnit entra con el mismo acceso ({email}); te lo pedirá una vez más porque es otro sitio.",
     secondary: "Agendar una demostración",
   },
@@ -661,11 +657,7 @@ export const BASE_EN: ToolCopy = {
   h1: "Turn {a_doc} into Excel",
   intro:
     "Upload the PDF or photo. Tavnit reads the header and every line of the table and hands it back as a spreadsheet. No per-vendor templates: the same tool works on {all_your_docs}.",
-  trust: [
-    "PDF, JPG or PNG, up to 5 pages",
-    "{limit} documents a day, full result every time",
-    "Your file and its results delete themselves after 24 hours",
-  ],
+  trust: ["PDF, JPG or PNG · up to 5 pages", "{limit} free documents a day", "Everything deleted after 24 h"],
   drop: {
     title: "Drop {your_doc} here",
     hint: "or choose a file from your computer",
@@ -880,7 +872,7 @@ export const BASE_EN: ToolCopy = {
     tryIt: "Try this in Tavnit",
     tryItSignedIn: "Do this in my account",
     primary: "Create a free account",
-    primarySignedIn: "Open my Tavnit account",
+    primarySignedIn: "Go to Tavnit",
     sameLogin: "You already have an account. Sign in to Tavnit with the same login ({email}); it will ask once more because it is a different site.",
     secondary: "Book a demo",
   },

@@ -47,6 +47,16 @@ export function useLiteSession(): LiteSession {
   return state;
 }
 
+/** Ends the Lite session (the product app keeps its own). */
+export async function signOutLite(): Promise<void> {
+  try {
+    const { getSupabaseBrowser } = await import("@/lib/supabase/client");
+    await getSupabaseBrowser().auth.signOut();
+  } catch {
+    // Not configured or offline: nothing to end.
+  }
+}
+
 /** A link to the app whose label depends on whether the visitor has an account. */
 export function AccountLink({
   guest,

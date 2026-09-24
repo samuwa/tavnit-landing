@@ -39,6 +39,8 @@ export default function AuthModal({
   onBeforeRedirect,
   copy,
   locale,
+  initialMode = "signup",
+  resume = true,
 }: {
   open: boolean;
   onClose: () => void;
@@ -47,9 +49,16 @@ export default function AuthModal({
   onBeforeRedirect: () => void;
   copy: ToolCopy["auth"];
   locale: Locale;
+  /** Which tab it opens on (the header's "Sign in" opens on sign-in). */
+  initialMode?: Mode;
+  /** False when signing in has nothing to finish (from the header): no `?auth=1` on return. */
+  resume?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
-  const [mode, setMode] = useState<Mode>("signup");
+  const [mode, setMode] = useState<Mode>(initialMode);
+  useEffect(() => {
+    if (open) setMode(initialMode);
+  }, [open, initialMode]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -87,7 +96,7 @@ export default function AuthModal({
    */
   const returnTo = () => {
     const url = new URL(window.location.href);
-    url.searchParams.set("auth", "1");
+    if (resume) url.searchParams.set("auth", "1");
     const next = url.pathname + url.search;
     document.cookie = `tavnit_lite_next=${encodeURIComponent(next)}; Path=/; Max-Age=900; SameSite=Lax${
       location.protocol === "https:" ? "; Secure" : ""

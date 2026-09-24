@@ -1,22 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  CalendarClock,
-  FileSpreadsheet,
-  GitCompareArrows,
-  Package,
-  Receipt,
-  Rows3,
-  Scale,
-  Scissors,
-  Ship,
-  type LucideIcon,
-} from "lucide-react";
 import LiteShell from "@/components/lite/LiteShell";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { APP_URL, SITE_URL } from "@/lib/site";
 import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/lib/locale";
-import { LITE_HUB_PATHS, LITE_TOOLS, LITE_TOOL_IDS, type LiteToolId, type LiteToolKind } from "@/lib/lite/tools";
+import { LITE_HUB_PATHS, LITE_TOOLS, LITE_TOOL_IDS, type LiteToolKind } from "@/lib/lite/tools";
+import { KIND_ICON, KIND_ORDER, TOOL_ICONS } from "@/components/lite/tool-icons";
 import { HUB_COPY, TOOL_COPY } from "@/lib/lite/copy";
 
 /**
@@ -27,25 +16,11 @@ import { HUB_COPY, TOOL_COPY } from "@/lib/lite/copy";
  * needs a line, else the kind's default icon is used).
  */
 
-const ICONS: Partial<Record<LiteToolId, LucideIcon>> = {
-  "invoice-to-excel": FileSpreadsheet,
-  "invoice-line-items": Rows3,
-  "po-invoice-check": GitCompareArrows,
-  "quote-comparison": Scale,
-  "split-scanned-pdf": Scissors,
-  "packing-list-to-excel": Package,
-  "bill-of-lading-to-excel": Ship,
-  "contract-dates": CalendarClock,
-  "receipt-to-excel": Receipt,
-};
-const KIND_ICON: Record<LiteToolKind, LucideIcon> = { extract: FileSpreadsheet, compare: GitCompareArrows, split: Scissors };
-/** Tile colours: blue for extraction, violet for the two that need more than one document, ink for the splitter. */
 const TILE: Record<LiteToolKind, string> = {
   extract: "bg-[var(--lite-blue-soft)] text-[var(--lite-blue)] group-hover:bg-[var(--lite-blue)] group-hover:text-white",
   compare: "bg-[var(--lite-violet-soft)] text-[var(--lite-violet)] group-hover:bg-[var(--lite-violet)] group-hover:text-white",
   split: "bg-[#eef1f4] text-[var(--lite-ink)] group-hover:bg-[var(--lite-ink)] group-hover:text-white",
 };
-const ORDER: LiteToolKind[] = ["extract", "compare", "split"];
 
 export function liteHubMetadata(locale: Locale): Metadata {
   const copy = HUB_COPY[locale];
@@ -81,9 +56,9 @@ export default function LiteHubPage({ locale }: { locale: Locale }) {
     label: TOOL_COPY[id][locale].label,
     h1: TOOL_COPY[id][locale].h1,
     description: TOOL_COPY[id][locale].description,
-    Icon: ICONS[id] ?? KIND_ICON[LITE_TOOLS[id].kind],
+    Icon: TOOL_ICONS[id] ?? KIND_ICON[LITE_TOOLS[id].kind],
   }));
-  const groups = ORDER.map((kind) => ({ kind, title: copy.groups[kind], items: items.filter((i) => i.kind === kind) })).filter((g) => g.items.length);
+  const groups = KIND_ORDER.map((kind) => ({ kind, title: copy.groups[kind], items: items.filter((i) => i.kind === kind) })).filter((g) => g.items.length);
 
   return (
     <LiteShell locale={locale} alternatePath={LITE_HUB_PATHS[locale === "es" ? "en" : "es"]}>

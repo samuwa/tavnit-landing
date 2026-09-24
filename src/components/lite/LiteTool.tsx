@@ -572,9 +572,9 @@ export default function LiteTool({
           {phase.kind === "idle" ? dropZone : phase.kind === "processing" ? progress : errorBox}
         </div>
 
-        <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--lite-muted)]">
+        <ul className="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-[var(--lite-muted)]">
           {copy.trust.map((t) => (
-            <li key={t} className="flex items-center gap-2">
+            <li key={t} className="flex items-center gap-2 whitespace-nowrap">
               <Check size={16} className="text-[var(--lite-blue)]" aria-hidden />
               {t}
             </li>

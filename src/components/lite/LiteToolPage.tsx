@@ -5,6 +5,15 @@ import LiteTool from "@/components/lite/LiteTool";
 import LiteCompare from "@/components/lite/LiteCompare";
 import LiteSplit from "@/components/lite/LiteSplit";
 import LiteFaq from "@/components/lite/LiteFaq";
+import { Download, Files, GitCompareArrows, ScanSearch, ScanText, Scissors, Upload, type LucideIcon } from "lucide-react";
+import type { LiteToolKind } from "@/lib/lite/tools";
+
+/** One icon per "how it works" step: put in, Tavnit reads, take out. */
+const HOW_ICONS: Record<LiteToolKind, LucideIcon[]> = {
+  extract: [Upload, ScanText, Download],
+  compare: [Files, ScanText, GitCompareArrows],
+  split: [Upload, ScanSearch, Scissors],
+};
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
 import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/lib/locale";
@@ -146,26 +155,50 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
         )}
 
         <section aria-labelledby="lite-how-heading" className="mt-28">
-          <h2 id="lite-how-heading" className="font-heading text-xl font-bold text-[var(--lite-muted)] sm:text-2xl">
+          <h2 id="lite-how-heading" className="lite-display text-3xl sm:text-4xl">
             {copy.how.heading}
           </h2>
-          <ol className="mt-8 grid gap-8 sm:grid-cols-3">
-            {copy.how.steps.map((s, i) => (
-              <li key={s.title} className="flex gap-4 sm:flex-col sm:gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--lite-blue-soft)] font-heading text-sm font-bold text-[var(--lite-blue)]">
-                  {i + 1}
-                </span>
-                <div>
-                  <h3 className="font-heading text-base font-semibold">{s.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-[var(--lite-muted)]">{s.body}</p>
-                </div>
-              </li>
-            ))}
+          <ol className="lite-sheet relative mt-8 grid overflow-hidden rounded-2xl border border-[var(--lite-line)] bg-[var(--lite-white)] sm:grid-cols-3">
+            {copy.how.steps.map((s, i) => {
+              const Icon = HOW_ICONS[tool.kind][i] ?? HOW_ICONS.extract[i] ?? Upload;
+              return (
+                <li
+                  key={s.title}
+                  className="relative flex flex-col p-6 sm:p-7 [&:not(:first-child)]:border-t [&:not(:first-child)]:border-[var(--lite-line)] sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:border-t-0"
+                >
+                  <div className="flex items-center justify-between">
+                    <span
+                      className="bg-clip-text text-[2.75rem] italic leading-none text-transparent"
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 500,
+                        backgroundImage: "linear-gradient(120deg, var(--lite-blue) 0%, var(--lite-violet) 90%)",
+                      }}
+                      aria-hidden
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--lite-line)] bg-[#f6f8fb] text-[var(--lite-ink)]">
+                      <Icon size={18} strokeWidth={1.8} aria-hidden />
+                    </span>
+                  </div>
+                  {/* the step's progress: a hairline that fills one third more each step */}
+                  <span className="mt-5 block h-px w-full bg-[var(--lite-line)]" aria-hidden>
+                    <span className="lite-brand block h-px" style={{ width: `${((i + 1) / copy.how.steps.length) * 100}%` }} />
+                  </span>
+                  <h3 className="mt-5 font-heading text-lg font-bold leading-snug">
+                    <span className="sr-only">{i + 1}. </span>
+                    {s.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--lite-muted)]">{s.body}</p>
+                </li>
+              );
+            })}
           </ol>
         </section>
 
         <section aria-labelledby="lite-faq-heading" className="mt-24">
-          <h2 id="lite-faq-heading" className="font-heading text-xl font-bold text-[var(--lite-muted)] sm:text-2xl">
+          <h2 id="lite-faq-heading" className="lite-display text-3xl sm:text-4xl">
             {copy.faqHeading}
           </h2>
           <LiteFaq items={copy.faqs} />
@@ -173,7 +206,7 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
 
         {(related.useCase || related.guide) && (
           <section aria-labelledby="lite-related-heading" className="mt-24">
-            <h2 id="lite-related-heading" className="font-heading text-xl font-bold text-[var(--lite-muted)] sm:text-2xl">
+            <h2 id="lite-related-heading" className="lite-display text-3xl sm:text-4xl">
               {relatedCopy.heading}
             </h2>
             <p className="mt-4 max-w-[640px] text-sm leading-relaxed text-[var(--lite-muted)]">{relatedCopy.lead}</p>

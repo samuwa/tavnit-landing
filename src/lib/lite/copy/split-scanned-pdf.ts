@@ -32,7 +32,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
       h1: "Separa un PDF escaneado en sus documentos",
       intro:
         "Escaneaste diez papeles de un tirón y quedaron en un solo PDF. Súbelo: Tavnit lee cada página, encuentra dónde empieza cada documento y te devuelve uno por uno, con su tipo (factura, orden de compra, recibo, packing list, BL, contrato…). Sin dividir por número de páginas ni marcar nada a mano.",
-      trust: ["PDF de hasta 12 páginas", "{limit} documentos al día, con el resultado completo", "Tu archivo y sus documentos se borran solos a las 24 horas"],
+      trust: ["Un PDF · hasta 12 páginas", "{limit} documentos gratis al día", "Se borra todo a las 24 h"],
       drop: {
         title: "Arrastra tu PDF escaneado aquí",
         hint: "un solo PDF con varios documentos adentro",
@@ -170,7 +170,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
       h1: "Split a scanned PDF into its documents",
       intro:
         "You fed ten papers through the scanner and got one PDF. Upload it: Tavnit reads every page, finds where each document begins and hands them back one by one, each with its type (invoice, purchase order, receipt, packing list, bill of lading, contract…). No splitting by page count, nothing to mark by hand.",
-      trust: ["PDF of up to 12 pages", "{limit} documents a day, full result every time", "Your file and its documents delete themselves after 24 hours"],
+      trust: ["One PDF · up to 12 pages", "{limit} free documents a day", "Everything deleted after 24 h"],
       drop: {
         title: "Drop your scanned PDF here",
         hint: "one PDF with several documents inside",

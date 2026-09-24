@@ -32,7 +32,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
       h1: "Compara cotizaciones de proveedores",
       intro:
         "Sube dos o tres cotizaciones para el mismo pedido. Tavnit lee cada una, empareja las líneas aunque cada proveedor las describa distinto, y arma una sola tabla con el precio de cada uno y la opción más barata por línea. Sin plantillas ni hojas de Excel a mano.",
-      trust: ["PDF, JPG o PNG de hasta 5 páginas por cotización", "{limit} documentos al día, con el cuadro completo", "Tus archivos y el cuadro se borran solos a las 24 horas"],
+      trust: ["2 o 3 cotizaciones · PDF o foto", "{limit} documentos gratis al día", "Se borra todo a las 24 h"],
       drop: {
         title: "Arrastra una cotización aquí",
         hint: "PDF o foto",
@@ -174,7 +174,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
       h1: "Compare supplier quotes",
       intro:
         "Upload two or three quotes for the same request. Tavnit reads each one, pairs the lines even when every supplier words them differently, and builds one table with each price and the cheapest option per line. No templates, no spreadsheet by hand.",
-      trust: ["PDF, JPG or PNG, up to 5 pages per quote", "{limit} documents a day, full table every time", "Your files and the table delete themselves after 24 hours"],
+      trust: ["2 or 3 quotes · PDF or photo", "{limit} free documents a day", "Everything deleted after 24 h"],
       drop: {
         title: "Drop a quote here",
         hint: "PDF or photo",

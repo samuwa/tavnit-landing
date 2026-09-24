@@ -33,11 +33,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
       h1: "Compara una factura con su orden de compra",
       intro:
         "Sube la orden de compra y la factura, en PDF o foto. Tavnit lee las dos, empareja cada línea de la OC con la línea de la factura que dice lo mismo aunque el texto no sea idéntico, y te marca dónde cambió el precio, dónde cambió la cantidad, qué falta en la factura y qué no estaba en la OC.",
-      trust: [
-        "Dos documentos por comparación, PDF, JPG o PNG",
-        "{limit} documentos al día, con el resultado completo",
-        "Tus archivos y sus resultados se borran solos a las 24 horas",
-      ],
+      trust: ["Una OC y una factura · PDF o foto", "{limit} documentos gratis al día", "Se borra todo a las 24 h"],
       drop: {
         title: "Arrastra el documento aquí",
         sample: "Probar con una OC y una factura de ejemplo",
@@ -181,11 +177,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
       h1: "Check an invoice against its purchase order",
       intro:
         "Upload the purchase order and the invoice, as PDF or photo. Tavnit reads both, pairs every PO line with the invoice line that means the same thing even when the text differs, and flags where the price changed, where the quantity changed, what is missing on the invoice and what was never on the PO.",
-      trust: [
-        "Two documents per check, PDF, JPG or PNG",
-        "{limit} documents a day, full result every time",
-        "Your files and their results delete themselves after 24 hours",
-      ],
+      trust: ["A PO and an invoice · PDF or photo", "{limit} free documents a day", "Everything deleted after 24 h"],
       drop: {
         title: "Drop the document here",
         sample: "Try it with a sample PO and invoice",
