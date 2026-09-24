@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { faqs } from "@/lib/faqs";
+import type { Faq } from "@/lib/faqs";
 
 function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
   const [open, setOpen] = useState(false);
@@ -45,7 +45,7 @@ function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
   );
 }
 
-export default function FAQ() {
+export default function FAQ({ faqs }: { faqs: Faq[] }) {
   return (
     <section className="py-16 md:py-24" id="faq" aria-labelledby="faq-heading">
       <div className="max-w-[800px] mx-auto px-4 sm:px-6">

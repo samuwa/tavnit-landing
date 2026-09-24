@@ -9,7 +9,7 @@ import {
   SITE_URL,
   SUPPORT_EMAIL,
 } from "./site";
-import { faqs } from "./faqs";
+import type { Faq } from "./faqs";
 import { DOC_BY_SLUG, DOC_SECTIONS, type DocSlug } from "@/components/docs/nav";
 
 /**
@@ -116,7 +116,7 @@ function breadcrumbs(trail: { name: string; url: string }[], pageUrl: string) {
   };
 }
 
-function faqPage() {
+function faqPage(faqs: Faq[]) {
   return {
     "@type": "FAQPage",
     "@id": `${SITE_URL}/#faq`,
@@ -144,7 +144,7 @@ export function siteSchema() {
 }
 
 /** Page-level nodes for the homepage only. */
-export function homeSchema() {
+export function homeSchema(faqs: Faq[]) {
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -163,7 +163,7 @@ export function homeSchema() {
         dateModified: BUILD_DATE,
       },
       breadcrumbs([{ name: "Home", url: SITE_URL }], `${SITE_URL}/`),
-      faqPage(),
+      faqPage(faqs),
     ],
   };
 }

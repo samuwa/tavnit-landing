@@ -42,8 +42,20 @@ export const faqs: Faq[] = [
     q: "What are Tavnit Cleaners?",
     a: "Cleaners are Tavnit's post-extraction transformation layer. They standardize formats, translate text, convert currencies and units, calculate fields, categorize with AI, match values against your reference data, and classify HS tariff codes.",
   },
-  {
-    q: "How much does Tavnit cost?",
-    a: "Tavnit offers monthly subscription plans starting at $16/month for 100 credits (1 credit = 1 page). Plans include Starter ($16/mo), Growth ($77/mo), Pro ($138/mo), and Enterprise ($599/mo).",
-  },
 ];
+
+/**
+ * Self-serve pricing, shown only while Stripe self-serve is on. With it off
+ * /pricing redirects home and prospects go through book-a-demo, so this
+ * answer would quote plans nobody can buy — visibly and in the FAQPage
+ * JSON-LD that Google reads.
+ */
+export const pricingFaq: Faq = {
+  q: "How much does Tavnit cost?",
+  a: "Tavnit offers monthly subscription plans starting at $16/month for 100 credits (1 credit = 1 page). Plans include Starter ($16/mo), Growth ($77/mo), Pro ($138/mo), and Enterprise ($599/mo).",
+};
+
+/** The homepage FAQ list for the current Stripe state. */
+export function faqsFor(stripeOn: boolean): Faq[] {
+  return stripeOn ? [...faqs, pricingFaq] : faqs;
+}

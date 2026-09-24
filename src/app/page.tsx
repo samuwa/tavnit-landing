@@ -17,18 +17,21 @@ import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import { homeSchema } from "@/lib/schema";
 import { isStripeEnabled } from "@/lib/platform";
+import { faqsFor } from "@/lib/faqs";
 
 export default async function Home() {
   // Pricing (section + nav/footer links) only shows while Stripe self-serve
   // is on platform-wide; otherwise prospects go through book-a-demo.
   const stripeOn = await isStripeEnabled();
+  // The pricing FAQ follows the same gate, on the page and in the JSON-LD.
+  const faqs = faqsFor(stripeOn);
   return (
     <>
       {/* Page-level JSON-LD (WebPage, BreadcrumbList, FAQPage). Site-wide
           entities live in the root layout. */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema(faqs)) }}
       />
 
       <SquaresBackground />
@@ -47,7 +50,7 @@ export default async function Home() {
         <UseCases />
         <Integrations />
         {stripeOn && <Pricing />}
-        <FAQ />
+        <FAQ faqs={faqs} />
         <FinalCTA />
       </main>
       <Footer showPricing={stripeOn} />
