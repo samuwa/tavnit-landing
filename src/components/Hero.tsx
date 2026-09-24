@@ -6,11 +6,11 @@ import { ArrowRight, CheckCircle2, Play } from "lucide-react";
 import HeroAnimation from "./HeroAnimation";
 
 /**
- * Order matters here: headline, what it does, the two CTAs and the proof line
- * all sit above the animation, so the first screen on a laptop says what
- * Tavnit is and what to click. The previous layout put the 420px mock-up
- * between the headline and everything else, and on a 1440×800 viewport the
- * subtitle and buttons started below the fold.
+ * The mock-up sits between "Documents to Structured Data" and "... In
+ * Seconds" on purpose: the animation is the sentence's middle, the document
+ * turning into the table. An attempt to move it below the CTAs so the copy
+ * fit above the fold left the mock-up cut off at the bottom of the viewport
+ * and broke that reading — reverted the same day.
  *
  * The entrance fade is CSS (.hero-enter in globals.css), not framer-motion:
  * it starts on first paint instead of after hydration, so LCP does not wait
@@ -37,16 +37,26 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
             <span>Documents to <span className="gradient-text">Structured Data</span></span>
             <span className="sr-only"> — AI-Powered PDF Extraction In Seconds</span>
           </h1>
-          {/* Typing Effect: completes the headline, decorative for AT */}
-          <div className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight tracking-tight text-white" aria-hidden="true">
-            <span className="typing-text">... In Seconds</span>
-          </div>
+        </div>
+
+        {/* Animation */}
+        <div
+          className="hero-enter w-full my-4 md:my-8"
+          style={{ "--hero-delay": "0.15s" } as React.CSSProperties}
+          aria-hidden="true"
+        >
+          <HeroAnimation />
+        </div>
+
+        {/* Typing Effect: completes the headline, decorative for AT */}
+        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight tracking-tight mb-6 text-white" aria-hidden="true">
+          <span className="typing-text">... In Seconds</span>
         </div>
 
         {/* Subtitle */}
         <p
-          className="hero-enter text-base sm:text-lg text-gray-400 max-w-[560px] mt-5 mb-7"
-          style={{ "--hero-delay": "0.15s" } as React.CSSProperties}
+          className="hero-enter text-base sm:text-lg text-gray-400 max-w-[560px] mb-8"
+          style={{ "--hero-delay": "0.3s" } as React.CSSProperties}
         >
           Extract, clean, and store data from any document — then review it with your team and let AI agents act on it. No code required.
         </p>
@@ -54,7 +64,7 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
         {/* CTAs */}
         <div
           className="hero-enter flex flex-col items-center gap-4"
-          style={{ "--hero-delay": "0.3s" } as React.CSSProperties}
+          style={{ "--hero-delay": "0.4s" } as React.CSSProperties}
         >
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto justify-center">
             <Link
@@ -109,15 +119,6 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
               </span>
             ))}
           </p>
-        </div>
-
-        {/* Animation */}
-        <div
-          className="hero-enter w-full mt-8 md:mt-10"
-          style={{ "--hero-delay": "0.45s" } as React.CSSProperties}
-          aria-hidden="true"
-        >
-          <HeroAnimation />
         </div>
       </div>
     </section>
