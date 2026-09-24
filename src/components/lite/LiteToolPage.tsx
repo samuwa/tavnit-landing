@@ -1,0 +1,132 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import LiteShell from "@/components/lite/LiteShell";
+import LiteTool from "@/components/lite/LiteTool";
+import LiteFaq from "@/components/lite/LiteFaq";
+import { buildLocalizedPageSchema } from "@/lib/schema";
+import { SITE_URL } from "@/lib/site";
+import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/lib/locale";
+import { LITE_HUB_PATHS, LITE_TOOLS, type LiteToolId } from "@/lib/lite/tools";
+import { HUB_COPY, TOOL_COPY } from "@/lib/lite/copy";
+
+/**
+ * One free-tool page, either language. The two routes per tool are thin
+ * wrappers so the hreflang pair is guaranteed to match: both sides call
+ * languageAlternates() with the same two paths from the registry.
+ *
+ * Layout: one centred column. The tool is the page; what follows (how it
+ * works, questions) is short and quiet. The "and then what?" diagram is
+ * rendered by the tool itself, only once a result exists.
+ */
+
+export function liteToolMetadata(toolId: LiteToolId, locale: Locale): Metadata {
+  const tool = LITE_TOOLS[toolId];
+  const copy = TOOL_COPY[toolId][locale];
+  const path = tool.paths[locale];
+  return {
+    title: copy.title,
+    description: copy.description,
+    alternates: {
+      canonical: path,
+      languages: languageAlternates(tool.paths.en, tool.paths.es),
+    },
+    openGraph: {
+      type: "website",
+      url: path,
+      title: copy.title,
+      description: copy.description,
+      siteName: "Tavnit",
+      locale: locale === "es" ? ES_LOCALE_OG : EN_LOCALE_OG,
+      alternateLocale: [locale === "es" ? EN_LOCALE_OG : ES_LOCALE_OG],
+      // No `images` here: each tool route ships its own opengraph-image.tsx.
+    },
+  };
+}
+
+export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; locale: Locale }) {
+  const tool = LITE_TOOLS[toolId];
+  const copy = TOOL_COPY[toolId][locale];
+  const hub = HUB_COPY[locale];
+  const path = tool.paths[locale];
+  const alternatePath = tool.paths[locale === "es" ? "en" : "es"];
+  const hubPath = LITE_HUB_PATHS[locale];
+  const homePath = locale === "es" ? "/es" : "/";
+
+  const schema = buildLocalizedPageSchema({
+    path,
+    name: copy.label,
+    headline: copy.h1,
+    description: copy.description,
+    inLanguage: locale === "es" ? "es-PA" : "en-US",
+    breadcrumb: [
+      { name: hub.breadcrumbHome, url: `${SITE_URL}${homePath}` },
+      { name: hub.breadcrumbHub, url: `${SITE_URL}${hubPath}` },
+      { name: copy.label, url: `${SITE_URL}${path}` },
+    ],
+    faqs: copy.faqs,
+  });
+  (schema["@graph"] as object[]).push({
+    "@type": "WebApplication",
+    "@id": `${SITE_URL}${path}#app`,
+    name: copy.label,
+    url: `${SITE_URL}${path}`,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    inLanguage: locale === "es" ? "es-PA" : "en-US",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+  });
+
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || null;
+
+  return (
+    <LiteShell locale={locale} alternatePath={alternatePath}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
+      <div className="mx-auto max-w-[960px] px-4 sm:px-6">
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-[var(--lite-muted)]">
+          <Link href={hubPath} className="hover:text-[var(--lite-ink)]">
+            {hub.breadcrumbHub}
+          </Link>
+          <span className="mx-2" aria-hidden="true">/</span>
+          <span>{copy.label}</span>
+        </nav>
+
+        <LiteTool
+          toolId={toolId}
+          locale={locale}
+          copy={copy}
+          turnstileSiteKey={turnstileSiteKey}
+          hasSample={Boolean(tool.samplePath)}
+        />
+
+        <section aria-labelledby="lite-how-heading" className="mt-28">
+          <h2 id="lite-how-heading" className="font-heading text-xl font-bold text-[var(--lite-muted)] sm:text-2xl">
+            {copy.how.heading}
+          </h2>
+          <ol className="mt-8 grid gap-8 sm:grid-cols-3">
+            {copy.how.steps.map((s, i) => (
+              <li key={s.title} className="flex gap-4 sm:flex-col sm:gap-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--lite-blue-soft)] font-heading text-sm font-bold text-[var(--lite-blue)]">
+                  {i + 1}
+                </span>
+                <div>
+                  <h3 className="font-heading text-base font-semibold">{s.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--lite-muted)]">{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section aria-labelledby="lite-faq-heading" className="mt-24">
+          <h2 id="lite-faq-heading" className="font-heading text-xl font-bold text-[var(--lite-muted)] sm:text-2xl">
+            {copy.faqHeading}
+          </h2>
+          <LiteFaq items={copy.faqs} />
+        </section>
+      </div>
+    </LiteShell>
+  );
+}

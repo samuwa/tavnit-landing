@@ -91,6 +91,7 @@ ${FEATURES.map((f) => `- ${f}`).join("\n")}
 - [Homepage](${SITE_URL}/): product overview, pipeline, use cases.
 - [Use cases](${SITE_URL}/use-cases): what Tavnit extracts, by document type.
 - [Integrations](${SITE_URL}/integrations): how data gets in and out.
+- [Free tools](${SITE_URL}/tools): single-purpose free tools on Tavnit's engine — e.g. [Invoice to Excel](${SITE_URL}/tools/invoice-to-excel) extracts an invoice's line items into a spreadsheet, no sign-up to see the result.
 ${pricingLines}
 - [Application](${APP_URL}): sign-up and workspace.
 - [MCP server](${MCP_URL}): Model Context Protocol endpoint.
@@ -133,6 +134,7 @@ Panama's Arancel Nacional (VII Enmienda, HS 2022).
 ${USE_CASES_ES.map((uc) => `- [${uc.label}](${SITE_URL}${esUseCasePath(uc)}): ${uc.summary}`).join("\n")}
 - [Integraciones](${SITE_URL}/es/integraciones): API, correo, webhooks y MCP.
 - [Conector MCP](${SITE_URL}/es/integraciones/mcp): servidor MCP para claude.ai y Cursor, en español.
+- [Herramientas gratis](${SITE_URL}/es/herramientas): herramientas de un solo uso; [Factura a Excel](${SITE_URL}/es/herramientas/factura-a-excel) extrae las líneas de una factura a una hoja de cálculo sin registro.
 - [Guías](${SITE_URL}/es/guias): guías en español.
 ${GUIDES_ES.map((g) => `- [${g.h1}](${SITE_URL}${esGuidePath(g)}): ${g.description}`).join("\n")}
 

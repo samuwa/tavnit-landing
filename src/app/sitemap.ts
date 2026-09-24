@@ -9,6 +9,7 @@ import { GUIDES } from "@/lib/guides";
 import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
 import { GUIDES_ES, esGuidePath } from "@/lib/guides.es";
 import { STATIC_ROUTE_PAIRS, languageAlternates } from "@/lib/locale";
+import { LITE_HUB_PATHS, LITE_TOOLS, LITE_TOOL_IDS } from "@/lib/lite/tools";
 
 /**
  * Only real, indexable URLs belong here.
@@ -205,6 +206,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    // Free tools (Tavnit Lite). Both languages; each pair is declared via
+    // alternates.languages on both sides from the same registry.
+    {
+      url: `${SITE_URL}${LITE_HUB_PATHS.en}`,
+      lastModified: lastCommitDate("src/app/tools", "src/components/lite", "src/lib/lite"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}${LITE_HUB_PATHS.es}`,
+      lastModified: lastCommitDate("src/app/es/herramientas", "src/components/lite", "src/lib/lite"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    ...LITE_TOOL_IDS.flatMap((id) =>
+      (["en", "es"] as const).map((locale) => ({
+        url: `${SITE_URL}${LITE_TOOLS[id].paths[locale]}`,
+        lastModified: lastCommitDate("src/components/lite", "src/lib/lite"),
+        changeFrequency: "weekly" as const,
+        // A working tool on a searched query: same tier as the commercial pages.
+        priority: 0.9,
+      })),
+    ),
     {
       url: `${SITE_URL}/guides`,
       lastModified: lastCommitDate("src/app/guides", "src/lib/guides.ts"),

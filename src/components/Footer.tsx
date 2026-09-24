@@ -78,6 +78,8 @@ const integrations: FooterLink[] = [
 ];
 
 const company: FooterLink[] = [
+  { label: "Free tools", href: "/tools" },
+  { label: "Invoice to Excel", href: "/tools/invoice-to-excel" },
   { label: "Guides", href: "/guides" },
   // The Spanish landing is linked site-wide so it is one click from every
   // page; without an internal link it would be reachable only via sitemap.
@@ -102,6 +104,8 @@ const COLUMNS_ES: FooterColumn[] = [
     title: "Producto",
     links: [
       { label: "Cómo funciona", href: "/es#como-funciona" },
+      { label: "Herramientas gratis", href: "/es/herramientas" },
+      { label: "Factura a Excel", href: "/es/herramientas/factura-a-excel" },
       { label: "Integraciones", href: "/es/integraciones" },
       { label: "Guías", href: "/es/guias" },
       { label: "Precios", href: "/pricing" },

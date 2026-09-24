@@ -1328,3 +1328,132 @@ html:has(#hero) footer {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================
+   Tavnit Lite (free tools)
+   The one motion moment on a tool page: rows arriving. Each row fades in
+   with a short stagger (set inline, capped at 30 rows) and nothing else on
+   the page moves on its own.
+   ========================================== */
+@keyframes lite-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes lite-pop {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes lite-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes lite-shimmer {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+/* Light theme for the Lite pages. The root layout paints the site dark; the
+   Lite shell covers the viewport with its own surface, so nothing dark
+   shows through. Accounting ledger paper: warm white with faint rules. */
+.lite {
+  --lite-paper: #fbfbf7;
+  --lite-rule: #e6ede8;
+  --lite-ink: #1c2321;
+  --lite-muted: #5c6963;
+  --lite-line: #d8dfda;
+  /* Brand: the logo's blue is the accent, its violet the one highlight;
+     green is kept for exactly one meaning, "Excel". */
+  --lite-blue: #3b82f6;
+  --lite-blue-ink: #2a63d4;
+  --lite-blue-soft: #eaf1fe;
+  --lite-violet: #6c42f0;
+  --lite-violet-soft: #efeafd;
+  --lite-green: #1e7a4f;
+  --lite-green-soft: #e6f3eb;
+  --lite-white: #ffffff;
+  color: var(--lite-ink);
+  background-color: var(--lite-paper);
+}
+/* Ledger rules + a faint cell grid, only inside the empty sheet: the
+   spreadsheet announces itself before the data arrives. */
+.lite-ledger {
+  background-color: var(--lite-white);
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0 31px, var(--lite-rule) 31px 32px),
+    repeating-linear-gradient(to right, transparent 0 95px, color-mix(in srgb, var(--lite-rule) 60%, transparent) 95px 96px);
+}
+.lite-display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.lite-sheet {
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 1px 2px rgba(28, 35, 33, 0.06),
+    0 24px 48px -28px rgba(28, 35, 33, 0.35);
+}
+.lite-cell:hover {
+  box-shadow: inset 0 0 0 2px var(--lite-blue);
+}
+.lite-press:active {
+  transform: translateY(1px);
+}
+.lite ::selection {
+  background: var(--lite-blue-soft);
+}
+/* The one gradient on a Lite page: the action that leads into Tavnit. */
+.lite-brand {
+  background-image: linear-gradient(135deg, #3b82f6 0%, #6c42f0 100%);
+}
+.lite-row {
+  animation: lite-in 0.35s ease-out both;
+}
+.lite-draw {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: lite-draw 0.8s ease-out forwards;
+}
+.lite-pop {
+  animation: lite-in 0.4s ease-out both;
+}
+.lite-skeleton {
+  animation: lite-shimmer 1.4s ease-in-out infinite;
+}
+/* Scene beats: each element appears in turn; the data packet travels the
+   line from the first tile to the last. --d is the beat's delay. */
+@keyframes lite-beat {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes lite-travel {
+  0%   { left: 12%; opacity: 0; }
+  8%   { opacity: 1; }
+  45%  { left: 50%; }
+  55%  { left: 50%; }
+  92%  { opacity: 1; }
+  100% { left: 88%; opacity: 0; }
+}
+@keyframes lite-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.lite-beat {
+  animation: lite-beat 0.45s ease-out both;
+  animation-delay: var(--d, 0ms);
+}
+.lite-travel {
+  animation: lite-travel 2.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 300ms;
+}
+.lite-grow {
+  transform-origin: left center;
+  animation: lite-grow 2s ease-out both;
+  animation-delay: 300ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lite-beat, .lite-grow { animation: none; }
+  .lite-travel { display: none; }
+  .lite-row, .lite-pop, .lite-skeleton { animation: none; }
+  .lite-draw { animation: none; stroke-dashoffset: 0; }
+  dialog[open] { animation: none; }
+}

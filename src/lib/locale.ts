@@ -32,6 +32,7 @@ export const STATIC_ROUTE_PAIRS: { en: string; es: string }[] = [
   { en: "/integrations", es: "/es/integraciones" },
   { en: "/integrations/mcp", es: "/es/integraciones/mcp" },
   { en: "/guides", es: "/es/guias" },
+  { en: "/tools", es: "/es/herramientas" },
   { en: "/privacy", es: "/es/privacidad" },
   { en: "/terms", es: "/es/terminos" },
 ];
