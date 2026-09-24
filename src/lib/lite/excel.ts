@@ -56,8 +56,9 @@ function cellXml(ref: string, value: unknown, style?: number): string {
   if (value === null || value === undefined) text = "";
   else if (typeof value === "string") text = value;
   else text = JSON.stringify(value);
-  // A leading formula marker would otherwise be evaluated by some viewers.
-  if (/^[=+\-@]/.test(text)) text = `'${text}`;
+  // A leading formula marker would otherwise be evaluated by some viewers
+  // (OWASP CSV/formula injection: = + - @ and a leading tab or CR).
+  if (/^[=+\-@\t\r]/.test(text)) text = `'${text}`;
   text = text.slice(0, 32000);
   return `<c r="${ref}"${st} t="inlineStr"><is><t xml:space="preserve">${esc(text)}</t></is></c>`;
 }

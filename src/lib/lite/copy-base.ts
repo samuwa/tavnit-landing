@@ -364,7 +364,7 @@ export const BASE_ES: ToolCopy = {
     hint: "o elige un archivo de tu computadora",
     choose: "Elegir archivo",
     sample: "Probar con {a_doc} de ejemplo",
-    formats: "PDF, JPG o PNG · hasta 10 MB y 5 páginas",
+    formats: "PDF, JPG o PNG · hasta 4 MB y 5 páginas",
   },
   stages: [
     "Subiendo el documento",
@@ -400,7 +400,7 @@ export const BASE_ES: ToolCopy = {
   },
   errors: {
     empty: "El archivo está vacío.",
-    too_large: "El archivo pesa más de 10 MB. Comprímelo o sube solo las páginas de {the_doc}.",
+    too_large: "El archivo pesa más de 4 MB. Comprímelo o sube solo las páginas de {the_doc}.",
     unsupported: "Solo aceptamos PDF, JPG o PNG.",
     unreadable: "No pudimos abrir este PDF. Si está protegido con contraseña, quítala y vuelve a intentar.",
     too_many_pages: "La versión gratis procesa hasta 5 páginas por documento.",
@@ -624,7 +624,7 @@ export const BASE_ES: ToolCopy = {
     },
     {
       q: "¿Qué formatos acepta?",
-      a: "PDF (con texto o escaneado), JPG y PNG, de hasta 10 MB y 5 páginas. Si {your_doc} tiene más páginas, súbela por partes o crea una cuenta.",
+      a: "PDF (con texto o escaneado), JPG y PNG, de hasta 4 MB y 5 páginas. Si {your_doc} tiene más páginas, súbela por partes o crea una cuenta.",
     },
     {
       q: "¿Puedo elegir otras columnas?",
@@ -671,7 +671,7 @@ export const BASE_EN: ToolCopy = {
     hint: "or choose a file from your computer",
     choose: "Choose file",
     sample: "Try it with a sample {doc}",
-    formats: "PDF, JPG or PNG · up to 10 MB and 5 pages",
+    formats: "PDF, JPG or PNG · up to 4 MB and 5 pages",
   },
   stages: [
     "Uploading the document",
@@ -707,7 +707,7 @@ export const BASE_EN: ToolCopy = {
   },
   errors: {
     empty: "The file is empty.",
-    too_large: "The file is over 10 MB. Compress it or upload only {the_doc} pages.",
+    too_large: "The file is over 4 MB. Compress it or upload only {the_doc} pages.",
     unsupported: "Only PDF, JPG or PNG files are accepted.",
     unreadable: "We could not open this PDF. If it is password-protected, remove the password and try again.",
     too_many_pages: "The free version processes up to 5 pages per document.",
@@ -931,7 +931,7 @@ export const BASE_EN: ToolCopy = {
     },
     {
       q: "Which formats does it accept?",
-      a: "PDF (text or scanned), JPG and PNG, up to 10 MB and 5 pages. If {your_doc} is longer, upload it in parts or create an account.",
+      a: "PDF (text or scanned), JPG and PNG, up to 4 MB and 5 pages. If {your_doc} is longer, upload it in parts or create an account.",
     },
     {
       q: "Can I choose other columns?",

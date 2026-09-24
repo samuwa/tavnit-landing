@@ -38,7 +38,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
         hint: "un solo PDF con varios documentos adentro",
         choose: "Elegir archivo",
         sample: "Probar con un escaneo de ejemplo",
-        formats: "PDF · hasta 10 MB y 12 páginas",
+        formats: "PDF · hasta 4 MB y 12 páginas",
       },
       stages: ["Subiendo el PDF", "Leyendo cada página", "Encontrando dónde empieza cada documento", "Clasificando", "Casi listo"],
       result: {
@@ -49,7 +49,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
         flowNote: "Estos tipos son los del Splitter fijo de esta herramienta. En tu cuenta, los tipos los defines tú.",
       },
       errors: {
-        too_large: "El archivo pesa más de 10 MB. Comprímelo o divide el escaneo en dos.",
+        too_large: "El archivo pesa más de 4 MB. Comprímelo o divide el escaneo en dos.",
         too_many_pages: "La versión gratis separa hasta 12 páginas por PDF. Con una cuenta no hay límite.",
         unsupported: "Solo aceptamos PDF, JPG o PNG. Para separar documentos, sube el PDF del escáner.",
         failed: "No pudimos separar este PDF. Prueba con otro escaneo o con el de ejemplo.",
@@ -110,7 +110,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "¿Cuántas páginas puedo subir?",
-          a: "Hasta 12 páginas por PDF en la versión gratis, de hasta 10 MB. Con una cuenta no hay límite de páginas y puedes mandar los escaneos por correo directamente al Splitter.",
+          a: "Hasta 12 páginas por PDF en la versión gratis, de hasta 4 MB. Con una cuenta no hay límite de páginas y puedes mandar los escaneos por correo directamente al Splitter.",
         },
         {
           q: "¿Sirve con escaneos de mala calidad o en varios idiomas?",
@@ -176,7 +176,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
         hint: "one PDF with several documents inside",
         choose: "Choose file",
         sample: "Try it with a sample scan",
-        formats: "PDF · up to 10 MB and 12 pages",
+        formats: "PDF · up to 4 MB and 12 pages",
       },
       stages: ["Uploading the PDF", "Reading every page", "Finding where each document starts", "Classifying", "Almost there"],
       result: {
@@ -187,7 +187,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
         flowNote: "These types belong to this tool's fixed Splitter. In your account, you define the types.",
       },
       errors: {
-        too_large: "The file is over 10 MB. Compress it or split the scan in two.",
+        too_large: "The file is over 4 MB. Compress it or split the scan in two.",
         too_many_pages: "The free version splits up to 12 pages per PDF. With an account there is no limit.",
         unsupported: "We only accept PDF, JPG or PNG. To split documents, upload the PDF from the scanner.",
         failed: "We could not split this PDF. Try another scan, or the sample.",
@@ -248,7 +248,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "How many pages can I upload?",
-          a: "Up to 12 pages per PDF in the free version, up to 10 MB. With an account there is no page limit and you can email scans straight to the Splitter.",
+          a: "Up to 12 pages per PDF in the free version, up to 4 MB. With an account there is no page limit and you can email scans straight to the Splitter.",
         },
         {
           q: "Does it work with poor scans or mixed languages?",

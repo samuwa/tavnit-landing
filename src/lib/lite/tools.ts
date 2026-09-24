@@ -145,7 +145,10 @@ export const LITE_LIMITS = {
   maxPages: 5,
   /** Pages per bundle for the splitter: splitting one page is no demo. */
   maxPagesSplit: 12,
-  maxBytes: 10 * 1024 * 1024,
+  /** Vercel rejects function request bodies over 4.5 MB before our code
+   *  runs, so anything above this never reached validation and the visitor
+   *  saw a generic error instead of "too large". */
+  maxBytes: 4 * 1024 * 1024,
   /** Rows returned to the browser / written to the Excel. */
   maxRows: 500,
   /** Global documents per day across all visitors — env LITE_DAILY_CAP overrides. */

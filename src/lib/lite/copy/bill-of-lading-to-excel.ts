@@ -44,7 +44,7 @@ const billOfLadingToExcel: Record<Locale, ToolCopyDef> = {
         another: "Procesar otro BL",
       },
       errors: {
-        too_large: "El archivo pesa más de 10 MB. Comprímelo o sube solo las páginas del BL.",
+        too_large: "El archivo pesa más de 4 MB. Comprímelo o sube solo las páginas del BL.",
       },
       next: {
         lead: "Esto fue un BL. Con una cuenta, lo mismo pasa con todos los que llegan de cada naviera y agente, y los datos no se quedan en un Excel: siguen su camino solos hacia tu sistema de aduanas o de tráfico.",
@@ -89,7 +89,7 @@ const billOfLadingToExcel: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "¿Qué formatos acepta?",
-          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 10 MB y 5 páginas. Si tu BL tiene más páginas o son varios BLs en un solo escaneo, súbelos por partes o crea una cuenta.",
+          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 4 MB y 5 páginas. Si tu BL tiene más páginas o son varios BLs en un solo escaneo, súbelos por partes o crea una cuenta.",
         },
         {
           q: "¿Sirve con BLs de cualquier naviera?",
@@ -146,7 +146,7 @@ const billOfLadingToExcel: Record<Locale, ToolCopyDef> = {
         another: "Process another bill of lading",
       },
       errors: {
-        too_large: "The file is over 10 MB. Compress it or upload only the B/L pages.",
+        too_large: "The file is over 4 MB. Compress it or upload only the B/L pages.",
       },
       next: {
         lead: "That was one bill of lading. With an account, the same happens to every B/L that arrives from every carrier and agent, and the data does not stop at an Excel: it keeps going on its own into your customs or freight system.",
@@ -191,7 +191,7 @@ const billOfLadingToExcel: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "Which formats does it accept?",
-          a: "PDF (text or scanned), JPG and PNG, up to 10 MB and 5 pages. If your B/L is longer, or several B/Ls sit in one scan, upload them in parts or create an account.",
+          a: "PDF (text or scanned), JPG and PNG, up to 4 MB and 5 pages. If your B/L is longer, or several B/Ls sit in one scan, upload them in parts or create an account.",
         },
         {
           q: "Does it work with any carrier's B/L?",

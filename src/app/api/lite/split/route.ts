@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 import { LITE_LIMITS, LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
 import { LiteApiError, liteApiConfigured, resolveSingleId, runSplit } from "@/lib/lite/api";
 import { clientIp, getOrCreateSessionId, hashIp } from "@/lib/lite/session";
-import { insertRun, quotaSnapshot, storeConfigured } from "@/lib/lite/store";
-import { LiteValidationError, validateUpload } from "@/lib/lite/validate";
+import { finalizeReservation, quotaSnapshot, releaseReservation, reserve, storeConfigured } from "@/lib/lite/store";
+import { LiteValidationError, precheckUpload, validateUpload } from "@/lib/lite/validate";
 import { isHumanSession, markHumanSession, verifyTurnstile } from "@/lib/lite/turnstile";
 
 /**
@@ -71,9 +71,8 @@ export async function POST(request: Request) {
     rawName = file instanceof File ? file.name : null;
   }
 
-  let validated;
   try {
-    validated = await validateUpload(bytes, rawName, { maxPages: tool.maxPages ?? LITE_LIMITS.maxPagesSplit });
+    precheckUpload(bytes);
   } catch (e) {
     if (e instanceof LiteValidationError) return ERR(e.code, 400);
     return ERR("unreadable", 400);
@@ -88,43 +87,53 @@ export async function POST(request: Request) {
     await markHumanSession(sessionId);
   }
 
-  let quota;
+  let validated;
   try {
-    quota = await quotaSnapshot(sessionId, ipHash);
+    validated = await validateUpload(bytes, rawName, { maxPages: tool.maxPages ?? LITE_LIMITS.maxPagesSplit });
+  } catch (e) {
+    if (e instanceof LiteValidationError) return ERR(e.code, 400);
+    return ERR("unreadable", 400);
+  }
+
+  let reservation;
+  try {
+    reservation = await reserve({
+      session_id: sessionId,
+      ip_hash: ipHash,
+      tool: tool.id,
+      locale,
+      kind: "split",
+      filename: validated.filename,
+      byte_size: validated.bytes.length,
+      pages: validated.pages,
+      is_sample: isSample,
+    });
   } catch {
     return ERR("unavailable", 503);
   }
-  if (quota.global >= quota.globalCap) return ERR("daily_cap", 503);
-  if (quota.session >= quota.limitPerDay || quota.ip >= quota.limitPerDay) return ERR("quota", 429);
+  if (!reservation.ok) return ERR(reservation.code, reservation.code === "quota" ? 429 : 503);
 
   let splitId: string;
   try {
     ({ splitId } = await runSplit({ splitterId, bytes: validated.bytes, filename: validated.filename, contentType: validated.contentType }));
   } catch (e) {
+    await releaseReservation(reservation.id);
     const status = e instanceof LiteApiError ? e.status : 502;
     return ERR(status === 503 ? "unavailable" : "backend", status);
   }
 
   try {
-    await insertRun({
-      run_id: splitId,
-      tool: tool.id,
-      locale,
-      session_id: sessionId,
-      ip_hash: ipHash,
-      filename: validated.filename,
-      byte_size: validated.bytes.length,
-      pages: validated.pages,
-      is_sample: isSample,
-      kind: "split",
-    });
+    await finalizeReservation(reservation.id, splitId);
   } catch {
     return ERR("unavailable", 503);
   }
-  return NextResponse.json({
-    ok: true,
-    splitId,
-    pages: validated.pages,
-    remaining: Math.max(quota.limitPerDay - Math.max(quota.session, quota.ip) - 1, 0),
-  });
+
+  let remaining: number | null = null;
+  try {
+    const q = await quotaSnapshot(sessionId, ipHash);
+    remaining = Math.max(q.limitPerDay - Math.max(q.session, q.ip), 0);
+  } catch {
+    remaining = null;
+  }
+  return NextResponse.json({ ok: true, splitId, pages: validated.pages, remaining });
 }

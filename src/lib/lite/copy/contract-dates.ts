@@ -83,7 +83,7 @@ const contractDates: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "¿Qué formatos acepta?",
-          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 10 MB y 5 páginas. Si tu contrato tiene más páginas, sube las que tienen la vigencia y la renovación, o crea una cuenta.",
+          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 4 MB y 5 páginas. Si tu contrato tiene más páginas, sube las que tienen la vigencia y la renovación, o crea una cuenta.",
         },
         {
           q: "¿Puedo elegir otras columnas?",
@@ -181,7 +181,7 @@ const contractDates: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "Which formats does it accept?",
-          a: "PDF (text or scanned), JPG and PNG, up to 10 MB and 5 pages. If your contract is longer, upload the pages with the term and renewal clauses, or create an account.",
+          a: "PDF (text or scanned), JPG and PNG, up to 4 MB and 5 pages. If your contract is longer, upload the pages with the term and renewal clauses, or create an account.",
         },
         {
           q: "Can I choose other columns?",

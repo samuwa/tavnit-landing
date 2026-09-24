@@ -90,16 +90,86 @@ export async function quotaSnapshot(sessionId: string, ipHash: string): Promise<
     countSince(`&ip_hash=eq.${encodeURIComponent(ipHash)}${DOCS}`),
     countSince(DOCS),
   ]);
+  // LITE_RUNS_PER_DAY overrides the per-visitor limit (raise it to test).
+  return { session, ip, global, ...quotaLimits() };
+}
+
+/** Per-visitor and global limits, env overrides applied. */
+export function quotaLimits(): { limitPerDay: number; globalCap: number } {
   const cap = Number(process.env.LITE_DAILY_CAP);
   const perDay = Number(process.env.LITE_RUNS_PER_DAY);
   return {
-    session,
-    ip,
-    global,
-    // LITE_RUNS_PER_DAY overrides the per-visitor limit (raise it to test).
     limitPerDay: Number.isFinite(perDay) && perDay > 0 ? perDay : LITE_LIMITS.runsPerDay,
     globalCap: Number.isFinite(cap) && cap > 0 ? cap : LITE_LIMITS.dailyCapDefault,
   };
+}
+
+async function rpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
+  const h = headers();
+  const b = base();
+  if (!h || !b) throw new Error("Store not configured");
+  const res = await fetch(`${b}/rest/v1/rpc/${fn}`, {
+    method: "POST",
+    headers: h,
+    body: JSON.stringify(args),
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`${fn} failed (${res.status})`);
+  const text = await res.text();
+  return (text ? JSON.parse(text) : null) as T;
+}
+
+export type Reservation = { ok: true; id: string } | { ok: false; code: "quota" | "daily_cap" };
+
+/**
+ * Claims one unit of quota before anything is sent to the backend. Count and
+ * insert happen in one Postgres transaction (lite_reserve, serialised by an
+ * advisory lock), so concurrent requests cannot all pass the same check —
+ * they used to, because the row was only inserted after the backend call.
+ * `kind` "match" draws on a separate per-visitor limit of comparisons.
+ */
+export async function reserve(row: {
+  session_id: string;
+  ip_hash: string;
+  tool: string;
+  locale: string;
+  kind: LiteRunKind;
+  filename: string | null;
+  byte_size: number | null;
+  pages: number | null;
+  is_sample: boolean;
+}): Promise<Reservation> {
+  const { limitPerDay, globalCap } = quotaLimits();
+  const result = await rpc<string>("lite_reserve", {
+    p_session: row.session_id,
+    p_ip_hash: row.ip_hash,
+    p_tool: row.tool,
+    p_locale: row.locale,
+    p_kind: row.kind,
+    p_limit: limitPerDay,
+    p_cap: globalCap,
+    p_filename: row.filename,
+    p_byte_size: row.byte_size,
+    p_pages: row.pages,
+    p_is_sample: row.is_sample,
+  });
+  if (result === "quota" || result === "daily_cap") return { ok: false, code: result };
+  if (typeof result !== "string" || !/^[0-9a-f-]{36}$/.test(result)) throw new Error("lite_reserve returned no id");
+  return { ok: true, id: result };
+}
+
+/** Binds a reservation to the id the backend returned. */
+export async function finalizeReservation(id: string, runId: string): Promise<void> {
+  await rpc("lite_finalize", { p_id: id, p_run_id: runId });
+}
+
+/** Gives the quota back when the backend call failed. Best-effort. */
+export async function releaseReservation(id: string): Promise<void> {
+  try {
+    await rpc("lite_release", { p_id: id });
+  } catch {
+    // A stranded reservation only costs this visitor one unit today.
+  }
 }
 
 export async function insertRun(row: {

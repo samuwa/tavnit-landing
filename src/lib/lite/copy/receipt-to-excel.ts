@@ -76,11 +76,11 @@ const receiptToExcel: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "¿Sirve con una foto tomada con el celular?",
-          a: "Sí, es el caso normal. Funciona con JPG, PNG y PDF de hasta 10 MB. Ayuda que el ticket esté completo en la foto, con luz pareja y sin dedos encima; si sale torcido o un poco borroso, igual lo lee.",
+          a: "Sí, es el caso normal. Funciona con JPG, PNG y PDF de hasta 4 MB. Ayuda que el ticket esté completo en la foto, con luz pareja y sin dedos encima; si sale torcido o un poco borroso, igual lo lee.",
         },
         {
           q: "¿Qué formatos acepta?",
-          a: "JPG, PNG y PDF (con texto o escaneado), de hasta 10 MB y 5 páginas. Un recibo largo de supermercado cabe en una sola foto.",
+          a: "JPG, PNG y PDF (con texto o escaneado), de hasta 4 MB y 5 páginas. Un recibo largo de supermercado cabe en una sola foto.",
         },
         {
           q: "¿Tengo que configurar una plantilla por comercio?",
@@ -173,11 +173,11 @@ const receiptToExcel: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "Does it work with a photo from my phone?",
-          a: "Yes, that is the normal case. JPG, PNG and PDF up to 10 MB. It helps to have the whole ticket in frame, even light and no fingers over it; a skewed or slightly blurry shot still reads.",
+          a: "Yes, that is the normal case. JPG, PNG and PDF up to 4 MB. It helps to have the whole ticket in frame, even light and no fingers over it; a skewed or slightly blurry shot still reads.",
         },
         {
           q: "Which formats does it accept?",
-          a: "JPG, PNG and PDF (text or scanned), up to 10 MB and 5 pages. A long supermarket receipt fits in one photo.",
+          a: "JPG, PNG and PDF (text or scanned), up to 4 MB and 5 pages. A long supermarket receipt fits in one photo.",
         },
         {
           q: "Do I need to set up a template per merchant?",

@@ -37,7 +37,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
         title: "Arrastra una cotización aquí",
         hint: "PDF o foto",
         sample: "Probar con tres cotizaciones de ejemplo",
-        formats: "PDF, JPG o PNG · hasta 10 MB y 5 páginas por cotización",
+        formats: "PDF, JPG o PNG · hasta 4 MB y 5 páginas por cotización",
       },
       stages: ["Leyendo las cotizaciones", "Ordenando las líneas", "El Matcher empareja las líneas", "Casi listo"],
       result: {
@@ -48,7 +48,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
         empty: "No encontramos líneas con precio en esta cotización. Prueba con una que tenga artículos, cantidades y precios por renglón.",
       },
       errors: {
-        too_large: "Una de las cotizaciones pesa más de 10 MB. Comprímela o sube solo las páginas con las líneas.",
+        too_large: "Una de las cotizaciones pesa más de 4 MB. Comprímela o sube solo las páginas con las líneas.",
         failed: "No pudimos leer una de las cotizaciones. Prueba con otra o con las de ejemplo.",
         no_lines: "Una de las cotizaciones no tiene líneas con precio, así que no hay qué comparar. Revisa que cada una tenga artículos con precio unitario.",
         not_ready: "Todavía estamos leyendo las cotizaciones. Espera un momento e intenta de nuevo.",
@@ -109,7 +109,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "¿Qué formatos acepta?",
-          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 10 MB y 5 páginas por cotización.",
+          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 4 MB y 5 páginas por cotización.",
         },
         {
           q: "¿Qué pasa con mis archivos?",
@@ -179,7 +179,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
         title: "Drop a quote here",
         hint: "PDF or photo",
         sample: "Try it with three sample quotes",
-        formats: "PDF, JPG or PNG · up to 10 MB and 5 pages per quote",
+        formats: "PDF, JPG or PNG · up to 4 MB and 5 pages per quote",
       },
       stages: ["Reading the quotes", "Sorting the lines", "The Matcher pairs the lines", "Almost there"],
       result: {
@@ -190,7 +190,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
         empty: "We could not find priced lines in this quote. Try one with items, quantities and prices per line.",
       },
       errors: {
-        too_large: "One of the quotes is over 10 MB. Compress it or upload only the pages with the lines.",
+        too_large: "One of the quotes is over 4 MB. Compress it or upload only the pages with the lines.",
         failed: "We could not read one of the quotes. Try another, or the samples.",
         no_lines: "One of the quotes has no priced lines, so there is nothing to compare. Check that each has items with a unit price.",
         not_ready: "We are still reading the quotes. Give it a moment and try again.",
@@ -251,7 +251,7 @@ const quoteComparison: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "Which formats does it accept?",
-          a: "PDF (text or scanned), JPG and PNG, up to 10 MB and 5 pages per quote.",
+          a: "PDF (text or scanned), JPG and PNG, up to 4 MB and 5 pages per quote.",
         },
         {
           q: "What happens to my files?",

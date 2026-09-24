@@ -81,7 +81,7 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "¿Qué formatos acepta?",
-          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 10 MB y 5 páginas. Si tu packing list tiene más páginas, súbelo por partes o crea una cuenta.",
+          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 4 MB y 5 páginas. Si tu packing list tiene más páginas, súbelo por partes o crea una cuenta.",
         },
         {
           q: "¿Qué columnas saca de un packing list?",
@@ -181,7 +181,7 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "Which formats does it accept?",
-          a: "PDF (text or scanned), JPG and PNG, up to 10 MB and 5 pages. If your packing list is longer, upload it in parts or create an account.",
+          a: "PDF (text or scanned), JPG and PNG, up to 4 MB and 5 pages. If your packing list is longer, upload it in parts or create an account.",
         },
         {
           q: "Which columns does it extract from a packing list?",

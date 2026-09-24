@@ -73,6 +73,17 @@ export function safeFilename(raw: string | null | undefined, kind: LiteFileKind)
   return `${baseName || "document"}${EXT[kind]}`;
 }
 
+/**
+ * The checks that cost nothing — size and magic bytes — so a route can run
+ * them before Turnstile and leave the PDF parse (CPU, memory) for requests
+ * that already proved they are human.
+ */
+export function precheckUpload(bytes: Uint8Array): void {
+  if (bytes.length === 0) throw new LiteValidationError("empty");
+  if (bytes.length > LITE_LIMITS.maxBytes) throw new LiteValidationError("too_large");
+  if (!sniff(bytes)) throw new LiteValidationError("unsupported");
+}
+
 export async function validateUpload(
   bytes: Uint8Array,
   rawFilename: string | null | undefined,

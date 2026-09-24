@@ -54,9 +54,9 @@ API (mismo origen, nunca desde otro dominio):
 
 1. Origin debe coincidir con el host (corta llamadas desde otros sitios).
 2. Honeypot `website`: si viene lleno, responde OK sin hacer nada.
-3. El archivo se valida por sus bytes, no por nombre ni content-type: tamaño ≤ 10 MB, magia PDF/PNG/JPEG, PDF parseado y ≤ 5 páginas (los créditos se cobran por página).
-4. Turnstile (cuando `TURNSTILE_SECRET_KEY` está configurado).
-5. Cuotas: 3 corridas al día por sesión anónima y por IP (hash HMAC, nunca la IP; `LITE_RUNS_PER_DAY` lo cambia, útil para probar), y un tope global diario (`LITE_DAILY_CAP`) que protege el saldo de créditos de la org Lite.
+3. Chequeo barato del archivo por sus bytes: tamaño ≤ 4 MB (Vercel corta los cuerpos a 4.5 MB) y magia PDF/PNG/JPEG.
+4. Turnstile (cuando `TURNSTILE_SECRET_KEY` está configurado). Recién después se parsea el PDF (≤ 5 páginas), para que el parseo no se pueda usar sin captcha.
+5. Cuotas reservadas de forma atómica con `lite_reserve` (migración `20260925090000_lite_reserve.sql`): contar e insertar pasan en una sola transacción, así que peticiones en paralelo no pasan juntas el mismo conteo. Si el backend falla, `lite_release` devuelve el cupo. Las comparaciones tienen su propio límite diario por sesión e IP y exigen la marca de Turnstile. 5 documentos al día por sesión anónima y por IP (hash HMAC, nunca la IP; `LITE_RUNS_PER_DAY` lo cambia, útil para probar), y un tope global diario (`LITE_DAILY_CAP`) que protege el saldo de créditos de la org Lite.
 6. Propiedad: cada run queda ligado a una cookie httpOnly de sesión; consultar o descargar un run ajeno da 404.
 7. Descarga: además de la propiedad, exige usuario autenticado (Supabase, verificado contra el servidor de auth, no solo la cookie).
 8. La API key de la org Lite solo existe en el servidor. Nunca se registra contenido de archivos.

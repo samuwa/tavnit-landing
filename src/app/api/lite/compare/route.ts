@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { LiteApiError, fetchRun, liteApiConfigured, resolveId, runMatcher } from "@/lib/lite/api";
 import { clientIp, getSessionId, hashIp } from "@/lib/lite/session";
-import { getRunForSession, insertRun, storeConfigured } from "@/lib/lite/store";
+import { finalizeReservation, getRunForSession, releaseReservation, reserve, storeConfigured } from "@/lib/lite/store";
+import { isHumanSession, turnstileConfigured } from "@/lib/lite/turnstile";
 import { LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
 
 /**
@@ -47,6 +48,9 @@ export async function POST(request: Request) {
 
   const sessionId = await getSessionId();
   if (!sessionId) return ERR("not_found", 404);
+  // The documents were uploaded through Turnstile; a comparison without that
+  // session mark is a script replaying run ids.
+  if (turnstileConfigured() && !(await isHumanSession(sessionId))) return ERR("captcha", 400);
   let locale: "es" | "en" = "es";
   for (const runId of runIds) {
     const owned = await getRunForSession(runId, sessionId, "run");
@@ -65,6 +69,28 @@ export async function POST(request: Request) {
   const matcherId = resolveId(tool.compare.matcher, locale);
   if (!matcherId) return ERR("unavailable", 503);
 
+  // A comparison runs the Matcher, which costs credits: it draws on its own
+  // daily limit per session and IP (it used to be unlimited — the same two
+  // documents could be compared again and again).
+  const ipHash = hashIp(clientIp(request));
+  let reservation;
+  try {
+    reservation = await reserve({
+      session_id: sessionId,
+      ip_hash: ipHash,
+      tool: tool.id,
+      locale,
+      kind: "match",
+      filename: null,
+      byte_size: null,
+      pages: null,
+      is_sample: false,
+    });
+  } catch {
+    return ERR("unavailable", 503);
+  }
+  if (!reservation.ok) return ERR(reservation.code, 429);
+
   let matchId: string;
   try {
     ({ matchId } = await runMatcher({
@@ -73,24 +99,14 @@ export async function POST(request: Request) {
       benchmarkRunId: tool.compare.mode === "benchmark" ? runIds[0] : undefined,
     }));
   } catch (e) {
+    await releaseReservation(reservation.id);
     const status = e instanceof LiteApiError ? e.status : 502;
     if (status === 400) return ERR("no_lines", 422);
     return ERR(status === 503 ? "unavailable" : "backend", status);
   }
 
   try {
-    await insertRun({
-      run_id: matchId,
-      tool: tool.id,
-      locale,
-      session_id: sessionId,
-      ip_hash: hashIp(clientIp(request)),
-      filename: null,
-      byte_size: null,
-      pages: null,
-      is_sample: false,
-      kind: "match",
-    });
+    await finalizeReservation(reservation.id, matchId);
   } catch {
     return ERR("unavailable", 503);
   }

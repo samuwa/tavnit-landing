@@ -32,8 +32,18 @@ export async function GET(request: Request) {
       }
     }
   }
-  const safeNext = SAFE_PATH.test(next) ? next : "/";
-  const target = new URL(safeNext, url.origin);
+  // The pattern alone is not enough: "/\evil.com" passes it and the URL
+  // parser treats the backslash as a slash, resolving to https://evil.com.
+  // So the resolved URL must also stay on this origin.
+  let target = new URL("/", url.origin);
+  if (SAFE_PATH.test(next)) {
+    try {
+      const candidate = new URL(next, url.origin);
+      if (candidate.origin === url.origin) target = candidate;
+    } catch {
+      // keep "/"
+    }
+  }
 
   if (code && authConfigured()) {
     try {

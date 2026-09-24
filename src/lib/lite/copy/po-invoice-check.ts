@@ -41,7 +41,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
       drop: {
         title: "Arrastra el documento aquí",
         sample: "Probar con una OC y una factura de ejemplo",
-        formats: "PDF, JPG o PNG · hasta 10 MB y 5 páginas por documento",
+        formats: "PDF, JPG o PNG · hasta 4 MB y 5 páginas por documento",
       },
       stages: ["Subiendo los documentos", "Leyendo la orden de compra", "Leyendo la factura", "Emparejando las líneas", "Casi listo"],
       result: {
@@ -54,7 +54,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
         no_lines: "En uno de los dos documentos no encontramos líneas con cantidades y precios. Revisa que sean una orden de compra y una factura con tabla de artículos.",
         not_ready: "Todavía estamos leyendo los documentos. Espera un momento y vuelve a intentar.",
         failed: "No pudimos leer uno de los documentos. Prueba con otros archivos o con los de ejemplo.",
-        too_large: "Uno de los archivos pesa más de 10 MB. Comprímelo o sube solo las páginas del documento.",
+        too_large: "Uno de los archivos pesa más de 4 MB. Comprímelo o sube solo las páginas del documento.",
       },
       next: {
         lead: "Esto fue una OC y una factura. Con una cuenta, cada factura que llega se coteja sola contra su orden de compra, y el resultado no se queda en un Excel: sigue su camino.",
@@ -110,7 +110,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "¿Qué formatos acepta?",
-          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 10 MB y 5 páginas por documento. Sirve con órdenes de compra de un ERP y facturas de cualquier proveedor.",
+          a: "PDF (con texto o escaneado), JPG y PNG, de hasta 4 MB y 5 páginas por documento. Sirve con órdenes de compra de un ERP y facturas de cualquier proveedor.",
         },
         {
           q: "¿Qué pasa con mis archivos?",
@@ -189,7 +189,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
       drop: {
         title: "Drop the document here",
         sample: "Try it with a sample PO and invoice",
-        formats: "PDF, JPG or PNG · up to 10 MB and 5 pages per document",
+        formats: "PDF, JPG or PNG · up to 4 MB and 5 pages per document",
       },
       stages: ["Uploading the documents", "Reading the purchase order", "Reading the invoice", "Pairing the lines", "Almost there"],
       result: {
@@ -202,7 +202,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
         no_lines: "We found no lines with quantities and prices in one of the two documents. Check that they are a purchase order and an invoice with an item table.",
         not_ready: "We are still reading the documents. Wait a moment and try again.",
         failed: "We could not read one of the documents. Try other files, or the samples.",
-        too_large: "One of the files is over 10 MB. Compress it or upload only the document pages.",
+        too_large: "One of the files is over 4 MB. Compress it or upload only the document pages.",
       },
       next: {
         lead: "That was one PO and one invoice. With an account, every invoice that arrives is checked against its purchase order on its own, and the result does not stop at an Excel: it keeps going.",
@@ -258,7 +258,7 @@ const poInvoiceCheck: Record<Locale, ToolCopyDef> = {
         },
         {
           q: "Which formats does it accept?",
-          a: "PDF (text or scanned), JPG and PNG, up to 10 MB and 5 pages per document. It works with purchase orders from an ERP and invoices from any vendor.",
+          a: "PDF (text or scanned), JPG and PNG, up to 4 MB and 5 pages per document. It works with purchase orders from an ERP and invoices from any vendor.",
         },
         {
           q: "What happens to my files?",
