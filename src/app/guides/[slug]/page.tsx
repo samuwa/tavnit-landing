@@ -70,6 +70,7 @@ export default async function GuidePage({
               headline: g.h1,
               description: g.description,
               datePublished: g.published,
+              dateModified: g.updated,
               faqs: g.faqs,
             }),
           ),

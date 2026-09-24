@@ -476,14 +476,18 @@ export function buildLocalizedPageSchema(opts: {
 /**
  * Graph for a /guides article: TechArticle rather than WebPage, because the
  * page is explanatory content with a publication date, not a product surface.
- * `datePublished` is fixed in the guide's source so it does not drift with
- * deploys; only dateModified tracks the build.
+ * Both dates come from the guide's source: `published` is fixed, `updated` is
+ * bumped only for substantive edits. Stamping the build date instead claimed
+ * every guide changed on every deploy — the same untrustworthy freshness
+ * signal the sitemap stopped sending — so Google had no way to tell a
+ * rewritten guide from an untouched one.
  */
 export function buildGuideSchema(opts: {
   slug: string;
   headline: string;
   description: string;
   datePublished: string;
+  dateModified: string;
   faqs?: { q: string; a: string }[];
   /** Spanish guides pass their own path, language and trail; the defaults
    *  describe an English guide under /guides. */
@@ -502,7 +506,7 @@ export function buildGuideSchema(opts: {
       description: opts.description,
       inLanguage: opts.inLanguage ?? "en-US",
       datePublished: opts.datePublished,
-      dateModified: BUILD_DATE,
+      dateModified: opts.dateModified,
       author: { "@id": ORG_ID },
       publisher: { "@id": ORG_ID },
       isPartOf: { "@id": WEBSITE_ID },

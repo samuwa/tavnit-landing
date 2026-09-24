@@ -26,14 +26,14 @@ export const GUIDES_ES: GuideEs[] = [
   {
     slug: "hs-code-classification-explained",
     slugEs: "clasificacion-arancelaria",
-    title: "Clasificación arancelaria: qué es y cómo automatizarla",
-    h1: "Clasificación arancelaria: qué es, cómo se decide y cómo automatizarla",
+    title: "Clasificación arancelaria: qué es, cómo se hace y ejemplos",
+    h1: "Clasificación arancelaria: qué es, cómo se determina la partida y dos ejemplos paso a paso",
     description:
-      "Qué es el Sistema Armonizado, por qué clasificar es un juicio y no una búsqueda, qué son las RGI y las notas legales, y cómo automatizarlo con responsabilidad.",
+      "Qué es, cómo se llega de la descripción del producto a la partida y a la fracción nacional con las RGI y las notas legales, dos ejemplos resueltos y cómo automatizarla con revisión del corredor.",
     lede: "La clasificación arancelaria asigna a cada mercancía un código del Sistema Armonizado, la nomenclatura internacional con la que las aduanas determinan derechos, impuestos y controles. Los seis primeros dígitos son universales; cada país los extiende a ocho, diez o más dígitos en sus líneas arancelarias nacionales. Una fracción equivocada es el impuesto equivocado, un embarque retenido o una multa.",
     published: "2026-09-08",
-    updated: "2026-09-08",
-    readingMinutes: 7,
+    updated: "2026-09-23",
+    readingMinutes: 9,
     sections: [
       {
         heading: "Cómo está construido el Sistema Armonizado",
@@ -48,6 +48,20 @@ export const GUIDES_ES: GuideEs[] = [
           "Si clasificar fuera buscar en un diccionario — entra el nombre del producto, sale el código — se habría automatizado hace décadas. No lo es, porque la nomenclatura clasifica la mercancía por su materia, su función y la forma en que se presenta, y una misma descripción comercial puede encajar de manera plausible en varias partidas. ¿Una funda de asiento de auto con calefacción es un artículo textil, una parte de vehículo o un aparato eléctrico de calentamiento? Cada opción tiene una tasa distinta.",
           "Los criterios de desempate son las Reglas Generales para la Interpretación del Sistema Armonizado, las RGI. La Regla 1 establece que mandan los textos de las partidas y las notas legales de sección y de capítulo. La Regla 2 cubre los artículos incompletos y las mezclas. La Regla 3 resuelve la mercancía que podría caer en dos o más partidas: primero la descripción más específica, luego el carácter esencial y, si no, la partida que va última en orden numérico. Las Reglas 4 a 6 tratan la mercancía no comprendida en otra parte, los envases y la clasificación a nivel de subpartida. Una clasificación defendible cita la regla en la que se apoyó.",
           "Después están las notas legales: notas de sección y de capítulo que incluyen o excluyen mercancía específica de una partida sin importar lo que el texto de la partida parezca decir. Un clasificador que lee los títulos de las partidas e ignora las notas se va a equivocar con toda confianza en un conjunto predecible de productos.",
+        ],
+      },
+      {
+        heading: "Dos ejemplos resueltos, paso a paso",
+        paragraphs: [
+          "La secuencia es siempre la misma: describir la mercancía por materia, función y presentación; ubicar la sección y el capítulo; leer sus notas legales; elegir la partida de cuatro dígitos por el texto (RGI 1); bajar a la subpartida de seis (RGI 6); y terminar en la fracción nacional que fija los impuestos. Dos casos muestran cómo cambia el camino según el producto.",
+          "Una computadora portátil. La factura dice “notebook 14 pulgadas, 16 GB”. Es una máquina, así que Sección XVI, capítulo 84. La nota de capítulo define qué cuenta como máquina automática para tratamiento de datos, y el producto cumple. Partida 84.71 por el texto de la partida (RGI 1). Subpartida 8471.30: máquinas portátiles de peso inferior o igual a 10 kg con unidad central, teclado y visualizador (RGI 6). Desde ahí, el arancel nacional agrega los dígitos que fijan el DAI y el ITBMS. No hubo que desempatar nada: la descripción era suficiente y el texto de la partida decidió.",
+          "Un juego de peluquería en estuche de cuero: máquina eléctrica de cortar el pelo, tijeras, peine, cepillo y toalla, vendido como un conjunto. Cada artículo por separado cae en una partida distinta. Como se presenta acondicionado para la venta al por menor y responde a una misma necesidad, se clasifica como un todo por el artículo que le da el carácter esencial (RGI 3 b): la máquina de cortar el pelo, partida 85.10. El estuche va con el conjunto y no aparte (RGI 5 a). Este es el ejemplo que usan las propias notas explicativas del SA, y es el tipo de caso donde dos personas sin un criterio escrito llegan a dos fracciones distintas.",
+        ],
+        bullets: [
+          "Materia, función y presentación antes que el nombre comercial: “notebook” no clasifica, “máquina portátil de tratamiento de datos de menos de 10 kg” sí.",
+          "Las notas de sección y de capítulo se leen antes de elegir la partida, no después.",
+          "Cuando el producto cabe en dos partidas, la RGI 3 decide en orden: la descripción más específica, luego el carácter esencial, y por último la partida que va última en orden numérico.",
+          "La clasificación no termina en seis dígitos. Termina en la fracción del arancel nacional, y esa fracción es la que se declara.",
         ],
       },
       {
@@ -92,6 +106,7 @@ export const GUIDES_ES: GuideEs[] = [
       ],
     },
     faqs: [
+      { q: "¿Qué es una partida arancelaria?", a: "En el Sistema Armonizado, la partida es el nivel de cuatro dígitos (84.71, por ejemplo) y la subpartida el de seis. En Panamá y en buena parte de Centroamérica, “partida arancelaria” se usa también para la fracción nacional completa, la línea de ocho o más dígitos a la que se atan el DAI, el ITBMS y el ISC. Cuando alguien pide “la partida” de un producto, casi siempre quiere esa fracción nacional, no solo los cuatro dígitos." },
       { q: "¿Cuál es la diferencia entre el código SA y la fracción arancelaria?", a: "El código SA son los seis dígitos internacionales que define la Organización Mundial de Aduanas. La fracción arancelaria es la extensión que hace cada país — ocho, diez o más dígitos — y a la que se atan los derechos y los impuestos nacionales. El Arancel Nacional de Panamá, el TARIC de la Unión Europea y el HTS de Estados Unidos son aranceles nacionales construidos sobre el SA." },
       { q: "¿Puede la inteligencia artificial clasificar fracciones arancelarias con precisión?", a: "Puede proponer buenas clasificaciones cuando parte de una descripción de producto adecuada, trabaja contra el arancel nacional completo con sus notas legales y explica su razonamiento. Lo que no debe hacer es presentar declaraciones sin supervisión: el enfoque responsable es una propuesta con nivel de confianza y razonamiento, revisada por un corredor de aduana autorizado en las líneas de baja confianza o de alto valor." },
       { q: "¿Puedo usar el código SA que mi proveedor puso en la factura?", a: "Tómalo como una pista, no como una respuesta. El proveedor clasificó bajo el arancel de su propio país, posiblemente para control de exportaciones y no para derechos de importación, y posiblemente con una edición anterior del SA. La responsabilidad de la fracción en la declaración de importación es del importador o del corredor." },

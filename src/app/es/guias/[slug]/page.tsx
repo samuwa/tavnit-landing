@@ -72,6 +72,7 @@ export default async function SpanishGuidePage({
               headline: g.h1,
               description: g.description,
               datePublished: g.published,
+              dateModified: g.updated,
               faqs: g.faqs,
               breadcrumb: [
                 { name: "Inicio", url: `${SITE_URL}/es` },
