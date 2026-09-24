@@ -51,16 +51,16 @@ export default function GuidesHubPage() {
       />
 
       <div className="max-w-[860px] mx-auto px-4 sm:px-6">
-        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
-          <Link href="/" className="hover:text-gray-300 transition-colors">Home</Link>
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-fg-5">
+          <Link href="/" className="hover:text-fg-3 transition-colors">Home</Link>
           <span className="mx-2" aria-hidden="true">/</span>
-          <span className="text-gray-400">Guides</span>
+          <span className="text-fg-4">Guides</span>
         </nav>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-5 tracking-tight leading-tight">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight leading-tight">
           Guides to document automation
         </h1>
-        <p className="text-lg text-gray-300 leading-relaxed mb-12 max-w-[680px]">
+        <p className="text-lg text-fg-3 leading-relaxed mb-12 max-w-[680px]">
           The problems behind the product, explained on their own terms: what PO matching checks, why
           invoice tables are hard to extract, how tariff classification really works. Vendor-neutral
           until the last section, where we say what Tavnit automates.
@@ -73,13 +73,13 @@ export default function GuidesHubPage() {
               href={`/guides/${g.slug}`}
               className="glass-card glass-card-hover rounded-2xl p-6 block transition-all"
             >
-              <h2 className="text-xl font-bold text-white mb-2">{g.h1}</h2>
-              <p className="text-sm text-gray-400 leading-relaxed mb-3">{g.description}</p>
-              <span className="inline-flex items-center gap-4 text-xs text-gray-500">
+              <h2 className="text-xl font-bold text-fg mb-2">{g.h1}</h2>
+              <p className="text-sm text-fg-4 leading-relaxed mb-3">{g.description}</p>
+              <span className="inline-flex items-center gap-4 text-xs text-fg-5">
                 <span className="inline-flex items-center gap-1">
                   <Clock size={13} /> {g.readingMinutes} min read
                 </span>
-                <span className="inline-flex items-center gap-1 text-[#3b82f6] font-medium">
+                <span className="inline-flex items-center gap-1 text-accent font-medium">
                   Read <ArrowRight size={13} />
                 </span>
               </span>

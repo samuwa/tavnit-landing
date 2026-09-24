@@ -77,12 +77,12 @@ function CookieBanner() {
       aria-live="polite"
       aria-label={copy.aria}
       lang={copy === BANNER_COPY.es ? "es" : "en"}
-      className="fixed inset-x-3 bottom-3 sm:inset-x-auto sm:right-5 sm:bottom-5 sm:max-w-md z-[100] rounded-2xl border border-white/10 bg-[#0b0d16]/95 backdrop-blur-md p-5 shadow-2xl shadow-black/50 text-sm text-gray-300"
+      className="fixed inset-x-3 bottom-3 sm:inset-x-auto sm:right-5 sm:bottom-5 sm:max-w-md z-[100] rounded-2xl border border-tint/10 bg-panel/95 backdrop-blur-md p-5 shadow-2xl shadow-black/50 text-sm text-fg-3"
     >
-      <p className="font-heading font-semibold text-white mb-1.5">{copy.title}</p>
+      <p className="font-heading font-semibold text-fg mb-1.5">{copy.title}</p>
       <p className="leading-relaxed">
         {copy.body}{" "}
-        <Link href={copy === BANNER_COPY.es ? "/es/privacidad" : "/privacy"} className="text-[#8fa2ff] hover:text-white underline underline-offset-2">
+        <Link href={copy === BANNER_COPY.es ? "/es/privacidad" : "/privacy"} className="text-accent-2 hover:text-fg underline underline-offset-2">
           {copy.privacy}
         </Link>
       </p>
@@ -90,7 +90,7 @@ function CookieBanner() {
         <button
           type="button"
           onClick={() => choose("denied")}
-          className="px-4 py-2 rounded-lg border border-white/15 text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+          className="px-4 py-2 rounded-lg border border-tint/15 text-fg-3 hover:bg-tint/5 hover:text-fg transition-colors"
         >
           {copy.decline}
         </button>

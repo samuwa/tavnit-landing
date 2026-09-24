@@ -90,7 +90,7 @@ export default function TermsPage() {
 
         <LegalSection heading="Your content">
           <p>
-            <strong className="text-gray-200">
+            <strong className="text-fg-2">
               You own the documents you send and the data extracted from them.
             </strong>{" "}
             We claim no ownership over your content and grant ourselves only the licence
@@ -100,7 +100,7 @@ export default function TermsPage() {
             You are responsible for having the right to send us the documents you send, and
             for any personal data they contain. How that content is handled is described in
             our{" "}
-            <Link href="/privacy" className="text-[#3b82f6] hover:underline">
+            <Link href="/privacy" className="text-accent hover:underline">
               Privacy Policy
             </Link>
             .
@@ -139,7 +139,7 @@ export default function TermsPage() {
             purchased at ${EXTRA_CREDIT_USD.toFixed(2)} each, with a minimum of{" "}
             {EXTRA_CREDIT_MINIMUM} credits, on top of any plan. Current plans are listed on
             the{" "}
-            <Link href="/pricing" className="text-[#3b82f6] hover:underline">
+            <Link href="/pricing" className="text-accent hover:underline">
               pricing page
             </Link>
             .
@@ -206,7 +206,7 @@ export default function TermsPage() {
         <LegalSection heading="Contact">
           <p>
             Questions about these terms:{" "}
-            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-[#3b82f6] hover:underline">
+            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-accent hover:underline">
               {SUPPORT_EMAIL}
             </Link>
             .

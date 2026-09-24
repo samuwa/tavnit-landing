@@ -48,21 +48,21 @@ export default function IntegrationsPage() {
       />
 
       <div className="max-w-[860px] mx-auto px-4 sm:px-6">
-        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
-          <Link href="/" className="hover:text-gray-300 transition-colors">Home</Link>
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-fg-5">
+          <Link href="/" className="hover:text-fg-3 transition-colors">Home</Link>
           <span className="mx-2" aria-hidden="true">/</span>
-          <span className="text-gray-400">Integrations</span>
+          <span className="text-fg-4">Integrations</span>
         </nav>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-5 tracking-tight">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight">
           Integrations
         </h1>
-        <p className="text-lg text-gray-300 leading-relaxed mb-4">
+        <p className="text-lg text-fg-3 leading-relaxed mb-4">
           Documents reach Tavnit however suits the team sending them — dropped in the app,
           forwarded to an address, posted to an endpoint, or requested by an AI assistant.
           Extracted data leaves the same way.
         </p>
-        <p className="text-gray-400 leading-relaxed mb-12">
+        <p className="text-fg-4 leading-relaxed mb-12">
           Each route runs the same flows, so the schema, cleaning rules and review steps you
           configured apply no matter how a document arrives.
         </p>
@@ -75,37 +75,37 @@ export default function IntegrationsPage() {
               className="glass-card glass-card-hover rounded-xl p-5 flex flex-col transition-all"
             >
               <div className="flex items-start justify-between gap-3 mb-2">
-                <h2 className="text-base font-semibold text-white">{item.label}</h2>
-                <ArrowRight size={16} className="text-[#3b82f6] flex-shrink-0 mt-1" />
+                <h2 className="text-base font-semibold text-fg">{item.label}</h2>
+                <ArrowRight size={16} className="text-accent flex-shrink-0 mt-1" />
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">{item.summary}</p>
+              <p className="text-sm text-fg-4 leading-relaxed">{item.summary}</p>
             </Link>
           ))}
         </div>
 
         <section className="mb-14">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">
             Which one should you use?
           </h2>
-          <div className="space-y-3 text-gray-400 leading-relaxed">
+          <div className="space-y-3 text-fg-4 leading-relaxed">
             <p>
-              <strong className="text-gray-200">If people are sending the documents</strong> —
+              <strong className="text-fg-2">If people are sending the documents</strong> —
               an accounts inbox receiving supplier invoices, say — use{" "}
-              <Link href="/docs/email-integration" className="text-[#3b82f6] hover:underline">email</Link>.
+              <Link href="/docs/email-integration" className="text-accent hover:underline">email</Link>.
               Nobody has to learn a new tool; they forward as they already do.
             </p>
             <p>
-              <strong className="text-gray-200">If a system is sending them</strong>, use the{" "}
-              <Link href="/docs/api-integration" className="text-[#3b82f6] hover:underline">REST API</Link>{" "}
+              <strong className="text-fg-2">If a system is sending them</strong>, use the{" "}
+              <Link href="/docs/api-integration" className="text-accent hover:underline">REST API</Link>{" "}
               and have results pushed back by{" "}
-              <Link href="/docs/webhooks" className="text-[#3b82f6] hover:underline">webhook</Link>.
+              <Link href="/docs/webhooks" className="text-accent hover:underline">webhook</Link>.
               If you would rather not write the glue code, the same endpoints work from Zapier,
               Make, n8n and Power Automate.
             </p>
             <p>
-              <strong className="text-gray-200">If you are working alongside an AI assistant</strong>,
+              <strong className="text-fg-2">If you are working alongside an AI assistant</strong>,
               use the{" "}
-              <Link href="/integrations/mcp" className="text-[#3b82f6] hover:underline">MCP connector</Link>.
+              <Link href="/integrations/mcp" className="text-accent hover:underline">MCP connector</Link>.
               It gives claude.ai or Cursor the whole pipeline, not just a way in: your assistant can
               build extraction flows, attach cleaning rules, run documents through them, and query
               what you have already extracted — without you moving files around by hand.
@@ -114,8 +114,8 @@ export default function IntegrationsPage() {
         </section>
 
         <div className="glass-card rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">Start with one document</h2>
-          <p className="text-gray-400 mb-6 max-w-[520px] mx-auto leading-relaxed">
+          <h2 className="text-2xl font-bold text-fg mb-3">Start with one document</h2>
+          <p className="text-fg-4 mb-6 max-w-[520px] mx-auto leading-relaxed">
             Build a flow, send something through it, and wire up delivery once you can see the
             output. Free credits to begin.
           </p>

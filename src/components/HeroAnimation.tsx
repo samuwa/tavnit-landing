@@ -33,7 +33,7 @@ export default function HeroAnimation() {
   return (
     <div
       ref={containerRef}
-      className="flex items-center justify-center min-h-[280px] md:min-h-[420px] overflow-visible"
+      className="flex items-center justify-center min-h-[280px] md:min-h-[min(420px,40svh)] overflow-visible"
     />
   );
 }
@@ -53,7 +53,7 @@ function buildAnimation(container: HTMLDivElement): HTMLDivElement {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     gap: ${getResponsiveGap()};
-    align-items: start;
+    align-items: stretch;
     position: relative;
     padding: 0.5rem 0;
   `;
@@ -72,12 +72,12 @@ function createPDF(): HTMLDivElement {
   pdf.className = "pdf-doc";
   pdf.id = "pdf-hero";
   pdf.innerHTML = `
-    <div style="display:flex;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.08);">
+    <div style="display:flex;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--tint-08);">
       <div>
-        <div id="pdf-header-title-hero" style="height:12px;width:100px;background:rgba(255,255,255,0.15);border-radius:4px;margin-bottom:8px;"></div>
-        <div style="height:8px;width:130px;background:rgba(255,255,255,0.08);border-radius:4px;"></div>
+        <div id="pdf-header-title-hero" style="height:12px;width:100px;background:var(--tint-15);border-radius:4px;margin-bottom:8px;"></div>
+        <div style="height:8px;width:130px;background:var(--tint-08);border-radius:4px;"></div>
       </div>
-      <div style="width:48px;height:48px;border:1px solid rgba(255,255,255,0.12);border-radius:6px;"></div>
+      <div style="width:48px;height:48px;border:1px solid var(--tint-12);border-radius:6px;"></div>
     </div>
     <div id="pdf-fields-hero">
       ${FIELDS.map(
@@ -88,10 +88,10 @@ function createPDF(): HTMLDivElement {
         </div>`
       ).join("")}
     </div>
-    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.08);">
-      <div id="pdf-footer-text-hero" style="height:8px;width:100%;background:rgba(255,255,255,0.08);border-radius:4px;margin-bottom:8px;"></div>
-      <div style="height:8px;width:75%;background:rgba(255,255,255,0.08);border-radius:4px;margin-bottom:8px;"></div>
-      <div style="height:8px;width:85%;background:rgba(255,255,255,0.08);border-radius:4px;"></div>
+    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--tint-08);">
+      <div id="pdf-footer-text-hero" style="height:8px;width:100%;background:var(--tint-08);border-radius:4px;margin-bottom:8px;"></div>
+      <div style="height:8px;width:75%;background:var(--tint-08);border-radius:4px;margin-bottom:8px;"></div>
+      <div style="height:8px;width:85%;background:var(--tint-08);border-radius:4px;"></div>
     </div>
     <div class="scan-border" id="scan-border-hero"></div>
   `;
@@ -141,7 +141,7 @@ function createTable(): HTMLDivElement {
 
   table.innerHTML = `
     <table>
-      <thead><tr><th style="color:#94a3b8">Field</th><th style="color:#94a3b8">Value</th></tr></thead>
+      <thead><tr><th style="color:var(--fg-4)">Field</th><th style="color:var(--fg-4)">Value</th></tr></thead>
       <tbody id="table-body-hero">${headerRow}${fieldRows}${footerRow}</tbody>
     </table>
     <div class="complete-banner" id="complete-banner-hero">&#10003; Extraction complete</div>

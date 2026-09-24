@@ -30,10 +30,10 @@ const USE_CASE_LINKS: { label: string; href: string }[] = [
 
 export default function Hero({ documentsProcessed }: { documentsProcessed: string }) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-16" id="hero" aria-labelledby="hero-heading">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center py-4 md:py-8 w-full">
+    <section className="relative min-h-svh flex items-center justify-center overflow-hidden pt-20 md:pt-16" id="hero" aria-labelledby="hero-heading">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center py-4 md:py-[clamp(0.5rem,1.5svh,2rem)] w-full">
         <div className="hero-enter">
-          <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight tracking-tight text-white">
+          <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-[clamp(2rem,5svh,3rem)] lg:text-[clamp(2.25rem,5svh,3.5rem)] font-extrabold leading-tight tracking-tight text-fg">
             <span>Documents to <span className="gradient-text">Structured Data</span></span>
             <span className="sr-only"> — AI-Powered PDF Extraction In Seconds</span>
           </h1>
@@ -41,7 +41,7 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
 
         {/* Animation */}
         <div
-          className="hero-enter w-full my-4 md:my-8"
+          className="hero-enter w-full my-4 md:my-[clamp(0.5rem,2svh,2rem)]"
           style={{ "--hero-delay": "0.15s" } as React.CSSProperties}
           aria-hidden="true"
         >
@@ -49,13 +49,13 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
         </div>
 
         {/* Typing Effect: completes the headline, decorative for AT */}
-        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight tracking-tight mb-6 text-white" aria-hidden="true">
+        <div className="text-3xl sm:text-4xl md:text-[clamp(2rem,5svh,3rem)] lg:text-[clamp(2.25rem,5svh,3.5rem)] font-extrabold leading-tight tracking-tight mb-6 md:mb-[clamp(0.75rem,2svh,1.5rem)] text-fg" aria-hidden="true">
           <span className="typing-text">... In Seconds</span>
         </div>
 
         {/* Subtitle */}
         <p
-          className="hero-enter text-base sm:text-lg text-gray-400 max-w-[560px] mb-8"
+          className="hero-enter text-base sm:text-lg text-fg-4 max-w-[560px] mb-8 md:mb-[clamp(1rem,2.5svh,2rem)]"
           style={{ "--hero-delay": "0.3s" } as React.CSSProperties}
         >
           Extract, clean, and store data from any document — then review it with your team and let AI agents act on it. No code required.
@@ -80,7 +80,7 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
               onClick={() => trackEvent("cta_click", { cta: "live_demo", location: "hero" })}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-white/15 text-gray-300 rounded-xl text-base sm:text-lg font-medium hover:bg-white/5 hover:text-white hover:border-white/30 hover:-translate-y-0.5 transition-all"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-tint/15 text-fg-3 rounded-xl text-base sm:text-lg font-medium hover:bg-tint/5 hover:text-fg hover:border-tint/30 hover:-translate-y-0.5 transition-all"
             >
               <Play size={18} />
               Try the Live Demo
@@ -88,23 +88,23 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
           </div>
 
           {/* Trust indicators */}
-          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs sm:text-sm text-gray-500">
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs sm:text-sm text-fg-5">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-emerald-500/70" />
+              <CheckCircle2 size={14} className="text-ok/70" />
               Free credits to start
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-emerald-500/70" />
+              <CheckCircle2 size={14} className="text-ok/70" />
               {documentsProcessed} documents processed
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-emerald-500/70" />
+              <CheckCircle2 size={14} className="text-ok/70" />
               Setup in under 5 minutes
             </span>
           </div>
 
           {/* Use cases with real search demand */}
-          <p className="text-xs sm:text-sm text-gray-500">
+          <p className="text-xs sm:text-sm text-fg-5">
             <span className="mr-1">Built for</span>
             {USE_CASE_LINKS.map(({ label, href }, i) => (
               <span key={href}>
@@ -112,7 +112,7 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
                 <Link
                   href={href}
                   onClick={() => trackEvent("cta_click", { cta: "use_case_link", location: "hero", href })}
-                  className="text-gray-300 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors"
+                  className="text-fg-3 hover:text-fg underline underline-offset-4 decoration-tint/20 hover:decoration-tint/60 transition-colors"
                 >
                   {label}
                 </Link>

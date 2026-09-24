@@ -65,7 +65,7 @@ export default function Page() {
     <>
       <DocsPageSchema slug="mcp-connector" howTo={HOW_TO} />
       <section>
-        <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-fg to-fg-4 bg-clip-text text-transparent">
           MCP Connector
         </h1>
 
@@ -86,7 +86,7 @@ export default function Page() {
           <p>
             For what the connector is for, and how it compares to pasting a file into a chat, see
             the{" "}
-            <Link href="/integrations/mcp" className="text-[#3b82f6] hover:underline">
+            <Link href="/integrations/mcp" className="text-accent hover:underline">
               MCP connector overview
             </Link>
             .

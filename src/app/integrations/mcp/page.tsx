@@ -115,34 +115,34 @@ export default async function McpIntegrationPage() {
       />
 
       <div className="max-w-[860px] mx-auto px-4 sm:px-6">
-        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
-          <Link href="/" className="hover:text-gray-300 transition-colors">Home</Link>
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-fg-5">
+          <Link href="/" className="hover:text-fg-3 transition-colors">Home</Link>
           <span className="mx-2" aria-hidden="true">/</span>
-          <Link href="/integrations" className="hover:text-gray-300 transition-colors">Integrations</Link>
+          <Link href="/integrations" className="hover:text-fg-3 transition-colors">Integrations</Link>
           <span className="mx-2" aria-hidden="true">/</span>
-          <span className="text-gray-400">MCP Connector</span>
+          <span className="text-fg-4">MCP Connector</span>
         </nav>
 
         <div className="flex items-center gap-2 mb-4">
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#3b82f6] bg-[#3b82f6]/10 px-2.5 py-1 rounded-md">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent bg-[#3b82f6]/10 px-2.5 py-1 rounded-md">
             <Plug size={13} /> Model Context Protocol
           </span>
         </div>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-5 tracking-tight leading-tight">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight leading-tight">
           Give your AI assistant a real document pipeline
         </h1>
 
         {/* Lead answer kept short and self-contained — this is the passage most
             likely to be extracted into an AI answer or a featured snippet. */}
-        <p className="text-lg text-gray-300 leading-relaxed mb-4">
+        <p className="text-lg text-fg-3 leading-relaxed mb-4">
           Tavnit runs an MCP server. Connect it to claude.ai or Cursor and your
           assistant gets the whole document pipeline: it can build extraction flows,
           attach cleaning rules, push documents through them, and read the results
           back — the exact fields you defined, cleaned and typed, instead of an
           interpretation of a file it was handed.
         </p>
-        <p className="text-gray-400 leading-relaxed mb-10">
+        <p className="text-fg-4 leading-relaxed mb-10">
           Setup is a URL you paste into your assistant&rsquo;s settings. No SDK, no
           server to run, no code.
         </p>
@@ -156,7 +156,7 @@ export default async function McpIntegrationPage() {
           </Link>
           <Link
             href="/docs/mcp-connector"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#3b82f6]/50 text-[#3b82f6] font-semibold hover:bg-[#3b82f6] hover:text-white transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#3b82f6]/50 text-accent font-semibold hover:bg-[#3b82f6] hover:text-white transition-all"
           >
             Setup guide
           </Link>
@@ -164,10 +164,10 @@ export default async function McpIntegrationPage() {
 
         {/* ── The problem ── */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">
             Why assistants struggle with documents
           </h2>
-          <p className="text-gray-400 leading-relaxed mb-4">
+          <p className="text-fg-4 leading-relaxed mb-4">
             AI assistants are good at reasoning and bad at being a data pipeline. Hand one
             a scanned invoice and it will read it — probably correctly, sometimes not, and
             differently the second time. There is no schema, so field names drift between
@@ -175,7 +175,7 @@ export default async function McpIntegrationPage() {
             one. And there is no record of what happened, which matters as soon as the
             output touches accounting or compliance.
           </p>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="text-fg-4 leading-relaxed">
             That is fine for a one-off question and unworkable as a process. What an
             assistant actually needs is a tool that already knows how to read your
             documents.
@@ -184,19 +184,19 @@ export default async function McpIntegrationPage() {
 
         {/* ── Comparison ── */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">
             Pasting a PDF vs. calling a flow
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="border-b border-white/10">
+                <tr className="border-b border-tint/10">
                   <th className="text-left py-3 pr-4"><span className="sr-only">Capability</span></th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-300">Pasting the file into chat</th>
-                  <th className="text-left py-3 pl-4 font-semibold text-white">Through the MCP connector</th>
+                  <th className="text-left py-3 px-4 font-semibold text-fg-3">Pasting the file into chat</th>
+                  <th className="text-left py-3 pl-4 font-semibold text-fg">Through the MCP connector</th>
                 </tr>
               </thead>
-              <tbody className="text-gray-400">
+              <tbody className="text-fg-4">
                 {[
                   ["Output shape", "Whatever the model returns that time", "The fields your flow defines, every time"],
                   ["Field names", "Drift between runs", "Fixed by your schema"],
@@ -205,8 +205,8 @@ export default async function McpIntegrationPage() {
                   ["Where results land", "In the chat", "Buckets, webhook, email or API"],
                   ["Repeatable at volume", "No", "Yes — same flow, any number of documents"],
                 ].map(([label, a, b]) => (
-                  <tr key={label} className="border-b border-white/5 align-top">
-                    <td className="py-3 pr-4 font-medium text-gray-300 whitespace-nowrap">{label}</td>
+                  <tr key={label} className="border-b border-tint/5 align-top">
+                    <td className="py-3 pr-4 font-medium text-fg-3 whitespace-nowrap">{label}</td>
                     <td className="py-3 px-4">
                       <span className="inline-flex items-start gap-2">
                         <X size={15} className="text-red-400/70 flex-shrink-0 mt-0.5" />
@@ -215,7 +215,7 @@ export default async function McpIntegrationPage() {
                     </td>
                     <td className="py-3 pl-4">
                       <span className="inline-flex items-start gap-2">
-                        <Check size={15} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <Check size={15} className="text-ok flex-shrink-0 mt-0.5" />
                         {b}
                       </span>
                     </td>
@@ -228,23 +228,23 @@ export default async function McpIntegrationPage() {
 
         {/* ── Capabilities ── */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">
             What your assistant can do once connected
           </h2>
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             {capabilities.map((c) => (
               <div key={c.title} className="glass-card rounded-xl p-5">
-                <div className="flex items-center gap-2.5 mb-2 text-[#93c5fd]">
+                <div className="flex items-center gap-2.5 mb-2 text-accent-2">
                   {c.icon}
-                  <h3 className="text-base font-semibold text-white">{c.title}</h3>
+                  <h3 className="text-base font-semibold text-fg">{c.title}</h3>
                 </div>
-                <p className="text-sm text-gray-400 leading-relaxed">{c.body}</p>
+                <p className="text-sm text-fg-4 leading-relaxed">{c.body}</p>
               </div>
             ))}
           </div>
           <div className="glass-card rounded-xl p-5">
-            <p className="text-sm text-gray-500 mb-3 font-medium">Things you can ask it:</p>
-            <ul className="space-y-2 text-sm text-gray-300">
+            <p className="text-sm text-fg-5 mb-3 font-medium">Things you can ask it:</p>
+            <ul className="space-y-2 text-sm text-fg-3">
               {[
                 "Create a flow that captures the vendor, dates, totals and line items from our freight invoices.",
                 "Add a cleaner to that flow that converts every total to USD.",
@@ -254,7 +254,7 @@ export default async function McpIntegrationPage() {
                 "Which runs are waiting on review right now?",
               ].map((q) => (
                 <li key={q} className="flex gap-2.5">
-                  <span className="text-[#3b82f6] flex-shrink-0" aria-hidden="true">&rsaquo;</span>
+                  <span className="text-accent flex-shrink-0" aria-hidden="true">&rsaquo;</span>
                   <span className="italic">&ldquo;{q}&rdquo;</span>
                 </li>
               ))}
@@ -264,24 +264,24 @@ export default async function McpIntegrationPage() {
 
         {/* ── How it fits ── */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">
             It uses the pipeline you already built
           </h2>
-          <p className="text-gray-400 leading-relaxed mb-4">
+          <p className="text-fg-4 leading-relaxed mb-4">
             The connector is not a separate extraction engine. It calls the same flows as
             the rest of Tavnit — whether you built them in the app or the assistant created
             them for you — which means every rule you configured still applies when an
             assistant is the one making the request.
           </p>
-          <ul className="space-y-2.5 text-gray-400">
+          <ul className="space-y-2.5 text-fg-4">
             {[
-              [<Link key="c" href="/docs/collections" className="text-[#3b82f6] hover:underline">Collections</Link>, "still classify an incoming document and route it to the right flow."],
-              [<Link key="cl" href="/docs/cleaners" className="text-[#3b82f6] hover:underline">Cleaners</Link>, "still standardise formats, convert currencies and apply your lookups."],
-              [<Link key="h" href="/docs/human-in-the-loop" className="text-[#3b82f6] hover:underline">Human-in-the-Loop</Link>, "review still pauses a run when you have asked it to — an assistant cannot skip your approval step."],
-              [<Link key="b" href="/docs/buckets" className="text-[#3b82f6] hover:underline">Buckets</Link>, "still receive the results, so what the assistant extracts is queryable afterwards."],
+              [<Link key="c" href="/docs/collections" className="text-accent hover:underline">Collections</Link>, "still classify an incoming document and route it to the right flow."],
+              [<Link key="cl" href="/docs/cleaners" className="text-accent hover:underline">Cleaners</Link>, "still standardise formats, convert currencies and apply your lookups."],
+              [<Link key="h" href="/docs/human-in-the-loop" className="text-accent hover:underline">Human-in-the-Loop</Link>, "review still pauses a run when you have asked it to — an assistant cannot skip your approval step."],
+              [<Link key="b" href="/docs/buckets" className="text-accent hover:underline">Buckets</Link>, "still receive the results, so what the assistant extracts is queryable afterwards."],
             ].map(([link, tail], i) => (
               <li key={i} className="flex gap-2.5 leading-relaxed">
-                <Check size={17} className="text-emerald-400 flex-shrink-0 mt-1" />
+                <Check size={17} className="text-ok flex-shrink-0 mt-1" />
                 <span>{link} {tail}</span>
               </li>
             ))}
@@ -290,54 +290,54 @@ export default async function McpIntegrationPage() {
 
         {/* ── Security ── */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Scope and access</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">Scope and access</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="glass-card rounded-xl p-5">
-              <div className="flex items-center gap-2.5 mb-2 text-[#93c5fd]">
+              <div className="flex items-center gap-2.5 mb-2 text-accent-2">
                 <ShieldCheck size={19} />
-                <h3 className="text-base font-semibold text-white">Your permissions, not more</h3>
+                <h3 className="text-base font-semibold text-fg">Your permissions, not more</h3>
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-sm text-fg-4 leading-relaxed">
                 The connector is issued from your own API key and reaches only the
                 organisation you generated it in. The assistant inherits your role — it
                 cannot do anything you could not do in the app.
               </p>
             </div>
             <div className="glass-card rounded-xl p-5">
-              <div className="flex items-center gap-2.5 mb-2 text-[#93c5fd]">
+              <div className="flex items-center gap-2.5 mb-2 text-accent-2">
                 <Lock size={19} />
-                <h3 className="text-base font-semibold text-white">Treat the URL as a credential</h3>
+                <h3 className="text-base font-semibold text-fg">Treat the URL as a credential</h3>
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-sm text-fg-4 leading-relaxed">
                 Anyone holding the connector URL can reach your flows and Buckets. URLs are
                 time-limited, and refreshing one invalidates the previous value immediately.
               </p>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mt-4">
+          <p className="text-sm text-fg-5 mt-4">
             Full detail in the{" "}
-            <Link href="/docs/mcp-connector" className="text-[#3b82f6] hover:underline">
+            <Link href="/docs/mcp-connector" className="text-accent hover:underline">
               connector documentation
             </Link>{" "}
             and{" "}
-            <Link href="/docs/user-roles" className="text-[#3b82f6] hover:underline">
+            <Link href="/docs/user-roles" className="text-accent hover:underline">
               user roles reference
             </Link>
-            . The server endpoint is <code className="text-gray-300">{MCP_URL}</code>.
+            . The server endpoint is <code className="text-fg-3">{MCP_URL}</code>.
           </p>
         </section>
 
         {/* ── Setup ── */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Connecting it</h2>
-          <p className="text-gray-400 leading-relaxed mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">Connecting it</h2>
+          <p className="text-fg-4 leading-relaxed mb-4">
             Generate a connector URL on the Integrations page in Tavnit, then paste it into
             claude.ai under Settings &rarr; Connectors, or add it to Cursor as a remote MCP
             server. It takes a couple of minutes and needs no code.
           </p>
           <Link
             href="/docs/mcp-connector"
-            className="inline-flex items-center gap-2 text-[#3b82f6] font-semibold hover:underline"
+            className="inline-flex items-center gap-2 text-accent font-semibold hover:underline"
           >
             Read the step-by-step setup guide <ArrowRight size={16} />
           </Link>
@@ -345,22 +345,22 @@ export default async function McpIntegrationPage() {
 
         {/* ── FAQ ── */}
         <section className="mb-14">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Common questions</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-6">Common questions</h2>
           <dl className="space-y-4">
             {faqs.map((faq) => (
               <div key={faq.q} className="glass-card rounded-xl p-5">
-                <dt className="text-base font-semibold text-white mb-2">{faq.q}</dt>
-                <dd className="text-sm text-gray-400 leading-relaxed">{faq.a}</dd>
+                <dt className="text-base font-semibold text-fg mb-2">{faq.q}</dt>
+                <dd className="text-sm text-fg-4 leading-relaxed">{faq.a}</dd>
               </div>
             ))}
           </dl>
         </section>
 
         <div className="glass-card rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">
+          <h2 className="text-2xl font-bold text-fg mb-3">
             Point your assistant at real documents
           </h2>
-          <p className="text-gray-400 mb-6 max-w-[520px] mx-auto leading-relaxed">
+          <p className="text-fg-4 mb-6 max-w-[520px] mx-auto leading-relaxed">
             Build a flow, generate a connector URL, and start asking. Free credits to
             begin, and no card required.
           </p>
@@ -373,7 +373,7 @@ export default async function McpIntegrationPage() {
             </Link>
             <Link
               href={stripeOn ? "/pricing" : "/schedule"}
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-white/15 text-gray-300 font-semibold hover:bg-white/5 hover:text-white transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg transition-all"
             >
               {stripeOn ? "See pricing" : "Book a demo"}
             </Link>

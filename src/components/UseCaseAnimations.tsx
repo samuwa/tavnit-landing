@@ -40,11 +40,11 @@ function useDemoLoop(lastStep: number, stepMs = 1200, holdMs = 3200) {
 
 function StatusPill({ label, tone }: { label: string; tone: "working" | "done" }) {
   return tone === "done" ? (
-    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
+    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-ok text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
       {label}
     </span>
   ) : (
-    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-[#93c5fd] text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
+    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-accent-2 text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
       <span className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] animate-pulse" />
       {label}
     </span>
@@ -74,15 +74,15 @@ function DemoShell({
       className="glass-card rounded-2xl overflow-hidden border border-[#3b82f6]/20 shadow-2xl shadow-[#3b82f6]/10 w-full h-[360px] flex flex-col"
       aria-hidden="true"
     >
-      <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10 flex-shrink-0">
+      <div className="flex items-center justify-between px-4 py-3 bg-tint/5 border-b border-tint/10 flex-shrink-0">
         <div className="min-w-0">
-          <div className="text-xs font-bold text-white truncate">{title}</div>
-          <div className="text-[10px] text-gray-500 truncate">{subtitle}</div>
+          <div className="text-xs font-bold text-fg truncate">{title}</div>
+          <div className="text-[10px] text-fg-5 truncate">{subtitle}</div>
         </div>
         <StatusPill label={status} tone={tone} />
       </div>
-      <div className="flex-1 min-h-0 p-4 bg-[#0d0d20]/60">{children}</div>
-      <div className="px-4 py-2.5 border-t border-white/10 bg-black/30 text-[11px] flex items-center justify-between gap-2 flex-shrink-0">
+      <div className="flex-1 min-h-0 p-4 bg-panel/60">{children}</div>
+      <div className="px-4 py-2.5 border-t border-tint/10 bg-well/30 text-[11px] flex items-center justify-between gap-2 flex-shrink-0">
         {footer}
       </div>
     </div>
@@ -119,17 +119,17 @@ export function InvoiceDemo() {
       tone={done ? "done" : "working"}
       footer={
         <>
-          <span className={done ? "text-emerald-400 font-semibold" : "text-gray-400"}>
+          <span className={done ? "text-ok font-semibold" : "text-fg-4"}>
             {done ? "✓" : ""} {processed} of {invoices.length} processed · 0 errors
           </span>
-          <span className="font-mono text-gray-300">${money(runningTotal)}</span>
+          <span className="font-mono text-fg-3">${money(runningTotal)}</span>
         </>
       }
     >
       <div className="grid grid-cols-[1fr_1.4fr] gap-3 h-full">
         {/* Inbox queue */}
-        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-2.5 overflow-hidden">
-          <div className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-2">Inbox</div>
+        <div className="rounded-lg border border-tint/10 bg-tint/[0.03] p-2.5 overflow-hidden">
+          <div className="text-[9px] font-bold text-fg-5 uppercase tracking-widest mb-2">Inbox</div>
           <div className="space-y-1.5">
             {invoices.map((inv, i) => {
               const isDone = processed > i;
@@ -139,19 +139,19 @@ export function InvoiceDemo() {
                   key={inv.id}
                   className={`rounded-md border px-2 py-1.5 text-[10px] font-mono flex items-center justify-between transition-all duration-500 ${
                     isDone
-                      ? "border-white/5 bg-white/[0.02] text-gray-600 opacity-50"
+                      ? "border-tint/5 bg-tint/[0.02] text-fg-6 opacity-50"
                       : isCurrent
-                        ? "border-[#3b82f6]/60 bg-[#3b82f6]/10 text-white"
-                        : "border-white/10 bg-black/20 text-gray-400"
+                        ? "border-[#3b82f6]/60 bg-[#3b82f6]/10 text-fg"
+                        : "border-tint/10 bg-well/20 text-fg-4"
                   }`}
                 >
                   <span>{inv.id}</span>
                   {isDone ? (
-                    <Check size={11} className="text-emerald-400" />
+                    <Check size={11} className="text-ok" />
                   ) : isCurrent ? (
                     <span className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] animate-pulse" />
                   ) : (
-                    <span className="text-gray-600">·</span>
+                    <span className="text-fg-6">·</span>
                   )}
                 </div>
               );
@@ -160,15 +160,15 @@ export function InvoiceDemo() {
         </div>
 
         {/* Bucket table */}
-        <div className="rounded-lg border border-white/10 bg-black/20 overflow-hidden flex flex-col">
-          <div className="px-2.5 py-1.5 bg-white/5 text-[9px] font-bold text-gray-500 uppercase tracking-widest">
+        <div className="rounded-lg border border-tint/10 bg-well/20 overflow-hidden flex flex-col">
+          <div className="px-2.5 py-1.5 bg-tint/5 text-[9px] font-bold text-fg-5 uppercase tracking-widest">
             Bucket · Invoices
           </div>
-          <div className="grid grid-cols-[1fr_auto] px-2.5 py-1 text-[9px] font-sans font-bold text-gray-600 uppercase tracking-wider border-b border-white/5">
+          <div className="grid grid-cols-[1fr_auto] px-2.5 py-1 text-[9px] font-sans font-bold text-fg-6 uppercase tracking-wider border-b border-tint/5">
             <span>Vendor</span>
             <span>Total</span>
           </div>
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-tint/5">
             {invoices.map((inv, i) => (
               <div
                 key={inv.id}
@@ -176,8 +176,8 @@ export function InvoiceDemo() {
                   processed > i ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
                 }`}
               >
-                <span className="text-gray-300 truncate">{inv.vendor}</span>
-                <span className="text-emerald-300">${money(inv.total)}</span>
+                <span className="text-fg-3 truncate">{inv.vendor}</span>
+                <span className="text-ok">${money(inv.total)}</span>
               </div>
             ))}
           </div>
@@ -223,10 +223,10 @@ export function ContractDemo() {
       tone={done ? "done" : "working"}
       footer={
         <>
-          <span className={done ? "text-emerald-400 font-semibold" : "text-gray-400"}>
+          <span className={done ? "text-ok font-semibold" : "text-fg-4"}>
             {done ? "✓ 3 renewals found across 412 contracts" : querying ? "Querying portfolio…" : "Extracting key terms…"}
           </span>
-          <span className="font-mono text-gray-500">{done ? "AI Search" : `${Math.min(step, 4)}/4 terms`}</span>
+          <span className="font-mono text-fg-5">{done ? "AI Search" : `${Math.min(step, 4)}/4 terms`}</span>
         </>
       }
     >
@@ -241,33 +241,33 @@ export function ContractDemo() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3 overflow-hidden">
-              <div className="h-2 w-20 rounded bg-white/15 mb-3" />
+            <div className="rounded-lg border border-tint/10 bg-tint/[0.03] p-3 overflow-hidden">
+              <div className="h-2 w-20 rounded bg-tint/15 mb-3" />
               <div className="space-y-2">
                 {clauses.map((c, i) => (
                   <div key={c.term} className="space-y-1">
                     <div
                       className={`h-1.5 rounded transition-all duration-500 ${
-                        step > i ? "bg-[#3b82f6]/40" : "bg-white/5"
+                        step > i ? "bg-[#3b82f6]/40" : "bg-tint/5"
                       }`}
                       style={{ width: `${88 - i * 9}%` }}
                     />
-                    <div className="h-1.5 w-3/5 rounded bg-white/5" />
+                    <div className="h-1.5 w-3/5 rounded bg-tint/5" />
                   </div>
                 ))}
               </div>
             </div>
             <div className="space-y-1.5">
-              <div className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-2">Key terms</div>
+              <div className="text-[9px] font-bold text-fg-5 uppercase tracking-widest mb-2">Key terms</div>
               {clauses.map((c, i) => (
                 <div
                   key={c.term}
-                  className={`rounded-md border border-white/10 bg-black/20 px-2.5 py-1.5 flex items-center justify-between text-[10.5px] font-mono transition-all duration-500 ${
+                  className={`rounded-md border border-tint/10 bg-well/20 px-2.5 py-1.5 flex items-center justify-between text-[10.5px] font-mono transition-all duration-500 ${
                     step > i ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2"
                   }`}
                 >
-                  <span className="text-[#3b82f6]/80">{c.term}</span>
-                  <span className="text-gray-300">{c.value}</span>
+                  <span className="text-accent/80">{c.term}</span>
+                  <span className="text-fg-3">{c.value}</span>
                 </div>
               ))}
             </div>
@@ -282,11 +282,11 @@ export function ContractDemo() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex items-center gap-2 rounded-lg border border-[#3b82f6]/40 bg-black/30 px-3 py-2 mb-3">
-              <Search size={13} className="text-[#3b82f6] flex-shrink-0" />
-              <span className="font-mono text-[11px] text-white">
+            <div className="flex items-center gap-2 rounded-lg border border-[#3b82f6]/40 bg-well/30 px-3 py-2 mb-3">
+              <Search size={13} className="text-accent flex-shrink-0" />
+              <span className="font-mono text-[11px] text-fg">
                 {QUERY}
-                {!results && <span className="animate-pulse text-[#3b82f6]">▎</span>}
+                {!results && <span className="animate-pulse text-accent">▎</span>}
               </span>
             </div>
             <div className="space-y-1.5">
@@ -296,12 +296,12 @@ export function ContractDemo() {
                   className={`rounded-md border px-3 py-2 flex items-center justify-between text-[11px] transition-all duration-500 ${
                     results
                       ? "border-emerald-500/25 bg-emerald-500/5 opacity-100 translate-y-0"
-                      : "border-white/10 bg-black/20 opacity-0 translate-y-2"
+                      : "border-tint/10 bg-well/20 opacity-0 translate-y-2"
                   }`}
                   style={{ transitionDelay: results ? `${i * 130}ms` : "0ms" }}
                 >
-                  <span className="text-gray-300 truncate">{r.name}</span>
-                  <span className="font-mono text-emerald-300 flex-shrink-0">{r.renews}</span>
+                  <span className="text-fg-3 truncate">{r.name}</span>
+                  <span className="font-mono text-ok flex-shrink-0">{r.renews}</span>
                 </div>
               ))}
             </div>
@@ -324,9 +324,9 @@ const resumeFields = [
 
 const skills = [
   { label: "React", category: "Frontend", tone: "bg-sky-500/15 text-sky-300 border-sky-500/30" },
-  { label: "Node.js", category: "Backend", tone: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30" },
+  { label: "Node.js", category: "Backend", tone: "bg-emerald-500/15 text-ok border-emerald-500/30" },
   { label: "SQL", category: "Data", tone: "bg-amber-500/15 text-amber-300 border-amber-500/30" },
-  { label: "Figma", category: "Design", tone: "bg-[#6c42f0]/20 text-[#c4b5fd] border-[#6c42f0]/40" },
+  { label: "Figma", category: "Design", tone: "bg-[#6c42f0]/20 text-violet-2 border-[#6c42f0]/40" },
 ];
 
 export function ResumeDemo() {
@@ -346,46 +346,46 @@ export function ResumeDemo() {
       tone={done ? "done" : "working"}
       footer={
         <>
-          <span className={done ? "text-emerald-400 font-semibold" : "text-gray-400"}>
+          <span className={done ? "text-ok font-semibold" : "text-fg-4"}>
             {done ? "✓ Added to Bucket · Candidates" : "Same fields from every resume format…"}
           </span>
-          <span className="font-mono text-gray-500">resume 47 of 132</span>
+          <span className="font-mono text-fg-5">resume 47 of 132</span>
         </>
       }
     >
       <div className="grid grid-cols-[1fr_1.5fr] gap-3 h-full">
         {/* Resume document */}
-        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3 overflow-hidden">
+        <div className="rounded-lg border border-tint/10 bg-tint/[0.03] p-3 overflow-hidden">
           <div className="flex items-center gap-2 mb-3">
             <div
               className={`w-7 h-7 rounded-full flex-shrink-0 transition-colors duration-500 ${
-                step >= 1 ? "bg-[#3b82f6]/30" : "bg-white/10"
+                step >= 1 ? "bg-[#3b82f6]/30" : "bg-tint/10"
               }`}
             />
             <div
               className={`h-2 w-16 rounded transition-colors duration-500 ${
-                step >= 1 ? "bg-[#3b82f6]/40" : "bg-white/10"
+                step >= 1 ? "bg-[#3b82f6]/40" : "bg-tint/10"
               }`}
             />
           </div>
           <div className="space-y-2" aria-hidden="true">
-            <div className={`h-1.5 w-full rounded transition-colors duration-500 ${step >= 2 ? "bg-[#3b82f6]/30" : "bg-white/5"}`} />
-            <div className={`h-1.5 w-4/5 rounded transition-colors duration-500 ${step >= 2 ? "bg-[#3b82f6]/30" : "bg-white/5"}`} />
-            <div className="h-1.5 w-3/5 rounded bg-white/5" />
-            <div className="h-2 w-12 rounded bg-white/10 !mt-3" />
-            <div className={`h-1.5 w-full rounded transition-colors duration-500 ${skillsFound ? "bg-[#3b82f6]/30" : "bg-white/5"}`} />
-            <div className={`h-1.5 w-2/3 rounded transition-colors duration-500 ${skillsFound ? "bg-[#3b82f6]/30" : "bg-white/5"}`} />
-            <div className="h-1.5 w-4/5 rounded bg-white/5" />
-            <div className="h-1.5 w-1/2 rounded bg-white/5" />
+            <div className={`h-1.5 w-full rounded transition-colors duration-500 ${step >= 2 ? "bg-[#3b82f6]/30" : "bg-tint/5"}`} />
+            <div className={`h-1.5 w-4/5 rounded transition-colors duration-500 ${step >= 2 ? "bg-[#3b82f6]/30" : "bg-tint/5"}`} />
+            <div className="h-1.5 w-3/5 rounded bg-tint/5" />
+            <div className="h-2 w-12 rounded bg-tint/10 !mt-3" />
+            <div className={`h-1.5 w-full rounded transition-colors duration-500 ${skillsFound ? "bg-[#3b82f6]/30" : "bg-tint/5"}`} />
+            <div className={`h-1.5 w-2/3 rounded transition-colors duration-500 ${skillsFound ? "bg-[#3b82f6]/30" : "bg-tint/5"}`} />
+            <div className="h-1.5 w-4/5 rounded bg-tint/5" />
+            <div className="h-1.5 w-1/2 rounded bg-tint/5" />
           </div>
         </div>
 
         {/* Extracted record */}
-        <div className="rounded-lg border border-white/10 bg-black/20 overflow-hidden flex flex-col">
-          <div className="px-2.5 py-1.5 bg-white/5 text-[9px] font-bold text-gray-500 uppercase tracking-widest">
+        <div className="rounded-lg border border-tint/10 bg-well/20 overflow-hidden flex flex-col">
+          <div className="px-2.5 py-1.5 bg-tint/5 text-[9px] font-bold text-fg-5 uppercase tracking-widest">
             Extracted fields
           </div>
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-tint/5">
             {resumeFields.map((f, i) => (
               <div
                 key={f.name}
@@ -393,16 +393,16 @@ export function ResumeDemo() {
                   step > i ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
                 }`}
               >
-                <span className="text-[#3b82f6]/80">{f.name}</span>
-                <span className="text-gray-300 truncate">{f.value}</span>
+                <span className="text-accent/80">{f.name}</span>
+                <span className="text-fg-3 truncate">{f.value}</span>
               </div>
             ))}
           </div>
-          <div className="px-2.5 pt-2 pb-1 text-[9px] font-bold text-gray-500 uppercase tracking-widest flex items-center justify-between">
+          <div className="px-2.5 pt-2 pb-1 text-[9px] font-bold text-fg-5 uppercase tracking-widest flex items-center justify-between">
             <span>skills</span>
             <span
               className={`normal-case font-mono font-normal transition-opacity duration-500 ${
-                categorized ? "text-emerald-400 opacity-100" : "opacity-0"
+                categorized ? "text-ok opacity-100" : "opacity-0"
               }`}
             >
               ✓ categorized by Cleaner
@@ -414,10 +414,10 @@ export function ResumeDemo() {
                 key={s.label}
                 className={`px-1.5 py-1 rounded border font-mono text-[9px] transition-all duration-500 ${
                   !skillsFound
-                    ? "opacity-0 translate-y-1 border-white/10 bg-white/5 text-gray-400"
+                    ? "opacity-0 translate-y-1 border-tint/10 bg-tint/5 text-fg-4"
                     : categorized
                       ? `opacity-100 translate-y-0 ${s.tone}`
-                      : "opacity-100 translate-y-0 border-white/10 bg-white/5 text-gray-400"
+                      : "opacity-100 translate-y-0 border-tint/10 bg-tint/5 text-fg-4"
                 }`}
                 style={{ transitionDelay: skillsFound && !categorized ? `${i * 90}ms` : "0ms" }}
               >
@@ -445,7 +445,7 @@ export function ResumeDemo() {
 const receipts = [
   { merchant: "Cafe Rio", amount: 18.4, category: "Meals", tone: "bg-amber-500/15 text-amber-400 border-amber-500/25" },
   { merchant: "Uber", amount: 32.75, category: "Travel", tone: "bg-sky-500/15 text-sky-400 border-sky-500/25" },
-  { merchant: "Office Depot", amount: 64.9, category: "Supplies", tone: "bg-[#6c42f0]/20 text-[#c4b5fd] border-[#6c42f0]/40" },
+  { merchant: "Office Depot", amount: 64.9, category: "Supplies", tone: "bg-[#6c42f0]/20 text-violet-2 border-[#6c42f0]/40" },
 ];
 
 export function ExpenseDemo() {
@@ -466,17 +466,17 @@ export function ExpenseDemo() {
       tone={done ? "done" : "working"}
       footer={
         <>
-          <span className={done ? "text-emerald-400 font-semibold" : "text-gray-400"}>
+          <span className={done ? "text-ok font-semibold" : "text-fg-4"}>
             {done ? "✓ Report approved — saved to Bucket" : `${processed} of ${receipts.length} receipts captured`}
           </span>
-          <span className="font-mono text-gray-300">${money(total)}</span>
+          <span className="font-mono text-fg-3">${money(total)}</span>
         </>
       }
     >
       <div className="grid grid-cols-[1fr_1.5fr] gap-3 h-full">
         {/* Receipt stack */}
         <div className="space-y-2">
-          <div className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Receipts</div>
+          <div className="text-[9px] font-bold text-fg-5 uppercase tracking-widest">Receipts</div>
           {receipts.map((r, i) => {
             const isDone = processed > i;
             const isCurrent = !reportReady && processed === i;
@@ -485,26 +485,26 @@ export function ExpenseDemo() {
                 key={r.merchant}
                 className={`rounded-md border px-2.5 py-2 transition-all duration-500 ${
                   isDone
-                    ? "border-white/5 bg-white/[0.02] opacity-50"
+                    ? "border-tint/5 bg-tint/[0.02] opacity-50"
                     : isCurrent
                       ? "border-[#3b82f6]/60 bg-[#3b82f6]/10"
-                      : "border-white/10 bg-black/20"
+                      : "border-tint/10 bg-well/20"
                 }`}
               >
-                <div className="font-mono text-[10px] text-gray-300 mb-1 truncate">{r.merchant.toUpperCase()} #{442 + i}</div>
-                <div className="h-1 w-4/5 rounded bg-white/10 mb-1" />
-                <div className="h-1 w-3/5 rounded bg-white/10" />
+                <div className="font-mono text-[10px] text-fg-3 mb-1 truncate">{r.merchant.toUpperCase()} #{442 + i}</div>
+                <div className="h-1 w-4/5 rounded bg-tint/10 mb-1" />
+                <div className="h-1 w-3/5 rounded bg-tint/10" />
               </div>
             );
           })}
         </div>
 
         {/* Report rows */}
-        <div className="rounded-lg border border-white/10 bg-black/20 overflow-hidden flex flex-col">
-          <div className="px-2.5 py-1.5 bg-white/5 text-[9px] font-bold text-gray-500 uppercase tracking-widest">
+        <div className="rounded-lg border border-tint/10 bg-well/20 overflow-hidden flex flex-col">
+          <div className="px-2.5 py-1.5 bg-tint/5 text-[9px] font-bold text-fg-5 uppercase tracking-widest">
             Report lines
           </div>
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-tint/5">
             {receipts.map((r, i) => (
               <div
                 key={r.merchant}
@@ -512,23 +512,23 @@ export function ExpenseDemo() {
                   processed > i ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
                 }`}
               >
-                <span className="text-gray-300 truncate flex-1">{r.merchant}</span>
+                <span className="text-fg-3 truncate flex-1">{r.merchant}</span>
                 <span className={`px-1.5 py-0.5 rounded border text-[9px] font-bold flex-shrink-0 ${r.tone}`}>
                   {r.category}
                 </span>
-                <span className="text-gray-300 w-[52px] text-right flex-shrink-0">${money(r.amount)}</span>
+                <span className="text-fg-3 w-[52px] text-right flex-shrink-0">${money(r.amount)}</span>
               </div>
             ))}
           </div>
           <div
-            className={`mt-auto px-2.5 py-2 border-t border-white/10 flex items-center justify-between text-[10.5px] font-mono transition-all duration-500 ${
+            className={`mt-auto px-2.5 py-2 border-t border-tint/10 flex items-center justify-between text-[10.5px] font-mono transition-all duration-500 ${
               reportReady ? "opacity-100" : "opacity-30"
             }`}
           >
-            <span className={reportReady ? "text-emerald-400 font-bold" : "text-gray-600"}>
+            <span className={reportReady ? "text-ok font-bold" : "text-fg-6"}>
               {done ? "✓ Approved" : "Total"}
             </span>
-            <span className={reportReady ? "text-emerald-300 font-bold" : "text-gray-500"}>
+            <span className={reportReady ? "text-ok font-bold" : "text-fg-5"}>
               ${money(receipts.reduce((s, r) => s + r.amount, 0))}
             </span>
           </div>

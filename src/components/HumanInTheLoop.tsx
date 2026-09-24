@@ -43,12 +43,12 @@ const auditEvents = [
 
 function ReviewDemo() {
   return (
-    <div className="glass-card rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/30">
+    <div className="glass-card rounded-2xl overflow-hidden border border-tint/10 shadow-2xl shadow-black/30">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 sm:px-5 py-3 bg-white/5 border-b border-white/10">
+      <div className="flex items-center justify-between px-4 sm:px-5 py-3 bg-tint/5 border-b border-tint/10">
         <div className="min-w-0">
-          <div className="text-xs font-bold text-white truncate">Invoice_2043.pdf</div>
-          <div className="text-[10px] text-gray-500">Run #4128 · Flow: Supplier invoices</div>
+          <div className="text-xs font-bold text-fg truncate">Invoice_2043.pdf</div>
+          <div className="text-[10px] text-fg-5">Run #4128 · Flow: Supplier invoices</div>
         </div>
         <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
           Awaiting approval
@@ -56,22 +56,22 @@ function ReviewDemo() {
       </div>
 
       {/* Editable grid */}
-      <div className="p-4 sm:p-5 bg-[#0d0d20]/60">
-        <div className="rounded-lg border border-white/10 overflow-hidden text-[11px] font-mono">
-          <div className="grid grid-cols-3 bg-white/5 text-gray-500 font-sans font-bold text-[10px] uppercase tracking-wider">
+      <div className="p-4 sm:p-5 bg-panel/60">
+        <div className="rounded-lg border border-tint/10 overflow-hidden text-[11px] font-mono">
+          <div className="grid grid-cols-3 bg-tint/5 text-fg-5 font-sans font-bold text-[10px] uppercase tracking-wider">
             <div className="px-3 py-2">Vendor</div>
             <div className="px-3 py-2">Invoice #</div>
             <div className="px-3 py-2">Total</div>
           </div>
-          <div className="grid grid-cols-3 border-t border-white/5 text-gray-300">
+          <div className="grid grid-cols-3 border-t border-tint/5 text-fg-3">
             <div className="px-3 py-2 truncate">Acme Corp</div>
             <div className="px-3 py-2 truncate">INV-2043</div>
             <div className="px-3 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-sm flex flex-wrap items-baseline gap-x-1.5">
-              <span className="text-gray-600 line-through">1,240.00</span>
-              <span className="text-emerald-300">1,420.00</span>
+              <span className="text-fg-6 line-through">1,240.00</span>
+              <span className="text-ok">1,420.00</span>
             </div>
           </div>
-          <div className="grid grid-cols-3 border-t border-white/5 text-gray-400">
+          <div className="grid grid-cols-3 border-t border-tint/5 text-fg-4">
             <div className="px-3 py-2 truncate">Acme Corp</div>
             <div className="px-3 py-2 truncate">INV-2044</div>
             <div className="px-3 py-2">380.50</div>
@@ -83,7 +83,7 @@ function ReviewDemo() {
           <button
             tabIndex={-1}
             aria-hidden="true"
-            className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-lg bg-emerald-500/90 text-white text-xs font-bold pointer-events-none"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-lg bg-emerald-500/90 text-fg text-xs font-bold pointer-events-none"
           >
             <Check size={14} />
             Approve run
@@ -100,8 +100,8 @@ function ReviewDemo() {
       </div>
 
       {/* Audit trail */}
-      <div className="px-4 sm:px-5 py-3.5 border-t border-white/10 bg-black/30">
-        <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2.5">
+      <div className="px-4 sm:px-5 py-3.5 border-t border-tint/10 bg-well/30">
+        <div className="text-[10px] font-bold text-fg-5 uppercase tracking-widest mb-2.5">
           Audit trail · append-only
         </div>
         <div className="space-y-1.5">
@@ -123,10 +123,10 @@ function ReviewDemo() {
                       : "bg-[#3b82f6]/60"
                 }`}
               />
-              <span className={e.approved ? "text-emerald-300 font-semibold" : "text-gray-400"}>
+              <span className={e.approved ? "text-ok font-semibold" : "text-fg-4"}>
                 {e.label}
               </span>
-              <span className="text-gray-600 ml-auto font-mono">{e.time}</span>
+              <span className="text-fg-6 ml-auto font-mono">{e.time}</span>
             </motion.div>
           ))}
         </div>
@@ -163,19 +163,19 @@ export default function HumanInTheLoop() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-ok text-xs font-bold uppercase tracking-wider mb-5">
               <ClipboardCheck size={14} />
               Human in the Loop
             </div>
             <h2
               id="hitl-heading"
-              className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight"
+              className="text-3xl md:text-4xl font-bold text-fg mb-4 leading-tight"
             >
               AI does the work.
               <br />
-              Your team has the <span className="text-[#93c5fd]">final say</span>.
+              Your team has the <span className="text-accent-2">final say</span>.
             </h2>
-            <p className="text-base md:text-lg text-gray-400 mb-8 max-w-[480px]">
+            <p className="text-base md:text-lg text-fg-4 mb-8 max-w-[480px]">
               Turn on review for any flow and runs pause before anything moves
               downstream. Reviewers fix mistakes in place and approve with one
               click — with a complete record of who did what.
@@ -184,14 +184,14 @@ export default function HumanInTheLoop() {
             <div className="space-y-5">
               {highlights.map((h) => (
                 <div key={h.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-ok flex items-center justify-center flex-shrink-0">
                     <h.icon size={18} />
                   </div>
                   <div>
-                    <h3 className="text-sm md:text-base font-bold text-white mb-0.5">
+                    <h3 className="text-sm md:text-base font-bold text-fg mb-0.5">
                       {h.title}
                     </h3>
-                    <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
+                    <p className="text-xs md:text-sm text-fg-4 leading-relaxed">
                       {h.desc}
                     </p>
                   </div>

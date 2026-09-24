@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 };
 
 const Mail = () => (
-  <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-[#3b82f6] hover:underline">
+  <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-accent hover:underline">
     {SUPPORT_EMAIL}
   </Link>
 );
@@ -72,7 +72,7 @@ export default function SpanishPrivacyPage() {
             demo.tavnit.io y la aplicación de Tavnit. Para cualquier cosa que no se responda aquí,
             escribe a <Mail />. Esta traducción se ofrece para tu comodidad; si hay alguna
             discrepancia, prevalece la{" "}
-            <Link href="/privacy" className="text-[#3b82f6] hover:underline" hrefLang="en" lang="en">
+            <Link href="/privacy" className="text-accent hover:underline" hrefLang="en" lang="en">
               versión en inglés
             </Link>
             .
@@ -96,23 +96,23 @@ export default function SpanishPrivacyPage() {
 
         <LegalSection heading="Qué recopilamos">
           <p>
-            <strong className="text-gray-200">Información de cuenta.</strong> Tu nombre, correo
+            <strong className="text-fg-2">Información de cuenta.</strong> Tu nombre, correo
             electrónico, organización y las credenciales con las que inicias sesión.
           </p>
           <p>
-            <strong className="text-gray-200">Contenido de documentos.</strong> Los archivos que
+            <strong className="text-fg-2">Contenido de documentos.</strong> Los archivos que
             subes, envías por correo a la dirección de un Flow o mandas por la API, junto con los
             datos estructurados extraídos de ellos. Documentos como facturas, contratos, recibos,
             hojas de vida y documentación aduanera contienen habitualmente datos personales, así
             que tratamos todo el contenido de documentos como sensible por defecto.
           </p>
           <p>
-            <strong className="text-gray-200">Registros de procesamiento.</strong> Runs, consumo
+            <strong className="text-fg-2">Registros de procesamiento.</strong> Runs, consumo
             de créditos, decisiones de revisión y la bitácora de auditoría de solo anexar que
             produce la revisión humana, que registra quién vio, editó, aprobó o rechazó cada Run.
           </p>
           <p>
-            <strong className="text-gray-200">Datos técnicos.</strong> Los datos de registro
+            <strong className="text-fg-2">Datos técnicos.</strong> Los datos de registro
             estándar que se generan al usar el sitio o la aplicación, los reportes de error de la
             aplicación (ver abajo) y, solo si aceptas el aviso de cookies, analítica de uso en el
             sitio de marketing y la demostración.
@@ -224,7 +224,7 @@ export default function SpanishPrivacyPage() {
 
         <LegalSection heading="Cookies y analítica">
           <p>
-            <strong className="text-gray-200">Sitio de marketing y demostración</strong>{" "}
+            <strong className="text-fg-2">Sitio de marketing y demostración</strong>{" "}
             (tavnit.io, demo.tavnit.io). Usamos Google Analytics 4 para saber qué páginas, casos
             de uso y pasos de la demostración resultan útiles. Solo se activa después de que
             aceptas el aviso de cookies. Si lo rechazas, o no respondes, Google Analytics no
@@ -245,7 +245,7 @@ export default function SpanishPrivacyPage() {
             demostración. También puedes bloquear Google Analytics en todas partes con el{" "}
             <Link
               href="https://tools.google.com/dlpage/gaoptout"
-              className="text-[#3b82f6] hover:underline"
+              className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -254,7 +254,7 @@ export default function SpanishPrivacyPage() {
             .
           </p>
           <p>
-            <strong className="text-gray-200">La aplicación</strong> (app.tavnit.io). La
+            <strong className="text-fg-2">La aplicación</strong> (app.tavnit.io). La
             aplicación usa únicamente las cookies y el almacenamiento local necesarios para
             iniciar tu sesión, mantenerla y recordar tu organización actual. No usa cookies de
             analítica. Sí envía reportes de error a Sentry, un servicio de monitoreo de errores,
@@ -276,7 +276,7 @@ export default function SpanishPrivacyPage() {
           <p>
             Preguntas sobre esta política, tus datos o nuestros subencargados actuales:{" "}
             <Mail />. Consulta también nuestros{" "}
-            <Link href="/es/terminos" className="text-[#3b82f6] hover:underline">
+            <Link href="/es/terminos" className="text-accent hover:underline">
               Términos de servicio
             </Link>
             .

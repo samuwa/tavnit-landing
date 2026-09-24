@@ -45,7 +45,7 @@ const first = PRICING[0];
 const last = PRICING[PRICING.length - 1];
 
 const Mail = () => (
-  <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-[#3b82f6] hover:underline">
+  <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-accent hover:underline">
     {SUPPORT_EMAIL}
   </Link>
 );
@@ -85,7 +85,7 @@ export default async function SpanishTermsPage() {
             aceptas. Si los aceptas en nombre de una organización, confirmas que tienes autoridad
             para obligar a esa organización. Esta traducción se ofrece para tu comodidad; si hay
             alguna discrepancia, prevalece la{" "}
-            <Link href="/terms" className="text-[#3b82f6] hover:underline" hrefLang="en" lang="en">
+            <Link href="/terms" className="text-accent hover:underline" hrefLang="en" lang="en">
               versión en inglés
             </Link>
             .
@@ -125,7 +125,7 @@ export default async function SpanishTermsPage() {
 
         <LegalSection heading="Tu contenido">
           <p>
-            <strong className="text-gray-200">
+            <strong className="text-fg-2">
               Los documentos que envías y los datos extraídos de ellos son tuyos.
             </strong>{" "}
             No reclamamos ninguna propiedad sobre tu contenido y nos otorgamos únicamente la
@@ -135,7 +135,7 @@ export default async function SpanishTermsPage() {
           <p>
             Eres responsable de tener derecho a enviarnos los documentos que envías y de cualquier
             dato personal que contengan. Cómo se maneja ese contenido se describe en nuestra{" "}
-            <Link href="/es/privacidad" className="text-[#3b82f6] hover:underline">
+            <Link href="/es/privacidad" className="text-accent hover:underline">
               Política de privacidad
             </Link>
             .
@@ -176,7 +176,7 @@ export default async function SpanishTermsPage() {
             {stripeOn ? (
               <>
                 Los planes vigentes están en la{" "}
-                <Link href="/pricing" className="text-[#3b82f6] hover:underline">
+                <Link href="/pricing" className="text-accent hover:underline">
                   página de precios
                 </Link>
                 .
@@ -184,7 +184,7 @@ export default async function SpanishTermsPage() {
             ) : (
               <>
                 Los planes se cotizan por organización;{" "}
-                <Link href="/es/agendar" className="text-[#3b82f6] hover:underline">
+                <Link href="/es/agendar" className="text-accent hover:underline">
                   agenda una demostración
                 </Link>{" "}
                 para ver el tuyo.

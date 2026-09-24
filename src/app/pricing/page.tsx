@@ -72,10 +72,10 @@ export default async function PricingPage() {
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-4 tracking-tight">
             Simple, Transparent Pricing
           </h1>
-          <p className="text-lg text-gray-400 max-w-[640px] mx-auto leading-relaxed">
+          <p className="text-lg text-fg-4 max-w-[640px] mx-auto leading-relaxed">
             Credit-based plans that scale with the documents you process — not with
             the size of your team. One credit processes one page.
           </p>
@@ -97,37 +97,37 @@ export default async function PricingPage() {
                   BEST VALUE
                 </div>
               )}
-              <div className="text-center pb-4 sm:pb-6 border-b border-white/10">
-                <h2 className="text-base sm:text-xl font-bold text-white mb-2 sm:mb-4">{plan.name}</h2>
+              <div className="text-center pb-4 sm:pb-6 border-b border-tint/10">
+                <h2 className="text-base sm:text-xl font-bold text-fg mb-2 sm:mb-4">{plan.name}</h2>
                 <div className="mb-1 sm:mb-3">
-                  <span className="text-2xl sm:text-4xl font-extrabold text-white">${plan.monthlyUsd}</span>
-                  <span className="text-sm sm:text-base font-semibold text-gray-400">/mo</span>
+                  <span className="text-2xl sm:text-4xl font-extrabold text-fg">${plan.monthlyUsd}</span>
+                  <span className="text-sm sm:text-base font-semibold text-fg-4">/mo</span>
                 </div>
                 <div className="flex flex-col items-center mt-1">
-                  <span className="text-xl sm:text-3xl font-bold text-white">
+                  <span className="text-xl sm:text-3xl font-bold text-fg">
                     {plan.credits.toLocaleString("en-US")}
                   </span>
-                  <span className="text-[10px] sm:text-sm text-gray-500 uppercase tracking-wider">
+                  <span className="text-[10px] sm:text-sm text-fg-5 uppercase tracking-wider">
                     credits/mo
                   </span>
                 </div>
               </div>
               <div className="py-4 sm:py-6 text-center flex-grow flex flex-col items-center justify-center">
-                <p className="text-[11px] sm:text-sm text-gray-400 mb-1 sm:mb-2 leading-snug">
+                <p className="text-[11px] sm:text-sm text-fg-4 mb-1 sm:mb-2 leading-snug">
                   {plan.baseCredits.toLocaleString("en-US")} base
                   {plan.bonusCredits > 0 && (
                     <>
                       {" + "}
-                      <span className="text-[#3b82f6] font-semibold">
+                      <span className="text-accent font-semibold">
                         {plan.bonusCredits.toLocaleString("en-US")} bonus
                       </span>
                     </>
                   )}
                 </p>
-                <p className="text-xs sm:text-base text-gray-500 leading-snug">
+                <p className="text-xs sm:text-base text-fg-5 leading-snug">
                   = {plan.credits.toLocaleString("en-US")} pages
                 </p>
-                <p className="text-[11px] sm:text-xs text-gray-600 mt-2">
+                <p className="text-[11px] sm:text-xs text-fg-6 mt-2">
                   ${perPage(plan.monthlyUsd, plan.credits)} per page
                 </p>
               </div>
@@ -136,7 +136,7 @@ export default async function PricingPage() {
                 className={`w-full py-2.5 sm:py-3 rounded-lg text-center text-sm sm:text-base font-semibold transition-all ${
                   plan.featured
                     ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20"
-                    : "border border-[#3b82f6]/50 text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white hover:-translate-y-0.5"
+                    : "border border-[#3b82f6]/50 text-accent hover:bg-[#3b82f6] hover:text-white hover:-translate-y-0.5"
                 }`}
               >
                 Get Started
@@ -145,38 +145,38 @@ export default async function PricingPage() {
           ))}
         </div>
 
-        <p className="text-center text-sm text-gray-500 mb-14">
+        <p className="text-center text-sm text-fg-5 mb-14">
           Need more? Buy extra credits at ${EXTRA_CREDIT_USD.toFixed(2)}/credit
           (minimum {EXTRA_CREDIT_MINIMUM} credits) on top of any plan.
         </p>
 
         {/* Included */}
         <section className="max-w-[900px] mx-auto p-5 sm:p-8 mb-14 rounded-2xl glass-card">
-          <h2 className="text-lg sm:text-xl font-bold text-center text-white mb-5 sm:mb-6">
+          <h2 className="text-lg sm:text-xl font-bold text-center text-fg mb-5 sm:mb-6">
             Everything Included in All Plans
           </h2>
           <ul className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {INCLUDED_FEATURES.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-xs sm:text-sm text-gray-300">
-                <Check size={14} className="text-emerald-400 flex-shrink-0 mt-0.5 sm:w-5 sm:h-5" />
+              <li key={f} className="flex items-start gap-2 text-xs sm:text-sm text-fg-3">
+                <Check size={14} className="text-ok flex-shrink-0 mt-0.5 sm:w-5 sm:h-5" />
                 {f}
               </li>
             ))}
           </ul>
-          <p className="text-sm text-gray-500 leading-relaxed mt-6 text-center">
-            Plus <Link href="/docs/collections" className="text-[#3b82f6] hover:underline">Collections</Link> routing,{" "}
-            <Link href="/docs/splitters" className="text-[#3b82f6] hover:underline">Splitters</Link> for mixed PDFs,{" "}
-            <Link href="/docs/buckets" className="text-[#3b82f6] hover:underline">Buckets</Link> storage,{" "}
-            <Link href="/docs/human-in-the-loop" className="text-[#3b82f6] hover:underline">Human-in-the-Loop</Link>{" "}
-            review, and the <Link href="/docs/mcp-connector" className="text-[#3b82f6] hover:underline">MCP connector</Link>{" "}
+          <p className="text-sm text-fg-5 leading-relaxed mt-6 text-center">
+            Plus <Link href="/docs/collections" className="text-accent hover:underline">Collections</Link> routing,{" "}
+            <Link href="/docs/splitters" className="text-accent hover:underline">Splitters</Link> for mixed PDFs,{" "}
+            <Link href="/docs/buckets" className="text-accent hover:underline">Buckets</Link> storage,{" "}
+            <Link href="/docs/human-in-the-loop" className="text-accent hover:underline">Human-in-the-Loop</Link>{" "}
+            review, and the <Link href="/docs/mcp-connector" className="text-accent hover:underline">MCP connector</Link>{" "}
             for claude.ai and Cursor.
           </p>
         </section>
 
         {/* How credits work */}
         <section className="max-w-[760px] mx-auto mb-14">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">How credits work</h2>
-          <div className="space-y-4 text-gray-400 leading-relaxed">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">How credits work</h2>
+          <div className="space-y-4 text-fg-4 leading-relaxed">
             <p>
               One credit processes one page through extraction and cleaning. A three-page
               invoice costs three credits, whether it arrives by upload, by email, or
@@ -185,9 +185,9 @@ export default async function PricingPage() {
             <p>
               Higher tiers add bonus credits on top of the base allowance, so the
               effective cost per page falls as volume rises — from{" "}
-              <strong className="text-gray-200">${perPage(PRICING[0].monthlyUsd, PRICING[0].credits)}</strong>{" "}
+              <strong className="text-fg-2">${perPage(PRICING[0].monthlyUsd, PRICING[0].credits)}</strong>{" "}
               per page on {PRICING[0].name} to{" "}
-              <strong className="text-gray-200">
+              <strong className="text-fg-2">
                 ${perPage(PRICING[PRICING.length - 1].monthlyUsd, PRICING[PRICING.length - 1].credits)}
               </strong>{" "}
               on {PRICING[PRICING.length - 1].name}.
@@ -197,9 +197,9 @@ export default async function PricingPage() {
               Human-in-the-Loop workflow costs nothing extra. Team members are unlimited
               on every plan.
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-fg-5">
               Machine-readable version:{" "}
-              <Link href="/pricing.md" className="text-[#3b82f6] hover:underline">
+              <Link href="/pricing.md" className="text-accent hover:underline">
                 {SITE_URL}/pricing.md
               </Link>
             </p>
@@ -208,12 +208,12 @@ export default async function PricingPage() {
 
         {/* FAQ */}
         <section className="max-w-[760px] mx-auto mb-14">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Pricing questions</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-6">Pricing questions</h2>
           <dl className="space-y-6">
             {faqs.map((faq) => (
               <div key={faq.q} className="glass-card rounded-xl p-5">
-                <dt className="text-base font-semibold text-white mb-2">{faq.q}</dt>
-                <dd className="text-sm text-gray-400 leading-relaxed">{faq.a}</dd>
+                <dt className="text-base font-semibold text-fg mb-2">{faq.q}</dt>
+                <dd className="text-sm text-fg-4 leading-relaxed">{faq.a}</dd>
               </div>
             ))}
           </dl>

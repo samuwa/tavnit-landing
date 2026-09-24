@@ -43,19 +43,19 @@ export default function LegalDocument({
   return (
     <MarketingPage locale={locale} alternatePath={alternatePath}>
       <article className="max-w-[760px] mx-auto px-4 sm:px-6">
-        <nav aria-label={t.breadcrumb} className="mb-6 text-sm text-gray-500 flex flex-wrap items-center gap-x-2">
-          <Link href={t.homeHref} className="hover:text-gray-300 transition-colors">
+        <nav aria-label={t.breadcrumb} className="mb-6 text-sm text-fg-5 flex flex-wrap items-center gap-x-2">
+          <Link href={t.homeHref} className="hover:text-fg-3 transition-colors">
             {t.home}
           </Link>
           <span aria-hidden="true">/</span>
-          <span className="text-gray-400">{title}</span>
+          <span className="text-fg-4">{title}</span>
           {alternatePath && (
             <span className="ml-auto">
               <Link
                 href={alternatePath}
                 hrefLang={locale === "en" ? "es" : "en"}
                 lang={locale === "en" ? "es" : "en"}
-                className="hover:text-gray-300 transition-colors"
+                className="hover:text-fg-3 transition-colors"
               >
                 {t.readOther}
               </Link>
@@ -63,14 +63,14 @@ export default function LegalDocument({
           )}
         </nav>
 
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3 tracking-tight">{title}</h1>
-        <p className="text-sm text-gray-500 mb-8">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-fg mb-3 tracking-tight">{title}</h1>
+        <p className="text-sm text-fg-5 mb-8">
           {t.updated} <time dateTime={lastUpdated}>{lastUpdated}</time>
         </p>
 
-        <p className="text-gray-400 leading-relaxed mb-10">{intro}</p>
+        <p className="text-fg-4 leading-relaxed mb-10">{intro}</p>
 
-        <div className="space-y-8 text-gray-400 leading-relaxed">{children}</div>
+        <div className="space-y-8 text-fg-4 leading-relaxed">{children}</div>
       </article>
     </MarketingPage>
   );
@@ -86,7 +86,7 @@ export function LegalSection({
 }) {
   return (
     <section>
-      <h2 className="text-xl md:text-2xl font-bold text-white mb-3">{heading}</h2>
+      <h2 className="text-xl md:text-2xl font-bold text-fg mb-3">{heading}</h2>
       <div className="space-y-3">{children}</div>
     </section>
   );

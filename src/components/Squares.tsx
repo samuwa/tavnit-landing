@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect } from 'react';
+import { useTheme } from '@/lib/theme';
 
 type CanvasStrokeStyle = string | CanvasGradient | CanvasPattern;
 
@@ -12,18 +13,40 @@ interface GridOffset {
 interface SquaresProps {
   direction?: 'diagonal' | 'up' | 'right' | 'down' | 'left';
   speed?: number;
+  /** Grid line color; defaults follow the color theme. */
   borderColor?: CanvasStrokeStyle;
   squareSize?: number;
   hoverFillColor?: CanvasStrokeStyle;
+  /** Color the grid fades into at the edges; must match the page background. */
+  fadeColor?: string;
+}
+
+/* Dark: faint navy lines on the near-black page. Light: the ledger rules
+   from the Lite pages on paper, hover fills with the soft brand blue. */
+const THEME_COLORS = {
+  dark: { border: '#1E2740', hover: '#222', fade: '#0a0a1a' },
+  light: { border: '#e3e9e5', hover: '#eaf1fe', fade: '#fbfbf7' },
+} as const;
+
+/** '#rrggbb' → 'rgba(r, g, b, 0)'. Anything else falls back to transparent black. */
+function toTransparent(hex: string): string {
+  const m = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex);
+  if (!m) return 'rgba(0, 0, 0, 0)';
+  return `rgba(${parseInt(m[1], 16)}, ${parseInt(m[2], 16)}, ${parseInt(m[3], 16)}, 0)`;
 }
 
 const Squares: React.FC<SquaresProps> = ({
   direction = 'right',
   speed = 1,
-  borderColor = '#999',
+  borderColor: borderProp,
   squareSize = 40,
-  hoverFillColor = '#222'
+  hoverFillColor: hoverProp,
+  fadeColor: fadeProp,
 }) => {
+  const theme = useTheme();
+  const borderColor = borderProp ?? THEME_COLORS[theme].border;
+  const hoverFillColor = hoverProp ?? THEME_COLORS[theme].hover;
+  const fadeColor = fadeProp ?? THEME_COLORS[theme].fade;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const requestRef = useRef<number | null>(null);
   const numSquaresX = useRef<number>(0);
@@ -81,8 +104,11 @@ const Squares: React.FC<SquaresProps> = ({
         canvas.height / 2,
         Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2
       );
-      gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      gradient.addColorStop(1, '#0a0a1a');
+      // The transparent stop must be the fade color at alpha 0, not transparent
+      // black: canvas gradients interpolate un-premultiplied, so a black stop
+      // leaks a grey haze across the middle of a light page.
+      gradient.addColorStop(0, toTransparent(fadeColor));
+      gradient.addColorStop(1, fadeColor);
 
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -148,7 +174,7 @@ const Squares: React.FC<SquaresProps> = ({
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [direction, speed, borderColor, hoverFillColor, squareSize]);
+  }, [direction, speed, borderColor, hoverFillColor, fadeColor, squareSize]);
 
   return <canvas ref={canvasRef} className="w-full h-full border-none block" />;
 };

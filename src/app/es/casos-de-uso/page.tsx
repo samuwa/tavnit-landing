@@ -54,25 +54,25 @@ export default function SpanishUseCasesHub() {
       />
 
       <div className="max-w-[900px] mx-auto px-4 sm:px-6">
-        <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-gray-500 flex flex-wrap items-center gap-x-2">
-          <Link href="/es" className="hover:text-gray-300 transition-colors">Inicio</Link>
+        <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-fg-5 flex flex-wrap items-center gap-x-2">
+          <Link href="/es" className="hover:text-fg-3 transition-colors">Inicio</Link>
           <span aria-hidden="true">/</span>
-          <span className="text-gray-400">Casos de uso</span>
+          <span className="text-fg-4">Casos de uso</span>
           <span className="ml-auto">
-            <Link href="/use-cases" hrefLang="en" lang="en" className="hover:text-gray-300 transition-colors">
+            <Link href="/use-cases" hrefLang="en" lang="en" className="hover:text-fg-3 transition-colors">
               Read in English
             </Link>
           </span>
         </nav>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-5 tracking-tight">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight">
           Casos de uso
         </h1>
-        <p className="text-lg text-gray-300 leading-relaxed mb-4">
+        <p className="text-lg text-fg-3 leading-relaxed mb-4">
           El proceso es el mismo sea cual sea el documento — extraer, limpiar, revisar, actuar.
           Lo que cambia es qué campos importan y qué suele salir mal.
         </p>
-        <p className="text-gray-400 leading-relaxed mb-12">
+        <p className="text-fg-4 leading-relaxed mb-12">
           Cada página cubre los campos que vale la pena extraer de ese tipo de documento, las
           partes que fallan con más frecuencia y qué etapa del proceso se gana su lugar.
         </p>
@@ -84,36 +84,36 @@ export default function SpanishUseCasesHub() {
               href={esUseCasePath(uc)}
               className="glass-card glass-card-hover rounded-xl p-5 flex flex-col transition-all"
             >
-              <span className="text-[11px] font-semibold text-[#93c5fd] uppercase tracking-wider mb-2">
+              <span className="text-[11px] font-semibold text-accent-2 uppercase tracking-wider mb-2">
                 {uc.badge}
               </span>
               <div className="flex items-start justify-between gap-3 mb-2">
-                <h2 className="text-base font-semibold text-white">{uc.label}</h2>
-                <ArrowRight size={16} className="text-[#3b82f6] flex-shrink-0 mt-1" />
+                <h2 className="text-base font-semibold text-fg">{uc.label}</h2>
+                <ArrowRight size={16} className="text-accent flex-shrink-0 mt-1" />
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">{uc.summary}</p>
+              <p className="text-sm text-fg-4 leading-relaxed">{uc.summary}</p>
             </Link>
           ))}
         </div>
 
         <section className="mb-14">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">
             ¿No ves tu tipo de documento?
           </h2>
-          <p className="text-gray-400 leading-relaxed mb-3">
+          <p className="text-fg-4 leading-relaxed mb-3">
             Estos son los tipos por los que más preguntan los equipos, no una lista de lo que
             Tavnit soporta. No hay configuración por tipo de documento: describes los campos que
             quieres y la misma extracción lee cualquier PDF o imagen, incluidos escaneos y
             escritura a mano.
           </p>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="text-fg-4 leading-relaxed">
             Certificados, formularios de solicitud, planillas, actas y cualquier otro documento
             funcionan igual. Cuéntanos tu caso en una{" "}
-            <Link href="/es/agendar" className="text-[#3b82f6] hover:underline">
+            <Link href="/es/agendar" className="text-accent hover:underline">
               demostración
             </Link>{" "}
             o empieza desde la{" "}
-            <Link href="/docs" className="text-[#3b82f6] hover:underline">
+            <Link href="/docs" className="text-accent hover:underline">
               guía de inicio (en inglés)
             </Link>
             .
@@ -121,8 +121,8 @@ export default function SpanishUseCasesHub() {
         </section>
 
         <div className="glass-card rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">Empieza con un documento</h2>
-          <p className="text-gray-400 mb-6 max-w-[540px] mx-auto leading-relaxed">
+          <h2 className="text-2xl font-bold text-fg mb-3">Empieza con un documento</h2>
+          <p className="text-fg-4 mb-6 max-w-[540px] mx-auto leading-relaxed">
             Trae uno de tus documentos reales. En la demostración armamos el Flow y ves los datos
             salir en vivo antes de conectar nada.
           </p>

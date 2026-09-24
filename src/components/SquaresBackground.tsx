@@ -13,14 +13,9 @@ const Squares = dynamic(() => import("@/components/Squares"), { ssr: false });
 
 export default function SquaresBackground() {
   return (
-    <div className="fixed inset-0 -z-10 bg-[#0a0a1a]" aria-hidden="true">
-      <Squares
-        direction="diagonal"
-        speed={0.17}
-        borderColor="#1E2740"
-        squareSize={45}
-        hoverFillColor="#222"
-      />
+    <div className="fixed inset-0 -z-10 bg-bg" aria-hidden="true">
+      {/* Colors come from the theme (see THEME_COLORS in Squares). */}
+      <Squares direction="diagonal" speed={0.17} squareSize={45} />
     </div>
   );
 }

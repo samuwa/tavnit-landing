@@ -18,7 +18,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
+import Logo from "@/components/Logo";
 import Link from "next/link";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import {
@@ -201,10 +201,10 @@ export default function Questionnaire({
       {/* Quiet chrome: brand, language, expectation. The page has one job. */}
       <header className="relative z-10 flex items-center justify-between px-6 sm:px-10 py-5">
         <Link href="/" className="hover:opacity-85 transition-opacity">
-          <Image src="/assets/tavnit_logo.png" alt="Tavnit" width={110} height={28} className="h-7 w-auto" />
+          <Logo height={24} />
         </Link>
         <div className="flex items-center gap-4">
-          <span className="hidden sm:inline text-xs text-slate-500 font-medium tracking-wide">
+          <span className="hidden sm:inline text-xs text-fg-5 font-medium tracking-wide">
             {t.lessThanAMinute}
           </span>
           <LangToggle lang={lang} onChange={setLang} />
@@ -240,30 +240,30 @@ export default function Questionnaire({
               >
               {screen === "welcome" && (
                 <div>
-                  <p className="text-sm font-semibold tracking-widest uppercase text-[#3b82f6] mb-4">
+                  <p className="text-sm font-semibold tracking-widest uppercase text-accent mb-4">
                     {t.welcomeKicker(company)}
                   </p>
-                  <h1 className="font-heading text-4xl sm:text-5xl font-extrabold text-slate-100 leading-tight mb-6">
+                  <h1 className="font-heading text-4xl sm:text-5xl font-extrabold text-fg leading-tight mb-6">
                     {t.welcomeTitle(clientName)[0]}
                     <span className="gradient-text">{t.welcomeTitle(clientName)[1]}</span>
                     {t.welcomeTitle(clientName)[2]}
                   </h1>
-                  <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-xl">
+                  <p className="text-lg text-fg-4 leading-relaxed mb-10 max-w-xl">
                     {t.welcomeBody1}
-                    <span className="text-slate-200 font-medium">{t.welcomeBodyEmphasis}</span>
+                    <span className="text-fg-2 font-medium">{t.welcomeBodyEmphasis}</span>
                     {t.welcomeBody2}
                   </p>
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 mb-10 text-sm text-slate-400">
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 mb-10 text-sm text-fg-4">
                     <span className="inline-flex items-center gap-2">
-                      <Clock size={15} className="text-[#3b82f6]" aria-hidden />
+                      <Clock size={15} className="text-accent" aria-hidden />
                       {t.lessThanAMinute}
                     </span>
                     <span className="inline-flex items-center gap-2">
-                      <ListChecks size={15} className="text-[#3b82f6]" aria-hidden />
+                      <ListChecks size={15} className="text-accent" aria-hidden />
                       {t.metaQuestions}
                     </span>
                     <span className="inline-flex items-center gap-2">
-                      <Lock size={15} className="text-[#3b82f6]" aria-hidden />
+                      <Lock size={15} className="text-accent" aria-hidden />
                       {t.metaPrivate}
                     </span>
                   </div>
@@ -279,7 +279,7 @@ export default function Questionnaire({
                   {/* Question header: thin progress track, question number,
                       remaining hint, back — one calm line of metadata. */}
                   <div className="mb-8 max-w-2xl">
-                    <div className="h-0.5 rounded-full bg-white/[0.07] mb-5 overflow-hidden">
+                    <div className="h-0.5 rounded-full bg-tint/[0.07] mb-5 overflow-hidden">
                       <div
                         className="h-full rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] transition-[width] duration-500 ease-out"
                         style={{
@@ -288,17 +288,17 @@ export default function Questionnaire({
                       />
                     </div>
                     <div className="flex items-baseline gap-3 text-xs">
-                      <span className="font-heading font-bold tracking-[0.14em] uppercase text-[#3b82f6]">
+                      <span className="font-heading font-bold tracking-[0.14em] uppercase text-accent">
                         {t.questionLabel(history.length + 1)}
                       </span>
-                      <span className="font-medium text-slate-500">
+                      <span className="font-medium text-fg-5">
                         {remaining === 1 ? t.lastQuestion : t.remaining(remaining)}
                       </span>
                       {history.length > 0 && (
                         <button
                           type="button"
                           onClick={goBack}
-                          className="ml-auto flex items-center gap-1 font-medium text-slate-400 hover:text-slate-200 transition-colors cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
+                          className="ml-auto flex items-center gap-1 font-medium text-fg-4 hover:text-fg-2 transition-colors cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
                         >
                           <ArrowLeft size={13} />
                           {t.back}
@@ -306,11 +306,11 @@ export default function Questionnaire({
                       )}
                     </div>
                   </div>
-                  <h2 className="font-heading text-2xl sm:text-[2rem] font-bold text-slate-100 leading-snug mb-3">
+                  <h2 className="font-heading text-2xl sm:text-[2rem] font-bold text-fg leading-snug mb-3">
                     {tr(step.title, lang)}
                   </h2>
                   {step.subtitle ? (
-                    <p className="text-slate-400 leading-relaxed mb-8 max-w-xl">
+                    <p className="text-fg-4 leading-relaxed mb-8 max-w-xl">
                       {tr(step.subtitle, lang).replace("{email}", salesEmail)}
                     </p>
                   ) : (
@@ -363,7 +363,7 @@ export default function Questionnaire({
 function LangToggle({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => void }) {
   return (
     <div
-      className="flex items-center rounded-full border border-white/10 bg-white/[0.04] p-0.5 text-xs font-semibold"
+      className="flex items-center rounded-full border border-tint/10 bg-tint/[0.04] p-0.5 text-xs font-semibold"
       role="group"
       aria-label="Idioma / Language"
     >
@@ -375,8 +375,8 @@ function LangToggle({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => voi
           aria-pressed={lang === code}
           className={`px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
             lang === code
-              ? "bg-[#3b82f6]/20 text-slate-100 shadow-[0_0_12px_rgba(59,130,246,0.2)]"
-              : "text-slate-500 hover:text-slate-300"
+              ? "bg-[#3b82f6]/20 text-fg shadow-[0_0_12px_rgba(59,130,246,0.2)]"
+              : "text-fg-5 hover:text-fg-3"
           }`}
         >
           {code.toUpperCase()}
@@ -473,25 +473,25 @@ function ChoiceInput({
             className="glass-card glass-card-hover group flex items-center gap-4 rounded-2xl px-6 py-5 text-left transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] hover:-translate-y-px"
           >
             {Icon && (
-              <span className="shrink-0 w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#3b82f6] group-hover:border-[#3b82f6]/40 group-hover:bg-[#3b82f6]/10 transition-colors">
+              <span className="shrink-0 w-11 h-11 rounded-xl bg-tint/5 border border-tint/10 flex items-center justify-center text-fg-4 group-hover:text-accent group-hover:border-[#3b82f6]/40 group-hover:bg-[#3b82f6]/10 transition-colors">
                 <Icon size={20} />
               </span>
             )}
             <span className="min-w-0">
-              <span className="block font-medium text-slate-100">{tr(opt.label, lang)}</span>
+              <span className="block font-medium text-fg">{tr(opt.label, lang)}</span>
               {opt.hint && (
-                <span className="block text-sm text-slate-400 mt-0.5">{tr(opt.hint, lang)}</span>
+                <span className="block text-sm text-fg-4 mt-0.5">{tr(opt.hint, lang)}</span>
               )}
             </span>
             {/* One slot at the far right: the number hint gives way to the
                 directional chevron on hover. */}
             <span className="relative ml-auto shrink-0 w-6 h-6 hidden sm:block" aria-hidden>
-              <kbd className="absolute inset-0 flex items-center justify-center rounded-md border border-white/10 bg-white/[0.04] text-[11px] font-medium text-slate-500 group-hover:opacity-0 transition-opacity duration-200">
+              <kbd className="absolute inset-0 flex items-center justify-center rounded-md border border-tint/10 bg-tint/[0.04] text-[11px] font-medium text-fg-5 group-hover:opacity-0 transition-opacity duration-200">
                 {i + 1}
               </kbd>
               <ChevronRight
                 size={18}
-                className="absolute inset-0 m-auto text-[#3b82f6] opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
+                className="absolute inset-0 m-auto text-accent opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
               />
             </span>
           </motion.button>
@@ -538,11 +538,11 @@ function ChipsInput({
               aria-pressed={active}
               className={`px-5 py-3 rounded-full border text-sm font-medium transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
                 active
-                  ? "border-[#3b82f6]/60 bg-[#3b82f6]/15 text-slate-100 shadow-[0_0_16px_rgba(59,130,246,0.25)]"
-                  : "border-white/10 bg-white/[0.04] text-slate-300 hover:border-white/25 hover:bg-white/[0.07]"
+                  ? "border-[#3b82f6]/60 bg-[#3b82f6]/15 text-fg shadow-[0_0_16px_rgba(59,130,246,0.25)]"
+                  : "border-tint/10 bg-tint/[0.04] text-fg-3 hover:border-tint/25 hover:bg-tint/[0.07]"
               }`}
             >
-              {active && <Check size={14} className="inline mr-1.5 -mt-0.5 text-[#3b82f6]" />}
+              {active && <Check size={14} className="inline mr-1.5 -mt-0.5 text-accent" />}
               {tr(opt.label, lang)}
             </motion.button>
           );
@@ -595,7 +595,7 @@ function TextInput({
         placeholder={tr(step.placeholder, lang)}
         rows={3}
         maxLength={1000}
-        className="w-full glass-card rounded-xl px-5 py-4 text-slate-100 placeholder:text-slate-500 resize-none focus:outline-none focus:border-[#3b82f6]/50 focus-visible:outline-2 focus-visible:outline-[#3b82f6] mb-6"
+        className="w-full glass-card rounded-xl px-5 py-4 text-fg placeholder:text-fg-5 resize-none focus:outline-none focus:border-[#3b82f6]/50 focus-visible:outline-2 focus-visible:outline-[#3b82f6] mb-6"
       />
       <div className="flex items-center gap-5">
         <PrimaryButton type="submit" disabled={!value.trim()}>
@@ -635,7 +635,7 @@ function DateInput({
         value={value}
         min={today}
         onChange={(e) => setValue(e.target.value)}
-        className="glass-card rounded-xl px-5 py-4 text-slate-100 [color-scheme:dark] focus:outline-none focus-visible:outline-2 focus-visible:outline-[#3b82f6] mb-6 block"
+        className="glass-card rounded-xl px-5 py-4 text-fg [color-scheme:dark] focus:outline-none focus-visible:outline-2 focus-visible:outline-[#3b82f6] mb-6 block"
       />
       <div className="flex items-center gap-5">
         <PrimaryButton type="submit" disabled={!value}>
@@ -709,16 +709,16 @@ function UploadInput({
         className={`w-full rounded-2xl border-2 border-dashed px-6 py-10 text-center transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
           dragging
             ? "border-[#3b82f6] bg-[#3b82f6]/10"
-            : "border-white/15 bg-white/[0.03] hover:border-[#3b82f6]/50 hover:bg-white/[0.05]"
+            : "border-tint/15 bg-tint/[0.03] hover:border-[#3b82f6]/50 hover:bg-tint/[0.05]"
         }`}
       >
         {busy ? (
-          <Loader2 size={28} className="mx-auto mb-3 text-[#3b82f6] animate-spin" />
+          <Loader2 size={28} className="mx-auto mb-3 text-accent animate-spin" />
         ) : (
-          <FileUp size={28} className="mx-auto mb-3 text-[#3b82f6]" />
+          <FileUp size={28} className="mx-auto mb-3 text-accent" />
         )}
-        <span className="block font-medium text-slate-200 mb-1">{t.dropzoneTitle}</span>
-        <span className="block text-sm text-slate-500">{t.dropzoneHint}</span>
+        <span className="block font-medium text-fg-2 mb-1">{t.dropzoneTitle}</span>
+        <span className="block text-sm text-fg-5">{t.dropzoneHint}</span>
       </button>
       <input
         ref={inputRef}
@@ -741,9 +741,9 @@ function UploadInput({
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center gap-3 glass-card rounded-lg px-4 py-2.5 text-sm"
             >
-              <Check size={15} className="text-[#10b981] shrink-0" />
-              <span className="text-slate-200 truncate">{f.name}</span>
-              <span className="text-slate-500 ml-auto shrink-0">
+              <Check size={15} className="text-ok shrink-0" />
+              <span className="text-fg-2 truncate">{f.name}</span>
+              <span className="text-fg-5 ml-auto shrink-0">
                 {(f.size / 1024 / 1024).toFixed(1)} MB
               </span>
             </motion.li>
@@ -751,7 +751,7 @@ function UploadInput({
         </ul>
       )}
 
-      {error && <p className="mt-3 text-sm text-[#f87171]">{error}</p>}
+      {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
 
       <div className="flex items-center gap-5 mt-8 flex-wrap">
         <PrimaryButton
@@ -808,20 +808,20 @@ function DoneScreen({
 
   return (
     <div>
-      <span className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#10b981]/10 border border-[#10b981]/25 text-[#10b981] mb-6">
+      <span className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#10b981]/10 border border-[#10b981]/25 text-ok mb-6">
         <Check size={26} />
       </span>
       {cold ? (
         <>
-          <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-slate-100 leading-tight mb-4">
+          <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-fg leading-tight mb-4">
             {t.doneColdTitle(clientName)}
           </h2>
-          <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-xl">{t.doneColdBody}</p>
+          <p className="text-lg text-fg-4 leading-relaxed mb-10 max-w-xl">{t.doneColdBody}</p>
           {schedulerUrl ? (
             <button
               type="button"
               onClick={() => setShowScheduler(true)}
-              className="inline-flex items-center gap-2 text-slate-300 hover:text-slate-100 border border-white/15 hover:border-white/30 rounded-xl px-6 py-3.5 font-medium transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
+              className="inline-flex items-center gap-2 text-fg-3 hover:text-fg border border-tint/15 hover:border-tint/30 rounded-xl px-6 py-3.5 font-medium transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
             >
               <CalendarCheck size={18} />
               {t.doneColdCta}
@@ -829,7 +829,7 @@ function DoneScreen({
           ) : (
             <a
               href={mailtoHref}
-              className="inline-flex items-center gap-2 text-slate-300 hover:text-slate-100 border border-white/15 hover:border-white/30 rounded-xl px-6 py-3.5 font-medium transition-all duration-200"
+              className="inline-flex items-center gap-2 text-fg-3 hover:text-fg border border-tint/15 hover:border-tint/30 rounded-xl px-6 py-3.5 font-medium transition-all duration-200"
             >
               <CalendarCheck size={18} />
               {t.doneColdCta}
@@ -838,10 +838,10 @@ function DoneScreen({
         </>
       ) : (
         <>
-          <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-slate-100 leading-tight mb-4">
+          <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-fg leading-tight mb-4">
             {t.doneWarmTitle(clientName)}
           </h2>
-          <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-xl">{warmSubtitle}</p>
+          <p className="text-lg text-fg-4 leading-relaxed mb-10 max-w-xl">{warmSubtitle}</p>
           <div className="flex flex-wrap items-center gap-5">
             {schedulerUrl ? (
               <button
@@ -861,7 +861,7 @@ function DoneScreen({
                 {t.doneWarmCta}
               </a>
             )}
-            <span className="text-slate-500 text-sm">{t.seeYouSoon}</span>
+            <span className="text-fg-5 text-sm">{t.seeYouSoon}</span>
           </div>
         </>
       )}
@@ -872,19 +872,19 @@ function DoneScreen({
         rel="noopener noreferrer"
         className="glass-card glass-card-hover group mt-10 flex items-center gap-4 rounded-2xl px-6 py-5 max-w-xl transition-all duration-200 hover:-translate-y-px"
       >
-        <span className="shrink-0 w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#3b82f6] group-hover:border-[#3b82f6]/40 transition-colors">
+        <span className="shrink-0 w-11 h-11 rounded-xl bg-tint/5 border border-tint/10 flex items-center justify-center text-fg-4 group-hover:text-accent group-hover:border-[#3b82f6]/40 transition-colors">
           <Compass size={20} aria-hidden />
         </span>
         <span className="min-w-0">
-          <span className="block text-[11px] font-semibold tracking-widest uppercase text-[#3b82f6] mb-0.5">
+          <span className="block text-[11px] font-semibold tracking-widest uppercase text-accent mb-0.5">
             {t.hookKicker}
           </span>
-          <span className="block font-medium text-slate-100">{t.hookCta(hookLabel)}</span>
+          <span className="block font-medium text-fg">{t.hookCta(hookLabel)}</span>
         </span>
         <ChevronRight
           size={18}
           aria-hidden
-          className="ml-auto shrink-0 text-slate-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#3b82f6] transition-all duration-200"
+          className="ml-auto shrink-0 text-fg-6 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-accent transition-all duration-200"
         />
       </a>
 
@@ -954,17 +954,17 @@ function SchedulerModal({
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 16, scale: 0.98 }}
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-        className="relative w-full max-w-[1100px] h-[calc(100dvh-1rem)] sm:h-[calc(100dvh-2rem)] rounded-2xl overflow-hidden border border-white/10 bg-[#0c0c1e] shadow-2xl shadow-black/60 flex flex-col"
+        className="relative w-full max-w-[1100px] h-[calc(100dvh-1rem)] sm:h-[calc(100dvh-2rem)] rounded-2xl overflow-hidden border border-tint/10 bg-panel shadow-2xl shadow-black/60 flex flex-col"
       >
-        <div className="flex items-center justify-between px-5 py-2.5 border-b border-white/10 bg-white/[0.03] shrink-0">
-          <span className="flex items-center gap-2.5 font-heading font-semibold text-slate-100">
-            <CalendarCheck size={17} className="text-[#3b82f6]" aria-hidden />
+        <div className="flex items-center justify-between px-5 py-2.5 border-b border-tint/10 bg-tint/[0.03] shrink-0">
+          <span className="flex items-center gap-2.5 font-heading font-semibold text-fg">
+            <CalendarCheck size={17} className="text-accent" aria-hidden />
             {title}
           </span>
           <button
             type="button"
             onClick={onClose}
-            className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-100 transition-colors cursor-pointer rounded px-2 py-1 focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
+            className="flex items-center gap-1.5 text-sm text-fg-4 hover:text-fg transition-colors cursor-pointer rounded px-2 py-1 focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
           >
             <X size={16} />
             {closeLabel}
@@ -973,7 +973,7 @@ function SchedulerModal({
         <iframe
           src={schedulerEmbedUrl(url)}
           title={title}
-          className="w-full flex-1 border-0 bg-[#0a0a1a]"
+          className="w-full flex-1 border-0 bg-bg"
           allow="payment"
         />
       </motion.div>
@@ -1007,10 +1007,10 @@ function RecordPanel({
     <aside className="hidden lg:block sticky top-10" aria-label={t.recordHeader}>
       {/* Gradient frame gives the record the weight of a real artifact — the
           thing the meeting produces — without shouting for attention. */}
-      <div className="rounded-3xl p-px bg-gradient-to-b from-white/20 via-white/[0.07] to-white/[0.03] shadow-2xl shadow-black/40">
-        <div className="rounded-[calc(1.5rem-1px)] overflow-hidden bg-[#0c0c1e]/95 backdrop-blur-xl">
-          <div className="px-6 py-4 border-b border-white/10 bg-white/[0.03] flex items-center gap-3">
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3b82f6]/25 to-[#6c42f0]/25 border border-[#3b82f6]/30 flex items-center justify-center text-[#93c5fd]">
+      <div className="rounded-3xl p-px bg-gradient-to-b from-tint/20 via-tint/[0.07] to-tint/[0.03] shadow-2xl shadow-black/40">
+        <div className="rounded-[calc(1.5rem-1px)] overflow-hidden bg-panel/95 backdrop-blur-xl">
+          <div className="px-6 py-4 border-b border-tint/10 bg-tint/[0.03] flex items-center gap-3">
+            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3b82f6]/25 to-[#6c42f0]/25 border border-[#3b82f6]/30 flex items-center justify-center text-accent-2">
               <FileCheck size={16} aria-hidden />
             </span>
             <span className="processing-text uppercase tracking-[0.18em] text-[13px]">
@@ -1024,7 +1024,7 @@ function RecordPanel({
           <div className="px-6 py-5 font-mono text-sm leading-relaxed">
             <RecordRow label={t.recordClient} value={clientName} />
             {company && <RecordRow label={t.recordCompany} value={company} />}
-            <div className="my-4 border-t border-dashed border-white/10" />
+            <div className="my-4 border-t border-dashed border-tint/10" />
             <AnimatePresence initial={false}>
               {entries.map((e) => (
                 <motion.div
@@ -1048,26 +1048,26 @@ function RecordPanel({
                 "extracts" into a table — the panel visibly fills as they answer. */}
             {Array.from({ length: pendingRows }).map((_, i) => (
               <div key={`pending-${i}`} className="flex items-center gap-4 py-2.5" aria-hidden>
-                <span className="h-3 w-24 rounded bg-white/[0.08]" />
-                <span className="h-3 flex-1 rounded bg-white/[0.04]" />
+                <span className="h-3 w-24 rounded bg-tint/[0.08]" />
+                <span className="h-3 flex-1 rounded bg-tint/[0.04]" />
               </div>
             ))}
           </div>
           <div
             className={`px-6 py-3 text-xs font-mono border-t flex items-center justify-between gap-3 transition-colors duration-500 ${
               done
-                ? "border-[#10b981]/20 bg-[#10b981]/10 text-[#34d399]"
-                : "border-white/10 bg-white/[0.02] text-slate-500"
+                ? "border-[#10b981]/20 bg-[#10b981]/10 text-ok"
+                : "border-tint/10 bg-tint/[0.02] text-fg-5"
             }`}
           >
             <span>{done ? t.recordDone : t.recordWorking}</span>
             {!done && total > 0 && (
-              <span className="shrink-0 text-slate-600">{t.recordProgress(filled, total)}</span>
+              <span className="shrink-0 text-fg-6">{t.recordProgress(filled, total)}</span>
             )}
           </div>
         </div>
       </div>
-      <p className="mt-4 text-xs text-slate-500 leading-relaxed px-2">{t.recordFootnote}</p>
+      <p className="mt-4 text-xs text-fg-5 leading-relaxed px-2">{t.recordFootnote}</p>
     </aside>
   );
 }
@@ -1083,8 +1083,8 @@ function RecordRow({
 }) {
   return (
     <div className="flex items-baseline gap-4 py-2">
-      <span className="text-slate-500 shrink-0 min-w-24">{label}:</span>
-      <span className={`min-w-0 ${highlight ? "text-[#93c5fd]" : "text-slate-200"}`}>{value}</span>
+      <span className="text-fg-5 shrink-0 min-w-24">{label}:</span>
+      <span className={`min-w-0 ${highlight ? "text-accent-2" : "text-fg-2"}`}>{value}</span>
     </div>
   );
 }
@@ -1119,7 +1119,7 @@ function SkipButton({ onClick, label }: { onClick: () => void; label: string }) 
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-300 transition-colors cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
+      className="inline-flex items-center gap-1.5 text-sm text-fg-5 hover:text-fg-3 transition-colors cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
     >
       <X size={14} />
       {label}

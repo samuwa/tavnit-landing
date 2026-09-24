@@ -118,37 +118,37 @@ export default async function SpanishMcpIntegrationPage() {
       />
 
       <div className="max-w-[860px] mx-auto px-4 sm:px-6">
-        <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-gray-500 flex flex-wrap items-center gap-x-2">
-          <Link href="/es" className="hover:text-gray-300 transition-colors">Inicio</Link>
+        <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-fg-5 flex flex-wrap items-center gap-x-2">
+          <Link href="/es" className="hover:text-fg-3 transition-colors">Inicio</Link>
           <span aria-hidden="true">/</span>
-          <Link href="/es/integraciones" className="hover:text-gray-300 transition-colors">Integraciones</Link>
+          <Link href="/es/integraciones" className="hover:text-fg-3 transition-colors">Integraciones</Link>
           <span aria-hidden="true">/</span>
-          <span className="text-gray-400">Conector MCP</span>
+          <span className="text-fg-4">Conector MCP</span>
           <span className="ml-auto">
-            <Link href="/integrations/mcp" hrefLang="en" lang="en" className="hover:text-gray-300 transition-colors">
+            <Link href="/integrations/mcp" hrefLang="en" lang="en" className="hover:text-fg-3 transition-colors">
               Read in English
             </Link>
           </span>
         </nav>
 
         <div className="flex items-center gap-2 mb-4">
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#3b82f6] bg-[#3b82f6]/10 px-2.5 py-1 rounded-md">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent bg-[#3b82f6]/10 px-2.5 py-1 rounded-md">
             <Plug size={13} /> Model Context Protocol
           </span>
         </div>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-5 tracking-tight leading-tight">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight leading-tight">
           Dale a tu asistente de IA un proceso documental de verdad
         </h1>
 
         {/* Respuesta autocontenida — el pasaje con más probabilidad de ser citado. */}
-        <p className="text-lg text-gray-300 leading-relaxed mb-4">
+        <p className="text-lg text-fg-3 leading-relaxed mb-4">
           Tavnit corre un servidor MCP. Conéctalo a claude.ai o Cursor y tu asistente recibe el
           proceso documental completo: puede crear Flows de extracción, añadir reglas de limpieza,
           pasar documentos por ellos y leer los resultados — exactamente los campos que definiste,
           limpios y tipificados, en lugar de una interpretación del archivo que le entregaron.
         </p>
-        <p className="text-gray-400 leading-relaxed mb-10">
+        <p className="text-fg-4 leading-relaxed mb-10">
           La configuración es una URL que pegas en los ajustes de tu asistente. Sin SDK, sin
           servidor propio, sin código.
         </p>
@@ -162,17 +162,17 @@ export default async function SpanishMcpIntegrationPage() {
           </Link>
           <Link
             href="/docs/mcp-connector"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#3b82f6]/50 text-[#3b82f6] font-semibold hover:bg-[#3b82f6] hover:text-white transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#3b82f6]/50 text-accent font-semibold hover:bg-[#3b82f6] hover:text-white transition-all"
           >
             Guía de configuración (en inglés)
           </Link>
         </div>
 
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">
             Por qué a los asistentes les cuestan los documentos
           </h2>
-          <p className="text-gray-400 leading-relaxed mb-4">
+          <p className="text-fg-4 leading-relaxed mb-4">
             Los asistentes de IA razonan bien y funcionan mal como tubería de datos. Dale una
             factura escaneada y la leerá — probablemente bien, a veces no, y distinto la segunda
             vez. No hay esquema, así que los nombres de campo cambian entre ejecuciones. No hay
@@ -180,26 +180,26 @@ export default async function SpanishMcpIntegrationPage() {
             queda registro de lo que pasó, que es lo que importa en cuanto la salida toca la
             contabilidad o el cumplimiento.
           </p>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="text-fg-4 leading-relaxed">
             Eso sirve para una pregunta puntual y no sirve como proceso. Lo que el asistente
             necesita es una herramienta que ya sepa leer tus documentos.
           </p>
         </section>
 
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">
             Pegar un PDF vs. llamar a un Flow
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="border-b border-white/10">
+                <tr className="border-b border-tint/10">
                   <th className="text-left py-3 pr-4"><span className="sr-only">Capacidad</span></th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-300">Pegar el archivo en el chat</th>
-                  <th className="text-left py-3 pl-4 font-semibold text-white">A través del conector MCP</th>
+                  <th className="text-left py-3 px-4 font-semibold text-fg-3">Pegar el archivo en el chat</th>
+                  <th className="text-left py-3 pl-4 font-semibold text-fg">A través del conector MCP</th>
                 </tr>
               </thead>
-              <tbody className="text-gray-400">
+              <tbody className="text-fg-4">
                 {[
                   ["Forma de la salida", "Lo que el modelo devuelva esa vez", "Los campos que define tu Flow, cada vez"],
                   ["Nombres de campo", "Cambian entre ejecuciones", "Fijos por tu esquema"],
@@ -208,8 +208,8 @@ export default async function SpanishMcpIntegrationPage() {
                   ["Dónde quedan los resultados", "En el chat", "Buckets, webhook, correo o API"],
                   ["Repetible a volumen", "No", "Sí — el mismo Flow, cualquier cantidad de documentos"],
                 ].map(([label, a, b]) => (
-                  <tr key={label} className="border-b border-white/5 align-top">
-                    <td className="py-3 pr-4 font-medium text-gray-300 whitespace-nowrap">{label}</td>
+                  <tr key={label} className="border-b border-tint/5 align-top">
+                    <td className="py-3 pr-4 font-medium text-fg-3 whitespace-nowrap">{label}</td>
                     <td className="py-3 px-4">
                       <span className="inline-flex items-start gap-2">
                         <X size={15} className="text-red-400/70 flex-shrink-0 mt-0.5" />
@@ -218,7 +218,7 @@ export default async function SpanishMcpIntegrationPage() {
                     </td>
                     <td className="py-3 pl-4">
                       <span className="inline-flex items-start gap-2">
-                        <Check size={15} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <Check size={15} className="text-ok flex-shrink-0 mt-0.5" />
                         {b}
                       </span>
                     </td>
@@ -230,23 +230,23 @@ export default async function SpanishMcpIntegrationPage() {
         </section>
 
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">
             Qué puede hacer tu asistente una vez conectado
           </h2>
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             {capabilities.map((c) => (
               <div key={c.title} className="glass-card rounded-xl p-5">
-                <div className="flex items-center gap-2.5 mb-2 text-[#93c5fd]">
+                <div className="flex items-center gap-2.5 mb-2 text-accent-2">
                   {c.icon}
-                  <h3 className="text-base font-semibold text-white">{c.title}</h3>
+                  <h3 className="text-base font-semibold text-fg">{c.title}</h3>
                 </div>
-                <p className="text-sm text-gray-400 leading-relaxed">{c.body}</p>
+                <p className="text-sm text-fg-4 leading-relaxed">{c.body}</p>
               </div>
             ))}
           </div>
           <div className="glass-card rounded-xl p-5">
-            <p className="text-sm text-gray-500 mb-3 font-medium">Cosas que puedes pedirle:</p>
-            <ul className="space-y-2 text-sm text-gray-300">
+            <p className="text-sm text-fg-5 mb-3 font-medium">Cosas que puedes pedirle:</p>
+            <ul className="space-y-2 text-sm text-fg-3">
               {[
                 "Crea un Flow que capture proveedor, fechas, totales y líneas de nuestras facturas de flete.",
                 "Añade a ese Flow un Cleaner que convierta todos los totales a USD.",
@@ -256,7 +256,7 @@ export default async function SpanishMcpIntegrationPage() {
                 "¿Qué Runs están esperando revisión ahora mismo?",
               ].map((q) => (
                 <li key={q} className="flex gap-2.5">
-                  <span className="text-[#3b82f6] flex-shrink-0" aria-hidden="true">&rsaquo;</span>
+                  <span className="text-accent flex-shrink-0" aria-hidden="true">&rsaquo;</span>
                   <span className="italic">&ldquo;{q}&rdquo;</span>
                 </li>
               ))}
@@ -265,100 +265,100 @@ export default async function SpanishMcpIntegrationPage() {
         </section>
 
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">
             Usa el proceso que ya construiste
           </h2>
-          <p className="text-gray-400 leading-relaxed mb-4">
+          <p className="text-fg-4 leading-relaxed mb-4">
             El conector no es un motor de extracción aparte. Llama a los mismos Flows que el resto
             de Tavnit — los hayas creado en la aplicación o los haya creado el asistente por ti —
             así que cada regla que configuraste sigue aplicando cuando el que pide es un asistente.
           </p>
-          <ul className="space-y-2.5 text-gray-400">
+          <ul className="space-y-2.5 text-fg-4">
             {[
-              [<Link key="c" href="/docs/collections" className="text-[#3b82f6] hover:underline">Collections</Link>, "siguen clasificando cada documento entrante y enviándolo al Flow correcto."],
-              [<Link key="cl" href="/docs/cleaners" className="text-[#3b82f6] hover:underline">Cleaners</Link>, "siguen estandarizando formatos, convirtiendo monedas y aplicando tus búsquedas."],
-              [<Link key="h" href="/docs/human-in-the-loop" className="text-[#3b82f6] hover:underline">Revisión humana</Link>, "sigue deteniendo un Run cuando lo pediste — un asistente no puede saltarse tu paso de aprobación."],
-              [<Link key="b" href="/docs/buckets" className="text-[#3b82f6] hover:underline">Buckets</Link>, "siguen recibiendo los resultados, así que lo que el asistente extrae queda consultable después."],
+              [<Link key="c" href="/docs/collections" className="text-accent hover:underline">Collections</Link>, "siguen clasificando cada documento entrante y enviándolo al Flow correcto."],
+              [<Link key="cl" href="/docs/cleaners" className="text-accent hover:underline">Cleaners</Link>, "siguen estandarizando formatos, convirtiendo monedas y aplicando tus búsquedas."],
+              [<Link key="h" href="/docs/human-in-the-loop" className="text-accent hover:underline">Revisión humana</Link>, "sigue deteniendo un Run cuando lo pediste — un asistente no puede saltarse tu paso de aprobación."],
+              [<Link key="b" href="/docs/buckets" className="text-accent hover:underline">Buckets</Link>, "siguen recibiendo los resultados, así que lo que el asistente extrae queda consultable después."],
             ].map(([link, tail], i) => (
               <li key={i} className="flex gap-2.5 leading-relaxed">
-                <Check size={17} className="text-emerald-400 flex-shrink-0 mt-1" />
+                <Check size={17} className="text-ok flex-shrink-0 mt-1" />
                 <span>{link} {tail}</span>
               </li>
             ))}
           </ul>
-          <p className="text-xs text-gray-500 mt-4">La documentación técnica enlazada está en inglés.</p>
+          <p className="text-xs text-fg-5 mt-4">La documentación técnica enlazada está en inglés.</p>
         </section>
 
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Alcance y acceso</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">Alcance y acceso</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="glass-card rounded-xl p-5">
-              <div className="flex items-center gap-2.5 mb-2 text-[#93c5fd]">
+              <div className="flex items-center gap-2.5 mb-2 text-accent-2">
                 <ShieldCheck size={19} />
-                <h3 className="text-base font-semibold text-white">Tus permisos, ni uno más</h3>
+                <h3 className="text-base font-semibold text-fg">Tus permisos, ni uno más</h3>
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-sm text-fg-4 leading-relaxed">
                 El conector se emite desde tu propia API key y llega solo a la organización en la
                 que lo generaste. El asistente hereda tu rol — no puede hacer nada que tú no
                 pudieras hacer en la aplicación.
               </p>
             </div>
             <div className="glass-card rounded-xl p-5">
-              <div className="flex items-center gap-2.5 mb-2 text-[#93c5fd]">
+              <div className="flex items-center gap-2.5 mb-2 text-accent-2">
                 <Lock size={19} />
-                <h3 className="text-base font-semibold text-white">Trata la URL como una credencial</h3>
+                <h3 className="text-base font-semibold text-fg">Trata la URL como una credencial</h3>
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-sm text-fg-4 leading-relaxed">
                 Quien tenga la URL del conector puede llegar a tus Flows y Buckets. Las URLs tienen
                 tiempo de vida limitado, y renovar una invalida la anterior de inmediato.
               </p>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mt-4">
+          <p className="text-sm text-fg-5 mt-4">
             Detalle completo en la{" "}
-            <Link href="/docs/mcp-connector" className="text-[#3b82f6] hover:underline">
+            <Link href="/docs/mcp-connector" className="text-accent hover:underline">
               documentación del conector
             </Link>{" "}
             y la{" "}
-            <Link href="/docs/user-roles" className="text-[#3b82f6] hover:underline">
+            <Link href="/docs/user-roles" className="text-accent hover:underline">
               referencia de roles de usuario
             </Link>
-            . El endpoint del servidor es <code className="text-gray-300">{MCP_URL}</code>.
+            . El endpoint del servidor es <code className="text-fg-3">{MCP_URL}</code>.
           </p>
         </section>
 
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Cómo conectarlo</h2>
-          <p className="text-gray-400 leading-relaxed mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">Cómo conectarlo</h2>
+          <p className="text-fg-4 leading-relaxed mb-4">
             Genera una URL de conector en la página de Integraciones de Tavnit y pégala en
             claude.ai bajo Settings &rarr; Connectors, o añádela a Cursor como servidor MCP remoto.
             Toma un par de minutos y no requiere código.
           </p>
           <Link
             href="/docs/mcp-connector"
-            className="inline-flex items-center gap-2 text-[#3b82f6] font-semibold hover:underline"
+            className="inline-flex items-center gap-2 text-accent font-semibold hover:underline"
           >
             Leer la guía paso a paso (en inglés) <ArrowRight size={16} />
           </Link>
         </section>
 
         <section className="mb-14">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Preguntas frecuentes</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-6">Preguntas frecuentes</h2>
           <dl className="space-y-4">
             {faqs.map((faq) => (
               <div key={faq.q} className="glass-card rounded-xl p-5">
-                <dt className="text-base font-semibold text-white mb-2">{faq.q}</dt>
-                <dd className="text-sm text-gray-400 leading-relaxed">{faq.a}</dd>
+                <dt className="text-base font-semibold text-fg mb-2">{faq.q}</dt>
+                <dd className="text-sm text-fg-4 leading-relaxed">{faq.a}</dd>
               </div>
             ))}
           </dl>
         </section>
 
         <div className="glass-card rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">
+          <h2 className="text-2xl font-bold text-fg mb-3">
             Apunta tu asistente a documentos reales
           </h2>
-          <p className="text-gray-400 mb-6 max-w-[520px] mx-auto leading-relaxed">
+          <p className="text-fg-4 mb-6 max-w-[520px] mx-auto leading-relaxed">
             Crea un Flow, genera una URL de conector y empieza a preguntar. Créditos gratis para
             empezar, sin tarjeta.
           </p>
@@ -371,7 +371,7 @@ export default async function SpanishMcpIntegrationPage() {
             </Link>
             <Link
               href={stripeOn ? "/pricing" : "/es/agendar"}
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-white/15 text-gray-300 font-semibold hover:bg-white/5 hover:text-white transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg transition-all"
             >
               {stripeOn ? "Ver precios" : "Agendar una demostración"}
             </Link>

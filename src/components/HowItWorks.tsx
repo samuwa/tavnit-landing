@@ -46,8 +46,8 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">How It Works</h2>
-          <p className="text-base md:text-lg text-gray-400 max-w-[600px] mx-auto">
+          <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold text-fg mb-2">How It Works</h2>
+          <p className="text-base md:text-lg text-fg-4 max-w-[600px] mx-auto">
             From document to structured data to action — in 6 simple steps
           </p>
         </motion.div>

@@ -126,21 +126,21 @@ export default function SpanishLandingPage() {
       />
 
       <div className="max-w-[900px] mx-auto px-4 sm:px-6">
-        <p className="text-sm text-gray-500 mb-6">
-          <Link href="/" hrefLang="en" lang="en" className="hover:text-gray-300 transition-colors">
+        <p className="text-sm text-fg-5 mb-6">
+          <Link href="/" hrefLang="en" lang="en" className="hover:text-fg-3 transition-colors">
             Read this page in English
           </Link>
         </p>
 
-        <span className="inline-block text-xs font-semibold text-[#3b82f6] bg-[#3b82f6]/10 px-2.5 py-1 rounded-md mb-4">
+        <span className="inline-block text-xs font-semibold text-accent bg-[#3b82f6]/10 px-2.5 py-1 rounded-md mb-4">
           Operaciones documentales con IA
         </span>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-5 tracking-tight leading-tight">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight leading-tight">
           Extrae datos de tus documentos con IA, revísalos con tu equipo y actúa sobre ellos
         </h1>
 
-        <p className="text-lg text-gray-300 leading-relaxed mb-10 max-w-[720px]">
+        <p className="text-lg text-fg-3 leading-relaxed mb-10 max-w-[720px]">
           Tavnit convierte facturas, listas de empaque, contratos y formularios en datos
           estructurados — sin plantillas por proveedor. Tu equipo revisa y aprueba antes de que
           nada se registre, y los datos aprobados llegan a tus sistemas por API, webhook o correo.
@@ -155,15 +155,15 @@ export default function SpanishLandingPage() {
           </Link>
           <Link
             href={APP_URL}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-white/15 text-gray-300 font-semibold hover:bg-white/5 hover:text-white transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg transition-all"
           >
             Probar gratis
           </Link>
         </div>
 
         <section className="mb-20">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">El problema</h2>
-          <div className="space-y-4 text-gray-400 leading-relaxed max-w-[760px]">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">El problema</h2>
+          <div className="space-y-4 text-fg-4 leading-relaxed max-w-[760px]">
             {PROBLEMS.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
@@ -171,28 +171,28 @@ export default function SpanishLandingPage() {
         </section>
 
         <section className="mb-20">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Cómo funciona: extraer, revisar, actuar</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-6">Cómo funciona: extraer, revisar, actuar</h2>
           <div className="grid md:grid-cols-3 gap-4">
             {STEPS.map((s, i) => (
               <div key={s.title} className="glass-card rounded-2xl p-6">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="w-9 h-9 rounded-lg bg-[#3b82f6]/15 text-[#3b82f6] inline-flex items-center justify-center">
+                  <span className="w-9 h-9 rounded-lg bg-[#3b82f6]/15 text-accent inline-flex items-center justify-center">
                     <s.icon size={18} />
                   </span>
-                  <h3 className="text-lg font-bold text-white">
-                    <span className="text-gray-500 mr-2">{i + 1}.</span>
+                  <h3 className="text-lg font-bold text-fg">
+                    <span className="text-fg-5 mr-2">{i + 1}.</span>
                     {s.title}
                   </h3>
                 </div>
-                <p className="text-sm text-gray-400 leading-relaxed">{s.body}</p>
+                <p className="text-sm text-fg-4 leading-relaxed">{s.body}</p>
               </div>
             ))}
           </div>
         </section>
 
         <section id="casos-de-uso" className="mb-20 scroll-mt-24">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Casos de uso</h2>
-          <p className="text-gray-400 mb-6 max-w-[720px] leading-relaxed">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-3">Casos de uso</h2>
+          <p className="text-fg-4 mb-6 max-w-[720px] leading-relaxed">
             Empezamos por aduanas, porque es donde un error cuesta más. Cada página cubre qué
             campos importan en ese tipo de documento y qué suele salir mal.
           </p>
@@ -203,20 +203,20 @@ export default function SpanishLandingPage() {
                 href={esUseCasePath(uc)}
                 className="glass-card glass-card-hover rounded-xl p-5 transition-all"
               >
-                <span className="block text-base font-semibold text-white mb-1.5">{uc.label}</span>
-                <span className="block text-sm text-gray-400 leading-relaxed">{uc.summary}</span>
+                <span className="block text-base font-semibold text-fg mb-1.5">{uc.label}</span>
+                <span className="block text-sm text-fg-4 leading-relaxed">{uc.summary}</span>
               </Link>
             ))}
           </div>
           <p className="mt-5 text-sm">
-            <Link href="/es/casos-de-uso" className="inline-flex items-center gap-1 text-[#3b82f6] font-medium hover:underline">
+            <Link href="/es/casos-de-uso" className="inline-flex items-center gap-1 text-accent font-medium hover:underline">
               Ver los {USE_CASES_ES.length} casos de uso <ArrowRight size={14} />
             </Link>
           </p>
         </section>
 
         <section id="integraciones" className="mb-20 scroll-mt-24">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-5">Se integra con lo que ya usas</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-5">Se integra con lo que ya usas</h2>
           <ul className="space-y-3 max-w-[760px]">
             {[
               { icon: Mail, text: "Correo electrónico: reenvía el PDF a una dirección de Tavnit y recibe los datos de vuelta. Cero integración." },
@@ -224,34 +224,34 @@ export default function SpanishLandingPage() {
               { icon: Sparkles, text: "Conector MCP: conecta Tavnit a claude.ai o Cursor y pide a tu asistente que procese documentos o consulte tus datos extraídos." },
               { icon: Check, text: "Buckets: almacenamiento estructurado incorporado, consultable en lenguaje natural y graficable, sin exportar nada." },
             ].map((item, i) => (
-              <li key={i} className="flex gap-3 leading-relaxed text-gray-400">
-                <item.icon size={18} className="text-emerald-400 flex-shrink-0 mt-1" />
+              <li key={i} className="flex gap-3 leading-relaxed text-fg-4">
+                <item.icon size={18} className="text-ok flex-shrink-0 mt-1" />
                 <span>{item.text}</span>
               </li>
             ))}
           </ul>
           <p className="mt-5 text-sm">
-            <Link href="/es/integraciones" className="inline-flex items-center gap-1 text-[#3b82f6] font-medium hover:underline">
+            <Link href="/es/integraciones" className="inline-flex items-center gap-1 text-accent font-medium hover:underline">
               Todas las integraciones <ArrowRight size={14} />
             </Link>
           </p>
         </section>
 
         <section id="preguntas" className="mb-16 scroll-mt-24">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Preguntas frecuentes</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-6">Preguntas frecuentes</h2>
           <dl className="space-y-4">
             {FAQS.map((faq) => (
               <div key={faq.q} className="glass-card rounded-xl p-5">
-                <dt className="text-base font-semibold text-white mb-2">{faq.q}</dt>
-                <dd className="text-sm text-gray-400 leading-relaxed">{faq.a}</dd>
+                <dt className="text-base font-semibold text-fg mb-2">{faq.q}</dt>
+                <dd className="text-sm text-fg-4 leading-relaxed">{faq.a}</dd>
               </div>
             ))}
           </dl>
         </section>
 
         <div className="glass-card rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">Pruébalo con uno de tus documentos</h2>
-          <p className="text-gray-400 mb-6 max-w-[540px] mx-auto leading-relaxed">
+          <h2 className="text-2xl font-bold text-fg mb-3">Pruébalo con uno de tus documentos</h2>
+          <p className="text-fg-4 mb-6 max-w-[540px] mx-auto leading-relaxed">
             Trae una factura o una lista de empaque real. En la demostración armamos tu primer Flow y
             ves los datos salir en vivo.
           </p>
@@ -264,7 +264,7 @@ export default function SpanishLandingPage() {
             </Link>
             <Link
               href={APP_URL}
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-white/15 text-gray-300 font-semibold hover:bg-white/5 hover:text-white transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg transition-all"
             >
               Probar gratis
             </Link>

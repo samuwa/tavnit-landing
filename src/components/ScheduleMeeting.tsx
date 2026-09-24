@@ -88,7 +88,7 @@ const COPY = {
 } as const;
 
 const inputClass =
-  "w-full glass-card rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-500 " +
+  "w-full glass-card rounded-xl px-4 py-3 text-fg placeholder:text-fg-5 " +
   "focus:outline-none focus:border-[#3b82f6]/50 focus-visible:outline-2 focus-visible:outline-[#3b82f6]";
 
 export default function ScheduleMeeting({
@@ -182,11 +182,11 @@ export default function ScheduleMeeting({
       <div>
         <div className="mb-6 flex items-center gap-3 glass-card rounded-xl px-5 py-4">
           {booked ? (
-            <PartyPopper size={20} className="shrink-0 text-[#3b82f6]" aria-hidden />
+            <PartyPopper size={20} className="shrink-0 text-accent" aria-hidden />
           ) : (
-            <CalendarCheck size={20} className="shrink-0 text-[#3b82f6]" aria-hidden />
+            <CalendarCheck size={20} className="shrink-0 text-accent" aria-hidden />
           )}
-          <p className="text-sm text-slate-300">
+          <p className="text-sm text-fg-3">
             {booked
               ? t.booked(name.split(" ")[0], email)
               : t.thanks(name.split(" ")[0], Boolean(schedulerUrl))}
@@ -194,7 +194,7 @@ export default function ScheduleMeeting({
         </div>
 
         {schedulerUrl ? (
-          <div className="overflow-hidden rounded-2xl border border-white/15">
+          <div className="overflow-hidden rounded-2xl border border-tint/15">
             {/* Calendly wants ~700px, but never taller than the viewport —
                 on short screens the widget scrolls internally instead of
                 pushing the page. */}
@@ -213,12 +213,12 @@ export default function ScheduleMeeting({
           </div>
         ) : (
           <div className="glass-card rounded-2xl px-6 py-8 text-center">
-            <p className="mb-4 text-slate-300">
+            <p className="mb-4 text-fg-3">
               {t.noScheduler}
             </p>
             <a
               href={`mailto:${salesEmail}`}
-              className="inline-flex items-center gap-2 text-[#3b82f6] hover:underline"
+              className="inline-flex items-center gap-2 text-accent hover:underline"
             >
               <Mail size={16} aria-hidden />
               {salesEmail}
@@ -233,7 +233,7 @@ export default function ScheduleMeeting({
     <form onSubmit={submit} className="glass-card rounded-2xl p-6 sm:p-8">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="mb-1.5 block text-sm font-medium text-slate-300">{t.name}</span>
+          <span className="mb-1.5 block text-sm font-medium text-fg-3">{t.name}</span>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -245,7 +245,7 @@ export default function ScheduleMeeting({
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-sm font-medium text-slate-300">{t.email}</span>
+          <span className="mb-1.5 block text-sm font-medium text-fg-3">{t.email}</span>
           <input
             type="email"
             value={email}
@@ -258,7 +258,7 @@ export default function ScheduleMeeting({
           />
         </label>
         <label className="block sm:col-span-2">
-          <span className="mb-1.5 block text-sm font-medium text-slate-300">{t.company}</span>
+          <span className="mb-1.5 block text-sm font-medium text-fg-3">{t.company}</span>
           <input
             value={company}
             onChange={(e) => setCompany(e.target.value)}
@@ -269,7 +269,7 @@ export default function ScheduleMeeting({
           />
         </label>
         <label className="block sm:col-span-2">
-          <span className="mb-1.5 block text-sm font-medium text-slate-300">{t.topic}</span>
+          <span className="mb-1.5 block text-sm font-medium text-fg-3">{t.topic}</span>
           <textarea
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
@@ -311,9 +311,9 @@ export default function ScheduleMeeting({
           )}
           {submitting ? t.sending : t.submit}
         </button>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-fg-5">
           {t.preferEmail}{" "}
-          <a href={`mailto:${salesEmail}`} className="text-slate-400 hover:text-white">
+          <a href={`mailto:${salesEmail}`} className="text-fg-4 hover:text-fg">
             {salesEmail}
           </a>
         </p>

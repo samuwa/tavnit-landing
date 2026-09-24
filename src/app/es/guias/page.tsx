@@ -59,21 +59,21 @@ export default function SpanishGuidesHub() {
       />
 
       <div className="max-w-[860px] mx-auto px-4 sm:px-6">
-        <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-gray-500 flex flex-wrap items-center gap-x-2">
-          <Link href="/es" className="hover:text-gray-300 transition-colors">Inicio</Link>
+        <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-fg-5 flex flex-wrap items-center gap-x-2">
+          <Link href="/es" className="hover:text-fg-3 transition-colors">Inicio</Link>
           <span aria-hidden="true">/</span>
-          <span className="text-gray-400">Guías</span>
+          <span className="text-fg-4">Guías</span>
           <span className="ml-auto">
-            <Link href="/guides" hrefLang="en" lang="en" className="hover:text-gray-300 transition-colors">
+            <Link href="/guides" hrefLang="en" lang="en" className="hover:text-fg-3 transition-colors">
               Read in English
             </Link>
           </span>
         </nav>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-5 tracking-tight leading-tight">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight leading-tight">
           Guías de automatización documental
         </h1>
-        <p className="text-lg text-gray-300 leading-relaxed mb-12 max-w-[680px]">
+        <p className="text-lg text-fg-3 leading-relaxed mb-12 max-w-[680px]">
           Los problemas detrás del producto, explicados por sí mismos: cómo funciona de verdad la
           clasificación arancelaria, qué verifica la conciliación de una factura con su orden de
           compra. Neutrales hasta la última sección, donde decimos qué automatiza Tavnit.
@@ -86,13 +86,13 @@ export default function SpanishGuidesHub() {
               href={esGuidePath(g)}
               className="glass-card glass-card-hover rounded-2xl p-6 block transition-all"
             >
-              <h2 className="text-xl font-bold text-white mb-2">{g.h1}</h2>
-              <p className="text-sm text-gray-400 leading-relaxed mb-3">{g.description}</p>
-              <span className="inline-flex items-center gap-4 text-xs text-gray-500">
+              <h2 className="text-xl font-bold text-fg mb-2">{g.h1}</h2>
+              <p className="text-sm text-fg-4 leading-relaxed mb-3">{g.description}</p>
+              <span className="inline-flex items-center gap-4 text-xs text-fg-5">
                 <span className="inline-flex items-center gap-1">
                   <Clock size={13} /> {g.readingMinutes} min de lectura
                 </span>
-                <span className="inline-flex items-center gap-1 text-[#3b82f6] font-medium">
+                <span className="inline-flex items-center gap-1 text-accent font-medium">
                   Leer <ArrowRight size={13} />
                 </span>
               </span>
@@ -102,8 +102,8 @@ export default function SpanishGuidesHub() {
 
         {englishOnly.length > 0 && (
           <section className="mt-14">
-            <h2 className="text-xl font-bold text-white mb-2">Guías en inglés</h2>
-            <p className="text-sm text-gray-500 mb-4">
+            <h2 className="text-xl font-bold text-fg mb-2">Guías en inglés</h2>
+            <p className="text-sm text-fg-5 mb-4">
               Todavía no tienen versión en español.
             </p>
             <ul className="space-y-2">
@@ -113,7 +113,7 @@ export default function SpanishGuidesHub() {
                     href={`/guides/${g.slug}`}
                     hrefLang="en"
                     lang="en"
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-fg-4 hover:text-fg transition-colors"
                   >
                     {g.h1}
                   </Link>

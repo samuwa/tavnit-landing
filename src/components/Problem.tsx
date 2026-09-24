@@ -89,7 +89,7 @@ function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }
       <div
         className={`w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 rounded-xl flex items-center justify-center transition-all duration-300 ${
           active
-            ? "bg-emerald-500/10 text-emerald-400"
+            ? "bg-emerald-500/10 text-ok"
             : "bg-red-500/10 text-red-400"
         }`}
       >
@@ -110,14 +110,14 @@ function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }
       {/* Title - crossfade */}
       <div className="relative min-h-[3rem] mb-3 md:mb-4">
         <h3
-          className={`text-lg md:text-xl font-bold text-white transition-all duration-300 ${
+          className={`text-lg md:text-xl font-bold text-fg transition-all duration-300 ${
             active ? "opacity-0 translate-y-[-4px]" : "opacity-100 translate-y-0"
           }`}
         >
           {card.problem.title}
         </h3>
         <h3
-          className={`text-lg md:text-xl font-bold text-emerald-300 absolute inset-0 transition-all duration-300 ${
+          className={`text-lg md:text-xl font-bold text-ok absolute inset-0 transition-all duration-300 ${
             active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[4px]"
           }`}
         >
@@ -128,14 +128,14 @@ function ProblemCard({ card, index }: { card: (typeof cards)[0]; index: number }
       {/* Description - crossfade */}
       <div className="relative min-h-[4.5rem]">
         <p
-          className={`text-sm md:text-base text-gray-400 leading-relaxed transition-all duration-300 ${
+          className={`text-sm md:text-base text-fg-4 leading-relaxed transition-all duration-300 ${
             active ? "opacity-0 translate-y-[-4px]" : "opacity-100 translate-y-0"
           }`}
         >
           {card.problem.description}
         </p>
         <p
-          className={`text-sm md:text-base text-gray-400 leading-relaxed absolute inset-0 transition-all duration-300 ${
+          className={`text-sm md:text-base text-fg-4 leading-relaxed absolute inset-0 transition-all duration-300 ${
             active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[4px]"
           }`}
         >
@@ -156,7 +156,7 @@ export default function Problem() {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <motion.h2
           id="problem-heading"
-          className="text-3xl md:text-4xl font-bold text-center text-white mb-8 md:mb-16"
+          className="text-3xl md:text-4xl font-bold text-center text-fg mb-8 md:mb-16"
           initial={{ opacity: 0, scale: 0.96 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}

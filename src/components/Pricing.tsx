@@ -31,8 +31,8 @@ export default function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="pricing-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">Simple, Transparent Pricing</h2>
-          <p className="text-lg text-gray-400">Monthly plans with flexible credits</p>
+          <h2 id="pricing-heading" className="text-3xl md:text-4xl font-bold text-fg mb-2">Simple, Transparent Pricing</h2>
+          <p className="text-lg text-fg-4">Monthly plans with flexible credits</p>
         </motion.div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 mb-6">
@@ -54,30 +54,30 @@ export default function Pricing() {
                   BEST VALUE
                 </div>
               )}
-              <div className="text-center pb-4 sm:pb-6 border-b border-white/10">
-                <h3 className="text-base sm:text-xl font-bold text-white mb-2 sm:mb-4">{plan.name}</h3>
+              <div className="text-center pb-4 sm:pb-6 border-b border-tint/10">
+                <h3 className="text-base sm:text-xl font-bold text-fg mb-2 sm:mb-4">{plan.name}</h3>
                 <div className="mb-1 sm:mb-3">
-                  <span className="text-2xl sm:text-4xl font-extrabold text-white">{plan.price}</span>
-                  <span className="text-sm sm:text-base font-semibold text-gray-400">/mo</span>
+                  <span className="text-2xl sm:text-4xl font-extrabold text-fg">{plan.price}</span>
+                  <span className="text-sm sm:text-base font-semibold text-fg-4">/mo</span>
                 </div>
                 <div className="flex flex-col items-center mt-1">
-                  <span className="text-xl sm:text-3xl font-bold text-white">{plan.credits}</span>
-                  <span className="text-[10px] sm:text-sm text-gray-500 uppercase tracking-wider">credits/mo</span>
+                  <span className="text-xl sm:text-3xl font-bold text-fg">{plan.credits}</span>
+                  <span className="text-[10px] sm:text-sm text-fg-5 uppercase tracking-wider">credits/mo</span>
                 </div>
               </div>
               <div className="py-4 sm:py-6 text-center flex-grow flex flex-col items-center justify-center">
-                <p className="text-[11px] sm:text-sm text-gray-400 mb-1 sm:mb-2 leading-snug">
+                <p className="text-[11px] sm:text-sm text-fg-4 mb-1 sm:mb-2 leading-snug">
                   {plan.breakdown}
-                  {plan.bonus && <span className="text-[#3b82f6] font-semibold">{plan.bonus}</span>}
+                  {plan.bonus && <span className="text-accent font-semibold">{plan.bonus}</span>}
                 </p>
-                <p className="text-xs sm:text-base text-gray-500 leading-snug">{plan.value}</p>
+                <p className="text-xs sm:text-base text-fg-5 leading-snug">{plan.value}</p>
               </div>
               <Link
                 href="https://app.tavnit.io"
                 className={`w-full py-2.5 sm:py-3 rounded-lg text-center text-sm sm:text-base font-semibold transition-all ${
                   plan.featured
                     ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20"
-                    : "border border-[#3b82f6]/50 text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white hover:-translate-y-0.5"
+                    : "border border-[#3b82f6]/50 text-accent hover:bg-[#3b82f6] hover:text-white hover:-translate-y-0.5"
                 }`}
               >
                 Get Started
@@ -86,7 +86,7 @@ export default function Pricing() {
           ))}
         </div>
 
-        <p className="text-center text-sm text-gray-500 mb-8 sm:mb-6">
+        <p className="text-center text-sm text-fg-5 mb-8 sm:mb-6">
           Need more? Buy extra credits at {`$${EXTRA_CREDIT_USD.toFixed(2)}`}/credit (minimum {EXTRA_CREDIT_MINIMUM} credits) on top of any plan.
         </p>
 
@@ -97,11 +97,11 @@ export default function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h4 className="text-lg sm:text-xl font-bold text-center text-white mb-5 sm:mb-6">Everything Included in All Plans:</h4>
+          <h4 className="text-lg sm:text-xl font-bold text-center text-fg mb-5 sm:mb-6">Everything Included in All Plans:</h4>
           <ul className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {includedFeatures.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-xs sm:text-sm text-gray-300">
-                <Check size={14} className="text-emerald-400 flex-shrink-0 mt-0.5 sm:w-5 sm:h-5" />
+              <li key={f} className="flex items-start gap-2 text-xs sm:text-sm text-fg-3">
+                <Check size={14} className="text-ok flex-shrink-0 mt-0.5 sm:w-5 sm:h-5" />
                 {f}
               </li>
             ))}

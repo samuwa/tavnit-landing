@@ -62,7 +62,7 @@ export default function Page() {
     <>
       <DocsPageSchema slug="email-integration" howTo={HOW_TO} />
       <section>
-        <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-fg to-fg-4 bg-clip-text text-transparent">
           Email Integration
         </h1>
 

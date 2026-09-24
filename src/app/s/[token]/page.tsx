@@ -1,6 +1,6 @@
 import { cache } from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
+import Logo from "@/components/Logo";
 import Link from "next/link";
 import Questionnaire from "@/components/followup/Questionnaire";
 import { getInviteByToken } from "@/lib/followup/store";
@@ -44,20 +44,20 @@ export default async function FollowupPage(props: { params: Promise<{ token: str
     const t = UI[lang];
     const email = invite?.sales_rep_email ?? SALES_EMAIL;
     return (
-      <div className="min-h-dvh bg-[#0a0a1a] text-slate-200 flex flex-col overflow-x-clip">
+      <div className="min-h-dvh bg-bg text-fg-2 flex flex-col overflow-x-clip">
         <header className="flex items-center px-6 sm:px-10 py-5">
           <Link href="/" className="hover:opacity-85 transition-opacity">
-            <Image src="/assets/tavnit_logo.png" alt="Tavnit" width={110} height={28} className="h-7 w-auto" />
+            <Logo height={24} />
           </Link>
         </header>
         <main className="flex-1 flex items-center justify-center px-6">
           <div className="glass-card rounded-2xl p-10 max-w-md text-center">
-            <h1 className="font-heading text-2xl font-bold text-slate-100 mb-3">
+            <h1 className="font-heading text-2xl font-bold text-fg mb-3">
               {expired ? t.expiredTitle : t.invalidTitle}
             </h1>
-            <p className="text-slate-400 leading-relaxed">
+            <p className="text-fg-4 leading-relaxed">
               {t.invalidBody1}
-              <a href={`mailto:${email}`} className="text-[#3b82f6] hover:underline">
+              <a href={`mailto:${email}`} className="text-accent hover:underline">
                 {email}
               </a>
               {t.invalidBody2}
@@ -69,7 +69,7 @@ export default async function FollowupPage(props: { params: Promise<{ token: str
   }
 
   return (
-    <div className="min-h-dvh bg-[#0a0a1a] text-slate-200 flex flex-col overflow-x-clip">
+    <div className="min-h-dvh bg-bg text-fg-2 flex flex-col overflow-x-clip">
       <Questionnaire
         token={invite.token}
         clientName={invite.client_name}

@@ -54,26 +54,26 @@ export default function SpanishIntegrationsPage() {
       />
 
       <div className="max-w-[860px] mx-auto px-4 sm:px-6">
-        <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-gray-500 flex flex-wrap items-center gap-x-2">
-          <Link href="/es" className="hover:text-gray-300 transition-colors">Inicio</Link>
+        <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-fg-5 flex flex-wrap items-center gap-x-2">
+          <Link href="/es" className="hover:text-fg-3 transition-colors">Inicio</Link>
           <span aria-hidden="true">/</span>
-          <span className="text-gray-400">Integraciones</span>
+          <span className="text-fg-4">Integraciones</span>
           <span className="ml-auto">
-            <Link href="/integrations" hrefLang="en" lang="en" className="hover:text-gray-300 transition-colors">
+            <Link href="/integrations" hrefLang="en" lang="en" className="hover:text-fg-3 transition-colors">
               Read in English
             </Link>
           </span>
         </nav>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-5 tracking-tight">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight">
           Integraciones
         </h1>
-        <p className="text-lg text-gray-300 leading-relaxed mb-4">
+        <p className="text-lg text-fg-3 leading-relaxed mb-4">
           Los documentos llegan a Tavnit como le convenga al equipo que los envía — subidos en la
           aplicación, reenviados a una dirección de correo, publicados en un endpoint o pedidos
           por un asistente de IA. Los datos extraídos salen por el mismo camino.
         </p>
-        <p className="text-gray-400 leading-relaxed mb-12">
+        <p className="text-fg-4 leading-relaxed mb-12">
           Cada vía ejecuta los mismos Flows, así que el esquema, las reglas de limpieza y los
           pasos de revisión que configuraste aplican sin importar cómo llegue el documento.
         </p>
@@ -86,46 +86,46 @@ export default function SpanishIntegrationsPage() {
               className="glass-card glass-card-hover rounded-xl p-5 flex flex-col transition-all"
             >
               <div className="flex items-start justify-between gap-3 mb-2">
-                <h2 className="text-base font-semibold text-white">{item.labelEs}</h2>
-                <ArrowRight size={16} className="text-[#3b82f6] flex-shrink-0 mt-1" />
+                <h2 className="text-base font-semibold text-fg">{item.labelEs}</h2>
+                <ArrowRight size={16} className="text-accent flex-shrink-0 mt-1" />
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">{item.summaryEs}</p>
+              <p className="text-sm text-fg-4 leading-relaxed">{item.summaryEs}</p>
             </Link>
           ))}
         </div>
 
         <section className="mb-14">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">¿Cuál te conviene?</h2>
-          <div className="space-y-3 text-gray-400 leading-relaxed">
+          <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">¿Cuál te conviene?</h2>
+          <div className="space-y-3 text-fg-4 leading-relaxed">
             <p>
-              <strong className="text-gray-200">Si son personas las que envían los documentos</strong>{" "}
+              <strong className="text-fg-2">Si son personas las que envían los documentos</strong>{" "}
               — por ejemplo, la bandeja de cuentas por pagar que recibe facturas de proveedores —
               usa el{" "}
-              <Link href="/docs/email-integration" className="text-[#3b82f6] hover:underline">correo electrónico</Link>.
+              <Link href="/docs/email-integration" className="text-accent hover:underline">correo electrónico</Link>.
               Nadie tiene que aprender una herramienta nueva; reenvían como ya lo hacen.
             </p>
             <p>
-              <strong className="text-gray-200">Si es un sistema el que los envía</strong>, usa la{" "}
-              <Link href="/docs/api-integration" className="text-[#3b82f6] hover:underline">API REST</Link>{" "}
+              <strong className="text-fg-2">Si es un sistema el que los envía</strong>, usa la{" "}
+              <Link href="/docs/api-integration" className="text-accent hover:underline">API REST</Link>{" "}
               y recibe los resultados por{" "}
-              <Link href="/docs/webhooks" className="text-[#3b82f6] hover:underline">webhook</Link>.
+              <Link href="/docs/webhooks" className="text-accent hover:underline">webhook</Link>.
               Si prefieres no escribir el código intermedio, los mismos endpoints funcionan desde
               Zapier, Make, n8n y Power Automate.
             </p>
             <p>
-              <strong className="text-gray-200">Si trabajas con un asistente de IA</strong>, usa el{" "}
-              <Link href="/es/integraciones/mcp" className="text-[#3b82f6] hover:underline">conector MCP</Link>.
+              <strong className="text-fg-2">Si trabajas con un asistente de IA</strong>, usa el{" "}
+              <Link href="/es/integraciones/mcp" className="text-accent hover:underline">conector MCP</Link>.
               Le da a claude.ai o Cursor el proceso completo, no solo una entrada: tu asistente
               puede crear Flows de extracción, añadir reglas de limpieza, procesar documentos y
               consultar lo que ya extrajiste — sin que muevas archivos a mano.
             </p>
           </div>
-          <p className="text-xs text-gray-500 mt-4">La documentación técnica enlazada está en inglés.</p>
+          <p className="text-xs text-fg-5 mt-4">La documentación técnica enlazada está en inglés.</p>
         </section>
 
         <div className="glass-card rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">Empieza con un documento</h2>
-          <p className="text-gray-400 mb-6 max-w-[520px] mx-auto leading-relaxed">
+          <h2 className="text-2xl font-bold text-fg mb-3">Empieza con un documento</h2>
+          <p className="text-fg-4 mb-6 max-w-[520px] mx-auto leading-relaxed">
             Trae un documento real a la demostración: armamos el Flow, lo procesamos en vivo y
             vemos por dónde conviene conectar la salida a tus sistemas.
           </p>

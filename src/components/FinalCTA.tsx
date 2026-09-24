@@ -18,10 +18,10 @@ export default function FinalCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="cta-heading" className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+          <h2 id="cta-heading" className="text-2xl sm:text-4xl md:text-5xl font-bold text-fg mb-4 sm:mb-6 leading-tight">
             Stop Re-Typing.<br className="sm:hidden" /> Start Automating.
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-8 md:mb-10 max-w-[560px] mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-fg-3 mb-8 md:mb-10 max-w-[560px] mx-auto">
             Create your first extraction flow in minutes. Upload a document and
             watch structured data appear — cleaned, reviewed, and ready to act.
           </p>
@@ -38,37 +38,37 @@ export default function FinalCTA() {
             <Link
               href="/schedule"
               onClick={() => trackEvent("cta_click", { cta: "book_demo", location: "final_cta" })}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-white/15 text-gray-300 rounded-xl text-base sm:text-lg font-medium hover:bg-white/5 hover:text-white hover:border-white/30 hover:-translate-y-0.5 transition-all"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-tint/15 text-fg-3 rounded-xl text-base sm:text-lg font-medium hover:bg-tint/5 hover:text-fg hover:border-tint/30 hover:-translate-y-0.5 transition-all"
             >
               Book a Demo
             </Link>
             <Link
               href="/docs"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-white/15 text-gray-300 rounded-xl text-base sm:text-lg font-medium hover:bg-white/5 hover:text-white hover:border-white/30 hover:-translate-y-0.5 transition-all"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-tint/15 text-fg-3 rounded-xl text-base sm:text-lg font-medium hover:bg-tint/5 hover:text-fg hover:border-tint/30 hover:-translate-y-0.5 transition-all"
             >
               View Documentation
             </Link>
           </div>
 
           {/* Integration strip */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-gray-500 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-fg-5 text-sm">
             <div className="flex items-center gap-2">
-              <Code2 size={16} className="text-gray-500" />
+              <Code2 size={16} className="text-fg-5" />
               <span>REST API</span>
             </div>
-            <div className="w-px h-4 bg-white/10 hidden sm:block" />
+            <div className="w-px h-4 bg-tint/10 hidden sm:block" />
             <div className="flex items-center gap-2">
-              <Mail size={16} className="text-gray-500" />
+              <Mail size={16} className="text-fg-5" />
               <span>Email Triggers</span>
             </div>
-            <div className="w-px h-4 bg-white/10 hidden sm:block" />
+            <div className="w-px h-4 bg-tint/10 hidden sm:block" />
             <div className="flex items-center gap-2">
-              <Zap size={16} className="text-gray-500" />
+              <Zap size={16} className="text-fg-5" />
               <span>Webhooks</span>
             </div>
-            <div className="w-px h-4 bg-white/10 hidden sm:block" />
+            <div className="w-px h-4 bg-tint/10 hidden sm:block" />
             <div className="flex items-center gap-2">
-              <Plug size={16} className="text-gray-500" />
+              <Plug size={16} className="text-fg-5" />
               <span>MCP Connector</span>
             </div>
           </div>

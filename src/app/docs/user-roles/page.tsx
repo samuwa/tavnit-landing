@@ -23,7 +23,7 @@ export default function Page() {
     <>
       <DocsPageSchema slug="user-roles" />
       <section>
-        <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-fg to-fg-4 bg-clip-text text-transparent">
           User Roles &amp; Permissions
         </h1>
 
@@ -183,7 +183,7 @@ export default function Page() {
           <div className="overflow-x-auto">
             <div className="min-w-[400px]">
               {/* Table Header */}
-              <div className="flex items-center pb-3 border-b border-white/[0.08]">
+              <div className="flex items-center pb-3 border-b border-tint/[0.08]">
                 <div className="flex-1" />
                 <div className="w-16 text-center"><span className="text-xs font-bold text-purple-400 bg-purple-500/10 px-2 py-1 rounded">Owner</span></div>
                 <div className="w-16 text-center"><span className="text-xs font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded">Admin</span></div>

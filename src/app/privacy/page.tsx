@@ -45,7 +45,7 @@ export default function PrivacyPage() {
             This policy explains what data Tavnit collects, how it is used, and the
             controls you have over it. It covers the marketing site at tavnit.io, the
             interactive demo at demo.tavnit.io, and the Tavnit application. For anything not answered here, contact{" "}
-            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-[#3b82f6] hover:underline">
+            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-accent hover:underline">
               {SUPPORT_EMAIL}
             </Link>
             .
@@ -69,24 +69,24 @@ export default function PrivacyPage() {
 
         <LegalSection heading="What we collect">
           <p>
-            <strong className="text-gray-200">Account information.</strong> Your name, email
+            <strong className="text-fg-2">Account information.</strong> Your name, email
             address, organisation, and the credentials used to sign in.
           </p>
           <p>
-            <strong className="text-gray-200">Document content.</strong> The files you upload,
+            <strong className="text-fg-2">Document content.</strong> The files you upload,
             email to a flow address, or send through the API, together with the structured
             data extracted from them. Documents such as invoices, contracts, receipts,
             resumes and customs paperwork routinely contain personal data, so we treat all
             document content as sensitive by default.
           </p>
           <p>
-            <strong className="text-gray-200">Processing records.</strong> Runs, credit
+            <strong className="text-fg-2">Processing records.</strong> Runs, credit
             consumption, review decisions, and the append-only audit trail that
             Human-in-the-Loop review produces — which records who viewed, edited, approved
             or rejected each run.
           </p>
           <p>
-            <strong className="text-gray-200">Technical data.</strong> Standard log data
+            <strong className="text-fg-2">Technical data.</strong> Standard log data
             generated when you use the site or the application, error reports from the
             application (see below), and — only if you accept the cookie banner — usage
             analytics on the marketing site and demo.
@@ -105,7 +105,7 @@ export default function PrivacyPage() {
             changes as the platform evolves. If you need to review our current
             subprocessors — for example to complete a vendor assessment or a data protection
             impact assessment — request the list from{" "}
-            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-[#3b82f6] hover:underline">
+            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-accent hover:underline">
               {SUPPORT_EMAIL}
             </Link>{" "}
             and we will provide it.
@@ -193,7 +193,7 @@ export default function PrivacyPage() {
           </p>
           <p>
             To exercise any of these, email{" "}
-            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-[#3b82f6] hover:underline">
+            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-accent hover:underline">
               {SUPPORT_EMAIL}
             </Link>
             . If your request concerns personal data inside a document that another
@@ -204,7 +204,7 @@ export default function PrivacyPage() {
 
         <LegalSection heading="Cookies and analytics">
           <p>
-            <strong className="text-gray-200">Marketing site and demo</strong> (tavnit.io,
+            <strong className="text-fg-2">Marketing site and demo</strong> (tavnit.io,
             demo.tavnit.io). We use Google Analytics 4 to learn which pages, use cases and
             demo steps people find useful. It runs only after you accept the cookie banner.
             If you decline, or don&rsquo;t answer, Google Analytics sets no cookies and
@@ -224,7 +224,7 @@ export default function PrivacyPage() {
             Google&rsquo;s{" "}
             <Link
               href="https://tools.google.com/dlpage/gaoptout"
-              className="text-[#3b82f6] hover:underline"
+              className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -233,7 +233,7 @@ export default function PrivacyPage() {
             .
           </p>
           <p>
-            <strong className="text-gray-200">The application</strong> (app.tavnit.io). The
+            <strong className="text-fg-2">The application</strong> (app.tavnit.io). The
             application uses only the cookies and local storage required to sign you in,
             keep you signed in and remember your current organisation. It does not use
             analytics cookies. It does send error reports to Sentry, an error-monitoring
@@ -254,11 +254,11 @@ export default function PrivacyPage() {
         <LegalSection heading="Contact">
           <p>
             Questions about this policy, your data, or our current subprocessors:{" "}
-            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-[#3b82f6] hover:underline">
+            <Link href={`mailto:${SUPPORT_EMAIL}`} className="text-accent hover:underline">
               {SUPPORT_EMAIL}
             </Link>
             . See also our{" "}
-            <Link href="/terms" className="text-[#3b82f6] hover:underline">
+            <Link href="/terms" className="text-accent hover:underline">
               Terms of Service
             </Link>
             .

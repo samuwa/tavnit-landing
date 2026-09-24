@@ -67,10 +67,10 @@ export default function NotFoundView({ locale, stripeOn }: { locale: Locale; str
           >
             {t.eyebrow}
           </p>
-          <h1 className="mt-2 text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+          <h1 className="mt-2 text-3xl sm:text-5xl font-extrabold tracking-tight text-fg">
             {t.title}
           </h1>
-          <p className="mt-4 max-w-[600px] text-base sm:text-lg leading-relaxed text-gray-400">{t.body}</p>
+          <p className="mt-4 max-w-[600px] text-base sm:text-lg leading-relaxed text-fg-4">{t.body}</p>
 
           <ul className="mt-10 grid gap-3 sm:grid-cols-2">
             {t.links.map(({ icon: Icon, label, hint, href }) => (
@@ -79,27 +79,27 @@ export default function NotFoundView({ locale, stripeOn }: { locale: Locale; str
                   href={href}
                   className="glass-card glass-card-hover group flex items-start gap-4 rounded-xl p-5 transition-all"
                 >
-                  <span className="mt-0.5 inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[#3b82f6]/15 text-[#93c5fd]">
+                  <span className="mt-0.5 inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[#3b82f6]/15 text-accent-2">
                     <Icon size={18} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="flex items-center justify-between gap-2 text-base font-semibold text-white">
+                    <span className="flex items-center justify-between gap-2 text-base font-semibold text-fg">
                       {label}
-                      <ArrowRight size={16} className="flex-shrink-0 text-[#3b82f6] transition-transform group-hover:translate-x-0.5" />
+                      <ArrowRight size={16} className="flex-shrink-0 text-accent transition-transform group-hover:translate-x-0.5" />
                     </span>
-                    <span className="mt-1 block text-sm leading-relaxed text-gray-500">{hint}</span>
+                    <span className="mt-1 block text-sm leading-relaxed text-fg-5">{hint}</span>
                   </span>
                 </Link>
               </li>
             ))}
           </ul>
 
-          <p className="mt-10 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-500">
-            <Mail size={15} className="text-gray-600" aria-hidden />
+          <p className="mt-10 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-fg-5">
+            <Mail size={15} className="text-fg-6" aria-hidden />
             <span>{t.contact}</span>
             <a
               href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(t.mailSubject)}`}
-              className="text-[#3b82f6] hover:underline"
+              className="text-accent hover:underline"
             >
               {t.contactCta}
             </a>

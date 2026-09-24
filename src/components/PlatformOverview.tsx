@@ -259,7 +259,7 @@ export default function PlatformOverview() {
         isActive ? "max-h-24 opacity-100 mt-1" : "max-h-0 opacity-0"
       }`}
     >
-      <span className="block text-xs leading-relaxed text-gray-400 font-normal">
+      <span className="block text-xs leading-relaxed text-fg-4 font-normal">
         {leaf.desc}
       </span>
     </span>
@@ -280,17 +280,17 @@ export default function PlatformOverview() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-[#93c5fd] text-xs font-bold uppercase tracking-wider mb-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-accent-2 text-xs font-bold uppercase tracking-wider mb-5">
             <AppWindow size={14} />
             Platform tour
           </div>
           <h2
             id="platform-overview-heading"
-            className="text-3xl md:text-4xl font-bold text-white mb-3"
+            className="text-3xl md:text-4xl font-bold text-fg mb-3"
           >
-            The whole operation, <span className="text-[#93c5fd]">one workspace</span>
+            The whole operation, <span className="text-accent-2">one workspace</span>
           </h2>
-          <p className="text-base md:text-lg text-gray-400 max-w-[560px] mx-auto">
+          <p className="text-base md:text-lg text-fg-4 max-w-[560px] mx-auto">
             Real screens, real data. From first upload to finished table — and
             every call recording in between.
           </p>
@@ -307,17 +307,17 @@ export default function PlatformOverview() {
           onMouseLeave={() => setPaused(false)}
         >
           {/* Window chrome */}
-          <div className="flex items-center gap-3 px-4 py-2.5 bg-white/5 border-b border-white/10">
+          <div className="flex items-center gap-3 px-4 py-2.5 bg-tint/5 border-b border-tint/10">
             <div className="flex gap-1.5" aria-hidden="true">
               <span className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
               <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/60" />
             </div>
             <div
-              className="flex-1 max-w-[360px] mx-auto bg-black/30 rounded-md px-3 py-1 text-[11px] text-gray-400 font-mono truncate text-center"
+              className="flex-1 max-w-[360px] mx-auto bg-well/30 rounded-md px-3 py-1 text-[11px] text-fg-4 font-mono truncate text-center"
               aria-hidden="true"
             >
-              app.tavnit.io<span className="text-gray-200">{page.route}</span>
+              app.tavnit.io<span className="text-fg-2">{page.route}</span>
             </div>
             <div className="w-[52px]" aria-hidden="true" />
           </div>
@@ -330,7 +330,7 @@ export default function PlatformOverview() {
               aria-label="Tavnit app pages"
               aria-orientation="vertical"
               onKeyDown={onTablistKeyDown}
-              className="flex lg:flex-col bg-[#0b0d18]/80 border-b lg:border-b-0 lg:border-r border-white/10 overflow-x-auto lg:overflow-visible p-2 lg:py-3 gap-1"
+              className="flex lg:flex-col bg-panel/80 border-b lg:border-b-0 lg:border-r border-tint/10 overflow-x-auto lg:overflow-visible p-2 lg:py-3 gap-1"
             >
               {groups.map((g, gi) => {
                 const isSingle = g.pages.length === 1;
@@ -351,14 +351,14 @@ export default function PlatformOverview() {
                       onClick={() => select(li)}
                       className={`relative shrink-0 text-left rounded-lg px-3 py-2 transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
                         isActive
-                          ? "bg-[#3b82f6]/15 text-white"
-                          : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
+                          ? "bg-[#3b82f6]/15 text-fg"
+                          : "text-fg-4 hover:text-fg-2 hover:bg-tint/5"
                       }`}
                     >
                       <span className="flex items-center gap-2.5">
                         <g.icon
                           size={15}
-                          className={isActive ? "text-[#93c5fd]" : "text-gray-500"}
+                          className={isActive ? "text-accent-2" : "text-fg-5"}
                           aria-hidden="true"
                         />
                         <span className="text-sm font-semibold whitespace-nowrap">
@@ -380,14 +380,14 @@ export default function PlatformOverview() {
                       onClick={() => select(groupStart[gi])}
                       className={`hidden lg:block w-full shrink-0 text-left rounded-lg px-3 py-2 transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
                         groupActive
-                          ? "text-white"
-                          : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
+                          ? "text-fg"
+                          : "text-fg-4 hover:text-fg-2 hover:bg-tint/5"
                       }`}
                     >
                       <span className="flex items-center gap-2.5">
                         <g.icon
                           size={15}
-                          className={groupActive ? "text-[#93c5fd]" : "text-gray-500"}
+                          className={groupActive ? "text-accent-2" : "text-fg-5"}
                           aria-hidden="true"
                         />
                         <span className="text-sm font-semibold whitespace-nowrap">
@@ -395,7 +395,7 @@ export default function PlatformOverview() {
                         </span>
                         <ChevronDown
                           size={13}
-                          className={`ml-auto hidden lg:block text-gray-500 transition-transform duration-300 ${
+                          className={`ml-auto hidden lg:block text-fg-5 transition-transform duration-300 ${
                             groupActive ? "rotate-180" : ""
                           }`}
                           aria-hidden="true"
@@ -405,7 +405,7 @@ export default function PlatformOverview() {
 
                     {/* Children: always visible as chips on mobile, accordion on desktop */}
                     <div
-                      className={`flex lg:block gap-1 lg:ml-[17px] lg:border-l lg:border-white/10 lg:pl-2 lg:overflow-hidden lg:transition-all lg:duration-300 ${
+                      className={`flex lg:block gap-1 lg:ml-[17px] lg:border-l lg:border-tint/10 lg:pl-2 lg:overflow-hidden lg:transition-all lg:duration-300 ${
                         groupActive
                           ? "lg:max-h-72 lg:opacity-100 lg:mt-0.5"
                           : "lg:max-h-0 lg:opacity-0"
@@ -425,8 +425,8 @@ export default function PlatformOverview() {
                             onClick={() => select(li)}
                             className={`relative lg:w-full shrink-0 text-left rounded-md px-2.5 py-1.5 lg:mb-0.5 transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
                               isActive
-                                ? "bg-[#3b82f6]/15 text-white"
-                                : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
+                                ? "bg-[#3b82f6]/15 text-fg"
+                                : "text-fg-4 hover:text-fg-2 hover:bg-tint/5"
                             }`}
                           >
                             <span className="text-[13px] font-medium whitespace-nowrap">
@@ -448,7 +448,7 @@ export default function PlatformOverview() {
               id="platform-screen"
               role="tabpanel"
               aria-labelledby={`platform-tab-${page.key}`}
-              className="relative aspect-[1327/801] bg-[#0d0f1c]"
+              className="relative aspect-[1327/801] bg-panel"
             >
               {leaves.map((leaf, i) => (
                 <Image
@@ -467,8 +467,8 @@ export default function PlatformOverview() {
         </motion.div>
 
         {/* Caption for mobile, where the sidebar collapses to chips */}
-        <p className="lg:hidden text-center text-sm text-gray-400 mt-4 px-4" aria-live="polite">
-          <span className="font-semibold text-gray-200">{page.chip}.</span>{" "}
+        <p className="lg:hidden text-center text-sm text-fg-4 mt-4 px-4" aria-live="polite">
+          <span className="font-semibold text-fg-2">{page.chip}.</span>{" "}
           {page.desc}
         </p>
       </div>

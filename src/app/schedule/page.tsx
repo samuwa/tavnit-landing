@@ -69,19 +69,19 @@ export default async function SchedulePage() {
       >
         <div className="mx-auto grid w-full max-w-[1080px] items-center gap-8 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-12">
           <div className="text-center lg:text-left">
-            <h1 className="mb-3 text-3xl font-bold leading-tight text-white sm:text-4xl">
+            <h1 className="mb-3 text-3xl font-bold leading-tight text-fg sm:text-4xl">
               Book a Demo
             </h1>
-            <p className="mx-auto mb-6 max-w-[440px] text-base text-gray-300 lg:mx-0">
+            <p className="mx-auto mb-6 max-w-[440px] text-base text-fg-3 lg:mx-0">
               Tell us a little about your documents, then pick a time straight
               on the calendar.
             </p>
             <ul className="hidden space-y-4 lg:block">
               {EXPECTATIONS.map(({ icon: Icon, title, text }) => (
                 <li key={title} className="flex items-start gap-3">
-                  <Icon size={18} className="mt-0.5 shrink-0 text-[#3b82f6]" aria-hidden />
-                  <p className="text-sm text-slate-400">
-                    <span className="font-semibold text-white">{title}.</span>{" "}
+                  <Icon size={18} className="mt-0.5 shrink-0 text-accent" aria-hidden />
+                  <p className="text-sm text-fg-4">
+                    <span className="font-semibold text-fg">{title}.</span>{" "}
                     {text}
                   </p>
                 </li>

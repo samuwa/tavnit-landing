@@ -5,10 +5,127 @@
   --color-primary-dark: #6c42f0;
   --color-success: #10b981;
   --color-error: #ef4444;
+  /* Theme tokens. The raw values live on :root / [data-theme="light"] below;
+     utilities (text-fg, bg-tint/5, border-tint/10 …) resolve at runtime so
+     one class works in both themes. */
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-fg-4: var(--fg-4);
+  --color-fg-5: var(--fg-5);
+  --color-fg-6: var(--fg-6);
+  --color-tint: var(--tint);
+  --color-well: var(--well);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-violet-2: var(--violet-2);
+  --color-ok: var(--ok);
   --font-heading: var(--font-heading), -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
   --font-sans: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
+/* ==========================================
+   COLOR THEMES
+   Dark is the site's native palette (July 2026 redesign). Light replicates the
+   Tavnit Lite tool pages: accounting ledger paper, ink text, white sheets
+   lifted off the paper by hairlines and one soft shadow, the logo's blue as
+   the accent and its violet as the one highlight. The theme is chosen by an
+   inline script in the root layout before first paint (saved choice, then
+   the OS setting, then dark) and toggled from the header.
+   ========================================== */
+:root {
+  color-scheme: dark;
+  --bg: #0a0a1a;
+  --panel: #0d0d20;
+  --fg: #ffffff;
+  --fg-2: #e2e8f0;
+  --fg-3: #cbd5e1;
+  --fg-4: #94a3b8;
+  --fg-5: #64748b;
+  --fg-6: #475569;
+  /* Translucent overlays: white on dark, ink on paper. */
+  --tint: #ffffff;
+  /* Inset "wells" behind mock terminals and previews. */
+  --well: #000000;
+  --accent: #3b82f6;
+  --accent-2: #93c5fd;
+  --violet-2: #c4b5fd;
+  --ok: #34d399;
+  --shadow-sheet: 0 5px 20px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-circle: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --tint-04: rgba(255, 255, 255, 0.04);
+  --tint-05: rgba(255, 255, 255, 0.05);
+  --tint-06: rgba(255, 255, 255, 0.06);
+  --tint-07: rgba(255, 255, 255, 0.07);
+  --tint-08: rgba(255, 255, 255, 0.08);
+  --tint-10: rgba(255, 255, 255, 0.1);
+  --tint-12: rgba(255, 255, 255, 0.12);
+  --tint-15: rgba(255, 255, 255, 0.15);
+  --tint-18: rgba(255, 255, 255, 0.18);
+  --tint-20: rgba(255, 255, 255, 0.2);
+  --tint-28: rgba(255, 255, 255, 0.28);
+  --tint-40: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fbfbf7;
+  --panel: #ffffff;
+  --fg: #1c2321;
+  --fg-2: #2b3532;
+  --fg-3: #3f4a46;
+  --fg-4: #5c6963;
+  --fg-5: #66736d;
+  --fg-6: #8a958f;
+  --tint: #1c2321;
+  --well: #cfd6d2;
+  /* Blue text and links darken to the Lite "blue ink" for 4.5:1 on paper;
+     solid fills and the brand gradient keep #3b82f6. */
+  --accent: #2a63d4;
+  --accent-2: #2a63d4;
+  --violet-2: #6c42f0;
+  --ok: #1e7a4f;
+  --shadow-sheet:
+    inset 0 1px 0 #ffffff,
+    0 1px 2px rgba(28, 35, 33, 0.06),
+    0 24px 48px -28px rgba(28, 35, 33, 0.35);
+  --shadow-card: var(--shadow-sheet);
+  --shadow-circle: 0 1px 2px rgba(28, 35, 33, 0.06), 0 12px 24px -16px rgba(28, 35, 33, 0.3);
+  --tint-04: rgba(28, 35, 33, 0.04);
+  --tint-05: rgba(28, 35, 33, 0.05);
+  --tint-06: rgba(28, 35, 33, 0.06);
+  --tint-07: rgba(28, 35, 33, 0.07);
+  --tint-08: rgba(28, 35, 33, 0.08);
+  --tint-10: rgba(28, 35, 33, 0.1);
+  --tint-12: rgba(28, 35, 33, 0.12);
+  --tint-15: rgba(28, 35, 33, 0.15);
+  --tint-18: rgba(28, 35, 33, 0.18);
+  --tint-20: rgba(28, 35, 33, 0.2);
+  --tint-28: rgba(28, 35, 33, 0.28);
+  --tint-40: rgba(28, 35, 33, 0.4);
+  /* Tailwind palette shades used for status colors were picked for dark
+     surfaces; on paper they fall under 3:1, so the light theme re-points the
+     few that appear (icons, badges, alerts) at deeper shades. */
+  --color-amber-300: #b45309;
+  --color-amber-400: #b45309;
+  --color-yellow-500: #a16207;
+  --color-red-400: #b91c1c;
+  --color-purple-400: #6d28d9;
+  --color-blue-400: #2a63d4;
+  --color-cyan-400: #0e7490;
+  --color-sky-300: #0369a1;
+  --color-sky-400: #0369a1;
+  --color-emerald-400: #15925c;
+}
+
+/* Theme-dependent icons (sun/moon in the header toggle) without JS. */
+.show-light { display: none; }
+[data-theme="light"] .show-light { display: inline-flex; }
+[data-theme="light"] .show-dark { display: none; }
 
 @keyframes float {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -73,7 +190,16 @@ html {
  * page scrolls normally. That is the correct way for this to fail.
  */
 html:has(#hero) {
-  scroll-snap-type: y mandatory;
+  /*
+   * Mandatory snapping is only safe when every section fits the viewport.
+   * Below ~1000px of height several sections (platform tour, use cases,
+   * integrations, FAQ) are taller than the screen, and a mandatory snap with
+   * scroll-snap-stop: always jumps past their lower half — the CTAs under the
+   * hero were unreachable on a 13" laptop. So: mandatory on tall screens,
+   * proximity (free scrolling, gentle settle near a section top) elsewhere,
+   * none on phones (see the media queries at the end of the snap block).
+   */
+  scroll-snap-type: y proximity;
   /*
    * `scroll-behavior: smooth` must not apply to the snap container.
    *
@@ -95,8 +221,8 @@ body {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #0a0a1a;
-  color: #e2e8f0;
+  background: var(--bg);
+  color: var(--fg-2);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -178,20 +304,36 @@ h1, h2, h3, h4, h5, h6 {
    ========================================== */
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--tint-04);
+  border: 1px solid var(--tint-08);
+  border-top: 1px solid var(--tint-12);
   backdrop-filter: blur(16px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-card);
 }
 
 .glass-card-hover:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--tint-07);
   border-color: rgba(59, 130, 246, 0.25);
-  border-top-color: rgba(255, 255, 255, 0.18);
+  border-top-color: var(--tint-18);
   box-shadow:
     0 8px 32px rgba(59, 130, 246, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    inset 0 1px 0 var(--tint-06);
+}
+
+/* Light: cards are white sheets on the paper, as in Lite. No glass. */
+[data-theme="light"] .glass-card {
+  background: #ffffff;
+  border-color: #d8dfda;
+  backdrop-filter: none;
+}
+
+[data-theme="light"] .glass-card-hover:hover {
+  background: #ffffff;
+  border-color: #3b82f6;
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 1px 2px rgba(28, 35, 33, 0.06),
+    0 28px 56px -28px rgba(42, 99, 212, 0.35);
 }
 
 /* ==========================================
@@ -245,14 +387,22 @@ h1, h2, h3, h4, h5, h6 {
   50% { transform: scale(1.05); }
 }
 
+/* The document and the table are grid siblings stretched to the same row
+   height (align-items: stretch on .animation-wrapper). Whichever is taller
+   sets the height; the other fills it: the PDF centres its fields in the
+   extra space, the table distributes it across its rows. So the two sheets
+   always match, whatever the viewport does to their content. */
+
 /* PDF Document */
 .pdf-doc {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--tint-05);
+  border: 1px solid var(--tint-10);
   padding: 2.3rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
   border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-sheet);
   backdrop-filter: blur(12px);
   min-width: 320px;
 }
@@ -267,14 +417,14 @@ h1, h2, h3, h4, h5, h6 {
 .pdf-label {
   height: 12px;
   width: 115px;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--tint-20);
   border-radius: 6px;
 }
 
 .pdf-value {
   height: 12px;
   width: 138px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--tint-10);
   border-radius: 6px;
 }
 
@@ -287,19 +437,29 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: 4rem;
 }
 
+#pdf-fields-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 /* Table */
 .table-doc {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--tint-05);
+  border: 1px solid var(--tint-10);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sheet);
   backdrop-filter: blur(12px);
   min-width: 320px;
 }
 
 .table-doc table {
   width: 100%;
+  flex: 1;
   font-size: 15px;
   border-collapse: collapse;
 }
@@ -307,21 +467,21 @@ h1, h2, h3, h4, h5, h6 {
 .table-doc th {
   text-align: left;
   padding: 1rem 1.5rem;
-  background: rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
+  background: var(--tint-06);
+  border-bottom: 1px solid var(--tint-10);
+  color: var(--fg-4);
   font-weight: 600;
 }
 
 .table-doc td {
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--tint-05);
 }
 
 .target-bar {
   height: 12px;
   width: 138px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--tint-08);
   border-radius: 6px;
   transition: all 0.3s ease;
 }
@@ -334,7 +494,7 @@ h1, h2, h3, h4, h5, h6 {
 .target-label {
   height: 12px;
   width: 115px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--tint-08);
   border-radius: 6px;
   transition: all 0.3s ease;
 }
@@ -342,6 +502,23 @@ h1, h2, h3, h4, h5, h6 {
 .target-label.filled {
   background: linear-gradient(90deg, #6c42f0, #06b6d4);
   box-shadow: 0 0 10px rgba(108, 66, 240, 0.5);
+}
+
+/* Light: the mock PDF and the table become white sheets on the paper. */
+[data-theme="light"] .pdf-doc,
+[data-theme="light"] .table-doc {
+  background: #ffffff;
+  border-color: #d8dfda;
+  backdrop-filter: none;
+}
+
+[data-theme="light"] .table-doc th {
+  background: #f4f6f3;
+  border-bottom-color: #e6ede8;
+}
+
+[data-theme="light"] .table-doc td {
+  border-bottom-color: #e6ede8;
 }
 
 /* Particles */
@@ -410,7 +587,7 @@ h1, h2, h3, h4, h5, h6 {
   border-top: 1px solid rgba(16, 185, 129, 0.2);
   padding: 0.5rem 1rem;
   font-size: 12px;
-  color: #34d399;
+  color: var(--ok);
   opacity: 0;
   font-weight: 600;
 }
@@ -420,6 +597,60 @@ h1, h2, h3, h4, h5, h6 {
   transform-origin: center center;
   will-change: transform;
   display: inline-grid;
+}
+
+/* Short desktop viewports (laptops, browser chrome open): the mock-up shrinks
+   with the height so the hero still reads as one sentence above the fold. */
+@media (min-width: 768px) and (max-height: 860px) {
+  .pdf-doc,
+  .table-doc {
+    min-width: 280px;
+  }
+
+  .pdf-doc {
+    padding: 1.4rem;
+  }
+
+  .pdf-field {
+    gap: 0.85rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .pdf-label,
+  .pdf-value,
+  .target-bar,
+  .target-label {
+    height: 10px;
+  }
+
+  .table-doc table {
+    font-size: 13px;
+  }
+
+  .table-doc th,
+  .table-doc td {
+    padding: 0.6rem 1.1rem;
+  }
+
+  .arrow-section {
+    padding-top: 2.5rem;
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 768px) and (max-height: 800px) {
+  .pdf-doc {
+    padding: 1rem 1.2rem;
+  }
+
+  .pdf-field {
+    margin-bottom: 0.6rem;
+  }
+
+  .table-doc th,
+  .table-doc td {
+    padding: 0.45rem 1rem;
+  }
 }
 
 /* ==========================================
@@ -647,17 +878,23 @@ h1, h2, h3, h4, h5, h6 {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 3px solid rgba(255, 255, 255, 0.12);
+  background: var(--tint-06);
+  border: 3px solid var(--tint-12);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+  color: var(--fg-4);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   z-index: 2;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-circle);
   backdrop-filter: blur(8px);
+}
+
+[data-theme="light"] .step-icon-circle {
+  background: #ffffff;
+  border-color: #d8dfda;
+  backdrop-filter: none;
 }
 
 .step-icon-circle svg {
@@ -693,14 +930,14 @@ h1, h2, h3, h4, h5, h6 {
 .step-content h3 {
   font-size: 18px;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--fg);
   margin-bottom: 8px;
   line-height: 1.3;
 }
 
 .step-content p {
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--fg-4);
   line-height: 1.5;
   margin: 0;
 }
@@ -717,7 +954,7 @@ h1, h2, h3, h4, h5, h6 {
 .connector-line {
   width: 32px;
   height: 2px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, #3b82f6 50%, rgba(255,255,255,0.1) 100%);
+  background: linear-gradient(90deg, var(--tint-10) 0%, #3b82f6 50%, var(--tint-10) 100%);
   position: relative;
 }
 
@@ -814,7 +1051,7 @@ h1, h2, h3, h4, h5, h6 {
   .connector-line {
     width: 2px;
     height: 16px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--tint-10);
   }
 
   .connector-line::after {
@@ -865,7 +1102,7 @@ h1, h2, h3, h4, h5, h6 {
 @media (hover: none) and (pointer: coarse) {
   .workflow-step:hover .step-icon-circle {
     transform: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-circle);
   }
 
   .glass-card-hover:hover {
@@ -978,7 +1215,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @keyframes featDim {
   to {
-    color: rgba(255, 255, 255, 0.28);
+    color: var(--tint-28);
   }
 }
 
@@ -995,7 +1232,7 @@ h1, h2, h3, h4, h5, h6 {
   right: 0;
   top: 50%;
   height: 1px;
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--tint-40);
   transform: scaleX(0);
   transform-origin: left;
   animation: featStrike 0.35s ease forwards;
@@ -1110,7 +1347,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   .feat-strike {
     animation: none;
-    color: rgba(255, 255, 255, 0.28);
+    color: var(--tint-28);
   }
   .feat-strike::after {
     animation: none;
@@ -1140,7 +1377,7 @@ h1, h2, h3, h4, h5, h6 {
 #problem {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1149,7 +1386,7 @@ h1, h2, h3, h4, h5, h6 {
 #how-it-works {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1158,7 +1395,7 @@ h1, h2, h3, h4, h5, h6 {
 #live-demo {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1167,7 +1404,7 @@ h1, h2, h3, h4, h5, h6 {
 #features {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1176,7 +1413,7 @@ h1, h2, h3, h4, h5, h6 {
 #extraction {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1185,7 +1422,7 @@ h1, h2, h3, h4, h5, h6 {
 #agents {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1194,7 +1431,7 @@ h1, h2, h3, h4, h5, h6 {
 #human-in-the-loop {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1203,7 +1440,7 @@ h1, h2, h3, h4, h5, h6 {
 #platform-overview {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1212,7 +1449,7 @@ h1, h2, h3, h4, h5, h6 {
 #use-cases {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1221,7 +1458,7 @@ h1, h2, h3, h4, h5, h6 {
 #integrations {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1230,7 +1467,7 @@ h1, h2, h3, h4, h5, h6 {
 #pricing {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1240,7 +1477,7 @@ h1, h2, h3, h4, h5, h6 {
 #faq {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1249,7 +1486,7 @@ h1, h2, h3, h4, h5, h6 {
 .final-cta-section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1259,6 +1496,22 @@ h1, h2, h3, h4, h5, h6 {
    target on every route, including pages with no other snap points. */
 html:has(#hero) footer {
   scroll-snap-align: start;
+}
+
+/* Tall desktop screens: the full-page snap the homepage was designed for. */
+@media (min-width: 1024px) and (min-height: 1000px) {
+  html:has(#hero) {
+    scroll-snap-type: y mandatory;
+  }
+}
+
+/* Laptop heights: sections may be taller than the viewport, so never force a
+   stop on them — proximity alone settles the scroll when a section top is
+   close, and the visitor can read a tall section to the end. */
+@media (max-height: 999px) {
+  #problem, #how-it-works, #live-demo, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
+    scroll-snap-stop: normal;
+  }
 }
 
 /* Tablet: softer scroll snap */
@@ -1355,6 +1608,7 @@ html:has(#hero) footer {
    Lite shell covers the viewport with its own surface, so nothing dark
    shows through. Accounting ledger paper: warm white with faint rules. */
 .lite {
+  color-scheme: light;
   --lite-paper: #fbfbf7;
   --lite-rule: #e6ede8;
   --lite-ink: #1c2321;

@@ -15,10 +15,10 @@ export default function LiveDemo() {
           viewport={{ once: true }}
         >
           <div className="text-center mb-5">
-            <h2 id="live-demo-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">
+            <h2 id="live-demo-heading" className="text-3xl md:text-4xl font-bold text-fg mb-2">
               Don&apos;t take our word for it
             </h2>
-            <p className="text-base md:text-lg text-gray-400 max-w-[600px] mx-auto">
+            <p className="text-base md:text-lg text-fg-4 max-w-[600px] mx-auto">
               Walk through a real invoice — from inbox to structured data — in about a minute. No signup.
             </p>
           </div>
@@ -31,14 +31,14 @@ export default function LiveDemo() {
             aria-label="Try the Tavnit live demo (opens in a new tab)"
           >
             {/* Window chrome */}
-            <div className="flex items-center gap-3 px-4 py-2.5 bg-white/5 border-b border-white/10">
+            <div className="flex items-center gap-3 px-4 py-2.5 bg-tint/5 border-b border-tint/10">
               <div className="flex gap-1.5" aria-hidden="true">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
                 <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/60" />
               </div>
               <div
-                className="flex-1 max-w-[360px] mx-auto bg-black/30 rounded-md px-3 py-1 text-[11px] text-gray-400 font-mono truncate text-center"
+                className="flex-1 max-w-[360px] mx-auto bg-well/30 rounded-md px-3 py-1 text-[11px] text-fg-4 font-mono truncate text-center"
                 aria-hidden="true"
               >
                 demo.tavnit.io

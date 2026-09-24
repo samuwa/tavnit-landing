@@ -1,6 +1,6 @@
 import { LITE_HUB_PATHS, LITE_TOOLS, LITE_TOOL_IDS } from "@/lib/lite/tools";
 import { TOOL_COPY } from "@/lib/lite/copy";
-import Image from "next/image";
+import Logo from "@/components/Logo";
 import Link from "next/link";
 import CookieSettingsLink from "@/components/CookieSettingsLink";
 import { GITHUB_URL, LINKEDIN_URL, SUPPORT_EMAIL } from "@/lib/site";
@@ -175,32 +175,29 @@ export default function Footer({
         links: c.links.filter((l) => l.href !== "/pricing"),
       }));
   return (
-    <footer className="py-10 pb-6 md:py-16 md:pb-8 bg-black/40 backdrop-blur-sm border-t border-white/5 text-gray-400">
+    <footer className="py-10 pb-6 md:py-16 md:pb-8 bg-well/40 backdrop-blur-sm border-t border-tint/5 text-fg-4">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-8 md:gap-10 mb-8 md:mb-12">
           {/* Brand */}
           <div className="col-span-2">
             <div className="mb-6">
-              <Image
-                src="/assets/tavnit_logo.png"
+              <Logo
+                height={44}
                 alt="Tavnit - AI Document Data Extraction Platform"
-                width={174}
-                height={60}
-                className="h-[48px] md:h-[60px] w-auto"
               />
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed max-w-[300px]">{TAGLINE[locale]}</p>
+            <p className="text-sm text-fg-5 leading-relaxed max-w-[300px]">{TAGLINE[locale]}</p>
           </div>
 
           {visibleColumns.map((column) => (
             <div key={column.title}>
-              <h4 className="text-base font-semibold text-white mb-4 md:mb-6">{column.title}</h4>
+              <h4 className="text-base font-semibold text-fg mb-4 md:mb-6">{column.title}</h4>
               <ul className="space-y-2">
                 {column.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-gray-500 hover:text-white transition-colors"
+                      className="text-sm text-fg-5 hover:text-fg transition-colors"
                       {...(link.external
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
@@ -214,11 +211,11 @@ export default function Footer({
           ))}
         </div>
 
-        <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-gray-600">
+        <div className="pt-6 border-t border-tint/5 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-fg-6">
           <p>{COPYRIGHT[locale]}</p>
           <p className="flex items-center gap-4">
-            <CookieSettingsLink className="hover:text-gray-400 transition-colors" locale={locale} />
-            <Link href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-gray-400 transition-colors">
+            <CookieSettingsLink className="hover:text-fg-4 transition-colors" locale={locale} />
+            <Link href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-fg-4 transition-colors">
               {SUPPORT_EMAIL}
             </Link>
           </p>

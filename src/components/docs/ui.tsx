@@ -38,8 +38,8 @@ export function InfoBox({
     <div className={`flex gap-4 p-4 rounded-lg border-l-4 ${styles[color]} my-4`}>
       <div className="flex-shrink-0 mt-0.5 opacity-80">{icon}</div>
       <div>
-        <strong className="text-gray-100 block mb-1">{title}</strong>
-        <p className="text-gray-400 text-sm leading-relaxed">{children}</p>
+        <strong className="text-fg block mb-1">{title}</strong>
+        <p className="text-fg-4 text-sm leading-relaxed">{children}</p>
       </div>
     </div>
   );
@@ -49,7 +49,7 @@ export function WarningBox({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex gap-3 p-4 rounded-lg border-l-4 border-yellow-500 bg-yellow-500/10 my-4">
       <AlertTriangle size={20} className="flex-shrink-0 mt-0.5 text-yellow-500" />
-      <p className="text-gray-300 text-sm leading-relaxed">{children}</p>
+      <p className="text-fg-3 text-sm leading-relaxed">{children}</p>
     </div>
   );
 }
@@ -64,12 +64,12 @@ export function DocCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-white/[0.03] border border-white/[0.08] backdrop-blur-sm rounded-xl p-6 md:p-8 mb-6">
+    <div className="bg-tint/[0.03] border border-tint/[0.08] backdrop-blur-sm rounded-xl p-6 md:p-8 mb-6">
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-[#3b82f6]">{icon}</span>
-        <h2 className="text-xl font-bold text-gray-100">{title}</h2>
+        <span className="text-accent">{icon}</span>
+        <h2 className="text-xl font-bold text-fg">{title}</h2>
       </div>
-      <div className="text-gray-300 leading-relaxed space-y-3 text-[15px]">{children}</div>
+      <div className="text-fg-3 leading-relaxed space-y-3 text-[15px]">{children}</div>
     </div>
   );
 }
@@ -82,7 +82,7 @@ export function NumberedList({ items }: { items: React.ReactNode[] }) {
           <span className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] flex items-center justify-center text-xs font-bold text-white">
             {i + 1}
           </span>
-          <span className="text-gray-300 text-[15px] leading-relaxed pt-0.5">{item}</span>
+          <span className="text-fg-3 text-[15px] leading-relaxed pt-0.5">{item}</span>
         </li>
       ))}
     </ol>
@@ -93,7 +93,7 @@ export function BulletList({ items }: { items: React.ReactNode[] }) {
   return (
     <ul className="space-y-2 my-3 ml-1">
       {items.map((item, i) => (
-        <li key={i} className="flex gap-3 text-gray-300 text-[15px]">
+        <li key={i} className="flex gap-3 text-fg-3 text-[15px]">
           <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#3b82f6] mt-2" />
           <span>{item}</span>
         </li>
@@ -112,19 +112,19 @@ export function CodeBlock({ lang, code }: { lang: string; code: string }) {
   };
 
   return (
-    <div className="rounded-lg overflow-hidden my-4 border border-white/[0.08]">
-      <div className="flex items-center justify-between px-4 py-2.5 bg-white/[0.06] border-b border-white/[0.08]">
-        <span className="text-sm font-medium text-gray-400">{lang}</span>
+    <div className="rounded-lg overflow-hidden my-4 border border-tint/[0.08]">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-tint/[0.06] border-b border-tint/[0.08]">
+        <span className="text-sm font-medium text-fg-4">{lang}</span>
         <button
           onClick={copy}
-          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors px-2.5 py-1 rounded hover:bg-white/10"
+          className="flex items-center gap-1.5 text-xs text-fg-4 hover:text-fg transition-colors px-2.5 py-1 rounded hover:bg-tint/10"
         >
-          {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+          {copied ? <Check size={14} className="text-ok" /> : <Copy size={14} />}
           {copied ? "Copied!" : "Copy"}
         </button>
       </div>
-      <pre className="p-4 overflow-x-auto bg-black/40 text-[13px] leading-relaxed">
-        <code className="text-gray-300 font-mono">{code}</code>
+      <pre className="p-4 overflow-x-auto bg-well/40 text-[13px] leading-relaxed">
+        <code className="text-fg-3 font-mono">{code}</code>
       </pre>
     </div>
   );
@@ -132,7 +132,7 @@ export function CodeBlock({ lang, code }: { lang: string; code: string }) {
 
 export function InlineCode({ children }: { children: string }) {
   return (
-    <code className="px-2.5 py-1 bg-black/40 border border-white/[0.08] rounded text-[#3b82f6] text-sm font-mono">
+    <code className="px-2.5 py-1 bg-well/40 border border-tint/[0.08] rounded text-accent text-sm font-mono">
       {children}
     </code>
   );
@@ -141,14 +141,14 @@ export function InlineCode({ children }: { children: string }) {
 export function PermissionRow({ label, owner, admin, member, note }: { label: string; owner: boolean; admin: boolean; member: boolean; note?: string }) {
   const cell = (allowed: boolean) => (
     <div className="w-16 flex justify-center">
-      {allowed ? <CheckCircle size={16} className="text-emerald-400" /> : <XCircle size={16} className="text-gray-600" />}
+      {allowed ? <CheckCircle size={16} className="text-ok" /> : <XCircle size={16} className="text-fg-6" />}
     </div>
   );
   return (
-    <div className="flex items-center py-2 border-b border-white/[0.04]">
+    <div className="flex items-center py-2 border-b border-tint/[0.04]">
       <div className="flex-1">
-        <span className="text-gray-300 text-sm">{label}</span>
-        {note && <span className="text-gray-500 text-xs block italic">{note}</span>}
+        <span className="text-fg-3 text-sm">{label}</span>
+        {note && <span className="text-fg-5 text-xs block italic">{note}</span>}
       </div>
       {cell(owner)}
       {cell(admin)}
@@ -160,7 +160,7 @@ export function PermissionRow({ label, owner, admin, member, note }: { label: st
 export function PermissionGroupHeader({ label }: { label: string }) {
   return (
     <div className="pt-4 pb-1">
-      <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{label}</span>
+      <span className="text-xs font-bold text-fg-5 uppercase tracking-wider">{label}</span>
     </div>
   );
 }
@@ -169,8 +169,8 @@ export function RoleBadge({ label, color, icon, subtitle }: { label: string; col
   return (
     <div className={`flex flex-col items-center p-4 rounded-xl border ${color} text-center`}>
       <div className="mb-2">{icon}</div>
-      <span className="text-sm font-bold text-gray-100">{label}</span>
-      <span className="text-xs text-gray-400 mt-1">{subtitle}</span>
+      <span className="text-sm font-bold text-fg">{label}</span>
+      <span className="text-xs text-fg-4 mt-1">{subtitle}</span>
     </div>
   );
 }
@@ -187,7 +187,7 @@ export function RoleBadge({ label, color, icon, subtitle }: { label: string; col
  */
 export function Lead({ children }: { children: React.ReactNode }) {
   return (
-    <p className="border-l-2 border-[#3b82f6]/50 pl-4 text-[16.5px] leading-relaxed text-gray-200">
+    <p className="border-l-2 border-[#3b82f6]/50 pl-4 text-[16.5px] leading-relaxed text-fg-2">
       {children}
     </p>
   );
@@ -203,7 +203,7 @@ export function DocLink({ href, children }: { href: string; children: React.Reac
   return (
     <Link
       href={href}
-      className="text-[#93c5fd] underline decoration-[#93c5fd]/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white/50"
+      className="text-accent-2 underline decoration-accent-2/30 underline-offset-2 transition-colors hover:text-fg hover:decoration-tint/50"
     >
       {children}
     </Link>
@@ -228,20 +228,20 @@ export function DataTable({
 }) {
   return (
     <div className="my-5">
-      <div className="overflow-x-auto rounded-lg border border-white/[0.08]">
+      <div className="overflow-x-auto rounded-lg border border-tint/[0.08]">
         <table className="w-full border-collapse text-left text-[14px]">
           {caption && (
-            <caption className="px-4 py-2.5 text-left text-xs text-gray-500">
+            <caption className="px-4 py-2.5 text-left text-xs text-fg-5">
               {caption}
             </caption>
           )}
           <thead>
-            <tr className="bg-white/[0.05]">
+            <tr className="bg-tint/[0.05]">
               {head.map((cell) => (
                 <th
                   key={cell}
                   scope="col"
-                  className="whitespace-nowrap px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-gray-400"
+                  className="whitespace-nowrap px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-fg-4"
                 >
                   {cell}
                 </th>
@@ -250,12 +250,12 @@ export function DataTable({
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr key={i} className="border-t border-white/[0.05] align-top">
+              <tr key={i} className="border-t border-tint/[0.05] align-top">
                 {row.map((cell, j) => (
                   <td
                     key={j}
                     className={`px-4 py-3 leading-relaxed ${
-                      j === 0 ? "font-medium text-gray-100" : "text-gray-400"
+                      j === 0 ? "font-medium text-fg" : "text-fg-4"
                     }`}
                   >
                     {cell}
@@ -298,9 +298,9 @@ export function Screenshot({
         width={width}
         height={height}
         sizes="(max-width: 900px) 100vw, 836px"
-        className="w-full rounded-lg border border-white/[0.08]"
+        className="w-full rounded-lg border border-tint/[0.08]"
       />
-      <figcaption className="mt-2 text-[13px] leading-relaxed text-gray-500">
+      <figcaption className="mt-2 text-[13px] leading-relaxed text-fg-5">
         {caption}
       </figcaption>
     </figure>
@@ -323,9 +323,9 @@ export function Related({
   return (
     <nav
       aria-label="Related documentation"
-      className="mt-10 rounded-xl border border-white/[0.08] bg-white/[0.03] p-6 backdrop-blur-sm"
+      className="mt-10 rounded-xl border border-tint/[0.08] bg-tint/[0.03] p-6 backdrop-blur-sm"
     >
-      <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+      <span className="text-xs font-semibold uppercase tracking-wider text-fg-5">
         Keep reading
       </span>
       <ul className="mt-4 space-y-3">
@@ -333,7 +333,7 @@ export function Related({
           <li key={link.href}>
             <Link
               href={link.href}
-              className="group flex items-start gap-2 text-[15px] text-[#93c5fd] transition-colors hover:text-white"
+              className="group flex items-start gap-2 text-[15px] text-accent-2 transition-colors hover:text-fg"
             >
               <ArrowUpRight
                 size={16}
@@ -341,7 +341,7 @@ export function Related({
               />
               <span>
                 {link.label}
-                <span className="block text-[14px] text-gray-400">
+                <span className="block text-[14px] text-fg-4">
                   {link.description}
                 </span>
               </span>

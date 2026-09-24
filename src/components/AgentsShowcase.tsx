@@ -66,32 +66,32 @@ function BrowserDemo({ step }: { step: number }) {
   return (
     <div className="glass-card rounded-2xl overflow-hidden border border-[#3b82f6]/20 shadow-2xl shadow-[#3b82f6]/10">
       {/* Browser chrome */}
-      <div className="flex items-center gap-3 px-4 py-2.5 bg-white/5 border-b border-white/10">
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-tint/5 border-b border-tint/10">
         <div className="flex gap-1.5" aria-hidden="true">
           <span className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/60" />
         </div>
-        <div className="flex-1 flex items-center gap-2 bg-black/30 rounded-md px-3 py-1 text-[11px] text-gray-400 font-mono truncate">
+        <div className="flex-1 flex items-center gap-2 bg-well/30 rounded-md px-3 py-1 text-[11px] text-fg-4 font-mono truncate">
           {step >= 1 ? "portal.acme-suppliers.com/payments/new" : "about:blank"}
         </div>
-        <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 uppercase tracking-wider flex-shrink-0">
+        <span className="flex items-center gap-1.5 text-[10px] font-bold text-ok uppercase tracking-wider flex-shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           Live
         </span>
       </div>
 
       {/* The mission — so every step below reads as progress toward it */}
-      <div className="flex items-center gap-2 px-4 sm:px-5 py-2.5 border-b border-white/10 bg-[#3b82f6]/[0.06] text-xs">
-        <Target size={13} className="text-[#93c5fd] flex-shrink-0" />
-        <span className="text-[#93c5fd] font-bold uppercase tracking-wider text-[10px]">Mission</span>
-        <span className="text-gray-300 truncate">Submit invoice INV-2043 for payment on the supplier portal</span>
+      <div className="flex items-center gap-2 px-4 sm:px-5 py-2.5 border-b border-tint/10 bg-[#3b82f6]/[0.06] text-xs">
+        <Target size={13} className="text-accent-2 flex-shrink-0" />
+        <span className="text-accent-2 font-bold uppercase tracking-wider text-[10px]">Mission</span>
+        <span className="text-fg-3 truncate">Submit invoice INV-2043 for payment on the supplier portal</span>
       </div>
 
       {/* What the flow extracted — the agent's inputs. Each chip lights
           up while its value is being typed into the form below. */}
-      <div className="px-4 sm:px-5 py-2.5 border-b border-white/10 bg-black/20">
-        <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+      <div className="px-4 sm:px-5 py-2.5 border-b border-tint/10 bg-well/20">
+        <div className="text-[10px] font-bold text-fg-5 uppercase tracking-widest mb-1.5">
           Extracted by your flow · invoice_2043.pdf
         </div>
         <div className="flex flex-wrap gap-1.5 font-mono text-[10px]">
@@ -103,14 +103,14 @@ function BrowserDemo({ step }: { step: number }) {
                 key={f.key}
                 className={`rounded-md border px-2 py-1 transition-all duration-300 ${
                   inUse
-                    ? "border-[#3b82f6]/60 bg-[#3b82f6]/15 text-white"
+                    ? "border-[#3b82f6]/60 bg-[#3b82f6]/15 text-fg"
                     : used
-                      ? "border-white/10 bg-white/[0.04] text-gray-500"
-                      : "border-white/10 bg-white/[0.06] text-gray-300"
+                      ? "border-tint/10 bg-tint/[0.04] text-fg-5"
+                      : "border-tint/10 bg-tint/[0.06] text-fg-3"
                 }`}
               >
-                {f.key}: <span className={inUse ? "text-[#93c5fd]" : ""}>{f.value}</span>
-                {used && <span className="ml-1 text-emerald-400">✓</span>}
+                {f.key}: <span className={inUse ? "text-accent-2" : ""}>{f.value}</span>
+                {used && <span className="ml-1 text-ok">✓</span>}
               </span>
             );
           })}
@@ -118,20 +118,20 @@ function BrowserDemo({ step }: { step: number }) {
       </div>
 
       {/* The portal form being filled with those fields */}
-      <div className="relative p-4 sm:p-5 bg-[#0d0d20]/60 min-h-[150px]">
-        <div className="h-2.5 w-28 rounded bg-white/10 mb-3.5" aria-hidden="true" />
+      <div className="relative p-4 sm:p-5 bg-panel/60 min-h-[150px]">
+        <div className="h-2.5 w-28 rounded bg-tint/10 mb-3.5" aria-hidden="true" />
         <div className="grid grid-cols-3 gap-2 mb-3.5">
           {extractedFields.map((f, i) => {
             const typing = step === i + 1;
             const filled = step > i + 1;
             return (
               <div key={f.key}>
-                <p className="text-[9px] text-gray-500 mb-1 truncate">{f.label}</p>
+                <p className="text-[9px] text-fg-5 mb-1 truncate">{f.label}</p>
                 <div
                   className={`rounded-lg border px-2.5 py-2 text-[11px] font-mono truncate transition-all duration-500 ${
                     typing || filled
-                      ? "border-[#3b82f6]/50 bg-[#3b82f6]/10 text-white"
-                      : "border-white/10 bg-black/20 text-gray-600"
+                      ? "border-[#3b82f6]/50 bg-[#3b82f6]/10 text-fg"
+                      : "border-tint/10 bg-well/20 text-fg-6"
                   }`}
                 >
                   {typing ? (
@@ -153,7 +153,7 @@ function BrowserDemo({ step }: { step: number }) {
             className={`rounded-lg border px-4 py-2 text-xs font-semibold transition-all duration-300 ${
               clicked
                 ? "border-transparent bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white scale-95"
-                : "border-white/10 bg-white/5 text-gray-400"
+                : "border-tint/10 bg-tint/5 text-fg-4"
             }`}
           >
             Submit payment
@@ -163,11 +163,11 @@ function BrowserDemo({ step }: { step: number }) {
               confirmationVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             }`}
           >
-            <span className="text-emerald-400">✓</span>
-            <span className="text-gray-300">Payment received —</span>
+            <span className="text-ok">✓</span>
+            <span className="text-fg-3">Payment received —</span>
             <span
               className={`rounded px-1.5 py-0.5 transition-all duration-500 ${
-                captured ? "bg-emerald-500/15 text-emerald-400" : "text-gray-400"
+                captured ? "bg-emerald-500/15 text-ok" : "text-fg-4"
               }`}
             >
               confirmation PAY-88231
@@ -181,7 +181,7 @@ function BrowserDemo({ step }: { step: number }) {
           style={{ left: cursor.left, top: cursor.top, opacity: cursor.opacity }}
           aria-hidden="true"
         >
-          <MousePointer2 size={18} className="text-white fill-white drop-shadow-[0_0_6px_rgba(59,130,246,0.9)]" />
+          <MousePointer2 size={18} className="text-fg fill-fg drop-shadow-[0_0_6px_rgba(59,130,246,0.9)]" />
           <span className="absolute -bottom-4 left-4 whitespace-nowrap rounded bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] px-1.5 py-0.5 text-[9px] font-bold text-white shadow-lg">
             Agent
           </span>
@@ -189,8 +189,8 @@ function BrowserDemo({ step }: { step: number }) {
       </div>
 
       {/* Agent step log */}
-      <div className="px-4 sm:px-5 py-3.5 border-t border-white/10 bg-black/30">
-        <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2.5">
+      <div className="px-4 sm:px-5 py-3.5 border-t border-tint/10 bg-well/30">
+        <div className="text-[10px] font-bold text-fg-5 uppercase tracking-widest mb-2.5">
           Agent steps
         </div>
         <div className="space-y-1.5 font-mono text-[11px]" aria-live="off">
@@ -201,17 +201,17 @@ function BrowserDemo({ step }: { step: number }) {
               <div
                 key={s.verb + i}
                 className={`flex items-center gap-2 transition-all duration-300 ${
-                  done ? "text-gray-500" : current ? "text-white" : "text-gray-700"
+                  done ? "text-fg-5" : current ? "text-fg" : "text-fg-6"
                 }`}
               >
                 <span
                   className={`w-3.5 text-center flex-shrink-0 ${
-                    done ? "text-emerald-400" : current ? "text-[#3b82f6]" : ""
+                    done ? "text-ok" : current ? "text-accent" : ""
                   }`}
                 >
                   {done ? "✓" : current ? "▸" : "·"}
                 </span>
-                <span className={current ? "text-[#93c5fd] font-bold" : "text-[#3b82f6]/70"}>
+                <span className={current ? "text-accent-2 font-bold" : "text-accent/70"}>
                   {s.verb}
                 </span>
                 <span className="truncate">{s.detail}</span>
@@ -223,17 +223,17 @@ function BrowserDemo({ step }: { step: number }) {
 
       {/* Typed output */}
       <div
-        className={`px-4 sm:px-5 py-3.5 border-t border-white/10 bg-emerald-500/5 transition-all duration-500 ${
+        className={`px-4 sm:px-5 py-3.5 border-t border-tint/10 bg-emerald-500/5 transition-all duration-500 ${
           outputVisible ? "opacity-100" : "opacity-40"
         }`}
       >
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+          <span className="text-[10px] font-bold text-fg-5 uppercase tracking-widest">
             Structured output
           </span>
           <span
             className={`text-[10px] font-semibold transition-opacity duration-500 ${
-              outputVisible ? "text-emerald-400 opacity-100" : "opacity-0"
+              outputVisible ? "text-ok opacity-100" : "opacity-0"
             }`}
           >
             → delivered to Bucket
@@ -241,7 +241,7 @@ function BrowserDemo({ step }: { step: number }) {
         </div>
         <code
           className={`block font-mono text-[11px] leading-relaxed transition-all duration-500 ${
-            outputVisible ? "text-emerald-300" : "text-gray-700"
+            outputVisible ? "text-ok" : "text-fg-6"
           }`}
         >
           {'{ "invoice": "INV-2043", "confirmation": "PAY-88231", "status": "accepted" }'}
@@ -296,19 +296,19 @@ export default function AgentsShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-[#93c5fd] text-xs font-bold uppercase tracking-wider mb-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-accent-2 text-xs font-bold uppercase tracking-wider mb-5">
               <Bot size={14} />
               New · Agents
             </div>
             <h2
               id="agents-heading"
-              className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight"
+              className="text-3xl md:text-4xl font-bold text-fg mb-4 leading-tight"
             >
               Extraction was step one.
               <br />
-              Now your data <span className="text-[#93c5fd]">acts</span>.
+              Now your data <span className="text-accent-2">acts</span>.
             </h2>
-            <p className="text-base md:text-lg text-gray-400 mb-8 max-w-[480px]">
+            <p className="text-base md:text-lg text-fg-4 mb-8 max-w-[480px]">
               Describe a mission in plain language. A Tavnit Agent opens a real
               browser, works through the website, and brings back structured
               results — no scripts, no scrapers to maintain.
@@ -317,14 +317,14 @@ export default function AgentsShowcase() {
             <div className="space-y-5 mb-8">
               {highlights.map((h) => (
                 <div key={h.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-lg bg-[#3b82f6]/10 text-[#3b82f6] flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-[#3b82f6]/10 text-accent flex items-center justify-center flex-shrink-0">
                     <h.icon size={18} />
                   </div>
                   <div>
-                    <h3 className="text-sm md:text-base font-bold text-white mb-0.5">
+                    <h3 className="text-sm md:text-base font-bold text-fg mb-0.5">
                       {h.title}
                     </h3>
-                    <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
+                    <p className="text-xs md:text-sm text-fg-4 leading-relaxed">
                       {h.desc}
                     </p>
                   </div>
@@ -334,7 +334,7 @@ export default function AgentsShowcase() {
 
             <Link
               href="https://app.tavnit.io"
-              className="inline-flex items-center gap-2 font-semibold text-[#3b82f6] hover:text-[#93c5fd] transition-colors group"
+              className="inline-flex items-center gap-2 font-semibold text-accent hover:text-accent-2 transition-colors group"
             >
               Create your first agent
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

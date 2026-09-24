@@ -4,6 +4,7 @@ import "./globals.css";
 import { APP_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL, TWITTER_HANDLE } from "@/lib/site";
 import { siteSchema } from "@/lib/schema";
 import Analytics, { CONSENT_DEFAULT_SCRIPT } from "@/components/Analytics";
+import { THEME_INIT_SCRIPT } from "@/lib/theme-script";
 
 const heading = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -92,8 +93,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="ltr">
+    // suppressHydrationWarning: the theme script below sets data-theme on
+    // <html> before React hydrates, and that attribute is not in the server HTML.
+    <html lang="en" dir="ltr" suppressHydrationWarning>
       <head>
+        {/* Color theme, before paint: saved choice → OS setting → dark. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         {/* Consent Mode v2 defaults must precede gtag.js (loaded by <Analytics />). */}
         <script dangerouslySetInnerHTML={{ __html: CONSENT_DEFAULT_SCRIPT }} />
         <link rel="dns-prefetch" href={APP_URL} />

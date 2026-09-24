@@ -42,12 +42,12 @@ export default function ApiIntegrationContent() {
 
   return (
     <section>
-      <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+      <h1 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-fg to-fg-4 bg-clip-text text-transparent">
         API Integration
       </h1>
 
       {/* Sub-tabs */}
-      <div className="flex gap-1 p-1 bg-white/[0.04] rounded-lg w-fit mb-8 border border-white/[0.08]" role="tablist">
+      <div className="flex gap-1 p-1 bg-tint/[0.04] rounded-lg w-fit mb-8 border border-tint/[0.08]" role="tablist">
         <button
           role="tab"
           aria-selected={apiTab === "code"}
@@ -55,7 +55,7 @@ export default function ApiIntegrationContent() {
           className={`px-5 py-2 rounded-md text-sm font-medium transition-all ${
             apiTab === "code"
               ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
-              : "text-gray-400 hover:text-white hover:bg-white/5"
+              : "text-fg-4 hover:text-fg hover:bg-tint/5"
           }`}
         >
           Code
@@ -67,7 +67,7 @@ export default function ApiIntegrationContent() {
           className={`px-5 py-2 rounded-md text-sm font-medium transition-all ${
             apiTab === "no-code"
               ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
-              : "text-gray-400 hover:text-white hover:bg-white/5"
+              : "text-fg-4 hover:text-fg hover:bg-tint/5"
           }`}
         >
           No-Code
@@ -93,29 +93,29 @@ export default function ApiIntegrationContent() {
         </DocCard>
 
         <DocCard icon={<Lock size={24} />} title="Credentials">
-          <h3 className="text-base font-semibold text-gray-200 mt-2 mb-1">API Key</h3>
+          <h3 className="text-base font-semibold text-fg-2 mt-2 mb-1">API Key</h3>
           <p>Your API key is available in the Integrations tab after signing in.</p>
           <WarningBox>
             Keep your API key secret. If you regenerate it from the Integrations tab, the previous key will
             be disabled.
           </WarningBox>
 
-          <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Flow ID</h3>
+          <h3 className="text-base font-semibold text-fg-2 mt-5 mb-1">Flow ID</h3>
           <p>The Flow ID can be found on each flow&apos;s details page. Use this when sending documents to a specific flow.</p>
 
-          <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Collection ID</h3>
+          <h3 className="text-base font-semibold text-fg-2 mt-5 mb-1">Collection ID</h3>
           <p>The Collection ID can be found on each collection&apos;s details page. Use this when you want AI to route documents to the best-matching flow.</p>
 
-          <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Cleaner ID</h3>
+          <h3 className="text-base font-semibold text-fg-2 mt-5 mb-1">Cleaner ID</h3>
           <p>The Cleaner ID can be found on each cleaner&apos;s details page. Use this when triggering a sweep to post-process or enrich extracted data.</p>
 
-          <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Splitter ID</h3>
+          <h3 className="text-base font-semibold text-fg-2 mt-5 mb-1">Splitter ID</h3>
           <p>The Splitter ID can be found on each splitter&apos;s details page. Use this when sending documents to be split into individual document types.</p>
 
-          <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">Bucket ID &amp; Name</h3>
+          <h3 className="text-base font-semibold text-fg-2 mt-5 mb-1">Bucket ID &amp; Name</h3>
           <p>Both required when writing to a bucket via API. Find them by tapping the info icon on the bucket&apos;s detail page. The name acts as a safety check to prevent accidental writes to the wrong bucket.</p>
 
-          <h3 className="text-base font-semibold text-gray-200 mt-5 mb-1">API URLs</h3>
+          <h3 className="text-base font-semibold text-fg-2 mt-5 mb-1">API URLs</h3>
           <p className="mb-1">Flows API (send to specific flow):</p>
           <div className="mb-3"><InlineCode>https://run.tavnit.io/api/runs/process</InlineCode></div>
           <p className="mb-1">Collections API (AI routes to best flow):</p>
@@ -149,13 +149,13 @@ export default function ApiIntegrationContent() {
 
         <DocCard icon={<Code2 size={24} />} title="Code Example">
           <p>Select your preferred programming language:</p>
-          <div className="flex gap-1 p-1 bg-white/[0.04] rounded-lg w-fit my-4 border border-white/[0.08]">
+          <div className="flex gap-1 p-1 bg-tint/[0.04] rounded-lg w-fit my-4 border border-tint/[0.08]">
             <button
               onClick={() => setLang("python")}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                 lang === "python"
                   ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
-                  : "text-gray-400 hover:text-white hover:bg-white/5"
+                  : "text-fg-4 hover:text-fg hover:bg-tint/5"
               }`}
             >
               Python
@@ -165,7 +165,7 @@ export default function ApiIntegrationContent() {
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                 lang === "javascript"
                   ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
-                  : "text-gray-400 hover:text-white hover:bg-white/5"
+                  : "text-fg-4 hover:text-fg hover:bg-tint/5"
               }`}
             >
               JavaScript
@@ -319,7 +319,7 @@ export default function ApiIntegrationContent() {
             href="https://www.make.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[#3b82f6] hover:text-[#93c5fd] transition-colors text-sm font-medium mt-1"
+            className="inline-flex items-center gap-2 text-accent hover:text-accent-2 transition-colors text-sm font-medium mt-1"
           >
             Visit Make.com <ExternalLink size={14} />
           </a>
@@ -346,7 +346,7 @@ export default function ApiIntegrationContent() {
             either of these two approaches:
           </p>
 
-          <h3 className="text-base font-semibold text-[#3b82f6] mt-6 mb-3">
+          <h3 className="text-base font-semibold text-accent mt-6 mb-3">
             Option 1: Multipart/form-data (when you have a File object)
           </h3>
           <NumberedList

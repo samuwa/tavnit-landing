@@ -13,11 +13,11 @@ import {
    via .feat-cell with staggered animation-delay; the vignette
    remounts on selection so the sequence replays. */
 
-const frame = "relative h-full overflow-hidden rounded-xl border border-white/10 bg-black/30 p-5 font-mono text-[11px]";
+const frame = "relative h-full overflow-hidden rounded-xl border border-tint/10 bg-well/30 p-5 font-mono text-[11px]";
 /* Centered variant for list-shaped vignettes so they don't top-anchor in the tall panel */
 const frameC = `${frame} flex flex-col justify-center`;
-const chip = "rounded-md border border-white/10 bg-white/[0.06] px-2 py-1 text-white/80";
-const conf = "rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-500/15 text-emerald-400";
+const chip = "rounded-md border border-tint/10 bg-tint/[0.06] px-2 py-1 text-tint/80";
+const conf = "rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-500/15 text-ok";
 
 function ExtractionVignette() {
   const fields = [
@@ -28,27 +28,27 @@ function ExtractionVignette() {
   ];
   return (
     <div className={`${frame} grid grid-cols-2 gap-4`}>
-      <div className="relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] p-3">
-        <p className="text-white/45">invoice_2043.pdf</p>
+      <div className="relative overflow-hidden rounded-lg border border-tint/10 bg-tint/[0.03] p-3">
+        <p className="text-tint/45">invoice_2043.pdf</p>
         <div className="mt-3 space-y-2">
           {[100, 75, 90, 60, 85].map((w, i) => (
-            <div key={i} className="h-1.5 rounded bg-white/15" style={{ width: `${w}%` }} />
+            <div key={i} className="h-1.5 rounded bg-tint/15" style={{ width: `${w}%` }} />
           ))}
         </div>
         <div className="mt-4 space-y-2">
           {[80, 95, 70].map((w, i) => (
-            <div key={i} className="h-1.5 rounded bg-white/10" style={{ width: `${w}%` }} />
+            <div key={i} className="h-1.5 rounded bg-tint/10" style={{ width: `${w}%` }} />
           ))}
         </div>
         <div className="feat-scan" />
       </div>
       <div>
-        <p className="text-white/45 uppercase tracking-wider text-[10px]">Extracted fields</p>
+        <p className="text-tint/45 uppercase tracking-wider text-[10px]">Extracted fields</p>
         <div className="mt-2 space-y-2">
           {fields.map((f, i) => (
-            <div key={f.k} className="feat-cell flex items-center justify-between gap-2 rounded-md border border-white/10 bg-white/[0.05] px-2.5 py-1.5" style={{ animationDelay: `${0.4 + i * 0.35}s` }}>
-              <span className="text-[#93c5fd]">{f.k}</span>
-              <span className="flex items-center gap-2 text-white/85">
+            <div key={f.k} className="feat-cell flex items-center justify-between gap-2 rounded-md border border-tint/10 bg-tint/[0.05] px-2.5 py-1.5" style={{ animationDelay: `${0.4 + i * 0.35}s` }}>
+              <span className="text-accent-2">{f.k}</span>
+              <span className="flex items-center gap-2 text-tint/85">
                 {f.v}
                 <span className={conf}>{f.c}</span>
               </span>
@@ -70,46 +70,46 @@ function FlowBuilderVignette() {
   const sampleRow = ["Ocean freight", "2", "1,240.00", "2,480.00"];
   return (
     <div className={frameC}>
-      <p className="text-white/45">New flow · describe what to capture</p>
-      <div className="mt-1.5 rounded-lg border border-[#3b82f6]/30 bg-[#3b82f6]/[0.07] px-3 py-2 text-white/80">
+      <p className="text-tint/45">New flow · describe what to capture</p>
+      <div className="mt-1.5 rounded-lg border border-[#3b82f6]/30 bg-[#3b82f6]/[0.07] px-3 py-2 text-tint/80">
         &ldquo;Capture the vendor, dates, totals and every line item from our supplier invoices&rdquo;
       </div>
-      <div className="mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-white/35 to-white/10" />
+      <div className="mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-tint/35 to-tint/10" />
 
       {/* Metadata fields: one value per document */}
-      <p className="feat-cell text-[10px] uppercase tracking-wider text-white/45" style={{ animationDelay: "0.4s" }}>
-        Metadata fields <span className="normal-case tracking-normal text-white/30">· one value per document</span>
+      <p className="feat-cell text-[10px] uppercase tracking-wider text-tint/45" style={{ animationDelay: "0.4s" }}>
+        Metadata fields <span className="normal-case tracking-normal text-tint/30">· one value per document</span>
       </p>
       <div className="mt-1.5 flex flex-wrap gap-1.5">
         {metaFields.map((f, i) => (
           <span key={f.k} className={`feat-cell ${chip}`} style={{ animationDelay: `${0.6 + i * 0.3}s` }}>
-            {f.k}: <span className="text-[#93c5fd]">{f.t}</span>
+            {f.k}: <span className="text-accent-2">{f.t}</span>
           </span>
         ))}
       </div>
 
       {/* Table fields: one row per line item */}
-      <p className="feat-cell mt-3 text-[10px] uppercase tracking-wider text-white/45" style={{ animationDelay: "1.7s" }}>
-        Table · line_items <span className="normal-case tracking-normal text-white/30">· one row per line item</span>
+      <p className="feat-cell mt-3 text-[10px] uppercase tracking-wider text-tint/45" style={{ animationDelay: "1.7s" }}>
+        Table · line_items <span className="normal-case tracking-normal text-tint/30">· one row per line item</span>
       </p>
-      <div className="feat-cell mt-1.5 overflow-hidden rounded-lg border border-white/10" style={{ animationDelay: "1.9s" }}>
-        <div className="grid grid-cols-[1.6fr_0.6fr_1fr_1fr] divide-x divide-white/10 bg-white/[0.07]">
+      <div className="feat-cell mt-1.5 overflow-hidden rounded-lg border border-tint/10" style={{ animationDelay: "1.9s" }}>
+        <div className="grid grid-cols-[1.6fr_0.6fr_1fr_1fr] divide-x divide-tint/10 bg-tint/[0.07]">
           {columns.map((c, i) => (
-            <span key={c} className="feat-cell truncate px-2 py-1 text-white/60" style={{ animationDelay: `${2.1 + i * 0.25}s` }}>
+            <span key={c} className="feat-cell truncate px-2 py-1 text-tint/60" style={{ animationDelay: `${2.1 + i * 0.25}s` }}>
               {c}
             </span>
           ))}
         </div>
-        <div className="grid grid-cols-[1.6fr_0.6fr_1fr_1fr] divide-x divide-white/10 border-t border-white/10">
+        <div className="grid grid-cols-[1.6fr_0.6fr_1fr_1fr] divide-x divide-tint/10 border-t border-tint/10">
           {sampleRow.map((v, i) => (
-            <span key={i} className="feat-cell truncate px-2 py-1 text-white/80" style={{ animationDelay: `${3.1 + i * 0.15}s` }}>
+            <span key={i} className="feat-cell truncate px-2 py-1 text-tint/80" style={{ animationDelay: `${3.1 + i * 0.15}s` }}>
               {v}
             </span>
           ))}
         </div>
       </div>
 
-      <p className="feat-cell mt-3 flex items-center gap-1.5 text-emerald-400" style={{ animationDelay: "3.9s" }}>
+      <p className="feat-cell mt-3 flex items-center gap-1.5 text-ok" style={{ animationDelay: "3.9s" }}>
         <Check size={12} /> Flow ready — no code written
       </p>
     </div>
@@ -118,24 +118,24 @@ function FlowBuilderVignette() {
 
 function RoutingVignette() {
   const docs = [
-    { type: "invoice", pages: "pp. 1–3", fromX: "110%", badge: "bg-[#3b82f6]/15 text-[#93c5fd]", delay: 1.0 },
-    { type: "purchase order", pages: "pp. 4–6", fromX: "0%", badge: "bg-[#6c42f0]/20 text-[#c4b5fd]", delay: 1.25 },
-    { type: "invoice", pages: "pp. 7–9", fromX: "-110%", badge: "bg-[#3b82f6]/15 text-[#93c5fd]", delay: 1.5 },
+    { type: "invoice", pages: "pp. 1–3", fromX: "110%", badge: "bg-[#3b82f6]/15 text-accent-2", delay: 1.0 },
+    { type: "purchase order", pages: "pp. 4–6", fromX: "0%", badge: "bg-[#6c42f0]/20 text-violet-2", delay: 1.25 },
+    { type: "invoice", pages: "pp. 7–9", fromX: "-110%", badge: "bg-[#3b82f6]/15 text-accent-2", delay: 1.5 },
   ];
   return (
     <div className={frameC}>
       {/* One mixed scan, page edges stacked behind it */}
       <div className="relative mx-auto w-60">
-        <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-lg border border-white/10 bg-white/[0.02]" aria-hidden="true" />
-        <div className="absolute inset-0 translate-x-1 translate-y-1 rounded-lg border border-white/10 bg-white/[0.03]" aria-hidden="true" />
-        <div className="relative flex items-baseline justify-between rounded-lg border border-white/15 bg-[#131327] px-3 py-2">
-          <span className="text-white/80">scans_batch.pdf</span>
-          <span className="text-[10px] text-white/40">9 pages</span>
+        <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-lg border border-tint/10 bg-tint/[0.02]" aria-hidden="true" />
+        <div className="absolute inset-0 translate-x-1 translate-y-1 rounded-lg border border-tint/10 bg-tint/[0.03]" aria-hidden="true" />
+        <div className="relative flex items-baseline justify-between rounded-lg border border-tint/15 bg-panel px-3 py-2">
+          <span className="text-tint/80">scans_batch.pdf</span>
+          <span className="text-[10px] text-tint/40">9 pages</span>
         </div>
       </div>
 
-      <p className="feat-cell mx-auto mt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-white/45" style={{ animationDelay: "0.5s" }}>
-        <Scissors size={11} className="text-[#93c5fd]" /> Splitter · 3 documents found
+      <p className="feat-cell mx-auto mt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-tint/45" style={{ animationDelay: "0.5s" }}>
+        <Scissors size={11} className="text-accent-2" /> Splitter · 3 documents found
       </p>
 
       {/* The stack splits into typed documents */}
@@ -143,40 +143,40 @@ function RoutingVignette() {
         {docs.map((d) => (
           <div
             key={d.pages}
-            className="feat-split rounded-lg border border-white/10 bg-white/[0.04] px-2 py-1.5 text-center"
+            className="feat-split rounded-lg border border-tint/10 bg-tint/[0.04] px-2 py-1.5 text-center"
             style={{ "--from-x": d.fromX, animationDelay: `${d.delay}s` } as React.CSSProperties}
           >
             <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold ${d.badge}`}>{d.type}</span>
-            <p className="mt-1 text-[10px] text-white/45">{d.pages}</p>
+            <p className="mt-1 text-[10px] text-tint/45">{d.pages}</p>
           </div>
         ))}
       </div>
 
-      <p className="feat-cell mx-auto mt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-white/45" style={{ animationDelay: "2.2s" }}>
-        <GitBranch size={11} className="text-[#93c5fd]" /> Collection · each routed to its flow
+      <p className="feat-cell mx-auto mt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-tint/45" style={{ animationDelay: "2.2s" }}>
+        <GitBranch size={11} className="text-accent-2" /> Collection · each routed to its flow
       </p>
 
       {/* Each document lands in the right flow */}
       <div className="mt-2 grid grid-cols-2 gap-3">
         <div className="feat-cell rounded-lg border border-[#3b82f6]/25 bg-[#3b82f6]/[0.05] p-2.5" style={{ animationDelay: "2.5s" }}>
-          <p className="text-white/60 font-semibold">Invoice Processor flow</p>
+          <p className="text-tint/60 font-semibold">Invoice Processor flow</p>
           <div className="mt-1.5 space-y-1.5">
-            <div className="feat-cell flex items-center justify-between rounded bg-white/[0.07] px-2 py-1 text-white/75" style={{ animationDelay: "2.9s" }}>
+            <div className="feat-cell flex items-center justify-between rounded bg-tint/[0.07] px-2 py-1 text-tint/75" style={{ animationDelay: "2.9s" }}>
               <span>invoice · pp. 1–3</span>
-              <Check size={11} className="text-emerald-400" />
+              <Check size={11} className="text-ok" />
             </div>
-            <div className="feat-cell flex items-center justify-between rounded bg-white/[0.07] px-2 py-1 text-white/75" style={{ animationDelay: "3.5s" }}>
+            <div className="feat-cell flex items-center justify-between rounded bg-tint/[0.07] px-2 py-1 text-tint/75" style={{ animationDelay: "3.5s" }}>
               <span>invoice · pp. 7–9</span>
-              <Check size={11} className="text-emerald-400" />
+              <Check size={11} className="text-ok" />
             </div>
           </div>
         </div>
         <div className="feat-cell rounded-lg border border-[#6c42f0]/30 bg-[#6c42f0]/[0.06] p-2.5" style={{ animationDelay: "2.5s" }}>
-          <p className="text-white/60 font-semibold">Purchase Order flow</p>
+          <p className="text-tint/60 font-semibold">Purchase Order flow</p>
           <div className="mt-1.5 space-y-1.5">
-            <div className="feat-cell flex items-center justify-between rounded bg-white/[0.07] px-2 py-1 text-white/75" style={{ animationDelay: "3.2s" }}>
+            <div className="feat-cell flex items-center justify-between rounded bg-tint/[0.07] px-2 py-1 text-tint/75" style={{ animationDelay: "3.2s" }}>
               <span>purchase order · pp. 4–6</span>
-              <Check size={11} className="text-emerald-400" />
+              <Check size={11} className="text-ok" />
             </div>
           </div>
         </div>
@@ -195,7 +195,7 @@ function CleaningVignette() {
   ];
   return (
     <div className={frameC}>
-      <p className="text-center text-white/45">Cleaners · every value normalized before it&apos;s stored</p>
+      <p className="text-center text-tint/45">Cleaners · every value normalized before it&apos;s stored</p>
       <div className="relative mt-3">
         {/* One shared grid so the arrow and tag columns align across rows */}
         <div className="mx-auto grid w-fit grid-cols-[auto_auto_auto_auto] items-center gap-x-4 gap-y-2.5">
@@ -204,17 +204,17 @@ function CleaningVignette() {
             return (
               <Fragment key={r.dirty}>
                 <span
-                  className="feat-strike text-white/70"
+                  className="feat-strike text-tint/70"
                   style={{ "--strike-d": `${delay}s` } as React.CSSProperties}
                 >
                   {r.dirty}
                 </span>
-                <span className="text-center text-white/30">→</span>
-                <span className="feat-cell text-white/90" style={{ animationDelay: `${delay}s` }}>
+                <span className="text-center text-tint/30">→</span>
+                <span className="feat-cell text-tint/90" style={{ animationDelay: `${delay}s` }}>
                   {r.clean}
                 </span>
                 <span
-                  className="feat-cell w-fit rounded bg-[#3b82f6]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#93c5fd]"
+                  className="feat-cell w-fit rounded bg-[#3b82f6]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-accent-2"
                   style={{ animationDelay: `${delay}s` }}
                 >
                   {r.op}
@@ -225,7 +225,7 @@ function CleaningVignette() {
         </div>
         <div className="feat-sweep" aria-hidden="true" />
       </div>
-      <p className="feat-cell mt-3.5 flex items-center justify-center gap-1.5 text-emerald-400" style={{ animationDelay: "3.1s" }}>
+      <p className="feat-cell mt-3.5 flex items-center justify-center gap-1.5 text-ok" style={{ animationDelay: "3.1s" }}>
         <Check size={12} /> Clean, consistent, delivered — nothing edited by hand
       </p>
     </div>
@@ -240,22 +240,22 @@ function AgentsVignette() {
   ];
   return (
     <div className={`${frame} flex flex-col p-0`}>
-      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2">
-        <span className="size-2 rounded-full bg-white/15" />
-        <span className="size-2 rounded-full bg-white/15" />
-        <span className="size-2 rounded-full bg-white/15" />
-        <span className="ml-1 flex-1 truncate rounded bg-white/[0.06] px-2 py-0.5 text-[10px] text-white/45">vendor-portal.example.com/payments/new · live session</span>
+      <div className="flex items-center gap-2 border-b border-tint/10 px-4 py-2">
+        <span className="size-2 rounded-full bg-tint/15" />
+        <span className="size-2 rounded-full bg-tint/15" />
+        <span className="size-2 rounded-full bg-tint/15" />
+        <span className="ml-1 flex-1 truncate rounded bg-tint/[0.06] px-2 py-0.5 text-[10px] text-tint/45">vendor-portal.example.com/payments/new · live session</span>
       </div>
       <div className="flex flex-1 flex-col justify-center gap-4 p-4 lg:flex-row lg:items-center">
         {/* The portal form the agent fills out */}
-        <div className="flex-1 rounded-lg border border-white/10 bg-white/[0.03] p-3">
-          <p className="text-white/45">Payment submission form</p>
+        <div className="flex-1 rounded-lg border border-tint/10 bg-tint/[0.03] p-3">
+          <p className="text-tint/45">Payment submission form</p>
           <div className="mt-2.5 space-y-2">
             {formFields.map((f) => (
               <div key={f.label}>
-                <p className="text-[10px] text-white/40">{f.label}</p>
-                <div className="mt-0.5 rounded border border-white/15 bg-black/40 px-2 py-1.5">
-                  <span className="feat-cell inline-block text-white/85" style={{ animationDelay: `${f.delay}s` }}>
+                <p className="text-[10px] text-tint/40">{f.label}</p>
+                <div className="mt-0.5 rounded border border-tint/15 bg-well/40 px-2 py-1.5">
+                  <span className="feat-cell inline-block text-tint/85" style={{ animationDelay: `${f.delay}s` }}>
                     {f.value}
                   </span>
                 </div>
@@ -269,20 +269,20 @@ function AgentsVignette() {
 
         {/* What the agent brings back */}
         <div className="flex-1">
-          <div className="feat-cell rounded-md border border-emerald-500/25 bg-emerald-500/[0.08] px-2.5 py-1.5 text-emerald-400" style={{ animationDelay: "2.8s" }}>
+          <div className="feat-cell rounded-md border border-emerald-500/25 bg-emerald-500/[0.08] px-2.5 py-1.5 text-ok" style={{ animationDelay: "2.8s" }}>
             <span className="flex items-center gap-1.5"><Check size={12} /> Form submitted</span>
           </div>
-          <p className="feat-cell mt-3 text-[10px] uppercase tracking-wider text-white/45" style={{ animationDelay: "3.2s" }}>
+          <p className="feat-cell mt-3 text-[10px] uppercase tracking-wider text-tint/45" style={{ animationDelay: "3.2s" }}>
             Captured back to your run
           </p>
           <div className="mt-1.5 space-y-1.5">
-            <div className="feat-cell flex items-center justify-between rounded-md border border-white/10 bg-white/[0.05] px-2.5 py-1.5" style={{ animationDelay: "3.4s" }}>
-              <span className="text-[#93c5fd]">submission_no</span>
-              <span className="text-white/85">PAY-88231</span>
+            <div className="feat-cell flex items-center justify-between rounded-md border border-tint/10 bg-tint/[0.05] px-2.5 py-1.5" style={{ animationDelay: "3.4s" }}>
+              <span className="text-accent-2">submission_no</span>
+              <span className="text-tint/85">PAY-88231</span>
             </div>
-            <div className="feat-cell flex items-center justify-between rounded-md border border-white/10 bg-white/[0.05] px-2.5 py-1.5" style={{ animationDelay: "3.7s" }}>
-              <span className="text-[#93c5fd]">portal_status</span>
-              <span className="text-emerald-400">accepted</span>
+            <div className="feat-cell flex items-center justify-between rounded-md border border-tint/10 bg-tint/[0.05] px-2.5 py-1.5" style={{ animationDelay: "3.7s" }}>
+              <span className="text-accent-2">portal_status</span>
+              <span className="text-ok">accepted</span>
             </div>
           </div>
         </div>
@@ -295,13 +295,13 @@ function HitlVignette() {
   return (
     <div className={frameC}>
       <div className="flex items-center justify-between gap-3">
-        <p className="truncate text-white/45">Run #4127 · Invoice Processor · paused for review</p>
+        <p className="truncate text-tint/45">Run #4127 · Invoice Processor · paused for review</p>
         <span className="relative shrink-0">
           <span className="rounded bg-amber-400/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-400">
             awaiting approval
           </span>
           <span
-            className="feat-cell absolute inset-0 flex items-center justify-center rounded bg-[#0d2b1c] text-[9px] font-bold uppercase tracking-wider text-emerald-400"
+            className="feat-cell absolute inset-0 flex items-center justify-center rounded bg-ok/15 text-[9px] font-bold uppercase tracking-wider text-ok"
             style={{ animationDelay: "3.3s" }}
           >
             approved
@@ -312,42 +312,42 @@ function HitlVignette() {
       {/* Source document and extracted data, side by side. The
           mismatched total highlights in BOTH at the same moment. */}
       <div className="mt-2.5 grid grid-cols-2 gap-3">
-        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
-          <p className="text-white/45">invoice_2043.pdf</p>
+        <div className="rounded-lg border border-tint/10 bg-tint/[0.03] p-3">
+          <p className="text-tint/45">invoice_2043.pdf</p>
           <div className="mt-2.5 space-y-2">
-            <div className="h-1.5 w-3/4 rounded bg-white/15" />
-            <div className="h-1.5 w-full rounded bg-white/10" />
-            <div className="h-1.5 w-2/3 rounded bg-white/10" />
+            <div className="h-1.5 w-3/4 rounded bg-tint/15" />
+            <div className="h-1.5 w-full rounded bg-tint/10" />
+            <div className="h-1.5 w-2/3 rounded bg-tint/10" />
             <div className="relative flex h-5 items-center px-1.5">
-              <span className="text-[10px] tracking-wide text-white/65">TOTAL EUR 1.420,00</span>
+              <span className="text-[10px] tracking-wide text-tint/65">TOTAL EUR 1.420,00</span>
               <span
                 className="feat-cell absolute -inset-x-0.5 inset-y-0 rounded border border-amber-400/60 bg-amber-400/10"
                 style={{ animationDelay: "1.0s" }}
                 aria-hidden="true"
               />
             </div>
-            <div className="h-1.5 w-1/2 rounded bg-white/10" />
+            <div className="h-1.5 w-1/2 rounded bg-tint/10" />
           </div>
         </div>
 
-        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
-          <p className="text-white/45">Extracted data</p>
+        <div className="rounded-lg border border-tint/10 bg-tint/[0.03] p-3">
+          <p className="text-tint/45">Extracted data</p>
           <div className="mt-2 space-y-1.5">
-            <div className="flex items-center justify-between rounded bg-white/[0.05] px-2 py-1">
-              <span className="text-[#93c5fd]">vendor</span>
-              <span className="text-white/85">Acme Corp</span>
+            <div className="flex items-center justify-between rounded bg-tint/[0.05] px-2 py-1">
+              <span className="text-accent-2">vendor</span>
+              <span className="text-tint/85">Acme Corp</span>
             </div>
-            <div className="flex items-center justify-between rounded bg-white/[0.05] px-2 py-1">
-              <span className="text-[#93c5fd]">invoice_no</span>
-              <span className="text-white/85">INV-2043</span>
+            <div className="flex items-center justify-between rounded bg-tint/[0.05] px-2 py-1">
+              <span className="text-accent-2">invoice_no</span>
+              <span className="text-tint/85">INV-2043</span>
             </div>
-            <div className="relative flex items-center justify-between rounded bg-white/[0.05] px-2 py-1">
-              <span className="text-[#93c5fd]">total</span>
+            <div className="relative flex items-center justify-between rounded bg-tint/[0.05] px-2 py-1">
+              <span className="text-accent-2">total</span>
               <span className="flex items-center gap-1.5">
-                <span className="feat-strike text-white/80" style={{ "--strike-d": "1.7s" } as React.CSSProperties}>
+                <span className="feat-strike text-tint/80" style={{ "--strike-d": "1.7s" } as React.CSSProperties}>
                   1,240.00
                 </span>
-                <span className="feat-cell text-white" style={{ animationDelay: "2.0s" }}>1,420.00</span>
+                <span className="feat-cell text-fg" style={{ animationDelay: "2.0s" }}>1,420.00</span>
               </span>
               <span
                 className="feat-cell absolute -inset-x-0.5 inset-y-0 rounded border border-amber-400/60 bg-amber-400/10"
@@ -355,9 +355,9 @@ function HitlVignette() {
                 aria-hidden="true"
               />
             </div>
-            <div className="flex items-center justify-between rounded bg-white/[0.05] px-2 py-1">
-              <span className="text-[#93c5fd]">due_date</span>
-              <span className="text-white/85">2026-04-11</span>
+            <div className="flex items-center justify-between rounded bg-tint/[0.05] px-2 py-1">
+              <span className="text-accent-2">due_date</span>
+              <span className="text-tint/85">2026-04-11</span>
             </div>
           </div>
         </div>
@@ -367,9 +367,9 @@ function HitlVignette() {
         <span className="feat-press flex items-center gap-1.5 rounded-md bg-emerald-600 px-3 py-1.5 font-semibold text-white" style={{ animationDelay: "3.0s" }}>
           <Check size={12} /> Approve run
         </span>
-        <span className="rounded-md border border-white/10 px-3 py-1.5 text-white/50">Reject</span>
+        <span className="rounded-md border border-tint/10 px-3 py-1.5 text-tint/50">Reject</span>
       </div>
-      <p className="feat-cell mt-2.5 border-l-2 border-emerald-500/40 pl-2 text-[10px] text-white/40" style={{ animationDelay: "3.7s" }}>
+      <p className="feat-cell mt-2.5 border-l-2 border-emerald-500/40 pl-2 text-[10px] text-tint/40" style={{ animationDelay: "3.7s" }}>
         audit · append-only · maria@ edited total, approved the run · 09:41
       </p>
     </div>
@@ -380,28 +380,28 @@ function McpVignette() {
   const toolCall = (label: string, delay: number) => (
     <div className="feat-cell flex w-fit items-center gap-1.5" style={{ animationDelay: `${delay}s` }}>
       <span className={`${chip} text-[10px]`}>⚙ {label}</span>
-      <Check size={11} className="text-emerald-400" />
+      <Check size={11} className="text-ok" />
     </div>
   );
   return (
     <div className={frameC}>
-      <p className="text-white/45">claude.ai · connected to Tavnit MCP</p>
+      <p className="text-tint/45">claude.ai · connected to Tavnit MCP</p>
       <div className="mt-2.5 space-y-2">
-        <div className="ml-auto w-fit max-w-[85%] rounded-lg rounded-br-sm bg-[#3b82f6]/20 px-2.5 py-1.5 text-white/85">
+        <div className="ml-auto w-fit max-w-[85%] rounded-lg rounded-br-sm bg-[#3b82f6]/20 px-2.5 py-1.5 text-tint/85">
           Set up extraction for our freight invoices — and convert the totals to USD
         </div>
         {toolCall('create_flow("Freight Invoices")', 0.6)}
         {toolCall('create_cleaner("EUR → USD", field: total)', 1.3)}
-        <div className="feat-cell w-fit max-w-[85%] rounded-lg rounded-bl-sm bg-white/[0.06] px-2.5 py-1.5 text-white/75" style={{ animationDelay: "2.0s" }}>
+        <div className="feat-cell w-fit max-w-[85%] rounded-lg rounded-bl-sm bg-tint/[0.06] px-2.5 py-1.5 text-tint/75" style={{ animationDelay: "2.0s" }}>
           Done — flow with 6 fields + line items, FX cleaner attached. Forward invoices to{" "}
-          <span className="text-[#93c5fd]">freight@collect.tavnit.io</span>
+          <span className="text-accent-2">freight@collect.tavnit.io</span>
         </div>
-        <div className="feat-cell ml-auto w-fit max-w-[85%] rounded-lg rounded-br-sm bg-[#3b82f6]/20 px-2.5 py-1.5 text-white/85" style={{ animationDelay: "2.7s" }}>
+        <div className="feat-cell ml-auto w-fit max-w-[85%] rounded-lg rounded-br-sm bg-[#3b82f6]/20 px-2.5 py-1.5 text-tint/85" style={{ animationDelay: "2.7s" }}>
           How much freight spend this week?
         </div>
         {toolCall('query_bucket("Freight Invoices")', 3.3)}
-        <div className="feat-cell w-fit max-w-[85%] rounded-lg rounded-bl-sm bg-white/[0.06] px-2.5 py-1.5 text-white/75" style={{ animationDelay: "3.9s" }}>
-          <span className="text-white">$48,211.90</span> across 12 invoices
+        <div className="feat-cell w-fit max-w-[85%] rounded-lg rounded-bl-sm bg-tint/[0.06] px-2.5 py-1.5 text-tint/75" style={{ animationDelay: "3.9s" }}>
+          <span className="text-fg">$48,211.90</span> across 12 invoices
         </div>
       </div>
     </div>
@@ -418,7 +418,7 @@ function BucketsVignette() {
     <div className={frameC}>
       {/* Bucket toolbar */}
       <div className="flex items-center justify-between gap-2">
-        <p className="text-white/60 font-semibold">bucket: Invoices</p>
+        <p className="text-tint/60 font-semibold">bucket: Invoices</p>
         <div className="flex items-center gap-1.5">
           <span className={`${chip} text-[10px]`}>CSV</span>
           <span className={`${chip} text-[10px]`}>Excel</span>
@@ -432,38 +432,38 @@ function BucketsVignette() {
       </div>
 
       {/* The bucket itself: an editable table extractions land in */}
-      <div className="mt-2 overflow-hidden rounded-lg border border-white/10">
-        <div className="grid grid-cols-[1.4fr_1fr_0.9fr] divide-x divide-white/10 bg-white/[0.07] text-white/50">
+      <div className="mt-2 overflow-hidden rounded-lg border border-tint/10">
+        <div className="grid grid-cols-[1.4fr_1fr_0.9fr] divide-x divide-tint/10 bg-tint/[0.07] text-tint/50">
           {["vendor", "invoice_no", "total"].map((c) => (
             <span key={c} className="truncate px-2 py-1">{c}</span>
           ))}
         </div>
         {rows.map((r) => (
-          <div key={r[1]} className="grid grid-cols-[1.4fr_1fr_0.9fr] divide-x divide-white/10 border-t border-white/10">
+          <div key={r[1]} className="grid grid-cols-[1.4fr_1fr_0.9fr] divide-x divide-tint/10 border-t border-tint/10">
             {r.map((v, i) => (
-              <span key={i} className="truncate px-2 py-1 text-white/75">{v}</span>
+              <span key={i} className="truncate px-2 py-1 text-tint/75">{v}</span>
             ))}
           </div>
         ))}
         {/* A fresh extraction drops in as a new row */}
-        <div className="feat-cell grid grid-cols-[1.4fr_1fr_0.9fr] divide-x divide-white/10 border-t border-white/10 bg-[#3b82f6]/[0.08]" style={{ animationDelay: "0.7s" }}>
-          <span className="truncate px-2 py-1 text-white/90">Acme Corp</span>
-          <span className="truncate px-2 py-1 text-white/90">INV-2043</span>
-          <span className="relative truncate px-2 py-1 text-white/90">
+        <div className="feat-cell grid grid-cols-[1.4fr_1fr_0.9fr] divide-x divide-tint/10 border-t border-tint/10 bg-[#3b82f6]/[0.08]" style={{ animationDelay: "0.7s" }}>
+          <span className="truncate px-2 py-1 text-tint/90">Acme Corp</span>
+          <span className="truncate px-2 py-1 text-tint/90">INV-2043</span>
+          <span className="relative truncate px-2 py-1 text-tint/90">
             1,420.00
             <span className="feat-cell absolute inset-0.5 rounded border border-[#3b82f6]/60" style={{ animationDelay: "1.4s" }} aria-hidden="true" />
           </span>
         </div>
       </div>
-      <p className="mt-1 flex items-center justify-between text-[9px] text-white/35">
+      <p className="mt-1 flex items-center justify-between text-[9px] text-tint/35">
         <span>editable — click any cell</span>
         <span className="feat-cell" style={{ animationDelay: "0.9s" }}>+ 1 row from run #4128</span>
       </p>
 
       {/* Pressing Analytics opens the charts */}
-      <div className="feat-cell mt-2.5 grid grid-cols-[1fr_auto] gap-4 rounded-lg border border-white/10 bg-white/[0.03] p-3" style={{ animationDelay: "2.6s" }}>
+      <div className="feat-cell mt-2.5 grid grid-cols-[1fr_auto] gap-4 rounded-lg border border-tint/10 bg-tint/[0.03] p-3" style={{ animationDelay: "2.6s" }}>
         <div className="flex flex-col">
-          <p className="text-[10px] text-white/45">spend by month</p>
+          <p className="text-[10px] text-tint/45">spend by month</p>
           <div className="mt-1.5 flex h-14 flex-1 items-end gap-1.5">
             {bars.map((h, i) => (
               <div key={i} className="feat-bar w-full rounded-t bg-gradient-to-t from-[#3b82f6] to-[#6c42f0]" style={{ height: `${h}%`, animationDelay: `${2.8 + i * 0.12}s` }} />
@@ -472,12 +472,12 @@ function BucketsVignette() {
         </div>
         <div className="flex flex-col justify-center gap-1.5 text-right">
           <div>
-            <p className="text-sm font-bold text-white">$48,211.90</p>
-            <p className="text-[9px] text-white/40">total spend</p>
+            <p className="text-sm font-bold text-fg">$48,211.90</p>
+            <p className="text-[9px] text-tint/40">total spend</p>
           </div>
           <div>
-            <p className="text-sm font-bold text-white">12</p>
-            <p className="text-[9px] text-white/40">rows this week</p>
+            <p className="text-sm font-bold text-fg">12</p>
+            <p className="text-[9px] text-tint/40">rows this week</p>
           </div>
         </div>
       </div>
@@ -495,36 +495,36 @@ function ApiVignette() {
   return (
     <div className={frameC}>
       {/* In */}
-      <div className="feat-cell mx-auto flex w-fit max-w-full items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2" style={{ animationDelay: "0.2s" }}>
-        <span className="truncate text-white/80">✉ invoice_2043.pdf</span>
-        <span className="text-white/30">→</span>
-        <span className="truncate text-white/50">invoices@collect.tavnit.io</span>
+      <div className="feat-cell mx-auto flex w-fit max-w-full items-center gap-2 rounded-lg border border-tint/10 bg-tint/[0.04] px-3 py-2" style={{ animationDelay: "0.2s" }}>
+        <span className="truncate text-tint/80">✉ invoice_2043.pdf</span>
+        <span className="text-tint/30">→</span>
+        <span className="truncate text-tint/50">invoices@collect.tavnit.io</span>
       </div>
 
-      <div className="feat-cell mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-white/35 to-white/10" style={{ animationDelay: "0.8s" }} aria-hidden="true" />
+      <div className="feat-cell mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-tint/35 to-tint/10" style={{ animationDelay: "0.8s" }} aria-hidden="true" />
 
       {/* Through Tavnit */}
       <div className="feat-cell mx-auto flex w-fit items-center gap-2 rounded-lg border border-[#3b82f6]/30 bg-[#3b82f6]/[0.08] px-3 py-2" style={{ animationDelay: "1.0s" }}>
-        <span className="text-white/85">run #4129 · extracted &amp; cleaned</span>
-        <Check size={12} className="text-emerald-400" />
+        <span className="text-tint/85">run #4129 · extracted &amp; cleaned</span>
+        <Check size={12} className="text-ok" />
       </div>
 
-      <div className="feat-cell mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-white/35 to-white/10" style={{ animationDelay: "1.5s" }} aria-hidden="true" />
+      <div className="feat-cell mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-tint/35 to-tint/10" style={{ animationDelay: "1.5s" }} aria-hidden="true" />
 
       {/* Out — one delivery row, left to right */}
       <div className="grid grid-cols-4 gap-2">
         {outs.map((o) => (
-          <div key={o.title} className="feat-cell rounded-lg border border-white/10 bg-white/[0.04] p-2 text-center" style={{ animationDelay: `${o.delay}s` }}>
-            <p className="text-[10px] uppercase tracking-wider text-white/40">{o.title}</p>
-            <p className="mt-1 truncate text-[#93c5fd]">{o.detail}</p>
-            <p className="mt-0.5 truncate text-[10px] text-white/45">
-              {o.note} <span className="text-emerald-400">✓</span>
+          <div key={o.title} className="feat-cell rounded-lg border border-tint/10 bg-tint/[0.04] p-2 text-center" style={{ animationDelay: `${o.delay}s` }}>
+            <p className="text-[10px] uppercase tracking-wider text-tint/40">{o.title}</p>
+            <p className="mt-1 truncate text-accent-2">{o.detail}</p>
+            <p className="mt-0.5 truncate text-[10px] text-tint/45">
+              {o.note} <span className="text-ok">✓</span>
             </p>
           </div>
         ))}
       </div>
 
-      <p className="feat-cell mt-3.5 text-center text-[10px] text-white/40" style={{ animationDelay: "3.1s" }}>
+      <p className="feat-cell mt-3.5 text-center text-[10px] text-tint/40" style={{ animationDelay: "3.1s" }}>
         also in: REST API · UI upload&ensp;·&ensp;also out: Zapier / Make
       </p>
     </div>
@@ -534,10 +534,10 @@ function ApiVignette() {
 function TeamsVignette() {
   /* Role subtitles match the in-app docs verbatim */
   const roles = [
-    { name: "Owner", sub: "full control", cls: "bg-[#3b82f6]/20 text-[#93c5fd]" },
-    { name: "Admin", sub: "people & content", cls: "bg-[#6c42f0]/20 text-[#c4b5fd]" },
-    { name: "Member", sub: "run & view", cls: "bg-white/10 text-white/70" },
-    { name: "Viewer", sub: "read-only", cls: "bg-white/10 text-white/50" },
+    { name: "Owner", sub: "full control", cls: "bg-[#3b82f6]/20 text-accent-2" },
+    { name: "Admin", sub: "people & content", cls: "bg-[#6c42f0]/20 text-violet-2" },
+    { name: "Member", sub: "run & view", cls: "bg-tint/10 text-tint/70" },
+    { name: "Viewer", sub: "read-only", cls: "bg-tint/10 text-tint/50" },
   ];
   /* Descending staircase: each capability is open to fewer roles */
   const caps = [
@@ -548,39 +548,39 @@ function TeamsVignette() {
   ];
   return (
     <div className={frameC}>
-      <p className="text-white/45">My Organization · four roles, org-wide permissions</p>
-      <div className="mt-2.5 overflow-hidden rounded-lg border border-white/10">
+      <p className="text-tint/45">My Organization · four roles, org-wide permissions</p>
+      <div className="mt-2.5 overflow-hidden rounded-lg border border-tint/10">
         {/* Role headers */}
-        <div className="grid grid-cols-[1.5fr_repeat(4,1fr)] divide-x divide-white/10 bg-white/[0.06]">
+        <div className="grid grid-cols-[1.5fr_repeat(4,1fr)] divide-x divide-tint/10 bg-tint/[0.06]">
           <span className="px-2 py-1.5" aria-hidden="true" />
           {roles.map((r, i) => (
             <div key={r.name} className="feat-cell px-1 py-1.5 text-center" style={{ animationDelay: `${0.3 + i * 0.15}s` }}>
               <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold ${r.cls}`}>{r.name}</span>
-              <p className="mt-0.5 text-[8px] leading-tight text-white/40">{r.sub}</p>
+              <p className="mt-0.5 text-[8px] leading-tight text-tint/40">{r.sub}</p>
             </div>
           ))}
         </div>
         {/* Capability rows — checks draw a staircase toward Owner */}
         {caps.map((c, ri) => (
-          <div key={c.label} className="grid grid-cols-[1.5fr_repeat(4,1fr)] items-center divide-x divide-white/10 border-t border-white/10">
-            <span className="truncate px-2 py-1.5 text-white/70">{c.label}</span>
+          <div key={c.label} className="grid grid-cols-[1.5fr_repeat(4,1fr)] items-center divide-x divide-tint/10 border-t border-tint/10">
+            <span className="truncate px-2 py-1.5 text-tint/70">{c.label}</span>
             {roles.map((r, ci) => (
               <span key={r.name} className="px-1 py-1.5 text-center">
                 {ci < c.allowed ? (
                   <Check
                     size={12}
-                    className="feat-cell inline-block text-emerald-400"
+                    className="feat-cell inline-block text-ok"
                     style={{ animationDelay: `${1.1 + ri * 0.4}s` }}
                   />
                 ) : (
-                  <span className="text-white/20">—</span>
+                  <span className="text-tint/20">—</span>
                 )}
               </span>
             ))}
           </div>
         ))}
       </div>
-      <p className="feat-cell mt-3 text-center text-[10px] text-white/40" style={{ animationDelay: "3.0s" }}>
+      <p className="feat-cell mt-3 text-center text-[10px] text-tint/40" style={{ animationDelay: "3.0s" }}>
         Unlimited seats — invite the whole team, pay for usage
       </p>
     </div>
@@ -605,14 +605,14 @@ const features = [
 /* Compact card for the mobile marquee row */
 function MarqueeCard({ f }: { f: typeof features[number] }) {
   return (
-    <div className="glass-card rounded-xl p-4 border border-white/10 flex-shrink-0 w-[200px]">
+    <div className="glass-card rounded-xl p-4 border border-tint/10 flex-shrink-0 w-[200px]">
       <div className="flex items-center gap-2.5 mb-2">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-[#3b82f6]/10 text-[#3b82f6]">
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-[#3b82f6]/10 text-accent">
           <f.icon size={16} />
         </div>
-        <h3 className="text-xs font-bold text-white">{f.title}</h3>
+        <h3 className="text-xs font-bold text-fg">{f.title}</h3>
       </div>
-      <p className="text-[11px] text-gray-400 leading-relaxed">{f.desc}</p>
+      <p className="text-[11px] text-fg-4 leading-relaxed">{f.desc}</p>
     </div>
   );
 }
@@ -700,10 +700,10 @@ export default function Features() {
       {/* ── Mobile: continuous marquee ── */}
       <div className="md:hidden">
         <div className="px-4 mb-5">
-          <p className="text-xl font-bold text-white mb-1 text-center" aria-hidden="true">
+          <p className="text-xl font-bold text-fg mb-1 text-center" aria-hidden="true">
             The Complete Document Automation Platform
           </p>
-          <p className="text-xs text-gray-400 text-center">
+          <p className="text-xs text-fg-4 text-center">
             Extract, clean, review, store, and act — all in one pipeline
           </p>
         </div>
@@ -729,10 +729,10 @@ export default function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 id="features-heading" className="text-3xl md:text-4xl font-bold text-white mb-2">
+          <h2 id="features-heading" className="text-3xl md:text-4xl font-bold text-fg mb-2">
             The Complete Document Automation Platform
           </h2>
-          <p className="text-base md:text-lg text-gray-400 max-w-[600px] mx-auto">
+          <p className="text-base md:text-lg text-fg-4 max-w-[600px] mx-auto">
             Extract, clean, review, store, and act — all in one pipeline
           </p>
         </motion.div>
@@ -755,7 +755,7 @@ export default function Features() {
                 aria-selected={i === active}
                 onClick={() => select(i)}
                 className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
-                  i === active ? "bg-white/[0.07] text-white" : "text-gray-400 hover:text-white hover:bg-white/[0.04]"
+                  i === active ? "bg-tint/[0.07] text-fg" : "text-fg-4 hover:text-fg hover:bg-tint/[0.04]"
                 }`}
               >
                 <span
@@ -766,7 +766,7 @@ export default function Features() {
                 />
                 <f.icon
                   size={17}
-                  className={`shrink-0 transition-colors duration-200 ${i === active ? "text-[#3b82f6]" : "text-gray-500 group-hover:text-gray-300"}`}
+                  className={`shrink-0 transition-colors duration-200 ${i === active ? "text-accent" : "text-fg-5 group-hover:text-fg-3"}`}
                 />
                 <span className="text-sm font-semibold">{f.title}</span>
               </button>
@@ -779,8 +779,8 @@ export default function Features() {
               <current.Vignette />
             </div>
             <div className="pt-4 shrink-0">
-              <h3 className="text-base font-bold text-white mb-1">{current.title}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">{current.desc}</p>
+              <h3 className="text-base font-bold text-fg mb-1">{current.title}</h3>
+              <p className="text-sm text-fg-4 leading-relaxed">{current.desc}</p>
             </div>
           </div>
         </motion.div>
