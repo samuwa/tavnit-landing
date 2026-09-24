@@ -460,7 +460,6 @@ export default function PlatformOverview() {
                   className={`object-contain transition-opacity duration-500 ${
                     i === active ? "opacity-100" : "opacity-0"
                   }`}
-                  priority={i === 0}
                 />
               ))}
             </div>

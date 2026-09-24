@@ -1,36 +1,34 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { trackEvent } from "@/lib/analytics";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Play } from "lucide-react";
 import HeroAnimation from "./HeroAnimation";
 
+/**
+ * No entrance animation here on purpose. This is the first thing on the page
+ * and it is what Lighthouse measures as LCP: the framer-motion fade-ins it used
+ * to have rendered the H1, the mock-up and the CTAs at opacity 0 in the server
+ * HTML, so nothing became visible until the client bundle had downloaded and
+ * hydrated. On a throttled phone that put LCP at ~5 s for a page that is
+ * otherwise light. Sections below the fold keep their whileInView reveals; the
+ * "... In Seconds" line keeps its CSS-only typing effect.
+ */
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-16" id="hero" aria-labelledby="hero-heading">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center py-4 md:py-8 w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div>
           <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight tracking-tight text-white">
             <span>Documents to <span className="gradient-text">Structured Data</span></span>
             <span className="sr-only"> — AI-Powered PDF Extraction In Seconds</span>
           </h1>
-        </motion.div>
+        </div>
 
         {/* Animation */}
-        <motion.div
-          className="w-full my-4 md:my-8"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          aria-hidden="true"
-        >
+        <div className="w-full my-4 md:my-8" aria-hidden="true">
           <HeroAnimation />
-        </motion.div>
+        </div>
 
         {/* Typing Effect */}
         <div className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight tracking-tight mb-6 text-white" aria-hidden="true">
@@ -38,22 +36,12 @@ export default function Hero() {
         </div>
 
         {/* Subtitle */}
-        <motion.p
-          className="text-base sm:text-lg text-gray-400 max-w-[540px] mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+        <p className="text-base sm:text-lg text-gray-400 max-w-[540px] mb-8">
           Extract, clean, and store data from any document — then review it with your team and let AI agents act on it. No code required.
-        </motion.p>
+        </p>
 
         {/* CTAs */}
-        <motion.div
-          className="flex flex-col items-center gap-5"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
+        <div className="flex flex-col items-center gap-5">
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto justify-center">
             <Link
               href="https://app.tavnit.io"
@@ -90,7 +78,7 @@ export default function Hero() {
               Setup in under 5 minutes
             </span>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
