@@ -40,6 +40,8 @@ export interface ToolCopy {
     viewer: string;
     openDocument: string;
     closeDocument: string;
+    /** Retention notice shown next to the document strip. */
+    retention: string;
     download: string;
     downloading: string;
     another: string;
@@ -157,7 +159,7 @@ const invoiceEs: ToolCopy = {
   trust: [
     "PDF, JPG o PNG de hasta 5 páginas",
     "3 documentos al día, con el resultado completo",
-    "Tu archivo se usa solo para esta extracción",
+    "Tu archivo y sus resultados se borran solos a las 24 horas",
   ],
   drop: {
     title: "Arrastra tu factura aquí",
@@ -184,6 +186,7 @@ const invoiceEs: ToolCopy = {
     viewer: "Tu documento",
     openDocument: "Ver el documento",
     closeDocument: "Cerrar",
+    retention: "se borra solo a las 24 h",
     download: "Descargar Excel",
     downloading: "Preparando el archivo",
     another: "Procesar otra factura",
@@ -402,8 +405,8 @@ const invoiceEs: ToolCopy = {
   faqHeading: "Preguntas frecuentes",
   faqs: [
     {
-      q: "¿De verdad es gratis?",
-      a: "Sí. Puedes procesar 3 documentos al día y ver el resultado completo en pantalla. Descargar el Excel pide una cuenta de Tavnit, que también es gratis.",
+      q: "¿Qué incluye la versión gratis?",
+      a: "Tres documentos al día, con el resultado completo en pantalla. Para descargar el Excel hace falta una cuenta de Tavnit, que no tiene costo.",
     },
     {
       q: "¿Qué formatos acepta?",
@@ -415,7 +418,7 @@ const invoiceEs: ToolCopy = {
     },
     {
       q: "¿Qué pasa con mi archivo?",
-      a: "Se procesa en una cuenta de Tavnit dedicada a las herramientas gratis y no se usa para nada más. Si quieres que lo borremos, escríbenos a support@tavnit.io con la fecha y el nombre del archivo.",
+      a: "Se procesa en una cuenta de Tavnit dedicada a las herramientas gratis y no se usa para nada más. A las 24 horas el archivo y las filas extraídas se borran solos, automáticamente; solo conservamos que hubo una corrida, sin el documento ni su contenido. Si quieres que se borre antes, escríbenos a support@tavnit.io.",
     },
     {
       q: "¿Por qué pide cuenta para descargar?",
@@ -443,7 +446,7 @@ const invoiceEn: ToolCopy = {
   trust: [
     "PDF, JPG or PNG, up to 5 pages",
     "3 documents a day, full result every time",
-    "Your file is used for this extraction only",
+    "Your file and its results delete themselves after 24 hours",
   ],
   drop: {
     title: "Drop your invoice here",
@@ -470,6 +473,7 @@ const invoiceEn: ToolCopy = {
     viewer: "Your document",
     openDocument: "View the document",
     closeDocument: "Close",
+    retention: "deletes itself after 24 h",
     download: "Download Excel",
     downloading: "Preparing the file",
     another: "Process another invoice",
@@ -688,8 +692,8 @@ const invoiceEn: ToolCopy = {
   faqHeading: "Common questions",
   faqs: [
     {
-      q: "Is it really free?",
-      a: "Yes. You can process 3 documents a day and see the full result on screen. Downloading the Excel takes a Tavnit account, which is free as well.",
+      q: "What does the free version include?",
+      a: "Three documents a day, with the full result on screen. Downloading the Excel takes a Tavnit account, which has no cost.",
     },
     {
       q: "Which formats does it accept?",
@@ -701,7 +705,7 @@ const invoiceEn: ToolCopy = {
     },
     {
       q: "What happens to my file?",
-      a: "It is processed in a Tavnit account dedicated to the free tools and used for nothing else. If you want it deleted, email support@tavnit.io with the date and the file name.",
+      a: "It is processed in a Tavnit account dedicated to the free tools and used for nothing else. After 24 hours the file and the extracted rows delete themselves, automatically; we only keep the fact that a run happened, without the document or its contents. If you want it gone sooner, email support@tavnit.io.",
     },
     {
       q: "Why does the download need an account?",

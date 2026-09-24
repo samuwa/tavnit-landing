@@ -45,9 +45,23 @@ API (mismo origen, nunca desde otro dominio):
 8. La API key de la org Lite solo existe en el servidor. Nunca se registra contenido de archivos.
 9. El Excel se genera sin librerías con advisories (fflate + XML a mano); las celdas que empiezan por `= + - @` se neutralizan para evitar inyección de fórmulas.
 
-Lo que no se puede hacer desde aquí: borrar los archivos del backend (no hay
-endpoint de borrado de runs). La FAQ dice la verdad: se procesan en una
-cuenta dedicada y se borran a pedido por support@.
+## Retención: todo se borra a las 24 horas
+
+Ni la app ni el API borran runs, así que el landing lo hace con el mismo
+mecanismo con el que el backend los guarda (verificado en código y en el
+proyecto real): el original en `files/<org>/<run>/original.<ext>`, las filas
+en `runs.output_json`. El cron `/api/cron/lite-cleanup` (cada hora,
+`vercel.json`) toma los runs con más de `LITE_RETENTION_HOURS` (24), borra
+los objetos de storage en `files` y `run_file_json`, borra la fila de `runs`
+y marca `lite_runs.purged_at` limpiando `filename`. Solo toca runs de la org
+`TAVNIT_LITE_ORG_ID` (guardarraíl en cada DELETE) y deja en paz los que
+sigan `queued`/`running`. Los runs de la org sin fila en `lite_runs`
+(pruebas) también se purgan: la org existe solo para esto.
+
+Operación manual con el mismo secreto: `?dry_run=1` reporta sin borrar,
+`?max_age_hours=n` cambia la ventana, `?limit=n` el lote. El cliente guarda
+el run en el navegador con la misma vida (24 h) y, si al volver ya no
+existe, vuelve al estado vacío sin mostrar error.
 
 ## Cuenta para descargar
 

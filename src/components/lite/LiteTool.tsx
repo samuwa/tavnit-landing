@@ -221,7 +221,11 @@ export default function LiteTool({
           });
           if (res.status === 404) {
             clearStash();
-            setPhase({ kind: "error", code: "backend", file: displayName });
+            // A restored run that is gone (retention already deleted it, or
+            // the session changed) is nothing to apologise for: back to the
+            // empty tool. A 404 on a run we just submitted is a real error.
+            if (restored) setPhase({ kind: "idle" });
+            else setPhase({ kind: "error", code: "backend", file: displayName });
             return;
           }
           if (res.ok) {
@@ -642,6 +646,7 @@ export default function LiteTool({
             <FileText size={18} className="shrink-0 text-[var(--lite-blue)]" aria-hidden />
             <span className="truncate font-medium">{file}</span>
             <span className="hidden text-[var(--lite-muted)] sm:inline">· {plural(pages, copy.result.pageWord)}</span>
+            <span className="hidden text-[var(--lite-muted)] md:inline">· {copy.result.retention}</span>
           </span>
           <button type="button" onClick={() => setDocOpen(true)} className="lite-press inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-[var(--lite-blue-ink)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50">
             <ExternalLink size={14} aria-hidden />
