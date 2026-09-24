@@ -18,11 +18,12 @@ import Footer from "@/components/Footer";
 import { homeSchema } from "@/lib/schema";
 import { isStripeEnabled } from "@/lib/platform";
 import { faqsFor } from "@/lib/faqs";
+import { documentsProcessed, floorThousandsPlus } from "@/lib/stats";
 
 export default async function Home() {
   // Pricing (section + nav/footer links) only shows while Stripe self-serve
   // is on platform-wide; otherwise prospects go through book-a-demo.
-  const stripeOn = await isStripeEnabled();
+  const [stripeOn, processed] = await Promise.all([isStripeEnabled(), documentsProcessed()]);
   // The pricing FAQ follows the same gate, on the page and in the JSON-LD.
   const faqs = faqsFor(stripeOn);
   return (
@@ -38,7 +39,7 @@ export default async function Home() {
 
       <Header showPricing={stripeOn} />
       <main role="main">
-        <Hero />
+        <Hero documentsProcessed={floorThousandsPlus(processed)} />
         <Problem />
         <HowItWorks />
         <LiveDemo />

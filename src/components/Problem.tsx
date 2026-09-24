@@ -35,9 +35,9 @@ const cards = [
     },
     solution: {
       icon: Target,
-      title: "99.9% accuracy, every time",
+      title: "Validated before it lands",
       description:
-        "AI-powered validation catches errors before they propagate. Consistent output regardless of input format",
+        "Every value carries a confidence score, Cleaner rules check it against your own data, and anything doubtful goes to a reviewer before it propagates",
     },
   },
   {

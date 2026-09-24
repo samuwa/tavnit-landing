@@ -6,16 +6,29 @@ import { ArrowRight, CheckCircle2, Play } from "lucide-react";
 import HeroAnimation from "./HeroAnimation";
 
 /**
- * The entrance fade here is CSS (.hero-enter in globals.css), not
- * framer-motion. This is the first thing on the page and what Lighthouse
- * measures as LCP: the framer-motion fade-ins it used to have rendered the H1,
- * the mock-up and the CTAs at opacity 0 in the server HTML, so nothing became
- * visible until the client bundle had downloaded and hydrated — ~5 s LCP on a
- * throttled phone for an otherwise light page. A CSS animation starts on first
- * paint, so the fade costs its own 0.6 s and nothing more. Sections below the
- * fold keep their whileInView reveals.
+ * Order matters here: headline, what it does, the two CTAs and the proof line
+ * all sit above the animation, so the first screen on a laptop says what
+ * Tavnit is and what to click. The previous layout put the 420px mock-up
+ * between the headline and everything else, and on a 1440×800 viewport the
+ * subtitle and buttons started below the fold.
+ *
+ * The entrance fade is CSS (.hero-enter in globals.css), not framer-motion:
+ * it starts on first paint instead of after hydration, so LCP does not wait
+ * for the JS bundle.
+ *
+ * The use-case links exist because Search Console shows almost all non-brand
+ * demand landing on PO matching and customs/HS classification; the homepage
+ * mentioned neither above the fold.
  */
-export default function Hero() {
+
+const USE_CASE_LINKS: { label: string; href: string }[] = [
+  { label: "Invoices", href: "/use-cases/invoice-processing" },
+  { label: "PO matching", href: "/use-cases/purchase-orders" },
+  { label: "Customs & HS codes", href: "/use-cases/customs-trade" },
+  { label: "Contracts", href: "/use-cases/contract-analysis" },
+];
+
+export default function Hero({ documentsProcessed }: { documentsProcessed: string }) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-16" id="hero" aria-labelledby="hero-heading">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center py-4 md:py-8 w-full">
@@ -24,34 +37,24 @@ export default function Hero() {
             <span>Documents to <span className="gradient-text">Structured Data</span></span>
             <span className="sr-only"> — AI-Powered PDF Extraction In Seconds</span>
           </h1>
-        </div>
-
-        {/* Animation */}
-        <div
-          className="hero-enter w-full my-4 md:my-8"
-          style={{ "--hero-delay": "0.15s" } as React.CSSProperties}
-          aria-hidden="true"
-        >
-          <HeroAnimation />
-        </div>
-
-        {/* Typing Effect */}
-        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight tracking-tight mb-6 text-white" aria-hidden="true">
-          <span className="typing-text">... In Seconds</span>
+          {/* Typing Effect: completes the headline, decorative for AT */}
+          <div className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight tracking-tight text-white" aria-hidden="true">
+            <span className="typing-text">... In Seconds</span>
+          </div>
         </div>
 
         {/* Subtitle */}
         <p
-          className="hero-enter text-base sm:text-lg text-gray-400 max-w-[540px] mb-8"
-          style={{ "--hero-delay": "0.3s" } as React.CSSProperties}
+          className="hero-enter text-base sm:text-lg text-gray-400 max-w-[560px] mt-5 mb-7"
+          style={{ "--hero-delay": "0.15s" } as React.CSSProperties}
         >
           Extract, clean, and store data from any document — then review it with your team and let AI agents act on it. No code required.
         </p>
 
         {/* CTAs */}
         <div
-          className="hero-enter flex flex-col items-center gap-5"
-          style={{ "--hero-delay": "0.4s" } as React.CSSProperties}
+          className="hero-enter flex flex-col items-center gap-4"
+          style={{ "--hero-delay": "0.3s" } as React.CSSProperties}
         >
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto justify-center">
             <Link
@@ -82,13 +85,39 @@ export default function Hero() {
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle2 size={14} className="text-emerald-500/70" />
-              100,000+ documents processed
+              {documentsProcessed} documents processed
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle2 size={14} className="text-emerald-500/70" />
               Setup in under 5 minutes
             </span>
           </div>
+
+          {/* Use cases with real search demand */}
+          <p className="text-xs sm:text-sm text-gray-500">
+            <span className="mr-1">Built for</span>
+            {USE_CASE_LINKS.map(({ label, href }, i) => (
+              <span key={href}>
+                {i > 0 && <span aria-hidden="true"> · </span>}
+                <Link
+                  href={href}
+                  onClick={() => trackEvent("cta_click", { cta: "use_case_link", location: "hero", href })}
+                  className="text-gray-300 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors"
+                >
+                  {label}
+                </Link>
+              </span>
+            ))}
+          </p>
+        </div>
+
+        {/* Animation */}
+        <div
+          className="hero-enter w-full mt-8 md:mt-10"
+          style={{ "--hero-delay": "0.45s" } as React.CSSProperties}
+          aria-hidden="true"
+        >
+          <HeroAnimation />
         </div>
       </div>
     </section>
