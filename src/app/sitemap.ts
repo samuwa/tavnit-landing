@@ -8,6 +8,7 @@ import { USE_CASES } from "@/lib/use-cases";
 import { GUIDES } from "@/lib/guides";
 import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
 import { GUIDES_ES, esGuidePath } from "@/lib/guides.es";
+import { STATIC_ROUTE_PAIRS, languageAlternates } from "@/lib/locale";
 
 /**
  * Only real, indexable URLs belong here.
@@ -50,6 +51,41 @@ function lastCommitDate(...paths: string[]): Date | undefined {
   } catch {
     return undefined;
   }
+}
+
+/**
+ * Every EN↔ES pair the site declares, keyed by both paths, so each sitemap
+ * entry can carry the same hreflang block its <head> emits. Static pairs come
+ * from locale.ts; use cases and guides derive from their data, exactly as the
+ * pages themselves do. Listing the alternates here as well as in the HTML
+ * gives Google a second, crawl-independent source for the pairing — with 40+
+ * Spanish URLs that share nothing but a hreflang tag with their English twin,
+ * that is the signal that keeps "/es/aduanas" from being judged a duplicate of
+ * "/use-cases/customs-trade".
+ */
+const ROUTE_PAIRS: { en: string; es: string }[] = [
+  ...STATIC_ROUTE_PAIRS,
+  ...USE_CASES_ES.map((uc) => ({ en: `/use-cases/${uc.slug}`, es: esUseCasePath(uc) })),
+  ...GUIDES_ES.map((g) => ({ en: `/guides/${g.slug}`, es: esGuidePath(g) })),
+];
+
+const ALTERNATES_BY_PATH = new Map(
+  ROUTE_PAIRS.flatMap((pair) => {
+    const languages = languageAlternates(pair.en, pair.es);
+    return [
+      [pair.en, languages],
+      [pair.es, languages],
+    ] as const;
+  }),
+);
+
+/** Attach `alternates.languages` to every entry that belongs to a pair. */
+function withAlternates(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  return entries.map((entry) => {
+    const path = entry.url.slice(SITE_URL.length) || "/";
+    const languages = ALTERNATES_BY_PATH.get(path);
+    return languages ? { ...entry, alternates: { languages } } : entry;
+  });
 }
 
 /** Source files a docs route's rendered output actually depends on. */
@@ -114,10 +150,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Commercial intent, same tier as the integration pages.
       priority: 0.9,
     })),
-    // Spanish site. Every entry here has an English twin declared via
-    // alternates.languages on both sides; the sitemap lists both URLs as
-    // ordinary entries rather than xhtml:link pairs (Next's sitemap type does
-    // not emit those), which Google accepts.
+    // Spanish site. Every entry here has an English twin; withAlternates()
+    // below emits the pair as xhtml:link on both sides.
     {
       url: `${SITE_URL}/es`,
       lastModified: lastCommitDate("src/app/es/page.tsx", "src/lib/use-cases.es.ts"),
@@ -231,7 +265,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.3,
     },
   ];
-  return stripeOn
-    ? entries
-    : entries.filter((e) => e.url !== `${SITE_URL}/pricing`);
+  return withAlternates(
+    stripeOn ? entries : entries.filter((e) => e.url !== `${SITE_URL}/pricing`),
+  );
 }
