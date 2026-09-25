@@ -175,48 +175,6 @@ html {
   overflow-y: scroll;
 }
 
-/*
- * Scroll snapping is a homepage-only behaviour, so it is scoped to pages that
- * actually contain the hero section.
- *
- * It used to sit unscoped on `html`, which made it apply to every route. The
- * per-section snap targets are ID-based (#hero, #problem, …) and only exist on
- * the homepage, but `footer` further down is a bare element selector — so on
- * /pricing, /privacy, /terms and /docs the footer was the *only* snap point on
- * the page. With `mandatory`, the browser must rest on a snap point, so those
- * pages loaded scrolled to the bottom.
- *
- * If a browser lacks :has() support, snapping simply never engages and every
- * page scrolls normally. That is the correct way for this to fail.
- */
-html:has(#hero) {
-  /*
-   * Mandatory snapping is only safe when every section fits the viewport.
-   * Below ~1000px of height several sections (platform tour, use cases,
-   * integrations, FAQ) are taller than the screen, and a mandatory snap with
-   * scroll-snap-stop: always jumps past their lower half — the CTAs under the
-   * hero were unreachable on a 13" laptop. So: mandatory on tall screens,
-   * proximity (free scrolling, gentle settle near a section top) elsewhere,
-   * none on phones (see the media queries at the end of the snap block).
-   */
-  scroll-snap-type: y proximity;
-  /*
-   * `scroll-behavior: smooth` must not apply to the snap container.
-   *
-   * Chrome cancels a smooth programmatic scroll when the scroller also has
-   * mandatory snapping — the snap re-targets mid-animation and the scroll is
-   * reverted. The effect was that every in-page anchor on the homepage did
-   * nothing: clicking "Features" or "Use Cases" in the header updated the URL
-   * and left the page at the top. Even window.scrollTo() returned to 0.
-   *
-   * Verified in-browser: proximity + smooth is still broken; mandatory + auto
-   * lands exactly on target. So the fix is dropping smooth here, not relaxing
-   * the snap. Wheel scrolling still animates — that is the snap, not this.
-   * Every other route keeps smooth, since none of them snap.
-   */
-  scroll-behavior: auto;
-}
-
 body {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
@@ -1385,185 +1343,35 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================
-   SCROLL SNAPPING
-   ========================================== */
+   HOMEPAGE SECTION RHYTHM
+   ==========================================
 
-#hero {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+   The homepage used to snap to its sections and force each one to fill the
+   screen, content centred. Snapping made wheel and trackpad scrolling jerky
+   (and fought every programmatic scroll: anchors, the logo), and the forced
+   height turned each section's leftover space into gaps between 163 and
+   338px, with the FAQ touching the final call to action. Now: free
+   scrolling, and one vertical rhythm for every section. The hero alone
+   still fills the first screen.
+*/
+:root {
+  --section-y: 72px;
+}
+@media (min-width: 768px) {
+  :root {
+    --section-y: 104px;
+  }
 }
 
-#problem {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#how-it-works {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#live-demo {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#features {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#extraction {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#agents {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#human-in-the-loop {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#platform-overview {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#use-cases {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#integrations {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#pricing {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 80px;
-}
-
-#faq {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
+html:has(#hero) main > section[id]:not(#hero),
 .final-cta-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
 }
 
-/* Scoped to the homepage: a bare `footer` selector made the footer a snap
-   target on every route, including pages with no other snap points. */
-html:has(#hero) footer {
-  scroll-snap-align: start;
-}
-
-/* Tall desktop screens: the full-page snap the homepage was designed for. */
-@media (min-width: 1024px) and (min-height: 1000px) {
-  html:has(#hero) {
-    scroll-snap-type: y mandatory;
-  }
-}
-
-/* Laptop heights: sections may be taller than the viewport, so never force a
-   stop on them — proximity alone settles the scroll when a section top is
-   close, and the visitor can read a tall section to the end. */
-@media (max-height: 999px) {
-  #problem, #how-it-works, #live-demo, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
-    scroll-snap-stop: normal;
-  }
-}
-
-/* Tablet: softer scroll snap */
-@media (max-width: 1023px) {
-  /* Must match the specificity of the html:has(#hero) rule above, otherwise
-     that rule wins and these responsive overrides never apply. */
-  html:has(#hero) {
-    scroll-snap-type: y proximity;
-  }
-
-  #problem, #how-it-works, #live-demo, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
-    scroll-snap-stop: normal;
-  }
-}
-
-/* Disable scroll snap on mobile, remove forced min-height and flex centering */
-@media (max-width: 767px) {
-  html:has(#hero) {
-    scroll-snap-type: none;
-  }
-
-  /* Without snap, anchor jumps land section tops under the fixed header —
-     reserve room for it. */
-  section[id] {
-    scroll-margin-top: 72px;
-  }
-
-  #problem, #how-it-works, #live-demo, #features, #extraction, #agents, #human-in-the-loop, #platform-overview, #use-cases, #integrations, #pricing, #faq, .final-cta-section {
-    min-height: auto;
-    scroll-snap-align: none;
-    scroll-snap-stop: normal;
-    display: block;
-  }
+/* Anchor jumps (the nav's Product, Use cases…) land below the fixed header. */
+html:has(#hero) section[id] {
+  scroll-margin-top: 72px;
 }
 
 /* Hide scrollbar for mobile carousels */

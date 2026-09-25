@@ -53,7 +53,7 @@ export default function HowItWorks() {
         </motion.div>
 
         {/* Workflow Timeline */}
-        <div className="workflow-timeline my-12 md:my-24">
+        <div className="workflow-timeline mt-12 md:mt-16">
           {steps.map((step, i) => (
             <div key={step.title} className="contents">
               {/* Step */}

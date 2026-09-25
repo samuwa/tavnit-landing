@@ -195,11 +195,11 @@ export default function Footer({
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="https://app.tavnit.io"
-                className="inline-flex min-h-10 items-center rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                className="inline-flex h-10 items-center rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] px-5 text-sm font-semibold text-white shadow-[0_6px_18px_-8px_rgba(76,99,246,0.7)] transition-[filter] hover:brightness-[1.06]"
               >
                 {t.start}
               </Link>
-              <Link href={t.demoHref} className="inline-flex min-h-10 items-center rounded-lg border border-tint/15 px-4 text-sm font-semibold text-fg transition-colors hover:border-tint/40">
+              <Link href={t.demoHref} className="inline-flex h-10 items-center rounded-full border border-tint/10 px-5 text-sm font-semibold text-fg-2 transition-colors hover:border-tint/25 hover:text-fg">
                 {t.demo}
               </Link>
             </div>

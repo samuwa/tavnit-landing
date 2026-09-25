@@ -26,25 +26,25 @@ export default function FinalCTA() {
             watch structured data appear — cleaned, reviewed, and ready to act.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
             <Link
               href="https://app.tavnit.io"
               onClick={() => trackEvent("cta_click", { cta: "get_started", location: "final_cta" })}
-              className="hero-cta-primary inline-flex items-center justify-center gap-2 px-7 py-3.5 sm:px-9 sm:py-4 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-xl text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30"
+              className="hero-cta-primary group inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold tracking-[-0.01em] text-white"
             >
               Get Started Free
-              <ArrowRight size={20} />
+              <ArrowRight size={16} strokeWidth={2.25} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </Link>
             <Link
               href="/schedule"
               onClick={() => trackEvent("cta_click", { cta: "book_demo", location: "final_cta" })}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-tint/15 text-fg-3 rounded-xl text-base sm:text-lg font-medium hover:bg-tint/5 hover:text-fg hover:border-tint/30 hover:-translate-y-0.5 transition-all"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-tint/10 bg-bg/60 px-6 text-[15px] font-semibold tracking-[-0.01em] text-fg-2 backdrop-blur transition-colors hover:border-tint/25 hover:text-fg"
             >
               Book a Demo
             </Link>
             <Link
               href="/docs"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-tint/15 text-fg-3 rounded-xl text-base sm:text-lg font-medium hover:bg-tint/5 hover:text-fg hover:border-tint/30 hover:-translate-y-0.5 transition-all"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-tint/10 bg-bg/60 px-6 text-[15px] font-semibold tracking-[-0.01em] text-fg-2 backdrop-blur transition-colors hover:border-tint/25 hover:text-fg"
             >
               View Documentation
             </Link>
