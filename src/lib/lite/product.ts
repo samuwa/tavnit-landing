@@ -88,6 +88,25 @@ export async function readSplit(splitId: string): Promise<SplitRow | null> {
   return rows[0] ?? null;
 }
 
+export interface SweepRow {
+  id: string;
+  status: string;
+  error_message: string | null;
+  output_json: { rows?: Record<string, unknown>[]; columns?: string[] } | null;
+}
+
+/** A Cleaner sweep of the Lite org (the spreadsheet tools). */
+export async function readSweep(sweepId: string): Promise<SweepRow | null> {
+  const { base, key, org } = env();
+  const res = await fetch(
+    `${base}/rest/v1/sweeps?select=id,status,error_message,output_json&id=eq.${encodeURIComponent(sweepId)}&org_id=eq.${encodeURIComponent(org)}&limit=1`,
+    { headers: headers(key), cache: "no-store" },
+  );
+  if (!res.ok) throw new Error(`sweeps read failed (${res.status})`);
+  const rows = (await res.json()) as SweepRow[];
+  return rows[0] ?? null;
+}
+
 /**
  * Downloads one object of the `files` bucket, only ever under the Lite
  * org's prefix (the guard rail: a path outside it is refused before any

@@ -220,3 +220,29 @@ export async function runSplit(params: { splitterId: string; bytes: Uint8Array; 
   if (!body.split_id || typeof body.split_id !== "string") throw new LiteApiError("Split returned no id", 502);
   return { splitId: body.split_id, pages: typeof body.pages_count === "number" ? body.pages_count : 0 };
 }
+
+/**
+ * Cleaner over a spreadsheet: POST /api/sweeps/run with the CSV the landing
+ * built (lib/lite/clean-server.ts). 202 with the sweep id; the result is read
+ * from the product's `sweeps` row, see product.ts.
+ */
+export async function runSweep(params: { cleanerId: string; csv: Uint8Array; filename: string }): Promise<{ sweepId: string }> {
+  const key = apiKey();
+  if (!key) throw new LiteApiError("Lite API key not configured", 503);
+  const form = new FormData();
+  form.append("cleaner_id", params.cleanerId);
+  form.append("source", "api");
+  form.append("file", new Blob([params.csv as BlobPart], { type: "text/csv" }), params.filename);
+  const res = await fetch(`${BASE_URL}/api/sweeps/run`, {
+    method: "POST",
+    headers: { "X-API-Key": key },
+    body: form,
+    cache: "no-store",
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (res.status === 402) throw new LiteApiError("Lite credits exhausted", 503);
+  if (!res.ok) throw new LiteApiError(`Sweep failed (${res.status}): ${(await res.text()).slice(0, 200)}`, 502);
+  const body = (await res.json()) as { sweep_id?: string };
+  if (!body.sweep_id || typeof body.sweep_id !== "string") throw new LiteApiError("Sweep returned no id", 502);
+  return { sweepId: body.sweep_id };
+}

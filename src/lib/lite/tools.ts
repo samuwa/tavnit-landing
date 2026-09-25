@@ -8,6 +8,8 @@ import billOfLadingToExcel from "@/lib/lite/defs/bill-of-lading-to-excel";
 import quoteComparison from "@/lib/lite/defs/quote-comparison";
 import contractDates from "@/lib/lite/defs/contract-dates";
 import receiptToExcel from "@/lib/lite/defs/receipt-to-excel";
+import numberFormat from "@/lib/lite/defs/number-format";
+import dateFormat from "@/lib/lite/defs/date-format";
 
 /**
  * Registry of Tavnit Lite tools.
@@ -34,15 +36,19 @@ export type LiteToolId =
   | "bill-of-lading-to-excel"
   | "quote-comparison"
   | "contract-dates"
-  | "receipt-to-excel";
+  | "receipt-to-excel"
+  | "number-format"
+  | "date-format";
 
 /**
  *  extract — one document through a Flow, out comes a table (Excel).
  *  compare — two or more documents through the same Flow, then a Matcher
  *            pairs their lines (PO vs invoice, quotes side by side).
  *  split   — one bundle through a Splitter, out come the documents inside.
+ *  clean   — a spreadsheet through a Cleaner: the visitor picks columns, a
+ *            fixed Cleaner formats them (lib/lite/clean.ts).
  */
-export type LiteToolKind = "extract" | "compare" | "split";
+export type LiteToolKind = "extract" | "compare" | "split" | "clean";
 
 /** An id per language: the value in code, and the env var that overrides it. */
 export interface LocalizedId {
@@ -107,6 +113,12 @@ export interface LiteTool {
     /** The Splitter in the Lite org (language-neutral: it classifies by description). */
     splitter: { env: string; value: string | null };
   };
+  /** clean tools only */
+  clean?: {
+    mode: "number" | "date";
+    /** One Cleaner per output format, over columns col_1..col_10. */
+    cleaners: Record<string, { env: string; value: string | null }>;
+  };
 }
 
 export const LITE_TOOLS: Record<LiteToolId, LiteTool> = {
@@ -119,6 +131,8 @@ export const LITE_TOOLS: Record<LiteToolId, LiteTool> = {
   "quote-comparison": quoteComparison,
   "contract-dates": contractDates,
   "receipt-to-excel": receiptToExcel,
+  "number-format": numberFormat,
+  "date-format": dateFormat,
 };
 
 export const LITE_TOOL_IDS = Object.keys(LITE_TOOLS) as LiteToolId[];
@@ -156,3 +170,5 @@ export const LITE_LIMITS = {
 } as const;
 
 export const LITE_ACCEPT = "application/pdf,image/png,image/jpeg";
+/** The spreadsheet tools: CSV and .xlsx (legacy .xls is refused with its own message). */
+export const LITE_ACCEPT_SHEET = ".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel";

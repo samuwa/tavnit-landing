@@ -1,0 +1,201 @@
+import type { ToolCopyDef } from "@/lib/lite/copy-base";
+import type { Locale } from "@/lib/locale";
+
+/**
+ * Date format. A spreadsheet in, the chosen date columns out in one format.
+ * Numeric dates are read with the visitor's day/month order; dates written in
+ * words go through the Cleaner's AI conversion, which is the part a formula
+ * cannot do.
+ */
+const dateFormat: Record<Locale, ToolCopyDef> = {
+  es: {
+    vocab: {
+      doc: "hoja de cálculo",
+      docs: "hojas de cálculo",
+      a_doc: "una hoja de cálculo",
+      the_doc: "la hoja de cálculo",
+      the_docs: "las hojas de cálculo",
+      your_doc: "tu hoja de cálculo",
+      your_docs: "tus hojas de cálculo",
+      all_your_docs: "todas tus hojas de cálculo",
+      all_docs: "todas las hojas de cálculo",
+      each_doc: "cada hoja de cálculo",
+      another_doc: "otra hoja de cálculo",
+      this_doc: "esta hoja de cálculo",
+    },
+    overrides: {
+      title: "Cambiar formato de fecha en Excel, gratis",
+      description:
+        "Sube un Excel o CSV con fechas mezcladas (03/04/2024, 12 de marzo de 2024, 2024-03-12) y recíbelas todas en un solo formato. Eliges las columnas y el formato. Gratis, sin registro para ver el resultado.",
+      label: "Formato de fechas",
+      h1: "Pon todas tus fechas en un solo formato",
+      intro:
+        "Sube el Excel o el CSV. Eliges qué columnas son fechas y cómo las quieres: 2024-03-12, 12/03/2024 o 03/12/2024. Tavnit las convierte todas, también las escritas en palabras, y te devuelve tu archivo con las mismas columnas.",
+      trust: ["CSV o Excel · hasta 500 filas", "{limit} archivos gratis al día", "Se borra todo a las 24 h"],
+      drop: {
+        title: "Arrastra tu Excel o CSV aquí",
+        hint: "o elige un archivo de tu computadora",
+        choose: "Elegir archivo",
+        sample: "Probar con un archivo de ejemplo",
+        formats: "CSV o .xlsx · hasta 4 MB y 500 filas",
+      },
+      errors: {
+        unsupported: "Solo aceptamos archivos CSV o Excel (.xlsx).",
+        xls: "Es un Excel antiguo (.xls). Ábrelo en Excel y guárdalo como .xlsx o .csv.",
+        too_many_rows: "La versión gratis procesa hasta 500 filas. Sube una parte del archivo.",
+        too_many_columns: "Elige hasta 10 columnas a la vez.",
+        no_columns: "Elige al menos una columna.",
+        nothing_to_clean: "En esas columnas no encontramos fechas que convertir.",
+        empty: "El archivo está vacío o no tiene filas debajo del encabezado.",
+        unreadable: "No pudimos leer el archivo. Si es un Excel, guárdalo de nuevo como .xlsx.",
+        failed: "No pudimos convertir este archivo. Prueba de nuevo o con el archivo de ejemplo.",
+      },
+      how: {
+        heading: "Cómo funciona",
+        steps: [
+          { title: "Sube el archivo", body: "Un CSV o un Excel, con las fechas como vengan: con barras, guiones, puntos o en palabras." },
+          { title: "Elige columnas y formato", body: "Marcamos las columnas que parecen fechas. Dices si tu archivo pone primero el día o el mes, y cómo las quieres." },
+          { title: "Revisa y descarga", body: "Ves las celdas que cambiaron resaltadas. Con tu cuenta gratis te llevas el archivo en Excel o CSV." },
+        ],
+      },
+      faqs: [
+        { q: "¿Cómo sabe si 03/04/2024 es 3 de abril o 4 de marzo?", a: "No se puede saber mirando una sola fecha. Por eso te preguntamos si tu archivo pone primero el día o el mes, y lo proponemos nosotros si en la columna aparece una fecha como 15/04/2024, que solo se puede leer de una forma." },
+        { q: "¿Entiende fechas escritas en palabras?", a: "Sí. \"12 de marzo de 2024\", \"1 abr 2024\" o \"March 5th 2024\" se leen con IA, que es lo que una fórmula de Excel no puede hacer. Las fechas con números se leen con reglas, sin IA." },
+        { q: "¿Qué formato me conviene?", a: "2024-03-12 (año, mes, día) es el que cualquier sistema lee sin confusión y el que ordena bien. 12/03/2024 es el habitual en Latinoamérica y Europa; 03/12/2024, en Estados Unidos." },
+        { q: "¿Qué pasa con las celdas que no son fechas?", a: "Se quedan como estaban, igual que las celdas vacías. Si una fecha no se puede leer con seguridad, la dejamos como venía en lugar de adivinar." },
+        { q: "¿Y si mi Excel ya tiene las fechas como fecha?", a: "Las reconocemos tal cual, sin reinterpretarlas, y solo les cambiamos el formato." },
+        { q: "¿Qué pasa con mi archivo?", a: "Se usa solo para esta conversión y se borra a las 24 horas, junto con el resultado. Solo tu navegador puede ver el resultado." },
+        { q: "¿Cómo hago que esto pase solo?", a: "En Tavnit, la misma regla es un Cleaner: se aplica sola a cada documento que extraes o a cada archivo que llega por correo o API, junto con números, monedas y validaciones." },
+      ],
+      clean: {
+        setup: {
+          heading: "Elige las columnas y el formato",
+          fileSummary: "{rows} · {cols}",
+          columnsLabel: "Columnas con fechas",
+          columnsHint: "Hasta {max}. Marcamos las que parecen fechas.",
+          tooMany: "Puedes elegir hasta {max} columnas a la vez.",
+          inputLabel: "En tu archivo, las fechas con números ponen primero",
+          inputOptions: { dmy: "el día · 31/12/2024", mdy: "el mes · 12/31/2024" },
+          outputLabel: "Quiero las fechas así",
+          outputOptions: { iso: "2024-03-12 · año, mes, día", dmy: "12/03/2024 · día, mes, año", mdy: "03/12/2024 · mes, día, año" },
+          preview: "Primeras filas",
+          run: "Convertir",
+          change: "Cambiar archivo",
+        },
+        stages: ["Subiendo el archivo", "Leyendo las columnas", "Convirtiendo las fechas", "Leyendo las fechas en palabras", "Armando tu archivo"],
+        heading: "Listo: {file}",
+        summary: "{cells} cambiadas en {cols}",
+        cellWord: ["celda", "celdas"],
+        columnWord: ["columna", "columnas"],
+        unchanged: "No hizo falta cambiar ninguna celda: ya estaban en ese formato.",
+        highlight: "En azul, las celdas que cambiaron.",
+        shown: "Se muestran {shown} de {total} filas. La descarga incluye todas.",
+        downloadXlsx: "Descargar Excel",
+        downloadCsv: "Descargar CSV",
+        another: "Convertir otro archivo",
+        automate: {
+          heading: "Que pase solo, con cada archivo",
+          body: "En Tavnit esta regla es un Cleaner. Lo armas una vez y se aplica solo a cada factura, contrato o archivo que llega, junto con números, monedas y validaciones.",
+          cta: "Crear cuenta gratis",
+          docs: "Qué es un Cleaner",
+        },
+      },
+    },
+  },
+  en: {
+    vocab: {
+      doc: "spreadsheet",
+      docs: "spreadsheets",
+      a_doc: "a spreadsheet",
+      the_doc: "the spreadsheet",
+      the_docs: "the spreadsheets",
+      your_doc: "your spreadsheet",
+      your_docs: "your spreadsheets",
+      all_your_docs: "all your spreadsheets",
+      all_docs: "all spreadsheets",
+      each_doc: "every spreadsheet",
+      another_doc: "another spreadsheet",
+      this_doc: "this spreadsheet",
+    },
+    overrides: {
+      title: "Fix Date Format in Excel or CSV, Free",
+      description:
+        "Upload an Excel or CSV file with mixed dates (03/04/2024, March 12 2024, 2024-03-12) and get them all back in one format. You pick the columns and the format. Free, no sign-up to see the result.",
+      label: "Fix date format",
+      h1: "Put every date in your spreadsheet in one format",
+      intro:
+        "Upload the Excel or CSV file. Pick which columns are dates and how you want them: 2024-03-12, 12/03/2024 or 03/12/2024. Tavnit converts every one, dates written in words included, and hands your file back with the same columns.",
+      trust: ["CSV or Excel · up to 500 rows", "{limit} free files a day", "Everything is deleted after 24 h"],
+      drop: {
+        title: "Drop your Excel or CSV file here",
+        hint: "or choose a file from your computer",
+        choose: "Choose file",
+        sample: "Try a sample file",
+        formats: "CSV or .xlsx · up to 4 MB and 500 rows",
+      },
+      errors: {
+        unsupported: "Only CSV or Excel (.xlsx) files.",
+        xls: "This is an old Excel file (.xls). Open it in Excel and save it as .xlsx or .csv.",
+        too_many_rows: "The free version handles up to 500 rows. Upload part of the file.",
+        too_many_columns: "Pick up to 10 columns at a time.",
+        no_columns: "Pick at least one column.",
+        nothing_to_clean: "We found no dates to convert in those columns.",
+        empty: "The file is empty or has no rows under the header.",
+        unreadable: "We could not read the file. If it is an Excel file, save it again as .xlsx.",
+        failed: "We could not convert this file. Try again, or try the sample file.",
+      },
+      how: {
+        heading: "How it works",
+        steps: [
+          { title: "Upload the file", body: "A CSV or an Excel file, with dates as they come: slashes, dashes, dots or words." },
+          { title: "Pick columns and format", body: "We tick the columns that look like dates. You say whether your file puts the day or the month first, and how you want them." },
+          { title: "Review and download", body: "The cells that changed are highlighted. With your free account you take the file as Excel or CSV." },
+        ],
+      },
+      faqs: [
+        { q: "How do you know whether 03/04/2024 is 3 April or 4 March?", a: "One date on its own cannot tell you. So we ask whether your file puts the day or the month first, and suggest the answer when the column has a date like 15/04/2024 that reads only one way." },
+        { q: "Does it understand dates written in words?", a: "Yes. \"March 5th 2024\", \"12 de marzo de 2024\" or \"1 Apr 2024\" are read with AI, which is what an Excel formula cannot do. Numeric dates are read with rules, no AI." },
+        { q: "Which format should I pick?", a: "2024-03-12 (year, month, day) is the one every system reads without confusion and the one that sorts correctly. 03/12/2024 is the US habit; 12/03/2024 is usual in Europe and Latin America." },
+        { q: "What happens to cells that are not dates?", a: "They stay as they were, like empty cells. When a date cannot be read with confidence we leave it as it came rather than guess." },
+        { q: "What if my Excel file already stores them as dates?", a: "We take them as they are, without re-reading them, and only change the format." },
+        { q: "What happens to my file?", a: "It is used only for this conversion and deleted after 24 hours along with the result. Only your browser can see the result." },
+        { q: "How do I make this happen on its own?", a: "In Tavnit the same rule is a Cleaner: it runs by itself on every document you extract or every file that arrives by email or API, alongside numbers, currencies and checks." },
+      ],
+      clean: {
+        setup: {
+          heading: "Pick the columns and the format",
+          fileSummary: "{rows} · {cols}",
+          columnsLabel: "Columns with dates",
+          columnsHint: "Up to {max}. We ticked the ones that look like dates.",
+          tooMany: "You can pick up to {max} columns at a time.",
+          inputLabel: "In your file, numeric dates put first",
+          inputOptions: { dmy: "the day · 31/12/2024", mdy: "the month · 12/31/2024" },
+          outputLabel: "I want the dates as",
+          outputOptions: { iso: "2024-03-12 · year, month, day", dmy: "12/03/2024 · day, month, year", mdy: "03/12/2024 · month, day, year" },
+          preview: "First rows",
+          run: "Convert",
+          change: "Change file",
+        },
+        stages: ["Uploading the file", "Reading the columns", "Converting the dates", "Reading dates written in words", "Building your file"],
+        heading: "Done: {file}",
+        summary: "{cells} changed in {cols}",
+        cellWord: ["cell", "cells"],
+        columnWord: ["column", "columns"],
+        unchanged: "No cell needed changing: they were already in that format.",
+        highlight: "The cells that changed are in blue.",
+        shown: "Showing {shown} of {total} rows. The download has all of them.",
+        downloadXlsx: "Download Excel",
+        downloadCsv: "Download CSV",
+        another: "Convert another file",
+        automate: {
+          heading: "Make it happen with every file",
+          body: "In Tavnit this rule is a Cleaner. You set it up once and it runs by itself on every invoice, contract or file that comes in, alongside numbers, currencies and checks.",
+          cta: "Create a free account",
+          docs: "What is a Cleaner",
+        },
+      },
+    },
+  },
+};
+
+export default dateFormat;

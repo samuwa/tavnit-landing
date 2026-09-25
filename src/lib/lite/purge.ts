@@ -50,7 +50,7 @@ interface Candidate {
   run_id: string;
   status: string;
   source: "lite" | "orphan";
-  kind: "run" | "split" | "match";
+  kind: "run" | "split" | "match" | "sweep";
 }
 
 /** Storage objects under <org>/<run>/ in one bucket (recursive: the API
@@ -103,7 +103,7 @@ async function markPurged(base: string, key: string, runId: string): Promise<voi
   const res = await fetch(`${base}/rest/v1/lite_runs?run_id=eq.${encodeURIComponent(runId)}`, {
     method: "PATCH",
     headers: { ...headers(key), Prefer: "return=minimal" },
-    body: JSON.stringify({ purged_at: new Date().toISOString(), filename: null }),
+    body: JSON.stringify({ purged_at: new Date().toISOString(), filename: null, meta: null }),
     cache: "no-store",
   });
   if (!res.ok) throw new Error(`lite_runs mark ${runId} failed (${res.status})`);
@@ -123,7 +123,7 @@ async function candidates(base: string, key: string, org: string, cutoffIso: str
     run_id: r.run_id,
     status: r.status,
     source: "lite" as const,
-    kind: (r.kind === "split" || r.kind === "match" ? r.kind : "run") as Candidate["kind"],
+    kind: (r.kind === "split" || r.kind === "match" || r.kind === "sweep" ? r.kind : "run") as Candidate["kind"],
   }));
 
   const orphans = await fetch(
@@ -163,11 +163,13 @@ export async function purgeExpiredRuns(opts: { maxAgeHours?: number; limit?: num
       if (c.kind !== "run") {
         // A Splitter job: its segments under <org>/splits/<id>/ and the row.
         // A Matcher job: only a row (its inputs are runs, purged on their own).
-        const table = c.kind === "split" ? "splits" : "matches";
+        // A Cleaner sweep (spreadsheet tools): the row, whose input_json and
+        // output_json hold the visitor's cells; lite_runs.meta goes with it.
+        const table = c.kind === "split" ? "splits" : c.kind === "sweep" ? "sweeps" : "matches";
         const live = await fetch(`${base}/rest/v1/${table}?select=status&id=eq.${encodeURIComponent(c.run_id)}&org_id=eq.${encodeURIComponent(org)}&limit=1`, { headers: headers(key), cache: "no-store" });
         const rows = live.ok ? ((await live.json()) as { status: string }[]) : [];
         const status = rows[0]?.status;
-        const done = c.kind === "split" ? ["completed", "failed"] : FINISHED;
+        const done = c.kind === "split" || c.kind === "sweep" ? ["completed", "failed"] : FINISHED;
         if (status && !done.includes(status)) {
           report.skippedRunning++;
           continue;

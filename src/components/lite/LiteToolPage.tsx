@@ -4,8 +4,9 @@ import LiteShell from "@/components/lite/LiteShell";
 import LiteTool from "@/components/lite/LiteTool";
 import LiteCompare from "@/components/lite/LiteCompare";
 import LiteSplit from "@/components/lite/LiteSplit";
+import LiteClean from "@/components/lite/LiteClean";
 import LiteFaq from "@/components/lite/LiteFaq";
-import { Download, Files, GitCompareArrows, ScanSearch, ScanText, Scissors, Upload, type LucideIcon } from "lucide-react";
+import { Download, Files, GitCompareArrows, ListChecks, ScanSearch, ScanText, Scissors, Upload, type LucideIcon } from "lucide-react";
 import type { LiteToolKind } from "@/lib/lite/tools";
 
 /** One icon per "how it works" step: put in, Tavnit reads, take out. */
@@ -13,6 +14,7 @@ const HOW_ICONS: Record<LiteToolKind, LucideIcon[]> = {
   extract: [Upload, ScanText, Download],
   compare: [Files, ScanText, GitCompareArrows],
   split: [Upload, ScanSearch, Scissors],
+  clean: [Upload, ListChecks, Download],
 };
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
@@ -134,6 +136,16 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
             sampleNames={(tool.samplePaths ?? []).map((p) => p.split("/").pop() ?? p)}
             columns={tool.columnOrder[locale]}
             lineFields={tool.lineFields[locale]}
+          />
+        ) : tool.kind === "clean" && tool.clean ? (
+          <LiteClean
+            toolId={toolId}
+            locale={locale}
+            copy={copy}
+            mode={tool.clean.mode}
+            outputs={Object.keys(tool.clean.cleaners)}
+            turnstileSiteKey={turnstileSiteKey}
+            hasSample={Boolean(tool.samplePaths?.length)}
           />
         ) : tool.kind === "split" ? (
           <LiteSplit

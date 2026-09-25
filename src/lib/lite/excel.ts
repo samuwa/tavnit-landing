@@ -58,7 +58,8 @@ function cellXml(ref: string, value: unknown, style?: number): string {
   else text = JSON.stringify(value);
   // A leading formula marker would otherwise be evaluated by some viewers
   // (OWASP CSV/formula injection: = + - @ and a leading tab or CR).
-  if (/^[=+\-@\t\r]/.test(text)) text = `'${text}`;
+  // A signed number written as text ("-15,00", "+1.234,50") is a value, not a formula.
+  if (/^[=+\-@\t\r]/.test(text) && !/^[-+]?\d[\d.,\s]*$/.test(text)) text = `'${text}`;
   text = text.slice(0, 32000);
   return `<c r="${ref}"${st} t="inlineStr"><is><t xml:space="preserve">${esc(text)}</t></is></c>`;
 }

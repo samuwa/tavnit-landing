@@ -120,6 +120,30 @@ El botón "Probar con … de ejemplo" no corre nada: el mismo documento da siemp
 
 Volver a grabar cuando cambie un Flow, Matcher o Splitter detrás de un ejemplo (o su PDF en `public/lite/`).
 
+## Hojas de cálculo: números y fechas (kind `clean`)
+
+Dos herramientas sobre un Excel o CSV, no sobre un documento: **Comas y puntos en números** (`/tools/fix-number-format-excel`, `/es/herramientas/convertir-comas-a-puntos-excel`) y **Formato de fechas** (`/tools/fix-date-format-excel`, `/es/herramientas/cambiar-formato-de-fecha-excel`). Cada una corre un Cleaner fijo de la org Lite por `POST /api/sweeps/run`.
+
+Cómo encaja cualquier archivo con un Cleaner fijo (opción A): los 6 Cleaners tienen 10 columnas genéricas `col_1..col_10` en modo replace. El visitante elige hasta 10 columnas (marcamos las que parecen números o fechas), el landing las renombra a `col_n`, manda **solo esas columnas** y al volver rearma su archivo completo desde `lite_runs.meta` (encabezado, filas originales, qué celdas se mandaron).
+
+Lo que hace el landing antes del Cleaner (`src/lib/lite/clean.ts`), verificado en el código de Flask:
+- El parser de números del motor borra las comas (`1.234,56` → 1.23456), así que el landing normaliza con el separador decimal que elige el visitante y manda `1234.56`.
+- El parser de fechas sin formato solo lee ISO, así que las fechas con números van a ISO con el orden día/mes elegido; las escritas en palabras van tal cual y las lee la conversión con IA del Cleaner (`aiConversion`).
+- El sweep falla (PGRST102) si hay celdas vacías o textos que pandas lee como NaN (`N/A`, `null`…): esas celdas van con un relleno (`0` / `1970-01-01`) y al rearmar se deja el valor original.
+- El resultado del sweep trae solo las columnas del Cleaner; se une por orden de fila.
+- Costo: 1 crédito por 500 celdas no vacías enviadas (máx. 500 filas × 10 = 10 créditos).
+
+Rutas: `POST /api/lite/clean/preview` (lee el archivo, sugiere columnas y separador; no guarda ni cuenta cupo), `POST /api/lite/clean` (Turnstile, cupo atómico `kind = sweep`, sweep, `meta`), `GET /api/lite/clean/:id`, `GET /api/lite/clean/:id/download?fmt=csv` (con cuenta). La purga borra la fila `sweeps` y limpia `meta` a las 24 h. Migración `20260925150000_lite_sweeps.sql` (aplicada).
+
+| Cleaner | id |
+|---|---|
+| Números 1234.56 (`plain`) | `ae6142e5-d82b-4770-9f73-42ded6129b5f` |
+| Números 1,234.56 (`us`) | `665e70df-f246-43b7-8315-1eefcfeca5d4` |
+| Números 1.234,56 (`latam`) | `83042443-e913-4b2d-baac-25eddf25231b` |
+| Fechas yyyy-MM-dd (`iso`) | `e4a0006f-ed7d-4bd8-b831-8ebaa4f6e8fc` |
+| Fechas dd/MM/yyyy (`dmy`) | `85f5fb7c-c4e5-4d35-8def-18f86b670be0` |
+| Fechas MM/dd/yyyy (`mdy`) | `f77f582b-96ae-4fe6-9f45-928808ccd2f9` |
+
 ## Recursos en la org Lite (2026-09-24)
 
 Los ids viven en `src/lib/lite/defs/<tool>.ts` (no son secretos); la variable de entorno del mismo nombre los sobreescribe por ambiente. Todos creados por PostgREST con la misma forma que los crea la app.

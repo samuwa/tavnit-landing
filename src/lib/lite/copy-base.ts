@@ -188,6 +188,46 @@ export interface ToolCopy {
   compare?: CompareCopy;
   /** split tools only */
   split?: SplitCopy;
+  /** spreadsheet tools only */
+  clean?: CleanCopy;
+}
+
+/** Text of a spreadsheet tool (number format, date format). */
+export interface CleanCopy {
+  /** Step 2, once the file is read: pick columns and formats. */
+  setup: {
+    heading: string;
+    /** "{rows} rows · {cols} columns" */
+    fileSummary: string;
+    columnsLabel: string;
+    /** "Pick up to {max}. We ticked the ones that look like {what}." */
+    columnsHint: string;
+    tooMany: string;
+    inputLabel: string;
+    /** keyed by input option: comma/dot or dmy/mdy */
+    inputOptions: Record<string, string>;
+    outputLabel: string;
+    /** keyed by output option */
+    outputOptions: Record<string, string>;
+    preview: string;
+    run: string;
+    change: string;
+  };
+  stages: string[];
+  heading: string;
+  /** "{cells} changed in {cols}" */
+  summary: string;
+  cellWord: [string, string];
+  columnWord: [string, string];
+  unchanged: string;
+  highlight: string;
+  /** "Showing {shown} of {total} rows. The download has all of them." */
+  shown: string;
+  downloadXlsx: string;
+  downloadCsv: string;
+  another: string;
+  /** Under the result: the product pitch. */
+  automate: { heading: string; body: string; cta: string; docs: string };
 }
 
 /** Text of a compare tool (PO vs invoice, quotes side by side). */
@@ -253,7 +293,7 @@ export interface HubCopy {
   breadcrumbHome: string;
   breadcrumbHub: string;
   /** Section titles of the grid, by tool kind. */
-  groups: { extract: string; compare: string; split: string };
+  groups: { extract: string; compare: string; split: string; clean: string };
   /** Under the grid: the line that sends people to the product. */
   outro: string;
   outroCta: string;

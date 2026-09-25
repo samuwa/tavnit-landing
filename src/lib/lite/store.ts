@@ -45,11 +45,13 @@ export interface LiteRunRow {
   created_at: string;
   finished_at: string | null;
   purged_at: string | null;
-  /** run | split | match — see the 20260924160000 migration. */
+  /** run | split | match | sweep — see the 20260924160000 and 20260925150000 migrations. */
   kind: LiteRunKind;
+  /** Spreadsheet tools only: what rebuilds the visitor's file (lib/lite/clean-server.ts). Cleared by the purge. */
+  meta?: unknown;
 }
 
-export type LiteRunKind = "run" | "split" | "match";
+export type LiteRunKind = "run" | "split" | "match" | "sweep";
 
 function startOfUtcDay(): string {
   const d = new Date();
@@ -228,9 +230,23 @@ export async function getRunForSession(
   return rows[0] ?? null;
 }
 
+/** Stores what rebuilds a spreadsheet tool's file. Unlike updateRun it throws: without it the result can't be read. */
+export async function setRunMeta(runId: string, meta: unknown, rowCount: number): Promise<void> {
+  const h = headers();
+  const b = base();
+  if (!h || !b) throw new Error("Store not configured");
+  const res = await fetch(`${b}/rest/v1/lite_runs?run_id=eq.${encodeURIComponent(runId)}`, {
+    method: "PATCH",
+    headers: { ...h, Prefer: "return=minimal" },
+    body: JSON.stringify({ meta, row_count: rowCount }),
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`lite_runs meta failed (${res.status})`);
+}
+
 export async function updateRun(
   runId: string,
-  patch: Partial<Pick<LiteRunRow, "status" | "row_count" | "finished_at" | "user_id" | "user_email" | "downloaded_at" | "pages">>,
+  patch: Partial<Pick<LiteRunRow, "status" | "row_count" | "finished_at" | "user_id" | "user_email" | "downloaded_at" | "pages" | "meta">>,
 ): Promise<void> {
   const h = headers();
   const b = base();

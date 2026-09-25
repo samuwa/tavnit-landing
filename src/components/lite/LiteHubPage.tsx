@@ -20,6 +20,7 @@ const TILE: Record<LiteToolKind, string> = {
   extract: "bg-[var(--lite-blue-soft)] text-[var(--lite-blue)] group-hover:bg-[var(--lite-blue)] group-hover:text-white",
   compare: "bg-[var(--lite-violet-soft)] text-[var(--lite-violet)] group-hover:bg-[var(--lite-violet)] group-hover:text-white",
   split: "bg-[#eef1f4] text-[var(--lite-ink)] group-hover:bg-[var(--lite-ink)] group-hover:text-white",
+  clean: "bg-[#fdf3e3] text-[#a4580b] group-hover:bg-[#a4580b] group-hover:text-white",
 };
 
 export function liteHubMetadata(locale: Locale): Metadata {

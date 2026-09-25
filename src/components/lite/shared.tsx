@@ -249,6 +249,7 @@ export function DropZone({
   compact = false,
   fileName,
   disabled = false,
+  accept = LITE_ACCEPT,
 }: {
   id: string;
   copy: ToolCopy["drop"];
@@ -260,6 +261,8 @@ export function DropZone({
   /** When a file is already chosen for this slot. */
   fileName?: string | null;
   disabled?: boolean;
+  /** File types the picker offers (documents by default, spreadsheets for the clean tools). */
+  accept?: string;
 }) {
   const [dragging, setDragging] = useState(false);
   return (
@@ -298,7 +301,7 @@ export function DropZone({
         </span>
         {!compact && <span className="mt-4 text-xs text-[var(--lite-muted)]">{copy.formats}</span>}
       </label>
-      <input id={id} type="file" accept={LITE_ACCEPT} className="sr-only" disabled={disabled} onChange={(e) => onFiles(e.target.files)} />
+      <input id={id} type="file" accept={accept} className="sr-only" disabled={disabled} onChange={(e) => onFiles(e.target.files)} />
     </div>
   );
 }

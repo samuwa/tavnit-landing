@@ -10,6 +10,8 @@ import billOfLadingToExcel from "@/lib/lite/copy/bill-of-lading-to-excel";
 import quoteComparison from "@/lib/lite/copy/quote-comparison";
 import contractDates from "@/lib/lite/copy/contract-dates";
 import receiptToExcel from "@/lib/lite/copy/receipt-to-excel";
+import numberFormat from "@/lib/lite/copy/number-format";
+import dateFormat from "@/lib/lite/copy/date-format";
 
 /**
  * Copy for the free tools. The base (copy-base.ts) is one complete tool
@@ -30,6 +32,8 @@ const DEFS: Record<LiteToolId, Record<Locale, ToolCopyDef>> = {
   "quote-comparison": quoteComparison,
   "contract-dates": contractDates,
   "receipt-to-excel": receiptToExcel,
+  "number-format": numberFormat,
+  "date-format": dateFormat,
 };
 
 export const TOOL_COPY: Record<LiteToolId, Record<Locale, ToolCopy>> = Object.fromEntries(
@@ -49,7 +53,7 @@ export const HUB_COPY: Record<Locale, HubCopy> = {
       "Cada herramienta hace una sola cosa con un documento y te muestra el resultado real. Son el mismo motor que usan las empresas que automatizan sus documentos con Tavnit, en versión de una a la vez.",
     breadcrumbHome: "Inicio",
     breadcrumbHub: "Herramientas",
-    groups: { extract: "De documento a Excel", compare: "Comparar documentos", split: "Organizar escaneos" },
+    groups: { extract: "De documento a Excel", compare: "Comparar documentos", split: "Organizar escaneos", clean: "Limpiar hojas de cálculo" },
     outro: "Todas funcionan con el mismo motor que usan las empresas que automatizan sus documentos con Tavnit. Cuando quieras que pase solo, con todos tus documentos, está tu cuenta.",
     outroCta: "Crear cuenta gratis",
   },
@@ -62,7 +66,7 @@ export const HUB_COPY: Record<Locale, HubCopy> = {
       "Each tool does one thing to one document and shows you the real result. They run on the same engine companies use to automate their documents with Tavnit, one at a time.",
     breadcrumbHome: "Home",
     breadcrumbHub: "Tools",
-    groups: { extract: "Document to Excel", compare: "Compare documents", split: "Organise scans" },
+    groups: { extract: "Document to Excel", compare: "Compare documents", split: "Organise scans", clean: "Clean spreadsheets" },
     outro: "All of them run on the same engine companies use to automate their documents with Tavnit. When you want it to happen on its own, for all your documents, there is your account.",
     outroCta: "Create a free account",
   },
@@ -81,7 +85,7 @@ export interface ShellCopy {
   signin: string;
   /** The tools menu. */
   allTools: string;
-  groups: { extract: string; compare: string; split: string };
+  groups: { extract: string; compare: string; split: string; clean: string };
   /** The account menu, once signed in. */
   account: { signedInAs: string; open: string; openHint: string; signOut: string; menu: string };
   /** The sign-in dialog opened from the header. */
@@ -108,7 +112,7 @@ export const SHELL_COPY: Record<Locale, ShellCopy> = {
     demoHref: "/es/agendar",
     signin: "Iniciar sesión",
     allTools: "Ver todas las herramientas",
-    groups: { extract: "De documento a Excel", compare: "Comparar documentos", split: "Organizar escaneos" },
+    groups: { extract: "De documento a Excel", compare: "Comparar documentos", split: "Organizar escaneos", clean: "Limpiar hojas de cálculo" },
     account: {
       signedInAs: "Conectado como",
       open: "Ir a Tavnit",
@@ -142,7 +146,7 @@ export const SHELL_COPY: Record<Locale, ShellCopy> = {
     demoHref: "/schedule",
     signin: "Sign in",
     allTools: "See all tools",
-    groups: { extract: "Document to Excel", compare: "Compare documents", split: "Organise scans" },
+    groups: { extract: "Document to Excel", compare: "Compare documents", split: "Organise scans", clean: "Clean spreadsheets" },
     account: {
       signedInAs: "Signed in as",
       open: "Go to Tavnit",
