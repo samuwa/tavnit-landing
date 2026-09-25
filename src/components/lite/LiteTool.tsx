@@ -687,7 +687,7 @@ export default function LiteTool({
             <table className="min-w-full border-collapse text-left text-sm">
               <thead className="sticky top-0 z-20">
                 <tr className="bg-[var(--lite-blue-soft)] text-center text-[11px] font-semibold text-[var(--lite-blue)]">
-                  <th scope="col" className="sticky left-0 z-30 w-10 border-b border-r border-[var(--lite-line)] bg-[var(--lite-blue-soft)] py-1.5" aria-label="#" />
+                  <th scope="col" className="sticky left-0 z-30 w-px border-b border-r border-[var(--lite-line)] bg-[var(--lite-blue-soft)] px-2 py-1.5" aria-label="#" />
                   {columns.map((c, i) => (
                     <th
                       key={c}
@@ -702,7 +702,7 @@ export default function LiteTool({
                   </th>
                 </tr>
                 <tr className="bg-[#f3f6f4]">
-                  <th scope="col" className="sticky left-0 z-30 border-b border-r border-[var(--lite-line)] bg-[#f3f6f4]" />
+                  <th scope="col" className="sticky left-0 z-30 w-px border-b border-r border-[var(--lite-line)] bg-[#f3f6f4] px-2" />
                   {columns.map((c) => (
                     <th
                       key={c}
@@ -741,7 +741,7 @@ export default function LiteTool({
               <tbody>
                 {rows.map((r, ri) => (
                   <tr key={ri} className="lite-row group" style={{ animationDelay: `${Math.min(ri, 30) * 28}ms` }}>
-                    <td className="sticky left-0 z-10 border-b border-r border-[var(--lite-rule)] bg-[#f6f8f6] py-2 text-center text-xs text-[var(--lite-muted)]">
+                    <td className="sticky left-0 z-10 border-b border-r border-[var(--lite-rule)] bg-[#f6f8f6] px-2 py-2 text-right text-xs tabular-nums text-[var(--lite-muted)]">
                       {ri + 1}
                     </td>
                     {columns.map((c) => {
@@ -766,7 +766,7 @@ export default function LiteTool({
               {hasSums && (
                 <tfoot className="sticky bottom-0 z-20">
                   <tr className="bg-[#f3f6f4] font-semibold">
-                    <td className="sticky left-0 z-30 border-r border-t border-[var(--lite-line)] bg-[#f3f6f4] py-2 text-center text-[10px] text-[var(--lite-muted)]">
+                    <td className="sticky left-0 z-30 border-r border-t border-[var(--lite-line)] bg-[#f3f6f4] px-2 py-2 text-right text-[10px] text-[var(--lite-muted)]">
                       Σ
                     </td>
                     {columns.map((c, ci) => (

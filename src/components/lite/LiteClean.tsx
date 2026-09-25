@@ -404,7 +404,7 @@ export default function LiteClean({
             <table className="min-w-full border-collapse text-sm">
               <thead className="sticky top-0 z-20 bg-[#f6f8fb]">
                 <tr>
-                  <th scope="col" aria-label="#" className="sticky left-0 z-30 w-10 min-w-10 border-b border-r border-[var(--lite-line)] bg-[#f6f8fb] px-2 py-2 text-right text-xs font-medium text-[var(--lite-muted)]" />
+                  <th scope="col" aria-label="#" className="sticky left-0 z-30 w-px border-b border-r border-[var(--lite-line)] bg-[#f6f8fb] px-2 py-2 text-right text-xs font-medium text-[var(--lite-muted)]" />
                   {columns.map((c, i) => (
                     <th
                       key={c}
