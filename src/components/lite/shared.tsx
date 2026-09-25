@@ -152,9 +152,13 @@ export function useTurnstile(siteKey: string | null, locale: Locale) {
     try {
       widgetId.current = window.turnstile.render(node.current, {
         sitekey: siteKey,
-        size: "flexible",
+        size: "normal",
         theme: "light",
         language: locale,
+        // Managed mode still draws a "Verifying… Success" box on every
+        // visit. interaction-only keeps it hidden and only shows it when
+        // Cloudflare actually needs the visitor to click.
+        appearance: "interaction-only",
       });
     } catch {
       widgetId.current = null;

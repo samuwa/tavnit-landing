@@ -503,8 +503,9 @@ export default function LiteTool({
         ) : (
           <span />
         )}
-        {turnstileSiteKey && <div ref={turnstile.el} />}
       </div>
+      {/* Turnstile: invisible unless Cloudflare needs a click, then shown here, centred under the tool. */}
+      {turnstileSiteKey && <div ref={turnstile.el} className="flex justify-center empty:hidden [&:has(iframe)]:mt-3" />}
     </div>
   );
 

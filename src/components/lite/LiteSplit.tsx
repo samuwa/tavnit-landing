@@ -273,8 +273,9 @@ export default function LiteSplit({
               <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" />
               <div className="mt-3 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
                 {hasSample ? <SampleButton label={copy.drop.sample} onClick={() => void start(null, true)} className="w-full sm:w-auto" /> : <span />}
-                {turnstileSiteKey && <div ref={turnstile.el} />}
               </div>
+              {/* Turnstile: invisible unless Cloudflare needs a click, then shown here, centred under the tool. */}
+              {turnstileSiteKey && <div ref={turnstile.el} className="flex justify-center empty:hidden [&:has(iframe)]:mt-3" />}
             </div>
           )}
         </div>

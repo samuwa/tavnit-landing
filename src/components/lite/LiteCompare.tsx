@@ -392,12 +392,13 @@ export default function LiteCompare({
               <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" />
               <div className="mt-3 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
                 {sampleNames.length >= minDocs ? <SampleButton label={cmp.sampleAll} onClick={() => void start(true)} className="w-full sm:w-auto" /> : <span />}
-                {turnstileSiteKey && <div ref={turnstile.el} />}
                 <button type="button" onClick={() => void start(false)} disabled={!canRun} className={`${BTN_INK} w-full sm:w-auto`}>
                   <GitCompareArrows size={16} aria-hidden />
                   {cmp.run}
                 </button>
               </div>
+              {/* Turnstile: invisible unless Cloudflare needs a click, then shown here, centred under the tool. */}
+              {turnstileSiteKey && <div ref={turnstile.el} className="flex justify-center empty:hidden [&:has(iframe)]:mt-3" />}
               <p className="mt-3 text-center text-xs text-[var(--lite-muted)] sm:text-left">{copy.drop.formats}</p>
             </div>
           )}
