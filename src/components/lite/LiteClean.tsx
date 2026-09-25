@@ -8,6 +8,7 @@ import { LITE_ACCEPT_SHEET, type LiteToolId } from "@/lib/lite/tools";
 import type { Locale } from "@/lib/locale";
 import { CLEAN_SLOTS, POPULAR_OUTPUTS, SOURCE_CURRENCIES, type CleanMode } from "@/lib/lite/clean";
 import AuthModal from "@/components/lite/AuthModal";
+import { useMarkUsed } from "@/components/lite/intent";
 import {
   BTN_DOWNLOAD,
   BTN_INK,
@@ -286,6 +287,8 @@ export default function LiteClean({
   useEffect(() => {
     if (phase.kind === "done") resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [phase.kind]);
+  // Tells the product this tool was used (lib/lite/intent), once per result.
+  useMarkUsed(phase.kind === "done", phase.kind === "done" ? phase.sweepId : null);
 
   const reset = () => {
     abort.current?.abort();

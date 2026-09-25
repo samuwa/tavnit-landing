@@ -7,6 +7,7 @@ import type { LiteToolId } from "@/lib/lite/tools";
 import type { Locale } from "@/lib/locale";
 import type { SegmentView } from "@/lib/lite/split-view";
 import AuthModal from "@/components/lite/AuthModal";
+import { useMarkUsed } from "@/components/lite/intent";
 import WhatNext from "@/components/lite/WhatNext";
 import {
   BTN_DOWNLOAD,
@@ -239,6 +240,8 @@ export default function LiteSplit({
   useEffect(() => {
     if (phase.kind === "done") resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [phase.kind]);
+  // Tells the product this tool was used (lib/lite/intent), once per result.
+  useMarkUsed(phase.kind === "done", phase.kind === "done" ? phase.splitId : null);
 
   const reset = () => {
     abort.current?.abort();

@@ -19,8 +19,8 @@ import {
 } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { Locale } from "@/lib/locale";
-import { APP_URL } from "@/lib/site";
 import { useLiteSession } from "@/components/lite/session";
+import { TavnitLink } from "@/components/lite/intent";
 import Scene from "@/components/lite/Scene";
 import { FlowScene, SCENES, type FlowExtra } from "@/components/lite/scenes";
 import { INPUT_SCENES } from "@/components/lite/scenes-in";
@@ -37,6 +37,10 @@ import { LogoMark } from "@/components/lite/LogoMark";
  * Below the sm breakpoint the SVG would be too small to read, so a vertical
  * version with the same items takes over.
  */
+
+/** What each scene shows, as recorded on the click through to Tavnit. */
+const OUTPUT_FEATURES = ["email-out", "webhook", "review", "matcher", "cleaner", "agent", "bucket"];
+const INPUT_FEATURES = ["input:email", "input:upload", "input:api", "input:nocode", "input:splitter"];
 
 const ICONS = [Mail, Plug, UserCheck, GitCompareArrows, ShieldCheck, Bot, MessageSquareText];
 
@@ -545,6 +549,7 @@ export default function WhatNext({
         <Scene
           Stage={SCENES[active % SCENES.length]}
           item={copy.items[active]}
+          feature={OUTPUT_FEATURES[active]}
           copy={copy}
           playKey={playKey}
           onReplay={() => setPlayKey((k) => k + 1)}
@@ -552,13 +557,14 @@ export default function WhatNext({
       )}
       {activeFlow && (
         <div ref={flowSceneRef} className="scroll-my-24">
-          <Scene Stage={FlowScene} item={flowItem} copy={copy} playKey={playKey} onReplay={() => setPlayKey((k) => k + 1)} flow={flowExtra} />
+          <Scene Stage={FlowScene} item={flowItem} copy={copy} playKey={playKey} onReplay={() => setPlayKey((k) => k + 1)} flow={flowExtra} feature="flow" />
         </div>
       )}
       {activeInput !== null && (
         <Scene
           Stage={INPUT_SCENES[activeInput % INPUT_SCENES.length]}
           item={copy.inputs.items[activeInput]}
+          feature={INPUT_FEATURES[activeInput]}
           copy={copy}
           playKey={playKey}
           onReplay={() => setPlayKey((k) => k + 1)}
@@ -581,12 +587,12 @@ export default function WhatNext({
       )}
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <Link
-          href={APP_URL}
+        <TavnitLink
+          feature={activeFlow ? "flow" : active !== null ? OUTPUT_FEATURES[active] : activeInput !== null ? INPUT_FEATURES[activeInput] : "flow"}
           className="lite-brand lite-press inline-flex min-h-12 items-center justify-center rounded-lg px-6 font-semibold text-white shadow-md shadow-[#3b82f6]/25 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
         >
           {email ? copy.primarySignedIn : copy.primary}
-        </Link>
+        </TavnitLink>
         <Link
           href={demoHref}
           className="lite-press inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--lite-line)] bg-[var(--lite-white)] px-6 font-semibold transition-colors hover:border-[var(--lite-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"

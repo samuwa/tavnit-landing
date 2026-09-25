@@ -6,6 +6,7 @@ import LiteCompare from "@/components/lite/LiteCompare";
 import LiteSplit from "@/components/lite/LiteSplit";
 import LiteClean from "@/components/lite/LiteClean";
 import LiteFaq from "@/components/lite/LiteFaq";
+import { LiteIntentProvider } from "@/components/lite/intent";
 import { Download, Files, GitCompareArrows, ListChecks, ScanSearch, ScanText, Scissors, Upload, type LucideIcon } from "lucide-react";
 import type { LiteToolKind } from "@/lib/lite/tools";
 
@@ -125,6 +126,7 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
           <span>{copy.label}</span>
         </nav>
 
+        <LiteIntentProvider tool={toolId} locale={locale}>
         {tool.kind === "compare" && tool.compare ? (
           <LiteCompare
             toolId={toolId}
@@ -166,6 +168,7 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
             sampleUrl={tool.samplePaths?.[0] ? `/${tool.samplePaths[0]}` : undefined}
           />
         )}
+        </LiteIntentProvider>
 
         <section aria-labelledby="lite-how-heading" className="mt-28">
           <h2 id="lite-how-heading" className="lite-display text-3xl sm:text-4xl">

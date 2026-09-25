@@ -187,3 +187,11 @@ Limpieza: `purgeExpiredRuns` borra también las filas `splits` (y sus objetos en
 - `node --conditions=react-server --import tsx scripts/lite-check.mts` — Excel, normalización de filas y validación de subidas.
 - Con el servidor local, la página funciona sin backend (muestra "no disponible"); el flujo completo necesita la key y el flow de la org Lite.
 - El lead de cada descarga queda en `lite_runs` (`user_id`, `user_email`, `downloaded_at`); pendiente pasarlo al CRM del admin con origen "lite".
+
+## De Lite a Tavnit (handoff)
+
+Lo que un visitante prueba en Lite llega a su cuenta en la app. Sin Flask: tablas en Supabase, el landing escribe, la app lee.
+
+- `lite_intents` (migración `20260925180000_lite_intents.sql`): una fila por señal — `used` (obtuvo un resultado con una herramienta) o `cta` (tocó un botón hacia Tavnit, con `feature`: `flow`, `webhook`, `email-out`, `review`, `matcher`, `cleaner`, `agent`, `bucket`, `input:*`). `payload` lleva, por ejemplo, las columnas que quitó. Solo el servidor del landing escribe (service role); RLS deja a cada usuario leer solo sus filas.
+- `lite_handoffs` + `claim_lite_handoff(token)`: cada botón hacia Tavnit (`TavnitLink`, `src/components/lite/intent.tsx`) pasa por `POST /api/lite/intent` con `handoff: true`, que crea un token aleatorio de un solo uso y abre `app.tavnit.io/?lite=<token>`. La app lo guarda en localStorage, y al iniciar sesión llama a la función (SECURITY DEFINER), que une las filas de esa sesión de Lite al usuario que llama y a nadie más; el token vence a los 7 días y se canjea una vez. Si el visitante ya había iniciado sesión en Lite, las filas nacen con su `user_id`.
+- En la app (tavnit-nextjs, rama `feat/lite-handoff`): `src/lib/lite-handoff.ts` traduce las filas a un plan. En `/welcome` el cuestionario viene prellenado (tipos de documento y objetivos), aparece "Probaste X en Tavnit Lite", y al terminar se crean hasta 3 Flows desde las plantillas que corresponden (se agregaron las plantillas `packing-list` y `bill-of-lading`); `org_onboarding.answers.lite` guarda herramientas, features y lo sembrado, y la guía de primeros pasos marca como sugerido lo que tocó (Matcher, Cleaner, integraciones…). Créditos iniciales: 0, por decisión del 2026-09-25.

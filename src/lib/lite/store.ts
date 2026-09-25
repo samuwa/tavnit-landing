@@ -262,3 +262,53 @@ export async function updateRun(
     // Best-effort bookkeeping; the visitor's result does not depend on it.
   }
 }
+
+/* ---------- intents: what a visitor tried, for the product to pick up ---------- */
+
+export type IntentKind = "used" | "cta" | "download";
+
+export async function insertIntent(row: {
+  session_id: string;
+  user_id: string | null;
+  tool: string;
+  kind: IntentKind;
+  feature: string | null;
+  locale: string;
+  payload: Record<string, unknown>;
+}): Promise<void> {
+  const h = headers();
+  const b = base();
+  if (!h || !b) throw new Error("Store not configured");
+  const res = await fetch(`${b}/rest/v1/lite_intents`, {
+    method: "POST",
+    headers: { ...h, Prefer: "return=minimal" },
+    body: JSON.stringify(row),
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`lite_intents insert failed (${res.status})`);
+}
+
+/** Once the visitor is signed in here, their guest rows become theirs. */
+export async function linkSessionIntents(sessionId: string, userId: string): Promise<void> {
+  const h = headers();
+  const b = base();
+  if (!h || !b) return;
+  await fetch(
+    `${b}/rest/v1/lite_intents?session_id=eq.${encodeURIComponent(sessionId)}&user_id=is.null`,
+    { method: "PATCH", headers: { ...h, Prefer: "return=minimal" }, body: JSON.stringify({ user_id: userId }), cache: "no-store" },
+  ).catch(() => {});
+}
+
+/** A one-time token for the "Try it in Tavnit" link; the app redeems it with claim_lite_handoff(). */
+export async function createHandoff(sessionId: string, token: string): Promise<void> {
+  const h = headers();
+  const b = base();
+  if (!h || !b) throw new Error("Store not configured");
+  const res = await fetch(`${b}/rest/v1/lite_handoffs`, {
+    method: "POST",
+    headers: { ...h, Prefer: "return=minimal" },
+    body: JSON.stringify({ token, session_id: sessionId }),
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`lite_handoffs insert failed (${res.status})`);
+}

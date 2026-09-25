@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { ArrowRight, RotateCcw } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
-import { APP_URL } from "@/lib/site";
 import { useLiteSession } from "@/components/lite/session";
+import { TavnitLink } from "@/components/lite/intent";
 import type { FlowExtra, SceneProps } from "@/components/lite/scenes";
 
 /**
@@ -27,6 +27,7 @@ export default function Scene({
   copy,
   playKey,
   onReplay,
+  feature,
   flow,
 }: {
   /** The outcome's or input's own stage (see scenes.tsx / scenes-in.tsx). */
@@ -36,6 +37,8 @@ export default function Scene({
   /** Changing this restarts the animation. */
   playKey: number;
   onReplay: () => void;
+  /** What this scene shows, recorded when the visitor clicks through to Tavnit. */
+  feature?: string;
   /** Extra data for the Flow scene (the visitor's own columns). */
   flow?: FlowExtra;
 }) {
@@ -64,12 +67,12 @@ export default function Scene({
       </div>
 
       <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Link
-          href={APP_URL}
+        <TavnitLink
+          feature={feature}
           className="lite-brand lite-press inline-flex min-h-11 items-center justify-center rounded-lg px-5 text-sm font-semibold text-white shadow-sm shadow-[#3b82f6]/30 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
         >
           {email ? copy.tryItSignedIn : copy.tryIt}
-        </Link>
+        </TavnitLink>
         <Link href={item.href} className="inline-flex items-center gap-1 text-sm font-medium text-[var(--lite-blue-ink)] hover:underline">
           {item.linkLabel}
           <ArrowRight size={14} aria-hidden />

@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ArrowRight, BadgeDollarSign, CalendarCheck, CalendarClock, Check, Mail, Sigma, TriangleAlert, Type, UserCheck, Wand2 } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { Locale } from "@/lib/locale";
-import { APP_URL } from "@/lib/site";
 import { useLiteSession } from "@/components/lite/session";
+import { TavnitLink } from "@/components/lite/intent";
 
 /**
  * "With a Cleaner you could…" — four rules beside the table, each drawn as
@@ -166,12 +166,12 @@ export default function CleanerIdeas({
             {copy.learn}
             <ArrowRight size={14} aria-hidden />
           </Link>
-          <Link
-            href={APP_URL}
+          <TavnitLink
+            feature="cleaner"
             className="lite-brand lite-press inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-lg px-5 text-sm font-semibold text-white shadow-sm shadow-[#3b82f6]/30 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
           >
             {email ? copy.ctaSignedIn : copy.cta}
-          </Link>
+          </TavnitLink>
         </div>
       </div>
     </section>

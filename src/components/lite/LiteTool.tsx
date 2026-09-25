@@ -7,6 +7,7 @@ import type { LiteToolId } from "@/lib/lite/tools";
 import { LITE_ACCEPT, LITE_TOOLS } from "@/lib/lite/tools";
 import type { Locale } from "@/lib/locale";
 import AuthModal from "@/components/lite/AuthModal";
+import { useMarkUsed, useLiteIntent } from "@/components/lite/intent";
 import CleanerIdeas from "@/components/lite/CleanerIdeas";
 import WhatNext from "@/components/lite/WhatNext";
 import AfterDownload from "@/components/lite/AfterDownload";
@@ -356,6 +357,13 @@ export default function LiteTool({
       resultRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
     }
   }, [phase.kind]);
+  // Tells the product this tool was used (lib/lite/intent), once per result.
+  useMarkUsed(phase.kind === "done", phase.kind === "done" ? phase.runId : null);
+  // What the visitor did to the table travels with a click to Tavnit.
+  const intent = useLiteIntent();
+  useEffect(() => {
+    intent?.setPayload(phase.kind === "done" ? { hidden_columns: hidden, sample: phase.runId === SAMPLE } : {});
+  }, [intent, phase, hidden]);
 
   useEffect(() => {
     const el = docDialog.current;

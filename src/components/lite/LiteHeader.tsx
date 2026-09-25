@@ -8,9 +8,9 @@ import type { Locale } from "@/lib/locale";
 import type { ShellCopy } from "@/lib/lite/copy";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { LiteToolId, LiteToolKind } from "@/lib/lite/tools";
-import { APP_URL } from "@/lib/site";
 import AuthModal from "@/components/lite/AuthModal";
 import { signOutLite, useLiteSession } from "@/components/lite/session";
+import { TavnitLink } from "@/components/lite/intent";
 import { KIND_ICON, KIND_ORDER, KIND_TILE, TOOL_ICONS } from "@/components/lite/tool-icons";
 
 /**
@@ -142,10 +142,10 @@ export default function LiteHeader({
     <span className="h-10 w-[120px]" aria-hidden />
   ) : email ? (
     <>
-      <a href={APP_URL} className={BRAND_BTN}>
+      <TavnitLink className={BRAND_BTN}>
         {t.account.open}
         <ArrowUpRight size={15} aria-hidden />
-      </a>
+      </TavnitLink>
       <div ref={accountRef} className="relative">
         <button
           type="button"
@@ -163,13 +163,13 @@ export default function LiteHeader({
               <p className="text-xs text-[var(--lite-muted)]">{t.account.signedInAs}</p>
               <p className="truncate text-sm font-semibold">{email}</p>
             </div>
-            <a role="menuitem" href={APP_URL} className="mt-1 block rounded-lg px-3 py-2 hover:bg-[#f3f6fa]">
+            <TavnitLink role="menuitem" className="mt-1 block rounded-lg px-3 py-2 hover:bg-[#f3f6fa]">
               <span className="flex items-center gap-1.5 text-sm font-semibold">
                 {t.account.open}
                 <ArrowUpRight size={14} aria-hidden />
               </span>
               <span className="mt-0.5 block text-xs leading-snug text-[var(--lite-muted)]">{t.account.openHint}</span>
-            </a>
+            </TavnitLink>
             <button role="menuitem" type="button" onClick={() => void signOut()} className="mt-1 flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-[var(--lite-muted)] hover:bg-[#f3f6fa] hover:text-[var(--lite-ink)]">
               <LogOut size={14} aria-hidden />
               {t.account.signOut}
@@ -319,10 +319,10 @@ export default function LiteHeader({
                   <p className="px-2 text-xs text-[var(--lite-muted)]">
                     {t.account.signedInAs} <span className="font-semibold text-[var(--lite-ink)]">{email}</span>
                   </p>
-                  <a href={APP_URL} className={`${BRAND_BTN} min-h-12 justify-center`}>
+                  <TavnitLink className={`${BRAND_BTN} min-h-12 justify-center`}>
                     {t.account.open}
                     <ArrowUpRight size={15} aria-hidden />
-                  </a>
+                  </TavnitLink>
                   <button type="button" onClick={() => void signOut()} className={`${LINK} py-2.5 text-left`}>{t.account.signOut}</button>
                 </>
               ) : (
