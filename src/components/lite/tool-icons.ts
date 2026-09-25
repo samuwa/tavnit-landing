@@ -37,4 +37,5 @@ export const KIND_TILE: Record<LiteToolKind, string> = {
   split: "bg-[#eef1f4] text-[var(--lite-ink)]",
   clean: "bg-[#fdf3e3] text-[#a4580b]",
 };
-export const KIND_ORDER: LiteToolKind[] = ["extract", "compare", "split", "clean"];
+/** Hub and menu order: documents to Excel first, then cleaning the spreadsheet you already have. */
+export const KIND_ORDER: LiteToolKind[] = ["extract", "clean", "compare", "split"];

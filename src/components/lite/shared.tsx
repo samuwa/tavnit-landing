@@ -14,11 +14,11 @@ import type { Locale } from "@/lib/locale";
  */
 
 export const BTN_DOWNLOAD =
-  "lite-press inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[var(--lite-blue)] px-5 text-sm font-semibold text-white shadow-sm shadow-[#3b82f6]/30 transition-colors hover:bg-[var(--lite-blue-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50 disabled:pointer-events-none disabled:opacity-50";
+  "lite-press inline-flex min-h-11 shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[var(--lite-blue)] px-5 text-sm font-semibold text-white shadow-sm shadow-[#3b82f6]/30 transition-colors hover:bg-[var(--lite-blue-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50 disabled:pointer-events-none disabled:opacity-50";
 export const BTN_QUIET =
-  "lite-press inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[var(--lite-line)] bg-[var(--lite-white)] px-4 text-sm font-semibold transition-colors hover:border-[var(--lite-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50 disabled:pointer-events-none disabled:opacity-50";
+  "lite-press inline-flex min-h-11 shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-[var(--lite-line)] bg-[var(--lite-white)] px-4 text-sm font-semibold transition-colors hover:border-[var(--lite-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50 disabled:pointer-events-none disabled:opacity-50";
 export const BTN_INK =
-  "lite-press inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[var(--lite-ink)] px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50 disabled:pointer-events-none disabled:opacity-40";
+  "lite-press inline-flex min-h-11 shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[var(--lite-ink)] px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50 disabled:pointer-events-none disabled:opacity-40";
 export const SHEET = "lite-sheet relative rounded-2xl border border-[var(--lite-line)] bg-[var(--lite-white)]";
 export const POLL_MS = 2500;
 export const MAX_WAIT_MS = 4 * 60 * 1000;

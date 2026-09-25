@@ -226,16 +226,22 @@ export default function LiteHeader({
               </button>
               {toolsOpen && (
                 <div className="lite-pop absolute left-0 top-11 w-[720px] rounded-2xl border border-[var(--lite-line)] bg-white p-4 shadow-xl shadow-[#1c2321]/10">
+                  {/* Two columns: documents to Excel and spreadsheet cleaning on the
+                      left (the wide one, two tools per row), comparing and
+                      splitting on the right. */}
                   <div className="grid grid-cols-[1.6fr_1fr] gap-x-6">
-                    {groups.map((g) => (
-                      <div key={g.kind} className={g.kind === "extract" ? "row-span-2" : ""}>
-                        <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--lite-muted)]">{g.title}</p>
-                        <div className={g.kind === "extract" ? "grid grid-cols-2 gap-x-2" : ""}>
-                          {g.items.map((x) => (
-                            <ToolItem key={x.id} t={x} onPick={closeTools} />
-                          ))}
-                        </div>
-                        {g.kind !== "extract" && <div className="h-3" />}
+                    {[groups.filter((g) => g.kind === "extract" || g.kind === "clean"), groups.filter((g) => g.kind !== "extract" && g.kind !== "clean")].map((col, ci) => (
+                      <div key={ci} className="space-y-3">
+                        {col.map((g) => (
+                          <div key={g.kind}>
+                            <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--lite-muted)]">{g.title}</p>
+                            <div className={ci === 0 ? "grid grid-cols-2 gap-x-2" : ""}>
+                              {g.items.map((x) => (
+                                <ToolItem key={x.id} t={x} onPick={closeTools} />
+                              ))}
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>

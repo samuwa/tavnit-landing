@@ -89,8 +89,9 @@ const numberFormat: Record<Locale, ToolCopyDef> = {
         unchanged: "No hizo falta cambiar ninguna celda: ya estaban en ese formato.",
         highlight: "En azul, las celdas que cambiaron.",
         shown: "Se muestran {shown} de {total} filas. La descarga incluye todas.",
-        downloadXlsx: "Descargar Excel",
-        downloadCsv: "Descargar CSV",
+        download: "Descargar",
+        downloadXlsx: "Excel (.xlsx)",
+        downloadCsv: "CSV (.csv)",
         another: "Convertir otro archivo",
         automate: {
           heading: "Que pase solo, con cada archivo",
@@ -183,8 +184,9 @@ const numberFormat: Record<Locale, ToolCopyDef> = {
         unchanged: "No cell needed changing: they were already in that format.",
         highlight: "The cells that changed are in blue.",
         shown: "Showing {shown} of {total} rows. The download has all of them.",
-        downloadXlsx: "Download Excel",
-        downloadCsv: "Download CSV",
+        download: "Download",
+        downloadXlsx: "Excel (.xlsx)",
+        downloadCsv: "CSV (.csv)",
         another: "Convert another file",
         automate: {
           heading: "Make it happen with every file",

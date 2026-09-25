@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Download, FileSpreadsheet, Loader2, RotateCcw } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Download, FileSpreadsheet, FileText, Loader2, RotateCcw } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import { LITE_ACCEPT_SHEET, type LiteToolId } from "@/lib/lite/tools";
 import type { Locale } from "@/lib/locale";
@@ -365,19 +365,20 @@ export default function LiteClean({
               </p>
             </div>
           </div>
-          <div className="flex flex-col gap-2 sm:flex-row">
+          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
             <button type="button" onClick={reset} className={BTN_QUIET}>
               <RotateCcw size={16} aria-hidden />
               {cc.another}
             </button>
-            <button type="button" onClick={() => void download("csv")} disabled={downloading !== null} className={BTN_QUIET}>
-              {downloading === "csv" ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <Download size={16} aria-hidden />}
-              {cc.downloadCsv}
-            </button>
-            <button type="button" onClick={() => void download("xlsx")} disabled={downloading !== null} className={BTN_DOWNLOAD}>
-              {downloading === "xlsx" ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <Download size={16} aria-hidden />}
-              {downloading === "xlsx" ? copy.result.downloading : cc.downloadXlsx}
-            </button>
+            <DownloadMenu
+              label={downloading ? copy.result.downloading : cc.download}
+              busy={downloading !== null}
+              options={[
+                { fmt: "xlsx", label: cc.downloadXlsx, Icon: FileSpreadsheet },
+                { fmt: "csv", label: cc.downloadCsv, Icon: FileText },
+              ]}
+              onPick={(fmt) => void download(fmt)}
+            />
           </div>
         </div>
         {downloadError && (
@@ -595,6 +596,75 @@ function Setup({
           <ArrowRight size={16} aria-hidden />
         </button>
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------- download menu ---- */
+
+/** One download button; its menu picks the format. Closes on outside click and Escape. */
+function DownloadMenu({
+  label,
+  busy,
+  options,
+  onPick,
+}: {
+  label: string;
+  busy: boolean;
+  options: { fmt: "xlsx" | "csv"; label: string; Icon: typeof Download }[];
+  onPick: (fmt: "xlsx" | "csv") => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onPointer = (e: PointerEvent) => {
+      if (root.current && !root.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={root} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        disabled={busy}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        className={`${BTN_DOWNLOAD} w-full sm:w-auto`}
+      >
+        {busy ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <Download size={16} aria-hidden />}
+        {label}
+        <ChevronDown size={15} className={`transition-transform ${open ? "rotate-180" : ""}`} aria-hidden />
+      </button>
+      {open && (
+        <div role="menu" className="lite-pop absolute right-0 top-full z-20 mt-2 w-48 rounded-xl border border-[var(--lite-line)] bg-white p-1.5 shadow-xl shadow-[#1c2321]/10">
+          {options.map(({ fmt, label: l, Icon }) => (
+            <button
+              key={fmt}
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setOpen(false);
+                onPick(fmt);
+              }}
+              className="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors hover:bg-[var(--lite-blue-soft)] hover:text-[var(--lite-blue-ink)]"
+            >
+              <Icon size={16} aria-hidden />
+              {l}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

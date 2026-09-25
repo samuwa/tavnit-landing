@@ -223,6 +223,8 @@ export interface CleanCopy {
   highlight: string;
   /** "Showing {shown} of {total} rows. The download has all of them." */
   shown: string;
+  /** The download button; its menu offers the two formats below. */
+  download: string;
   downloadXlsx: string;
   downloadCsv: string;
   another: string;
