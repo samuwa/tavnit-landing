@@ -22,21 +22,83 @@
  * Pure functions only: safe on the server and in the browser.
  */
 
-export type CleanMode = "number" | "date";
+export type CleanMode = "number" | "date" | "currency" | "translate";
 export type NumberInput = "comma" | "dot";
 export type DateInput = "dmy" | "mdy";
 export type NumberOutput = "plain" | "us" | "latam";
 export type DateOutput = "iso" | "dmy" | "mdy";
 
 export const CLEAN_SLOTS = 10;
+/** The largest file any spreadsheet tool reads; per-mode limits below can be lower. */
 export const CLEAN_MAX_ROWS = 500;
+/** Translation sends every cell through a model: a smaller free allowance. */
+export const MODE_MAX_ROWS: Record<CleanMode, number> = { number: 500, date: 500, currency: 500, translate: 200 };
 export const CLEAN_MAX_COLUMNS = 100;
 
 export const NUMBER_OUTPUTS: NumberOutput[] = ["plain", "us", "latam"];
 export const DATE_OUTPUTS: DateOutput[] = ["iso", "dmy", "mdy"];
 
-/** What the Cleaner receives in a slot or cell it must not change. */
-export const PLACEHOLDER: Record<CleanMode, string> = { number: "0", date: "1970-01-01" };
+/**
+ * What the Cleaner receives in a slot or cell it must not change.
+ *
+ * number/date Cleaners rewrite their column in place and require it to be a
+ * real value (a blank breaks the number and date parsers), so they get a
+ * harmless one. currency/translate Cleaners write a new column from in_n and
+ * skip blank input — a single space is not a missing value to pandas, is
+ * not billed as a cell, and is skipped by both conversions.
+ */
+export const PLACEHOLDER: Record<CleanMode, string> = { number: "0", date: "1970-01-01", currency: " ", translate: " " };
+
+/** Cleaners that add a column next to the source (derived fields: in_n → out_n) instead of rewriting it. */
+export function isAppendMode(mode: CleanMode): boolean {
+  return mode === "currency" || mode === "translate";
+}
+
+/**
+ * Currencies the engine can convert: it takes rates from Frankfurter, the
+ * European Central Bank's reference rates. Latin American currencies other
+ * than MXN and BRL (COP, PEN, CLP, ARS, PAB…) are not published there.
+ */
+export const SOURCE_CURRENCIES = [
+  "USD", "EUR", "MXN", "BRL", "GBP", "CAD", "CNY", "JPY", "CHF", "AUD", "NZD", "HKD", "SGD", "INR", "KRW",
+  "SEK", "NOK", "DKK", "PLN", "CZK", "HUF", "RON", "BGN", "TRY", "ILS", "ZAR", "THB", "MYR", "IDR", "PHP", "ISK",
+] as const;
+/** One Cleaner per target currency. */
+export const TARGET_CURRENCIES = ["USD", "EUR", "GBP", "MXN", "BRL", "CNY"] as const;
+/** One Cleaner per target language (the source language is detected). */
+export const TARGET_LANGUAGES = ["es", "en", "pt", "fr", "de", "zh"] as const;
+
+export function isSourceCurrency(v: unknown): v is (typeof SOURCE_CURRENCIES)[number] {
+  return typeof v === "string" && (SOURCE_CURRENCIES as readonly string[]).includes(v);
+}
+
+/** Symbols and codes written next to amounts, for guessing the source currency. */
+const CURRENCY_HINTS: [RegExp, string][] = [
+  [/€|\bEUR\b/i, "EUR"],
+  [/£|\bGBP\b/i, "GBP"],
+  [/R\$|\bBRL\b/i, "BRL"],
+  [/\bMXN\b|MX\$/i, "MXN"],
+  [/\bCAD\b|C\$/i, "CAD"],
+  [/\bCNY\b|\bRMB\b|元/i, "CNY"],
+  [/\bJPY\b|円/i, "JPY"],
+  [/\bUSD\b|US\$|\$/i, "USD"],
+];
+
+export function guessCurrency(values: string[], fallback: string): string {
+  const votes = new Map<string, number>();
+  for (const v of values) {
+    for (const [re, code] of CURRENCY_HINTS) {
+      if (re.test(v)) {
+        votes.set(code, (votes.get(code) ?? 0) + 1);
+        break;
+      }
+    }
+  }
+  let best = fallback;
+  let n = 0;
+  for (const [code, c] of votes) if (c > n) [best, n] = [code, c];
+  return best;
+}
 
 /** Strings pandas.read_csv turns into NaN by default: never send them. */
 const PANDAS_NA = new Set([
@@ -50,7 +112,8 @@ export function isMissing(text: string): boolean {
 
 /* ------------------------------------------------------------ numbers ---- */
 
-const CURRENCY = /[$€£¥₡₲₱₹]|B\/\.|US\$|USD|EUR|MXN|COP|PEN|CLP|PAB|S\/\.?/gi;
+/** A currency sign or ISO code next to an amount: "US$", "R$", "B/.", "S/", "€", "EUR"… */
+const CURRENCY = /(?:US|MX|R|C|A|S|HK|NZ)?\$|[€£¥₡₲₱₹₩₺₪]|B\/\.|S\/\.?|\b[A-Z]{3}\b/g;
 
 /** Digits with separators, an optional sign and currency around them. */
 function numberCore(text: string): { neg: boolean; body: string } | null {
@@ -212,11 +275,28 @@ export function guessDateOrder(values: string[], fallback: DateInput): DateInput
 
 /* ---------------------------------------------------------- detection ---- */
 
+/** Words, not a number, a date or a code: what is worth translating. */
+export function isTextLike(text: string): boolean {
+  const t = text.trim();
+  // A code ("PK-100", "HS8471", "ABC") is not text worth translating: text
+  // has a word of 3+ letters, and a single token must not mix in digits.
+  if (t.length < 3 || !/\p{L}{3,}/u.test(t) || isNumberLike(t) || isDateLike(t)) return false;
+  if (!/\s/.test(t) && (/\d/.test(t) || /^[\p{Lu}\d_-]+$/u.test(t))) return false;
+  return true;
+}
+
+const MONEY_HEADER = /precio|price|total|monto|importe|amount|cost|costo|valor|value|subtotal|impuesto|tax|pago|payment|saldo|balance|tarifa|fee/i;
+const MONEY_VALUE = /[$€£¥₩₺₪₹]|\b[A-Z]{3}\b|\d[.,]\d{2}$/;
+
 /** Columns worth offering: most non-empty values look like the mode's kind. */
 export function suggestColumns(columns: string[], rows: string[][], mode: CleanMode): string[] {
-  const test = mode === "number" ? isNumberLike : isDateLike;
+  const test = mode === "number" || mode === "currency" ? isNumberLike : mode === "date" ? isDateLike : isTextLike;
   const out: string[] = [];
   columns.forEach((name, i) => {
+    // Currency: numbers are not enough — a quantity or an id converted to
+    // dollars is wrong. Only amounts: a money header, or values written
+    // with a currency sign or two decimals.
+    if (mode === "currency" && !MONEY_HEADER.test(name) && !rows.some((r) => MONEY_VALUE.test((r[i] ?? "").trim()))) return;
     let seen = 0;
     let hit = 0;
     for (const r of rows) {

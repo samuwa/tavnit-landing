@@ -203,8 +203,11 @@ export interface CleanCopy {
     /** "Pick up to {max}. We ticked the ones that look like {what}." */
     columnsHint: string;
     tooMany: string;
+    /** currency only: the amounts' currency */
+    sourceLabel?: string;
+    sourceHint?: string;
     inputLabel: string;
-    /** keyed by input option: comma/dot or dmy/mdy */
+    /** keyed by input option: comma/dot or dmy/mdy (empty for translation) */
     inputOptions: Record<string, string>;
     outputLabel: string;
     /** keyed by output option */

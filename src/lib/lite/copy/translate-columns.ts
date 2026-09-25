@@ -1,0 +1,205 @@
+import type { ToolCopyDef } from "@/lib/lite/copy-base";
+import type { Locale } from "@/lib/locale";
+
+/**
+ * Translate columns. A spreadsheet in, a translated column next to each
+ * chosen text column out. Every cell goes through a model, so the free
+ * allowance is 200 rows instead of 500.
+ */
+const LANGS_ES = { en: "Inglés", es: "Español", pt: "Portugués", fr: "Francés", de: "Alemán", zh: "Chino" };
+const LANGS_EN = { en: "English", es: "Spanish", pt: "Portuguese", fr: "French", de: "German", zh: "Chinese" };
+
+const translateColumns: Record<Locale, ToolCopyDef> = {
+  es: {
+    vocab: {
+      doc: "hoja de cálculo",
+      docs: "hojas de cálculo",
+      a_doc: "una hoja de cálculo",
+      the_doc: "la hoja de cálculo",
+      the_docs: "las hojas de cálculo",
+      your_doc: "tu hoja de cálculo",
+      your_docs: "tus hojas de cálculo",
+      all_your_docs: "todas tus hojas de cálculo",
+      all_docs: "todas las hojas de cálculo",
+      each_doc: "cada hoja de cálculo",
+      another_doc: "otra hoja de cálculo",
+      this_doc: "esta hoja de cálculo",
+    },
+    overrides: {
+      title: "Traducir un Excel por columnas, gratis",
+      description:
+        "Sube un Excel o CSV y traduce las columnas que elijas al inglés, español, portugués, francés, alemán o chino. La traducción se agrega al lado de cada columna. Gratis, sin registro para ver el resultado.",
+      label: "Traducir columnas",
+      h1: "Traduce las columnas de tu Excel",
+      intro:
+        "Sube el Excel o el CSV. Eliges qué columnas traducir y a qué idioma. Tavnit detecta el idioma de origen y agrega la traducción al lado de cada columna, sin tocar el resto de tu archivo.",
+      trust: ["CSV o Excel · hasta 200 filas", "{limit} archivos gratis al día", "Se borra todo a las 24 h"],
+      drop: {
+        title: "Arrastra tu Excel o CSV aquí",
+        hint: "o elige un archivo de tu computadora",
+        choose: "Elegir archivo",
+        sample: "Probar con un archivo de ejemplo",
+        formats: "CSV o .xlsx · hasta 4 MB y 200 filas",
+      },
+      errors: {
+        unsupported: "Solo aceptamos archivos CSV o Excel (.xlsx).",
+        xls: "Es un Excel antiguo (.xls). Ábrelo en Excel y guárdalo como .xlsx o .csv.",
+        too_many_rows: "La traducción gratis procesa hasta 200 filas. Sube una parte del archivo.",
+        too_many_columns: "Elige hasta 10 columnas a la vez.",
+        no_columns: "Elige al menos una columna.",
+        nothing_to_clean: "En esas columnas no encontramos texto que traducir.",
+        empty: "El archivo está vacío o no tiene filas debajo del encabezado.",
+        unreadable: "No pudimos leer el archivo. Si es un Excel, guárdalo de nuevo como .xlsx.",
+        failed: "No pudimos traducir este archivo. Prueba de nuevo o con el archivo de ejemplo.",
+      },
+      how: {
+        heading: "Cómo funciona",
+        steps: [
+          { title: "Sube el archivo", body: "Un CSV o un Excel con descripciones, instrucciones, comentarios o cualquier columna de texto." },
+          { title: "Elige columnas e idioma", body: "Marcamos las columnas que tienen texto. Eliges a qué idioma van; el de origen lo detectamos solos." },
+          { title: "Revisa y descarga", body: "Cada traducción aparece al lado de su columna original. Con tu cuenta gratis te llevas el archivo en Excel o CSV." },
+        ],
+      },
+      faqs: [
+        { q: "¿Qué idiomas puedo elegir?", a: "Inglés, español, portugués, francés, alemán y chino. El idioma de origen se detecta en cada celda, así que sirve aunque tu archivo mezcle idiomas." },
+        { q: "¿Qué pasa con los códigos, números y nombres propios?", a: "Se conservan. La traducción respeta el formato, las unidades y los códigos; una celda que ya está en el idioma de destino se deja igual." },
+        { q: "¿Por qué el límite es de 200 filas?", a: "Porque cada celda se traduce con un modelo de lenguaje. En la versión gratis procesamos hasta 200 filas por archivo; con una cuenta no hay ese límite." },
+        { q: "¿Qué pasa con mis columnas originales?", a: "Se quedan como estaban. La traducción se agrega en una columna nueva al lado, por ejemplo \"Descripción (EN)\"." },
+        { q: "¿Sirve para descripciones de producto en aduanas?", a: "Sí, es un uso habitual: pasar al español o al inglés las descripciones de una factura comercial o una lista de empaque antes de clasificar la mercancía." },
+        { q: "¿Qué pasa con mi archivo?", a: "Se usa solo para esta traducción y se borra a las 24 horas, junto con el resultado. Solo tu navegador puede ver el resultado." },
+        { q: "¿Cómo hago que esto pase solo?", a: "En Tavnit, la traducción es un Cleaner: se aplica sola a cada documento que extraes o a cada archivo que llega por correo o API, junto con fechas, números y monedas." },
+      ],
+      clean: {
+        setup: {
+          heading: "Elige las columnas y el idioma",
+          fileSummary: "{rows} · {cols}",
+          columnsLabel: "Columnas con texto",
+          columnsHint: "Hasta {max}. Marcamos las que tienen texto.",
+          tooMany: "Puedes elegir hasta {max} columnas a la vez.",
+          inputLabel: "",
+          inputOptions: {},
+          outputLabel: "Traducir a",
+          outputOptions: LANGS_ES,
+          preview: "Primeras filas",
+          run: "Traducir",
+          change: "Cambiar archivo",
+        },
+        stages: ["Subiendo el archivo", "Leyendo las columnas", "Detectando el idioma", "Traduciendo", "Armando tu archivo"],
+        heading: "Listo: {file}",
+        summary: "{cells} traducidas en {cols}",
+        cellWord: ["celda", "celdas"],
+        columnWord: ["columna", "columnas"],
+        unchanged: "No encontramos texto que traducir en esas columnas.",
+        highlight: "En azul, las columnas traducidas.",
+        shown: "Se muestran {shown} de {total} filas. La descarga incluye todas.",
+        download: "Descargar",
+        downloadXlsx: "Excel (.xlsx)",
+        downloadCsv: "CSV (.csv)",
+        another: "Traducir otro archivo",
+        automate: {
+          heading: "Que pase solo, con cada documento",
+          body: "En Tavnit la traducción es un Cleaner. Lo armas una vez y cada factura, lista de empaque o archivo que llega trae sus descripciones ya traducidas.",
+          cta: "Crear cuenta gratis",
+          docs: "Qué es un Cleaner",
+        },
+      },
+    },
+  },
+  en: {
+    vocab: {
+      doc: "spreadsheet",
+      docs: "spreadsheets",
+      a_doc: "a spreadsheet",
+      the_doc: "the spreadsheet",
+      the_docs: "the spreadsheets",
+      your_doc: "your spreadsheet",
+      your_docs: "your spreadsheets",
+      all_your_docs: "all your spreadsheets",
+      all_docs: "all spreadsheets",
+      each_doc: "every spreadsheet",
+      another_doc: "another spreadsheet",
+      this_doc: "this spreadsheet",
+    },
+    overrides: {
+      title: "Translate Excel Columns, Free",
+      description:
+        "Upload an Excel or CSV file and translate the columns you pick into English, Spanish, Portuguese, French, German or Chinese. Each translation is added next to its column. Free, no sign-up to see the result.",
+      label: "Translate columns",
+      h1: "Translate the columns of your spreadsheet",
+      intro:
+        "Upload the Excel or CSV file. Pick which columns to translate and into which language. Tavnit detects the source language and adds the translation next to each column, leaving the rest of your file alone.",
+      trust: ["CSV or Excel · up to 200 rows", "{limit} free files a day", "Everything is deleted after 24 h"],
+      drop: {
+        title: "Drop your Excel or CSV file here",
+        hint: "or choose a file from your computer",
+        choose: "Choose file",
+        sample: "Try a sample file",
+        formats: "CSV or .xlsx · up to 4 MB and 200 rows",
+      },
+      errors: {
+        unsupported: "Only CSV or Excel (.xlsx) files.",
+        xls: "This is an old Excel file (.xls). Open it in Excel and save it as .xlsx or .csv.",
+        too_many_rows: "Free translation handles up to 200 rows. Upload part of the file.",
+        too_many_columns: "Pick up to 10 columns at a time.",
+        no_columns: "Pick at least one column.",
+        nothing_to_clean: "We found no text to translate in those columns.",
+        empty: "The file is empty or has no rows under the header.",
+        unreadable: "We could not read the file. If it is an Excel file, save it again as .xlsx.",
+        failed: "We could not translate this file. Try again, or try the sample file.",
+      },
+      how: {
+        heading: "How it works",
+        steps: [
+          { title: "Upload the file", body: "A CSV or an Excel file with descriptions, instructions, comments or any text column." },
+          { title: "Pick columns and language", body: "We tick the columns with text. You pick the language; the source language is detected for you." },
+          { title: "Review and download", body: "Each translation sits next to its original column. With your free account you take the file as Excel or CSV." },
+        ],
+      },
+      faqs: [
+        { q: "Which languages can I pick?", a: "English, Spanish, Portuguese, French, German and Chinese. The source language is detected cell by cell, so it works even when your file mixes languages." },
+        { q: "What happens to codes, numbers and proper names?", a: "They are kept. The translation respects formatting, units and codes; a cell already in the target language is left as it is." },
+        { q: "Why is the limit 200 rows?", a: "Because every cell is translated with a language model. The free version handles up to 200 rows per file; an account has no such limit." },
+        { q: "What happens to my original columns?", a: "They stay as they were. The translation is added as a new column next to them, for example \"Description (ES)\"." },
+        { q: "Can I use it for product descriptions in customs?", a: "Yes, it is a common use: putting the descriptions of a commercial invoice or packing list into English or Spanish before classifying the goods." },
+        { q: "What happens to my file?", a: "It is used only for this translation and deleted after 24 hours along with the result. Only your browser can see the result." },
+        { q: "How do I make this happen on its own?", a: "In Tavnit, translation is a Cleaner: it runs by itself on every document you extract or every file that arrives by email or API, alongside dates, numbers and currencies." },
+      ],
+      clean: {
+        setup: {
+          heading: "Pick the columns and the language",
+          fileSummary: "{rows} · {cols}",
+          columnsLabel: "Columns with text",
+          columnsHint: "Up to {max}. We ticked the ones with text.",
+          tooMany: "You can pick up to {max} columns at a time.",
+          inputLabel: "",
+          inputOptions: {},
+          outputLabel: "Translate into",
+          outputOptions: LANGS_EN,
+          preview: "First rows",
+          run: "Translate",
+          change: "Change file",
+        },
+        stages: ["Uploading the file", "Reading the columns", "Detecting the language", "Translating", "Building your file"],
+        heading: "Done: {file}",
+        summary: "{cells} translated in {cols}",
+        cellWord: ["cell", "cells"],
+        columnWord: ["column", "columns"],
+        unchanged: "We found no text to translate in those columns.",
+        highlight: "The translated columns are in blue.",
+        shown: "Showing {shown} of {total} rows. The download has all of them.",
+        download: "Download",
+        downloadXlsx: "Excel (.xlsx)",
+        downloadCsv: "CSV (.csv)",
+        another: "Translate another file",
+        automate: {
+          heading: "Make it happen with every document",
+          body: "In Tavnit translation is a Cleaner. You set it up once and every invoice, packing list or file that comes in arrives with its descriptions already translated.",
+          cta: "Create a free account",
+          docs: "What is a Cleaner",
+        },
+      },
+    },
+  },
+};
+
+export default translateColumns;

@@ -12,6 +12,8 @@ import contractDates from "@/lib/lite/copy/contract-dates";
 import receiptToExcel from "@/lib/lite/copy/receipt-to-excel";
 import numberFormat from "@/lib/lite/copy/number-format";
 import dateFormat from "@/lib/lite/copy/date-format";
+import currencyConverter from "@/lib/lite/copy/currency-converter";
+import translateColumns from "@/lib/lite/copy/translate-columns";
 
 /**
  * Copy for the free tools. The base (copy-base.ts) is one complete tool
@@ -34,6 +36,8 @@ const DEFS: Record<LiteToolId, Record<Locale, ToolCopyDef>> = {
   "receipt-to-excel": receiptToExcel,
   "number-format": numberFormat,
   "date-format": dateFormat,
+  "currency-converter": currencyConverter,
+  "translate-columns": translateColumns,
 };
 
 export const TOOL_COPY: Record<LiteToolId, Record<Locale, ToolCopy>> = Object.fromEntries(

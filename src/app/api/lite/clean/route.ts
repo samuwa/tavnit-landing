@@ -7,7 +7,7 @@ import { clientIp, getOrCreateSessionId, hashIp } from "@/lib/lite/session";
 import { finalizeReservation, releaseReservation, reserve, setRunMeta, storeConfigured } from "@/lib/lite/store";
 import { isHumanSession, markHumanSession, verifyTurnstile } from "@/lib/lite/turnstile";
 import { SheetError, readSheet, sniffSheet } from "@/lib/lite/sheet";
-import { CLEAN_SLOTS, isDateOutput, isNumberOutput } from "@/lib/lite/clean";
+import { CLEAN_SLOTS, isSourceCurrency } from "@/lib/lite/clean";
 import { CleanPrepError, prepareSweep } from "@/lib/lite/clean-server";
 import { safeFilename } from "@/lib/lite/validate";
 import { sameOrigin } from "@/lib/lite/origin";
@@ -17,8 +17,10 @@ import { sameOrigin } from "@/lib/lite/origin";
  * the formats, through the tool's fixed Cleaner.
  *
  * multipart/form-data: tool, locale, file (or sample=1), columns (JSON array
- * of header names, 1..10), input (comma|dot, or dmy|mdy), output (the
- * Cleaner variant), cf-turnstile-response, website (honeypot).
+ * of header names, 1..10), input (comma|dot for number and currency, dmy|mdy
+ * for dates, none for translation), source (currency: the amounts' ISO
+ * code), output (the Cleaner variant: a key of the tool's cleaners),
+ * cf-turnstile-response, website (honeypot).
  *
  * Same defences as the document tools, in the same order: same origin →
  * honeypot → tool → size and file type from the bytes → Turnstile → full
@@ -53,10 +55,15 @@ export async function POST(request: Request) {
   const locale = form.get("locale") === "en" ? "en" : "es";
 
   const inputRaw = form.get("input");
-  const input = mode === "number" ? (inputRaw === "dot" ? "dot" : inputRaw === "comma" ? "comma" : null) : inputRaw === "mdy" ? "mdy" : inputRaw === "dmy" ? "dmy" : null;
+  const decimal = inputRaw === "dot" ? "dot" : inputRaw === "comma" ? "comma" : null;
+  const order = inputRaw === "mdy" ? "mdy" : inputRaw === "dmy" ? "dmy" : null;
+  const input = mode === "number" || mode === "currency" ? decimal : mode === "date" ? order : undefined;
+  if (input === null) return ERR("bad_request", 400);
+  const sourceRaw = form.get("source");
+  if (mode === "currency" && !isSourceCurrency(sourceRaw)) return ERR("bad_request", 400);
   const output = form.get("output");
-  if (!input || !(mode === "number" ? isNumberOutput(output) : isDateOutput(output))) return ERR("bad_request", 400);
-  const cleanerId = resolveSingleId(tool.clean.cleaners[output as string]);
+  if (typeof output !== "string" || !Object.prototype.hasOwnProperty.call(tool.clean.cleaners, output)) return ERR("bad_request", 400);
+  const cleanerId = resolveSingleId(tool.clean.cleaners[output]);
   if (!cleanerId) return ERR("unavailable", 503);
 
   let columns: string[];
@@ -113,7 +120,12 @@ export async function POST(request: Request) {
   }
   let prepared;
   try {
-    prepared = prepareSweep(sheet, mode, columns, input, output as string);
+    prepared = prepareSweep(sheet, mode, columns, {
+      input,
+      source: mode === "currency" ? (sourceRaw as string) : undefined,
+      output,
+      suffix: mode === "currency" ? output : output.toUpperCase(),
+    });
   } catch (e) {
     return ERR(e instanceof CleanPrepError ? e.code : "bad_request", 400);
   }

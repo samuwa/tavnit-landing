@@ -3,7 +3,7 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 import { LITE_LIMITS, LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
 import { SheetError, readSheet } from "@/lib/lite/sheet";
-import { guessDateOrder, guessDecimal, suggestColumns, valuesOf } from "@/lib/lite/clean";
+import { guessCurrency, guessDateOrder, guessDecimal, suggestColumns, valuesOf } from "@/lib/lite/clean";
 import { sameOrigin } from "@/lib/lite/origin";
 
 /**
@@ -60,7 +60,13 @@ export async function POST(request: Request) {
   const mode = tool.clean.mode;
   const suggested = suggestColumns(sheet.columns, texts, mode);
   const values = valuesOf(sheet.columns, texts, suggested);
-  const input = mode === "number" ? guessDecimal(values, locale === "es" ? "comma" : "dot") : guessDateOrder(values, locale === "es" ? "dmy" : "mdy");
+  const input =
+    mode === "number" || mode === "currency"
+      ? guessDecimal(values, locale === "es" ? "comma" : "dot")
+      : mode === "date"
+        ? guessDateOrder(values, locale === "es" ? "dmy" : "mdy")
+        : "";
+  const source = mode === "currency" ? guessCurrency(values, "USD") : undefined;
 
   return NextResponse.json({
     file: name,
@@ -69,5 +75,6 @@ export async function POST(request: Request) {
     total: texts.length,
     suggested,
     input,
+    source,
   });
 }

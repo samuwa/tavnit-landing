@@ -6,7 +6,7 @@ import { ArrowRight, Check, ChevronDown, Download, FileSpreadsheet, FileText, Lo
 import type { ToolCopy } from "@/lib/lite/copy";
 import { LITE_ACCEPT_SHEET, type LiteToolId } from "@/lib/lite/tools";
 import type { Locale } from "@/lib/locale";
-import { CLEAN_SLOTS, type CleanMode } from "@/lib/lite/clean";
+import { CLEAN_SLOTS, SOURCE_CURRENCIES, type CleanMode } from "@/lib/lite/clean";
 import AuthModal from "@/components/lite/AuthModal";
 import {
   BTN_DOWNLOAD,
@@ -49,6 +49,8 @@ interface Preview {
   total: number;
   suggested: string[];
   input: string;
+  /** currency: the guessed currency of the amounts */
+  source?: string;
 }
 
 interface Result {
@@ -65,7 +67,7 @@ interface Result {
 type Phase =
   | { kind: "idle" }
   | { kind: "reading"; file: string }
-  | { kind: "setup"; preview: Preview; source: File | "sample"; selected: string[]; input: string; output: string }
+  | { kind: "setup"; preview: Preview; source: File | "sample"; selected: string[]; input: string; currency: string; output: string }
   | { kind: "processing"; file: string; stage: number }
   | ({ kind: "done" } & Result)
   | { kind: "error"; code: string };
@@ -103,7 +105,8 @@ export default function LiteClean({
   const abort = useRef<AbortController | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const turnstile = useTurnstile(turnstileSiteKey, locale);
-  const defaultOutput = mode === "number" ? "plain" : locale === "es" ? "dmy" : "iso";
+  const defaultOutput =
+    mode === "number" ? "plain" : mode === "date" ? (locale === "es" ? "dmy" : "iso") : mode === "currency" ? "USD" : locale === "es" ? "en" : "es";
 
   /* ---- step 1: read the file -------------------------------------------- */
   const read = useCallback(
@@ -129,13 +132,16 @@ export default function LiteClean({
           source,
           selected: preview.suggested,
           input: preview.input,
-          output: outputs.includes(defaultOutput) ? defaultOutput : outputs[0],
+          currency: preview.source ?? "USD",
+          // The translate sample is in Spanish: translating it into Spanish shows nothing.
+          output:
+            source === "sample" && mode === "translate" ? "en" : outputs.includes(defaultOutput) ? defaultOutput : outputs[0],
         });
       } catch {
         setPhase({ kind: "error", code: "backend" });
       }
     },
-    [toolId, locale, outputs, defaultOutput, cc.setup.preview],
+    [toolId, locale, mode, outputs, defaultOutput, cc.setup.preview],
   );
 
   /* ---- step 3: wait for the Cleaner --------------------------------------- */
@@ -188,7 +194,7 @@ export default function LiteClean({
   /* ---- step 2 → 3: run ------------------------------------------------------ */
   const run = useCallback(async () => {
     if (phase.kind !== "setup" || !phase.selected.length) return;
-    const { preview, source, selected, input, output } = phase;
+    const { preview, source, selected, input, currency, output } = phase;
     abort.current?.abort();
     const ctrl = new AbortController();
     abort.current = ctrl;
@@ -200,7 +206,8 @@ export default function LiteClean({
     form.set("tool", toolId);
     form.set("locale", locale);
     form.set("columns", JSON.stringify(selected));
-    form.set("input", input);
+    if (input) form.set("input", input);
+    if (mode === "currency") form.set("source", currency);
     form.set("output", output);
     if (source === "sample") form.set("sample", "1");
     else form.set("file", source, source.name);
@@ -227,7 +234,7 @@ export default function LiteClean({
     setPhase({ kind: "processing", file: preview.file, stage: 1 });
     await new Promise((r) => setTimeout(r, POLL_MS));
     await poll(sweepId, preview.file, ctrl);
-  }, [phase, toolId, locale, turnstile, poll]);
+  }, [phase, toolId, locale, mode, turnstile, poll]);
 
   /* ---- back from a sign-in round trip (or a reload) ------------------------ */
   const autoDownload = useRef(false);
@@ -307,6 +314,7 @@ export default function LiteClean({
             <Setup
               copy={cc}
               rowWord={copy.result.rowWord}
+              locale={locale}
               phase={phase}
               mode={mode}
               outputs={outputs}
@@ -467,6 +475,7 @@ export default function LiteClean({
 function Setup({
   copy,
   rowWord,
+  locale,
   phase,
   mode,
   outputs,
@@ -476,6 +485,7 @@ function Setup({
 }: {
   copy: NonNullable<ToolCopy["clean"]>;
   rowWord: [string, string];
+  locale: Locale;
   phase: Extract<Phase, { kind: "setup" }>;
   mode: CleanMode;
   outputs: string[];
@@ -483,8 +493,15 @@ function Setup({
   onRun: () => void;
   onChangeFile: () => void;
 }) {
-  const { preview, selected, input, output } = phase;
-  const inputs = mode === "number" ? ["comma", "dot"] : ["dmy", "mdy"];
+  const { preview, selected, input, currency, output } = phase;
+  const inputs = mode === "number" || mode === "currency" ? ["comma", "dot"] : mode === "date" ? ["dmy", "mdy"] : [];
+  const currencyName = (code: string) => {
+    try {
+      return new Intl.DisplayNames([locale], { type: "currency" }).of(code) ?? code;
+    } catch {
+      return code;
+    }
+  };
   const full = selected.length >= CLEAN_SLOTS;
   const toggle = (c: string) =>
     onChange({ selected: selected.includes(c) ? selected.filter((x) => x !== c) : full ? selected : [...selected, c] });
@@ -539,25 +556,48 @@ function Setup({
         {full && <p className="mt-2 text-xs text-[var(--lite-muted)]">{fill(copy.setup.tooMany, { max: CLEAN_SLOTS })}</p>}
       </fieldset>
 
-      <div className="mt-6 grid gap-6 sm:grid-cols-2">
-        <fieldset>
-          <legend className="text-sm font-semibold">{copy.setup.inputLabel}</legend>
-          <div className="mt-2 space-y-2">
-            {inputs.map((k) => (
-              <label key={k} className="flex cursor-pointer items-center gap-2 text-sm">
-                <input type="radio" name="lite-input" checked={input === k} onChange={() => onChange({ input: k })} className="accent-[var(--lite-blue)]" />
-                {copy.setup.inputOptions[k]}
+      <div className={`mt-6 grid gap-6 ${inputs.length || mode === "currency" ? "sm:grid-cols-2" : ""}`}>
+        {(inputs.length > 0 || mode === "currency") && (
+          <div className="space-y-5">
+            {mode === "currency" && (
+              <label className="block">
+                <span className="text-sm font-semibold">{copy.setup.sourceLabel}</span>
+                <select
+                  value={currency}
+                  onChange={(e) => onChange({ currency: e.target.value })}
+                  className="mt-2 block w-full max-w-xs rounded-lg border border-[var(--lite-line)] bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
+                >
+                  {SOURCE_CURRENCIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c} · {currencyName(c)}
+                    </option>
+                  ))}
+                </select>
+                {copy.setup.sourceHint && <span className="mt-1.5 block text-xs text-[var(--lite-muted)]">{copy.setup.sourceHint}</span>}
               </label>
-            ))}
+            )}
+            {inputs.length > 0 && (
+              <fieldset>
+                <legend className="text-sm font-semibold">{copy.setup.inputLabel}</legend>
+                <div className="mt-2 space-y-2">
+                  {inputs.map((k) => (
+                    <label key={k} className="flex cursor-pointer items-center gap-2 text-sm">
+                      <input type="radio" name="lite-input" checked={input === k} onChange={() => onChange({ input: k })} className="accent-[var(--lite-blue)]" />
+                      {copy.setup.inputOptions[k]}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            )}
           </div>
-        </fieldset>
+        )}
         <fieldset>
           <legend className="text-sm font-semibold">{copy.setup.outputLabel}</legend>
-          <div className="mt-2 space-y-2">
+          <div className={`mt-2 ${outputs.length > 3 ? "grid grid-cols-2 gap-2" : "space-y-2"}`}>
             {outputs.map((k) => (
               <label key={k} className="flex cursor-pointer items-center gap-2 text-sm">
                 <input type="radio" name="lite-output" checked={output === k} onChange={() => onChange({ output: k })} className="accent-[var(--lite-blue)]" />
-                {copy.setup.outputOptions[k] ?? k}
+                {copy.setup.outputOptions[k] ?? (mode === "currency" ? `${k} · ${currencyName(k)}` : k)}
               </label>
             ))}
           </div>

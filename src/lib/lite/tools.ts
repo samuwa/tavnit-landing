@@ -1,4 +1,5 @@
 import type { Locale } from "@/lib/locale";
+import type { CleanMode } from "@/lib/lite/clean";
 import invoiceToExcel from "@/lib/lite/defs/invoice-to-excel";
 import invoiceLineItems from "@/lib/lite/defs/invoice-line-items";
 import poInvoiceCheck from "@/lib/lite/defs/po-invoice-check";
@@ -10,6 +11,8 @@ import contractDates from "@/lib/lite/defs/contract-dates";
 import receiptToExcel from "@/lib/lite/defs/receipt-to-excel";
 import numberFormat from "@/lib/lite/defs/number-format";
 import dateFormat from "@/lib/lite/defs/date-format";
+import currencyConverter from "@/lib/lite/defs/currency-converter";
+import translateColumns from "@/lib/lite/defs/translate-columns";
 
 /**
  * Registry of Tavnit Lite tools.
@@ -38,7 +41,9 @@ export type LiteToolId =
   | "contract-dates"
   | "receipt-to-excel"
   | "number-format"
-  | "date-format";
+  | "date-format"
+  | "currency-converter"
+  | "translate-columns";
 
 /**
  *  extract — one document through a Flow, out comes a table (Excel).
@@ -115,7 +120,7 @@ export interface LiteTool {
   };
   /** clean tools only */
   clean?: {
-    mode: "number" | "date";
+    mode: CleanMode;
     /** One Cleaner per output format, over columns col_1..col_10. */
     cleaners: Record<string, { env: string; value: string | null }>;
   };
@@ -133,6 +138,8 @@ export const LITE_TOOLS: Record<LiteToolId, LiteTool> = {
   "receipt-to-excel": receiptToExcel,
   "number-format": numberFormat,
   "date-format": dateFormat,
+  "currency-converter": currencyConverter,
+  "translate-columns": translateColumns,
 };
 
 export const LITE_TOOL_IDS = Object.keys(LITE_TOOLS) as LiteToolId[];

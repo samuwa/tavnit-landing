@@ -120,7 +120,7 @@ El botón "Probar con … de ejemplo" no corre nada: el mismo documento da siemp
 
 Volver a grabar cuando cambie un Flow, Matcher o Splitter detrás de un ejemplo (o su PDF en `public/lite/`).
 
-## Hojas de cálculo: números y fechas (kind `clean`)
+## Hojas de cálculo: números, fechas, moneda y traducción (kind `clean`)
 
 Dos herramientas sobre un Excel o CSV, no sobre un documento: **Comas y puntos en números** (`/tools/fix-number-format-excel`, `/es/herramientas/convertir-comas-a-puntos-excel`) y **Formato de fechas** (`/tools/fix-date-format-excel`, `/es/herramientas/cambiar-formato-de-fecha-excel`). Cada una corre un Cleaner fijo de la org Lite por `POST /api/sweeps/run`.
 
@@ -143,6 +143,30 @@ Rutas: `POST /api/lite/clean/preview` (lee el archivo, sugiere columnas y separa
 | Fechas yyyy-MM-dd (`iso`) | `e4a0006f-ed7d-4bd8-b831-8ebaa4f6e8fc` |
 | Fechas dd/MM/yyyy (`dmy`) | `85f5fb7c-c4e5-4d35-8def-18f86b670be0` |
 | Fechas MM/dd/yyyy (`mdy`) | `f77f582b-96ae-4fe6-9f45-928808ccd2f9` |
+
+### Moneda y traducción (campos derivados, 2026-09-25)
+
+**Convertir moneda** (`/tools/convert-currency-excel`, `/es/herramientas/convertir-moneda-excel`) y **Traducir columnas** (`/tools/translate-excel-columns`, `/es/herramientas/traducir-excel`). Estos Cleaners no reemplazan la columna: agregan una nueva al lado, `Precio (USD)`, `Descripción (EN)`.
+
+- Cada Cleaner tiene 10 campos base de texto `in_1..in_10` y 10 campos derivados `out_1..out_10` (`source_field: in_n`). Los `in_n` son obligatorios: el sweep borra toda columna que el Cleaner no define antes de correr los derivados.
+- Moneda: el landing manda `1234.56 EUR` (número normalizado + código ISO que eligió el visitante); el Cleaner usa `source_currency: auto_detect`, `mode: live`, 2 decimales. Las tasas vienen de Frankfurter (Banco Central Europeo, ~30 monedas): **no hay COP, PEN, CLP, ARS ni PAB** (en Panamá, USD). La lista de origen es `SOURCE_CURRENCIES` en `clean.ts`.
+- Traducción: `source_language: auto`, `skip_if_target_language`, `preserve_formatting`. Usa OpenAI por celda, por eso el máximo es 200 filas (`MODE_MAX_ROWS`).
+- Relleno de celdas vacías: un espacio `" "` (pandas no lo lee como NaN, no se cobra y los derivados lo saltan).
+
+| Cleaner | id |
+|---|---|
+| Moneda → USD | `33b11d72-617a-490f-9fc0-cf16b5af3897` |
+| Moneda → EUR | `f1763fe8-1e6a-4e70-87e4-75590da84b25` |
+| Moneda → GBP | `4764c580-89ce-4818-8ded-eb109eae4c89` |
+| Moneda → MXN | `8cec58a7-0bac-4f43-83c6-1ebfc78f4ef9` |
+| Moneda → BRL | `e0e11b6d-b7fa-489e-9d33-50ad210f313a` |
+| Moneda → CNY | `128af014-8b11-4cb0-b02a-d0d35c682631` |
+| Traducir → en | `79981315-2c66-48a0-9943-323eaff3e196` |
+| Traducir → es | `f9d6f8cc-fe61-484c-9362-6cc7b2fabf20` |
+| Traducir → pt | `f99b91a1-ae9d-48cd-a968-4faa1b231aab` |
+| Traducir → fr | `0f90807b-513c-4960-8f89-47bef9249f86` |
+| Traducir → de | `d28334a2-92fe-44ba-8221-42aeb4b6b6de` |
+| Traducir → zh | `7be2d396-69e2-43da-9c51-11e5151aa8d5` |
 
 ## Recursos en la org Lite (2026-09-24)
 

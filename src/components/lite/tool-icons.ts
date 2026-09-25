@@ -1,6 +1,8 @@
 import {
   CalendarClock,
   CalendarDays,
+  Coins,
+  Languages,
   Hash,
   WandSparkles,
   FileSpreadsheet,
@@ -28,6 +30,8 @@ export const TOOL_ICONS: Partial<Record<LiteToolId, LucideIcon>> = {
   "receipt-to-excel": Receipt,
   "number-format": Hash,
   "date-format": CalendarDays,
+  "currency-converter": Coins,
+  "translate-columns": Languages,
 };
 export const KIND_ICON: Record<LiteToolKind, LucideIcon> = { extract: FileSpreadsheet, compare: GitCompareArrows, split: Scissors, clean: WandSparkles };
 /** Tile colours: blue for extraction, violet for comparing, ink for the splitter, amber for spreadsheets. */
