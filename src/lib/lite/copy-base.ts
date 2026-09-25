@@ -172,7 +172,15 @@ export interface ToolCopy {
   };
   /** Dialog shown once, right after the Excel downloads. "{fields}" in lead
    *  is the column count. */
-  after: { title: string; lead: string; close: string };
+  after: {
+    /** The confirmation strip: what was downloaded. */
+    title: string;
+    lead: string;
+    /** aria-label of the dialog's close button. */
+    close: string;
+    /** Under the title, after the file name. */
+    saved: string;
+  };
   how: { heading: string; steps: { title: string; body: string }[] };
   faqHeading: string;
   faqs: { q: string; a: string }[];
@@ -593,7 +601,8 @@ export const BASE_ES: ToolCopy = {
   after: {
     title: "Tu Excel está listo",
     lead: "Salió de un Flow fijo de {fields} campos. En tu cuenta los campos los eliges tú, y así se ve cuando Tavnit procesa {all_docs}:",
-    close: "Seguir aquí",
+    close: "Cerrar",
+    saved: "guardado en tus descargas",
   },
   how: {
     heading: "Cómo funciona",
@@ -896,7 +905,8 @@ export const BASE_EN: ToolCopy = {
   after: {
     title: "Your Excel is ready",
     lead: "It came out of a fixed Flow with {fields} fields. In your account you choose the fields, and this is what it looks like when Tavnit handles {each_doc}:",
-    close: "Stay here",
+    close: "Close",
+    saved: "saved to your downloads",
   },
   how: {
     heading: "How it works",

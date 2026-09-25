@@ -85,7 +85,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
       after: {
         title: "Tus documentos están listos",
         lead: "Salieron de un Splitter fijo con ocho tipos. En tu cuenta los tipos los defines tú, y cada documento sigue solo a su Flow:",
-        close: "Seguir aquí",
+        close: "Cerrar",
       },
       how: {
         heading: "Cómo funciona",
@@ -223,7 +223,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
       after: {
         title: "Your documents are ready",
         lead: "They came out of a fixed Splitter with eight types. In your account you define the types, and each document goes on to its Flow by itself:",
-        close: "Stay here",
+        close: "Close",
       },
       how: {
         heading: "How it works",

@@ -9,6 +9,7 @@ import type { Locale } from "@/lib/locale";
 import AuthModal from "@/components/lite/AuthModal";
 import CleanerIdeas from "@/components/lite/CleanerIdeas";
 import WhatNext from "@/components/lite/WhatNext";
+import AfterDownload from "@/components/lite/AfterDownload";
 import { playSample, useTurnstile } from "@/components/lite/shared";
 
 /** The id a sample result carries instead of a run id: it was never run. */
@@ -150,7 +151,8 @@ export default function LiteTool({
   const [docOpen, setDocOpen] = useState(false);
   const docDialog = useRef<HTMLDialogElement>(null);
   const [afterOpen, setAfterOpen] = useState(false);
-  const afterDialog = useRef<HTMLDialogElement>(null);
+  /** Name of the file the last download saved, for the dialog's receipt. */
+  const [downloadedName, setDownloadedName] = useState<string | null>(null);
   /** The run the post-download dialog was already shown for (once per run). */
   const afterShownFor = useRef<string | null>(null);
   const [downloading, setDownloading] = useState(false);
@@ -362,13 +364,6 @@ export default function LiteTool({
     if (!docOpen && el.open) el.close();
   }, [docOpen]);
 
-  useEffect(() => {
-    const el = afterDialog.current;
-    if (!el) return;
-    if (afterOpen && !el.open) el.showModal();
-    if (!afterOpen && el.open) el.close();
-  }, [afterOpen]);
-
   const reset = () => {
     setDocOpen(false);
     setAfterOpen(false);
@@ -407,6 +402,7 @@ export default function LiteTool({
       const cd = res.headers.get("content-disposition") || "";
       const m = /filename\*=UTF-8''([^;]+)/.exec(cd) || /filename="([^"]+)"/.exec(cd);
       const name = m ? decodeURIComponent(m[1]) : "tavnit.xlsx";
+      setDownloadedName(name);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -874,39 +870,19 @@ export default function LiteTool({
         </div>
       </dialog>
 
-      {/* right after the download: the diagram, once */}
-      <dialog
-        ref={afterDialog}
-        onCancel={(e) => {
-          e.preventDefault();
-          setAfterOpen(false);
-        }}
-        onClick={(e) => {
-          if (e.target === afterDialog.current) setAfterOpen(false);
-        }}
-        aria-label={copy.after.title}
-        className="lite m-auto max-h-[92vh] w-[min(94vw,880px)] overflow-y-auto rounded-2xl border border-[var(--lite-line)] bg-white p-0 shadow-2xl backdrop:bg-[#1c2321]/60 backdrop:backdrop-blur-sm open:animate-[lite-pop_.2s_ease-out]"
-        style={{ backgroundImage: "none" }}
-      >
-        <div className="p-6 sm:p-8">
-          {afterOpen && (
-            <WhatNext
-              copy={copy.next}
-              locale={locale}
-              fileName={file}
-              rows={total}
-              compact
-              heading={copy.after.title}
-              lead={fill(copy.after.lead, { fields: columns.length })}
-              columns={columns}
-              lineFields={lineFields}
-            />
-          )}
-          <button type="button" onClick={() => setAfterOpen(false)} className={`${BTN_QUIET} mt-4`}>
-            {copy.after.close}
-          </button>
-        </div>
-      </dialog>
+      {/* right after the download: the receipt, then "and then what?", once */}
+      <AfterDownload
+        open={afterOpen}
+        onClose={() => setAfterOpen(false)}
+        copy={copy}
+        locale={locale}
+        lead={fill(copy.after.lead, { fields: columns.length })}
+        downloaded={downloadedName}
+        fileName={file}
+        rows={total}
+        columns={columns}
+        lineFields={lineFields}
+      />
 
       <AuthModal
         open={authOpen}

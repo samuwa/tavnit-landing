@@ -8,6 +8,7 @@ import type { Locale } from "@/lib/locale";
 import type { CompareResult, PoStatus } from "@/lib/lite/compare";
 import AuthModal from "@/components/lite/AuthModal";
 import WhatNext from "@/components/lite/WhatNext";
+import AfterDownload from "@/components/lite/AfterDownload";
 import {
   BTN_DOWNLOAD,
   BTN_INK,
@@ -87,7 +88,7 @@ export default function LiteCompare({
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [afterOpen, setAfterOpen] = useState(false);
-  const afterDialog = useRef<HTMLDialogElement>(null);
+  const [downloadedName, setDownloadedName] = useState<string | null>(null);
   const afterShownFor = useRef<string | null>(null);
   const abort = useRef<AbortController | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -296,6 +297,7 @@ export default function LiteCompare({
         { cache: "no-store" },
       );
       const ok = await saveResponse(res, "tavnit-comparison.xlsx");
+      if (ok) setDownloadedName(ok);
       if (!ok) {
         setAuthOpen(true);
         return;
@@ -322,13 +324,6 @@ export default function LiteCompare({
   useEffect(() => {
     if (phase.kind === "done") resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [phase.kind]);
-
-  useEffect(() => {
-    const el = afterDialog.current;
-    if (!el) return;
-    if (afterOpen && !el.open) el.showModal();
-    if (!afterOpen && el.open) el.close();
-  }, [afterOpen]);
 
   const reset = () => {
     abort.current?.abort();
@@ -575,28 +570,18 @@ export default function LiteCompare({
         <WhatNext copy={copy.next} locale={locale} fileName={phase.files[0]} rows={result.lines.length} columns={columns} lineFields={lineFields} />
       </div>
 
-      <dialog
-        ref={afterDialog}
-        onCancel={(e) => {
-          e.preventDefault();
-          setAfterOpen(false);
-        }}
-        onClick={(e) => {
-          if (e.target === afterDialog.current) setAfterOpen(false);
-        }}
-        aria-label={copy.after.title}
-        className="lite m-auto max-h-[92vh] w-[min(94vw,880px)] overflow-y-auto rounded-2xl border border-[var(--lite-line)] bg-white p-0 shadow-2xl backdrop:bg-[#1c2321]/60 backdrop:backdrop-blur-sm open:animate-[lite-pop_.2s_ease-out]"
-        style={{ backgroundImage: "none" }}
-      >
-        <div className="p-6 sm:p-8">
-          {afterOpen && (
-            <WhatNext copy={copy.next} locale={locale} fileName={phase.files[0]} rows={result.lines.length} compact heading={copy.after.title} lead={fill(copy.after.lead, { fields: columns.length })} columns={columns} lineFields={lineFields} />
-          )}
-          <button type="button" onClick={() => setAfterOpen(false)} className={`${BTN_QUIET} mt-4`}>
-            {copy.after.close}
-          </button>
-        </div>
-      </dialog>
+      <AfterDownload
+        open={afterOpen}
+        onClose={() => setAfterOpen(false)}
+        copy={copy}
+        locale={locale}
+        lead={fill(copy.after.lead, { fields: columns.length })}
+        downloaded={downloadedName}
+        fileName={phase.files[0]}
+        rows={result.lines.length}
+        columns={columns}
+        lineFields={lineFields}
+      />
 
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onAuthed={() => { setAuthOpen(false); void download(); }} onBeforeRedirect={stashForRedirect} copy={copy.auth} locale={locale} />
     </>

@@ -30,8 +30,9 @@ export function plural(n: number, words: [string, string]): string {
   return `${n} ${n === 1 ? words[0] : words[1]}`;
 }
 
-/** Reads a download response and hands the file to the browser. Returns false on 401 (sign-in needed). */
-export async function saveResponse(res: Response, fallback: string): Promise<boolean> {
+/** Reads a download response and hands the file to the browser. Returns the
+ *  file name, or false on 401 (sign-in needed). */
+export async function saveResponse(res: Response, fallback: string): Promise<string | false> {
   if (res.status === 401) return false;
   if (!res.ok) throw new Error((await res.json().catch(() => ({ error: "backend" })) as { error?: string }).error || "backend");
   const blob = await res.blob();
@@ -46,7 +47,7 @@ export async function saveResponse(res: Response, fallback: string): Promise<boo
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
-  return true;
+  return name;
 }
 
 /* ---------- sample playback ---------- */
