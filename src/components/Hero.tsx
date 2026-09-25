@@ -16,19 +16,17 @@ import HeroAnimation from "./HeroAnimation";
  * it starts on first paint instead of after hydration, so LCP does not wait
  * for the JS bundle.
  *
- * The use-case links exist because Search Console shows almost all non-brand
- * demand landing on PO matching and customs/HS classification; the homepage
- * mentioned neither above the fold.
+ * Under the headline, three things only: one line of what it does, the two
+ * CTAs, one line of proof. It used to carry five stacked blocks (a two-part
+ * subtitle, three trust chips, a "Built for" row of links) competing for
+ * the eye. The use-case links it had still live in the use-cases section
+ * and the footer, so the homepage keeps linking to PO matching and customs.
  */
 
-const USE_CASE_LINKS: { label: string; href: string }[] = [
-  { label: "Invoices", href: "/use-cases/invoice-processing" },
-  { label: "PO matching", href: "/use-cases/purchase-orders" },
-  { label: "Customs & HS codes", href: "/use-cases/customs-trade" },
-  { label: "Contracts", href: "/use-cases/contract-analysis" },
-];
+/** Stated figure, set by the team (not read from the database). */
+const DOCUMENTS_PROCESSED = "100,000+";
 
-export default function Hero({ documentsProcessed }: { documentsProcessed: string }) {
+export default function Hero() {
   return (
     <section className="relative min-h-svh flex items-center justify-center overflow-hidden pt-20 md:pt-16" id="hero" aria-labelledby="hero-heading">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center py-4 md:py-[clamp(0.5rem,1.5svh,2rem)] w-full">
@@ -58,7 +56,7 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
           className="hero-enter text-base sm:text-lg text-fg-4 max-w-[560px] mb-8 md:mb-[clamp(1rem,2.5svh,2rem)]"
           style={{ "--hero-delay": "0.3s" } as React.CSSProperties}
         >
-          Extract, clean, and store data from any document — then review it with your team and let AI agents act on it. No code required.
+          Extract data from any document, review it with your team, and let AI act on it.
         </p>
 
         {/* CTAs */}
@@ -89,37 +87,12 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
             </Link>
           </div>
 
-          {/* Trust indicators */}
-          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs sm:text-sm text-fg-5">
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-ok/70" />
-              Free credits to start
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-ok/70" />
-              {documentsProcessed} documents processed
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-ok/70" />
-              Setup in under 5 minutes
-            </span>
-          </div>
-
-          {/* Use cases with real search demand */}
-          <p className="text-xs sm:text-sm text-fg-5">
-            <span className="mr-1">Built for</span>
-            {USE_CASE_LINKS.map(({ label, href }, i) => (
-              <span key={href}>
-                {i > 0 && <span aria-hidden="true"> · </span>}
-                <Link
-                  href={href}
-                  onClick={() => trackEvent("cta_click", { cta: "use_case_link", location: "hero", href })}
-                  className="text-fg-3 hover:text-fg underline underline-offset-4 decoration-tint/20 hover:decoration-tint/60 transition-colors"
-                >
-                  {label}
-                </Link>
-              </span>
-            ))}
+          {/* Proof */}
+          <p className="flex items-center gap-1.5 text-xs sm:text-sm text-fg-5">
+            <CheckCircle2 size={14} className="text-ok/70" aria-hidden />
+            {DOCUMENTS_PROCESSED} documents processed
+            <span aria-hidden="true">·</span>
+            No code required
           </p>
         </div>
       </div>
