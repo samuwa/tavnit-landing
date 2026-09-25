@@ -1,0 +1,57 @@
+{
+ "kind": "split",
+ "seconds": 12,
+ "segments": [
+  {
+   "index": 0,
+   "title": "Factura / Invoice",
+   "type": "Factura / Invoice",
+   "description": "Commercial invoice from Distribuidora Istmo, S.A. to Supermercados El Rey Panamá, S.A.",
+   "reason": "Pages 1–2 are the two-page invoice FAC-2026-004512; page 2 is explicitly marked as its continuation and contains the remaining items, tax, and total.",
+   "from": 1,
+   "to": 2,
+   "hasFile": true
+  },
+  {
+   "index": 1,
+   "title": "Orden de compra / Purchase order",
+   "type": "Orden de compra / Purchase order",
+   "description": "Purchase order OC-884 issued by Supermercados El Rey Panamá, S.A.",
+   "reason": "The page is titled ORDEN DE COMPRA and includes a PO number, supplier, delivery location, ordered items, and authorization details.",
+   "from": 3,
+   "to": 3,
+   "hasFile": true
+  },
+  {
+   "index": 2,
+   "title": "Packing list",
+   "type": "Packing list",
+   "description": "Packing list PL-2026-0917 from Agroexportadora del Barú, S.A.",
+   "reason": "The page is titled PACKING LIST and lists a consignee, shipment ports, package counts, and net and gross weights without prices.",
+   "from": 4,
+   "to": 4,
+   "hasFile": true
+  },
+  {
+   "index": 3,
+   "title": "Recibo / Receipt",
+   "type": "Recibo / Receipt",
+   "description": "Receipt from Fonda La Ceiba.",
+   "reason": "The narrow point-of-sale ticket lists items, taxes, a total, card payment details, and a purchase thank-you message.",
+   "from": 5,
+   "to": 5,
+   "hasFile": true
+  },
+  {
+   "index": 4,
+   "title": "Contrato / Contract",
+   "type": "Contrato / Contract",
+   "description": "Two-page maintenance services contract between Torres del Pacífico, S.A. and Servitec Panamá, S.A.",
+   "reason": "Pages 6–7 form a continuous maintenance services contract with numbered clauses; page 7 contains the final clause, execution statement, and signature blocks.",
+   "from": 6,
+   "to": 7,
+   "hasFile": true
+  }
+ ],
+ "pages": 7
+}

@@ -1,0 +1,42 @@
+{
+ "kind": "extract",
+ "seconds": 9,
+ "columns": [
+  "contract_title",
+  "contract_type",
+  "party_a",
+  "party_b",
+  "signature_date",
+  "start_date",
+  "end_date",
+  "term",
+  "auto_renewal",
+  "notice_deadline",
+  "notice_period",
+  "value",
+  "currency",
+  "governing_law"
+ ],
+ "rows": [
+  {
+   "contract_title": "CONTRATO DE SERVICIOS DE MANTENIMIENTO",
+   "contract_type": "services",
+   "party_a": "TORRES DEL PACÍFICO, S.A.",
+   "party_b": "SERVITEC PANAMÁ, S.A.",
+   "signature_date": "September 15, 2026",
+   "start_date": "October 1, 2026",
+   "end_date": "September 30, 2027",
+   "term": "12 months",
+   "auto_renewal": "Yes",
+   "notice_deadline": "August 1, 2027",
+   "notice_period": "60 days",
+   "value": 4850,
+   "currency": "USD",
+   "governing_law": "Republic of Panama"
+  }
+ ],
+ "total": 1,
+ "truncated": false,
+ "pages": 2,
+ "mime": "application/pdf"
+}

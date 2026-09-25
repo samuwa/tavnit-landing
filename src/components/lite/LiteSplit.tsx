@@ -22,6 +22,7 @@ import {
   Trust,
   clearStash,
   fill,
+  playSample,
   plural,
   readStash,
   saveResponse,
@@ -37,6 +38,8 @@ import {
  */
 
 const STASH_KEY = "tavnit_lite_split";
+/** The id the sample split carries: it was recorded, never run (lib/lite/samples). */
+const SAMPLE = "sample";
 
 interface Stash {
   toolId: string;
@@ -121,6 +124,22 @@ export default function LiteSplit({
       setDownloadError(null);
       clearStash(STASH_KEY);
       setPhase({ kind: "processing", file: name, splitId: null, stage: 0 });
+      if (sample) {
+        const f = await playSample<{ segments: SegmentView[]; pages: number }>(
+          `/api/lite/sample/${toolId}?locale=${locale}`,
+          sc.stages.length,
+          (stage) => setPhase((p) => (p.kind === "processing" ? { ...p, stage } : p)),
+          ctrl.signal,
+        );
+        if (ctrl.signal.aborted) return;
+        if (!f) {
+          setPhase({ kind: "error", code: "unavailable", file: name });
+          return;
+        }
+        writeStash(STASH_KEY, { toolId, splitId: SAMPLE, file: name });
+        setPhase({ kind: "done", file: name, splitId: SAMPLE, segments: f.segments, pages: f.pages });
+        return;
+      }
       const form = new FormData();
       form.set("tool", toolId);
       form.set("locale", locale);
@@ -149,7 +168,7 @@ export default function LiteSplit({
       await new Promise((r) => setTimeout(r, POLL_MS));
       await poll(splitId, name, ctrl);
     },
-    [toolId, locale, sampleName, turnstile, poll],
+    [toolId, locale, sampleName, turnstile, poll, sc.stages.length],
   );
 
   // Back from a sign-in round trip (or a reload).
@@ -165,12 +184,23 @@ export default function LiteSplit({
       }
     }
     if (!stash) return;
+    if (stash.splitId === SAMPLE) {
+      const ctrlS = new AbortController();
+      abort.current = ctrlS;
+      fetch(`/api/lite/sample/${toolId}?locale=${locale}`, { signal: ctrlS.signal })
+        .then((r) => (r.ok ? (r.json() as Promise<{ segments: SegmentView[]; pages: number }>) : null))
+        .then((f) => {
+          if (f) setPhase({ kind: "done", file: stash.file, splitId: SAMPLE, segments: f.segments, pages: f.pages });
+        })
+        .catch(() => {});
+      return () => ctrlS.abort();
+    }
     const ctrl = new AbortController();
     abort.current = ctrl;
     setPhase({ kind: "processing", file: stash.file, splitId: stash.splitId, stage: 1 });
     void poll(stash.splitId, stash.file, ctrl);
     return () => ctrl.abort();
-  }, [toolId, poll]);
+  }, [toolId, poll, locale]);
 
   const download = useCallback(
     async (which: number | "all") => {
@@ -179,10 +209,9 @@ export default function LiteSplit({
       setDownloadError(null);
       pending.current = which;
       try {
-        const url =
-          which === "all"
-            ? `/api/lite/split/${encodeURIComponent(phase.splitId)}/download`
-            : `/api/lite/split/${encodeURIComponent(phase.splitId)}/segment/${which}`;
+        const base = phase.splitId === SAMPLE ? `/api/lite/sample/${toolId}` : `/api/lite/split/${encodeURIComponent(phase.splitId)}`;
+        const q = phase.splitId === SAMPLE ? `?locale=${locale}` : "";
+        const url = which === "all" ? `${base}/download${q}` : `${base}/segment/${which}${q}`;
         const res = await fetch(url, { cache: "no-store" });
         const ok = await saveResponse(res, which === "all" ? "tavnit-documents.zip" : "tavnit-document.pdf");
         if (!ok) {
@@ -197,7 +226,7 @@ export default function LiteSplit({
         setDownloading(null);
       }
     },
-    [phase, copy.errors],
+    [phase, copy.errors, toolId, locale],
   );
 
   useEffect(() => {

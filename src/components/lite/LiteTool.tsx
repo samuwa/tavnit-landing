@@ -9,6 +9,19 @@ import type { Locale } from "@/lib/locale";
 import AuthModal from "@/components/lite/AuthModal";
 import CleanerIdeas from "@/components/lite/CleanerIdeas";
 import WhatNext from "@/components/lite/WhatNext";
+import { playSample } from "@/components/lite/shared";
+
+/** The id a sample result carries instead of a run id: it was never run. */
+const SAMPLE = "sample";
+
+interface ExtractFixture {
+  columns: string[];
+  rows: Record<string, Cell>[];
+  total: number;
+  truncated: boolean;
+  pages: number;
+  mime: string | null;
+}
 
 /**
  * The tool itself: a sheet of paper that becomes a spreadsheet.
@@ -133,12 +146,15 @@ export default function LiteTool({
   copy,
   turnstileSiteKey,
   hasSample,
+  sampleUrl,
 }: {
   toolId: LiteToolId;
   locale: Locale;
   copy: ToolCopy;
   turnstileSiteKey: string | null;
   hasSample: boolean;
+  /** The bundled sample document, under /public, for the viewer. */
+  sampleUrl?: string;
 }) {
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
   const [dragging, setDragging] = useState(false);
@@ -289,6 +305,25 @@ export default function LiteTool({
       setHidden([]);
       setPhase({ kind: "processing", file: displayName, stage: 0, runId: null, startedAt });
 
+      if (sample) {
+        // Nothing to run: the sample's result is recorded (lib/lite/samples).
+        // Play the progress, then show it, as a real run would.
+        const f = await playSample<ExtractFixture>(
+          `/api/lite/sample/${toolId}?locale=${locale}`,
+          copy.stages.length,
+          (stage) => setPhase((p) => (p.kind === "processing" ? { ...p, stage } : p)),
+          ctrl.signal,
+        );
+        if (ctrl.signal.aborted) return;
+        if (!f) {
+          setPhase({ kind: "error", code: "unavailable", file: displayName });
+          return;
+        }
+        writeStash({ toolId, runId: SAMPLE, file: displayName, startedAt });
+        setPhase({ kind: "done", file: displayName, runId: SAMPLE, columns: f.columns, rows: f.rows, total: f.total, truncated: f.truncated, pages: f.pages, seconds: 0, mime: f.mime });
+        return;
+      }
+
       const form = new FormData();
       form.set("tool", toolId);
       form.set("locale", locale);
@@ -335,6 +370,18 @@ export default function LiteTool({
       window.history.replaceState(null, "", url.pathname + url.search + url.hash);
     }
     if (!stash) return;
+    if (Array.isArray(stash.hidden)) setHidden(stash.hidden.filter((c) => typeof c === "string"));
+    if (stash.runId === SAMPLE) {
+      const ctrlS = new AbortController();
+      abort.current = ctrlS;
+      fetch(`/api/lite/sample/${toolId}?locale=${locale}`, { signal: ctrlS.signal })
+        .then((r) => (r.ok ? (r.json() as Promise<ExtractFixture>) : null))
+        .then((f) => {
+          if (f) setPhase({ kind: "done", file: stash.file, runId: SAMPLE, columns: f.columns, rows: f.rows, total: f.total, truncated: f.truncated, pages: f.pages, seconds: 0, mime: f.mime });
+        })
+        .catch(() => {});
+      return () => ctrlS.abort();
+    }
     const ctrl = new AbortController();
     abort.current = ctrl;
     // startedAt from the original submit keeps the timeout honest for a job
@@ -343,7 +390,7 @@ export default function LiteTool({
     setPhase({ kind: "processing", file: stash.file, stage: 1, runId: stash.runId, startedAt });
     void poll(stash.runId, stash.file, startedAt, ctrl, true);
     return () => ctrl.abort();
-  }, [toolId, poll]);
+  }, [toolId, poll, locale]);
 
   useEffect(() => () => abort.current?.abort(), []);
 
@@ -385,7 +432,11 @@ export default function LiteTool({
     setDownloadError(null);
     try {
       const hide = hidden.length ? `?hide=${encodeURIComponent(hidden.join(","))}` : "";
-      const res = await fetch(`/api/lite/runs/${encodeURIComponent(phase.runId)}/download${hide}`, {
+      const res = await fetch(
+        phase.runId === SAMPLE
+          ? `/api/lite/sample/${toolId}/download?locale=${locale}${hidden.length ? `&hide=${encodeURIComponent(hidden.join(","))}` : ""}`
+          : `/api/lite/runs/${encodeURIComponent(phase.runId)}/download${hide}`,
+        {
         cache: "no-store",
       });
       if (res.status === 401) {
@@ -419,7 +470,7 @@ export default function LiteTool({
     } finally {
       setDownloading(false);
     }
-  }, [phase, copy.errors, hidden]);
+  }, [phase, copy.errors, hidden, toolId, locale]);
 
   // After a sign-in from the dialog, retry the download once.
   const onAuthed = useCallback(() => {
@@ -596,7 +647,7 @@ export default function LiteTool({
       rows: plural(total, copy.result.rowWord),
       pages: plural(pages, copy.result.pageWord),
     }) + (seconds > 0 ? ` · ${fill(copy.result.readyIn, { s: seconds })}` : "");
-  const documentUrl = `/api/lite/runs/${encodeURIComponent(runId)}/document`;
+  const documentUrl = runId === SAMPLE && sampleUrl ? sampleUrl : `/api/lite/runs/${encodeURIComponent(runId)}/document`;
   const isPdf = !mime || mime === "application/pdf";
   const sums = columns.map((c) => {
     if (!SUMMABLE.test(c)) return null;

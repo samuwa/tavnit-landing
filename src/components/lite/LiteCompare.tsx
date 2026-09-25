@@ -23,6 +23,7 @@ import {
   Trust,
   clearStash,
   fill,
+  playSample,
   plural,
   readStash,
   saveResponse,
@@ -40,6 +41,8 @@ import {
  */
 
 const STASH_KEY = "tavnit_lite_cmp";
+/** The id a sample comparison carries: it was recorded, never run (lib/lite/samples). */
+const SAMPLE = "sample";
 
 interface Stash {
   toolId: string;
@@ -142,6 +145,25 @@ export default function LiteCompare({
       clearStash(STASH_KEY);
       setPhase({ kind: "reading", files: names, stage: 0 });
 
+      if (sample) {
+        // The sample set always compares the same way: play the progress over
+        // the recorded result instead of spending runs and a Matcher on it.
+        const f = await playSample<{ result: CompareResult }>(
+          `/api/lite/sample/${toolId}?locale=${locale}`,
+          cmp.stages.length,
+          (stage) => setPhase((p) => (p.kind === "reading" || p.kind === "matching" ? { ...p, stage } : p)),
+          ctrl.signal,
+        );
+        if (ctrl.signal.aborted) return;
+        if (!f) {
+          setPhase({ kind: "error", code: "unavailable", files: names });
+          return;
+        }
+        writeStash(STASH_KEY, { toolId, matchId: SAMPLE, files: names });
+        setPhase({ kind: "done", files: names, matchId: SAMPLE, result: f.result });
+        return;
+      }
+
       // One run per document, in slot order (slot 0 is the reference).
       const runIds: string[] = [];
       for (let i = 0; i < names.length; i++) {
@@ -227,7 +249,7 @@ export default function LiteCompare({
       setPhase({ kind: "matching", files: names, matchId, stage: 2 });
       await pollMatch(matchId, names, ctrl);
     },
-    [files, sampleNames, toolId, locale, turnstile, pollMatch],
+    [files, sampleNames, toolId, locale, turnstile, pollMatch, cmp.stages.length],
   );
 
   // Back from a sign-in round trip (or a reload): pick the comparison up.
@@ -243,12 +265,23 @@ export default function LiteCompare({
       }
     }
     if (!stash) return;
+    if (stash.matchId === SAMPLE) {
+      const ctrlS = new AbortController();
+      abort.current = ctrlS;
+      fetch(`/api/lite/sample/${toolId}?locale=${locale}`, { signal: ctrlS.signal })
+        .then((r) => (r.ok ? (r.json() as Promise<{ result: CompareResult }>) : null))
+        .then((f) => {
+          if (f) setPhase({ kind: "done", files: stash.files, matchId: SAMPLE, result: f.result });
+        })
+        .catch(() => {});
+      return () => ctrlS.abort();
+    }
     const ctrl = new AbortController();
     abort.current = ctrl;
     setPhase({ kind: "matching", files: stash.files, matchId: stash.matchId, stage: 2 });
     void pollMatch(stash.matchId, stash.files, ctrl);
     return () => ctrl.abort();
-  }, [toolId, pollMatch]);
+  }, [toolId, pollMatch, locale]);
 
   // ---- download ---------------------------------------------------------------
   const download = useCallback(async () => {
@@ -256,7 +289,12 @@ export default function LiteCompare({
     setDownloading(true);
     setDownloadError(null);
     try {
-      const res = await fetch(`/api/lite/compare/${encodeURIComponent(phase.matchId)}/download`, { cache: "no-store" });
+      const res = await fetch(
+        phase.matchId === SAMPLE
+          ? `/api/lite/sample/${toolId}/download?locale=${locale}`
+          : `/api/lite/compare/${encodeURIComponent(phase.matchId)}/download`,
+        { cache: "no-store" },
+      );
       const ok = await saveResponse(res, "tavnit-comparison.xlsx");
       if (!ok) {
         setAuthOpen(true);
@@ -272,7 +310,7 @@ export default function LiteCompare({
     } finally {
       setDownloading(false);
     }
-  }, [phase, copy.errors]);
+  }, [phase, copy.errors, toolId, locale]);
 
   useEffect(() => {
     if (phase.kind === "done" && autoDownload.current) {

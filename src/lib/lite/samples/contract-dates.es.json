@@ -1,0 +1,42 @@
+{
+ "kind": "extract",
+ "seconds": 9,
+ "columns": [
+  "titulo_contrato",
+  "tipo_contrato",
+  "parte_a",
+  "parte_b",
+  "fecha_firma",
+  "fecha_inicio",
+  "fecha_fin",
+  "plazo",
+  "renovacion_automatica",
+  "fecha_limite_aviso",
+  "preaviso",
+  "valor",
+  "moneda",
+  "ley_aplicable"
+ ],
+ "rows": [
+  {
+   "titulo_contrato": "CONTRATO DE SERVICIOS DE MANTENIMIENTO",
+   "tipo_contrato": "servicios",
+   "parte_a": "TORRES DEL PACÍFICO, S.A.",
+   "parte_b": "SERVITEC PANAMÁ, S.A.",
+   "fecha_firma": "15/09/2026",
+   "fecha_inicio": "01/10/2026",
+   "fecha_fin": "30/09/2027",
+   "plazo": "12 meses",
+   "renovacion_automatica": "Sí",
+   "fecha_limite_aviso": "01/08/2027",
+   "preaviso": "60 días calendario",
+   "valor": 4850,
+   "moneda": "USD",
+   "ley_aplicable": "República de Panamá"
+  }
+ ],
+ "total": 1,
+ "truncated": false,
+ "pages": 2,
+ "mime": "application/pdf"
+}

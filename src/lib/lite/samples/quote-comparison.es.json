@@ -1,0 +1,100 @@
+{
+ "kind": "compare",
+ "seconds": 29,
+ "result": {
+  "kind": "quotes",
+  "suppliers": [
+   {
+    "runId": "3373c670-2e85-4084-bac9-fd051af8a787",
+    "slot": 0,
+    "file": "sample-quote-a.pdf",
+    "label": "Ferretería Industrial Colón, S.A."
+   },
+   {
+    "runId": "7dd32d0a-598c-45ae-8c74-35ad824bda7b",
+    "slot": 1,
+    "file": "sample-quote-b.pdf",
+    "label": "Materiales del Istmo, S.A."
+   },
+   {
+    "runId": "ade0eaff-b219-46ed-b415-8e4c7ab2c456",
+    "slot": 2,
+    "file": "sample-quote-c.pdf",
+    "label": "Depósito La Chorrera, S.A."
+   }
+  ],
+  "lines": [
+   {
+    "description": "Cemento gris Portland tipo I, saco 42.5 kg",
+    "prices": [
+     9.85,
+     9.4,
+     9.95
+    ],
+    "champion": [
+     1
+    ]
+   },
+   {
+    "description": "Varilla de acero corrugado 3/8\" x 6 m",
+    "prices": [
+     6.4,
+     6.75,
+     6.2
+    ],
+    "champion": [
+     2
+    ]
+   },
+   {
+    "description": "Bloque de concreto 6\" (15x20x40 cm)",
+    "prices": [
+     0.92,
+     0.88,
+     0.95
+    ],
+    "champion": [
+     1
+    ]
+   },
+   {
+    "description": "Arena lavada de río",
+    "prices": [
+     32.5,
+     34,
+     30
+    ],
+    "champion": [
+     2
+    ]
+   },
+   {
+    "description": "Piedra triturada 3/4\"",
+    "prices": [
+     38,
+     36.5,
+     null
+    ],
+    "champion": [
+     1
+    ]
+   },
+   {
+    "description": "Alambre de amarre calibre 16, rollo 20 kg",
+    "prices": [
+     27.9,
+     26.5,
+     28.4
+    ],
+    "champion": [
+     1
+    ]
+   }
+  ],
+  "wins": [
+   0,
+   4,
+   2
+  ]
+ }
+}

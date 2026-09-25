@@ -49,6 +49,36 @@ export async function saveResponse(res: Response, fallback: string): Promise<boo
   return true;
 }
 
+/* ---------- sample playback ---------- */
+
+/**
+ * The samples are not run (see lib/lite/samples): their result was recorded
+ * once. This fetches the recording and, meanwhile, walks the progress
+ * captions like a real run does, long enough to read them, short enough not
+ * to make anyone wait for something that is already there.
+ */
+export const SAMPLE_PLAY_MS = 6500;
+
+export async function playSample<T>(
+  url: string,
+  stages: number,
+  onStage: (i: number) => void,
+  signal: AbortSignal,
+): Promise<T | null> {
+  const data = fetch(url, { signal })
+    .then((r) => (r.ok ? (r.json() as Promise<T>) : null))
+    .catch(() => null);
+  const reduce = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const total = reduce ? 1200 : SAMPLE_PLAY_MS;
+  const steps = Math.max(1, stages - 1);
+  for (let i = 1; i <= steps; i++) {
+    await new Promise((r) => setTimeout(r, total / steps + (Math.random() - 0.5) * 300));
+    if (signal.aborted) return null;
+    onStage(Math.min(i, stages - 1));
+  }
+  return data;
+}
+
 /* ---------- Turnstile ---------- */
 
 const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";

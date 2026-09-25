@@ -151,6 +151,7 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
             copy={copy}
             turnstileSiteKey={turnstileSiteKey}
             hasSample={Boolean(tool.samplePaths?.length)}
+            sampleUrl={tool.samplePaths?.[0] ? `/${tool.samplePaths[0]}` : undefined}
           />
         )}
 

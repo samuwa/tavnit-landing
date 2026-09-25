@@ -1,0 +1,131 @@
+{
+ "kind": "compare",
+ "seconds": 17,
+ "result": {
+  "kind": "po",
+  "docs": [
+   {
+    "runId": "58fddd27-fb0d-4fa0-aba8-c486e775566e",
+    "slot": 0,
+    "file": "sample-po.pdf",
+    "label": "OC-8821"
+   },
+   {
+    "runId": "8f327486-3473-4cc6-b278-88f0039a9c0c",
+    "slot": 1,
+    "file": "sample-po-invoice.pdf",
+    "label": "FAC-2026-004521"
+   }
+  ],
+  "lines": [
+   {
+    "description": "Arroz grano largo premium 20 lb",
+    "ref": {
+     "qty": 120,
+     "price": 18.5,
+     "total": 2220
+    },
+    "doc": {
+     "description": "Arroz grano largo premium 20 lb",
+     "qty": 120,
+     "price": 18.5,
+     "total": 2220
+    },
+    "status": "ok"
+   },
+   {
+    "description": "Aceite vegetal 3.78 L",
+    "ref": {
+     "qty": 48,
+     "price": 22.4,
+     "total": 1075.2
+    },
+    "doc": {
+     "description": "Aceite vegetal 3.78 L",
+     "qty": 48,
+     "price": 23.9,
+     "total": 1147.2
+    },
+    "status": "price"
+   },
+   {
+    "description": "Atún en agua 170 g",
+    "ref": {
+     "qty": 300,
+     "price": 1.15,
+     "total": 345
+    },
+    "doc": {
+     "description": "Atún en agua 170 g",
+     "qty": 280,
+     "price": 1.15,
+     "total": 322
+    },
+    "status": "qty"
+   },
+   {
+    "description": "Detergente en polvo 5 kg",
+    "ref": {
+     "qty": 36,
+     "price": 9.9,
+     "total": 356.4
+    },
+    "doc": {
+     "description": "Detergente en polvo 5 kg",
+     "qty": 36,
+     "price": 9.9,
+     "total": 356.4
+    },
+    "status": "ok"
+   },
+   {
+    "description": "Papel higiénico 12 rollos doble hoja",
+    "ref": {
+     "qty": 60,
+     "price": 6.75,
+     "total": 405
+    },
+    "doc": null,
+    "status": "missing"
+   },
+   {
+    "description": "Agua purificada 500 ml (fardo x24)",
+    "ref": {
+     "qty": 80,
+     "price": 5.6,
+     "total": 448
+    },
+    "doc": {
+     "description": "Agua purificada 500 ml (fardo x24)",
+     "qty": 80,
+     "price": 5.6,
+     "total": 448
+    },
+    "status": "ok"
+   },
+   {
+    "description": "Bolsas plásticas biodegradables (rollo x500)",
+    "ref": null,
+    "doc": {
+     "description": "Bolsas plásticas biodegradables (rollo x500)",
+     "qty": 10,
+     "price": 14.25,
+     "total": 142.5
+    },
+    "status": "extra"
+   }
+  ],
+  "summary": {
+   "ok": 3,
+   "price": 1,
+   "qty": 1,
+   "both": 0,
+   "missing": 1,
+   "extra": 1
+  },
+  "totals": {
+   "ref": 4849.6,
+   "doc": 4636.1
+  }
+ }
+}

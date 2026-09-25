@@ -81,8 +81,9 @@ export interface QuotaSnapshot {
 }
 
 /** Documents count against the quota (runs and splits); a match is derived
- *  from runs the visitor already spent quota on. */
-const DOCS = "&kind=neq.match";
+ *  from runs the visitor already spent quota on, and a downloaded sample
+ *  (run_id "sample-…") never ran the engine. Same rule as lite_reserve. */
+const DOCS = "&kind=neq.match&run_id=not.like.sample-*";
 
 export async function quotaSnapshot(sessionId: string, ipHash: string): Promise<QuotaSnapshot> {
   const [session, ip, global] = await Promise.all([
@@ -170,6 +171,20 @@ export async function releaseReservation(id: string): Promise<void> {
   } catch {
     // A stranded reservation only costs this visitor one unit today.
   }
+}
+
+/** Whether this user already has a sample-download row for this tool today. */
+export async function sampleDownloadRecordedToday(userId: string, tool: string): Promise<boolean> {
+  const h = headers();
+  const b = base();
+  if (!h || !b) return false;
+  const res = await fetch(
+    `${b}/rest/v1/lite_runs?select=id&user_id=eq.${encodeURIComponent(userId)}&tool=eq.${encodeURIComponent(tool)}&run_id=like.sample-*&created_at=gte.${encodeURIComponent(startOfUtcDay())}&limit=1`,
+    { headers: h, cache: "no-store" },
+  );
+  if (!res.ok) return false;
+  const rows = (await res.json()) as unknown[];
+  return rows.length > 0;
 }
 
 export async function insertRun(row: {

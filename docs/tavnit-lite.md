@@ -110,6 +110,16 @@ metadatos, así que el correo de bienvenida sale en español para todos.
 6. **Tabla `lite_runs`**: migraciones `20260923150000_lite_runs.sql`, `20260924100000_lite_runs_purged.sql` y `20260924160000_lite_runs_kind.sql` (todas aplicadas). `kind` = run | split | match: la cuota cuenta documentos (run y split); un match no cuenta.
 7. **Search Console**: reenviar el sitemap y pedir indexación de las cuatro URLs nuevas.
 
+## Ejemplos grabados (no se corren)
+
+El botón "Probar con … de ejemplo" no corre nada: el mismo documento da siempre el mismo resultado, así que correrlo en cada clic gastaría un documento del cupo del visitante y créditos de la org Lite para mostrar algo que ya sabemos. Cada ejemplo se corrió una vez contra el motor real con `node scripts/record-lite-samples.mjs` (dev server en :3010 con `LITE_RUNS_PER_DAY` alto) y el resultado vive en `src/lib/lite/samples/<tool>.<locale>.json`. La página recorre las mismas etapas de progreso (~6,5 s) y muestra la grabación.
+
+- `GET /api/lite/sample/:tool?locale=` — la grabación (pública, cacheable).
+- `GET /api/lite/sample/:tool/download?locale=&hide=` — Excel (extracción o comparación) o zip de los cortes (separador), armado desde la grabación; pide sesión como toda descarga y deja una fila `lite_runs` con `is_sample` y quién descargó (el lead).
+- `GET /api/lite/sample/:tool/segment/:n` — un corte del PDF de ejemplo según el rango de páginas grabado.
+
+Volver a grabar cuando cambie un Flow, Matcher o Splitter detrás de un ejemplo (o su PDF en `public/lite/`).
+
 ## Recursos en la org Lite (2026-09-24)
 
 Los ids viven en `src/lib/lite/defs/<tool>.ts` (no son secretos); la variable de entorno del mismo nombre los sobreescribe por ambiente. Todos creados por PostgREST con la misma forma que los crea la app.
