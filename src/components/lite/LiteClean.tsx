@@ -395,12 +395,16 @@ export default function LiteClean({
           </p>
         )}
 
-        <div className={`${SHEET} mt-6 overflow-hidden`}>
-          <div className="max-h-[560px] overflow-auto">
-            <table className="w-full border-collapse text-sm">
-              <thead className="sticky top-0 z-10 bg-[#f6f8fb]">
+        <div
+          role="region"
+          aria-label={cc.highlight}
+          tabIndex={0}
+          className={`${SHEET} lite-scroll mt-6 max-h-[70vh] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50`}
+        >
+            <table className="min-w-full border-collapse text-sm">
+              <thead className="sticky top-0 z-20 bg-[#f6f8fb]">
                 <tr>
-                  <th className="w-10 border-b border-r border-[var(--lite-line)] px-2 py-2 text-right text-xs font-medium text-[var(--lite-muted)]" />
+                  <th scope="col" aria-label="#" className="sticky left-0 z-30 w-10 min-w-10 border-b border-r border-[var(--lite-line)] bg-[#f6f8fb] px-2 py-2 text-right text-xs font-medium text-[var(--lite-muted)]" />
                   {columns.map((c, i) => (
                     <th
                       key={c}
@@ -417,7 +421,7 @@ export default function LiteClean({
                   const marks = new Set(changed[ri] ?? []);
                   return (
                     <tr key={ri} className="border-b border-[var(--lite-rule)] last:border-b-0">
-                      <td className="border-r border-[var(--lite-line)] px-2 py-1.5 text-right text-xs tabular-nums text-[var(--lite-muted)]">{ri + 1}</td>
+                      <td className="sticky left-0 z-10 border-r border-[var(--lite-line)] bg-[#f6f8f6] px-2 py-1.5 text-right text-xs tabular-nums text-[var(--lite-muted)]">{ri + 1}</td>
                       {r.map((v, ci) => (
                         <td
                           key={ci}
@@ -431,7 +435,6 @@ export default function LiteClean({
                 })}
               </tbody>
             </table>
-          </div>
         </div>
         <p className="mt-2 text-xs text-[var(--lite-muted)]">
           {cc.highlight}
@@ -648,8 +651,8 @@ function Setup({
       </div>
 
       <p className="mt-7 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--lite-muted)]">{copy.setup.preview}</p>
-      <div className="mt-2 overflow-x-auto rounded-xl border border-[var(--lite-line)]">
-        <table className="w-full border-collapse text-sm">
+      <div className="lite-scroll mt-2 rounded-xl border border-[var(--lite-line)]">
+        <table className="min-w-full border-collapse text-sm">
           <thead className="bg-[#f6f8fb]">
             <tr>
               {preview.columns.map((c, i) => (
