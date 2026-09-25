@@ -94,36 +94,111 @@ declare global {
   }
 }
 
+/**
+ * Cloudflare Turnstile for the free tools.
+ *
+ * The widget's container lives in the drop zone, which unmounts the moment
+ * a run starts and comes back for the next one. A widget whose container is
+ * gone makes turnstile.reset() throw ("Nothing to reset found"), and that
+ * throw used to abort the upload handler right after the server had
+ * accepted the document: the run finished in the backend while the page sat
+ * on "Uploading" forever. So the container is a callback ref — the widget is
+ * rendered when the element appears and removed when it goes — and every
+ * call into Turnstile is guarded: a failed reset never breaks a run.
+ */
 export function useTurnstile(siteKey: string | null, locale: Locale) {
-  const el = useRef<HTMLDivElement>(null);
+  const node = useRef<HTMLDivElement | null>(null);
   const widgetId = useRef<string | null>(null);
+  const [ready, setReady] = useState(false);
+
+  // Load the script once.
   useEffect(() => {
     if (!siteKey) return;
-    let cancelled = false;
-    const mount = () => {
-      if (cancelled || !el.current || widgetId.current || !window.turnstile) return;
-      widgetId.current = window.turnstile.render(el.current, { sitekey: siteKey, size: "flexible", theme: "light", language: locale });
-    };
-    if (window.turnstile) mount();
-    else {
-      const existing = document.querySelector<HTMLScriptElement>(`script[src^="${TURNSTILE_SRC}"]`);
-      const s = existing ?? document.createElement("script");
-      if (!existing) {
-        s.src = TURNSTILE_SRC;
-        s.async = true;
-        s.defer = true;
-        document.head.appendChild(s);
-      }
-      s.addEventListener("load", mount);
+    if (window.turnstile) {
+      // Already loaded by another tool on the page: mark ready after this
+      // effect instead of setting state inside it.
+      let live = true;
+      void Promise.resolve().then(() => live && setReady(true));
+      return () => {
+        live = false;
+      };
     }
-    return () => {
-      cancelled = true;
-    };
-  }, [siteKey, locale]);
-  const token = useCallback(() => (siteKey && widgetId.current ? window.turnstile?.getResponse(widgetId.current) ?? "" : ""), [siteKey]);
-  const reset = useCallback(() => {
-    if (siteKey && widgetId.current) window.turnstile?.reset(widgetId.current);
+    const existing = document.querySelector<HTMLScriptElement>(`script[src^="${TURNSTILE_SRC}"]`);
+    const s = existing ?? document.createElement("script");
+    if (!existing) {
+      s.src = TURNSTILE_SRC;
+      s.async = true;
+      s.defer = true;
+      document.head.appendChild(s);
+    }
+    const onLoad = () => setReady(true);
+    s.addEventListener("load", onLoad);
+    return () => s.removeEventListener("load", onLoad);
   }, [siteKey]);
+
+  const unmount = useCallback(() => {
+    if (widgetId.current) {
+      try {
+        window.turnstile?.remove(widgetId.current);
+      } catch {
+        // already gone with its container
+      }
+    }
+    widgetId.current = null;
+  }, []);
+
+  const mount = useCallback(() => {
+    if (!siteKey || !ready || !node.current || widgetId.current || !window.turnstile) return;
+    try {
+      widgetId.current = window.turnstile.render(node.current, {
+        sitekey: siteKey,
+        size: "flexible",
+        theme: "light",
+        language: locale,
+      });
+    } catch {
+      widgetId.current = null;
+    }
+  }, [siteKey, ready, locale]);
+
+  // Script arrived after the container: render now.
+  useEffect(() => {
+    mount();
+  }, [mount]);
+
+  // The container comes and goes with the drop zone.
+  const el = useCallback(
+    (n: HTMLDivElement | null) => {
+      if (n === node.current) return;
+      unmount();
+      node.current = n;
+      if (n) mount();
+    },
+    [mount, unmount],
+  );
+
+  const token = useCallback(() => {
+    if (!siteKey || !widgetId.current) return "";
+    try {
+      return window.turnstile?.getResponse(widgetId.current) ?? "";
+    } catch {
+      return "";
+    }
+  }, [siteKey]);
+
+  const reset = useCallback(() => {
+    if (!siteKey || !widgetId.current) return;
+    if (!node.current || !node.current.isConnected) {
+      unmount();
+      return;
+    }
+    try {
+      window.turnstile?.reset(widgetId.current);
+    } catch {
+      unmount();
+    }
+  }, [siteKey, unmount]);
+
   return { el, token, reset };
 }
 

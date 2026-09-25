@@ -9,7 +9,7 @@ import type { Locale } from "@/lib/locale";
 import AuthModal from "@/components/lite/AuthModal";
 import CleanerIdeas from "@/components/lite/CleanerIdeas";
 import WhatNext from "@/components/lite/WhatNext";
-import { playSample } from "@/components/lite/shared";
+import { playSample, useTurnstile } from "@/components/lite/shared";
 
 /** The id a sample result carries instead of a run id: it was never run. */
 const SAMPLE = "sample";
@@ -55,20 +55,8 @@ type Phase =
     }
   | { kind: "error"; code: string; file: string | null };
 
-declare global {
-  interface Window {
-    turnstile?: {
-      render: (el: HTMLElement, opts: Record<string, unknown>) => string;
-      reset: (id?: string) => void;
-      getResponse: (id?: string) => string | undefined;
-      remove: (id?: string) => void;
-    };
-  }
-}
-
 const POLL_MS = 2500;
 const MAX_WAIT_MS = 4 * 60 * 1000;
-const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 /** Columns whose numbers make sense added up. Unit prices and ids do not. */
 const SUMMABLE = /total|importe|monto|subtotal|amount|cantidad|qty|quantity|impuesto|tax|itbms|iva|neto|bruto|descuento|discount/i;
 
@@ -173,8 +161,6 @@ export default function LiteTool({
   const [hidden, setHidden] = useState<string[]>([]);
   const lineFields = LITE_TOOLS[toolId].lineFields[locale];
   const inputRef = useRef<HTMLInputElement>(null);
-  const turnstileEl = useRef<HTMLDivElement>(null);
-  const widgetId = useRef<string | null>(null);
   const abort = useRef<AbortController | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
@@ -188,40 +174,9 @@ export default function LiteTool({
   const formatNumber = (v: number) => (Number.isInteger(v) ? nf.int.format(v) : nf.dec.format(v));
 
   // ---- Turnstile ------------------------------------------------------------
-  useEffect(() => {
-    if (!turnstileSiteKey) return;
-    let cancelled = false;
-    const mount = () => {
-      if (cancelled || !turnstileEl.current || widgetId.current || !window.turnstile) return;
-      widgetId.current = window.turnstile.render(turnstileEl.current, {
-        sitekey: turnstileSiteKey,
-        size: "flexible",
-        theme: "light",
-        language: locale,
-      });
-    };
-    if (window.turnstile) mount();
-    else {
-      const existing = document.querySelector<HTMLScriptElement>(`script[src^="${TURNSTILE_SRC}"]`);
-      const s = existing ?? document.createElement("script");
-      if (!existing) {
-        s.src = TURNSTILE_SRC;
-        s.async = true;
-        s.defer = true;
-        document.head.appendChild(s);
-      }
-      s.addEventListener("load", mount);
-    }
-    return () => {
-      cancelled = true;
-    };
-  }, [turnstileSiteKey, locale]);
-
-  const turnstileToken = () =>
-    turnstileSiteKey && widgetId.current ? window.turnstile?.getResponse(widgetId.current) ?? "" : "";
-  const resetTurnstile = () => {
-    if (turnstileSiteKey && widgetId.current) window.turnstile?.reset(widgetId.current);
-  };
+  const turnstile = useTurnstile(turnstileSiteKey, locale);
+  const turnstileToken = turnstile.token;
+  const resetTurnstile = turnstile.reset;
 
   // ---- run ------------------------------------------------------------------
   /** Polls one run until it settles, updating the phase. */
@@ -548,7 +503,7 @@ export default function LiteTool({
         ) : (
           <span />
         )}
-        {turnstileSiteKey && <div ref={turnstileEl} />}
+        {turnstileSiteKey && <div ref={turnstile.el} />}
       </div>
     </div>
   );
