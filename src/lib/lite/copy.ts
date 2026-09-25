@@ -85,6 +85,8 @@ export interface ShellCopy {
   signin: string;
   /** The tools menu. */
   allTools: string;
+  /** Under "see all tools" in the menu card. */
+  allToolsHint: string;
   groups: { extract: string; compare: string; split: string; clean: string };
   /** The account menu, once signed in. */
   account: { signedInAs: string; open: string; openHint: string; signOut: string; menu: string };
@@ -112,6 +114,7 @@ export const SHELL_COPY: Record<Locale, ShellCopy> = {
     demoHref: "/es/agendar",
     signin: "Iniciar sesión",
     allTools: "Ver todas las herramientas",
+    allToolsHint: "Gratis. Ves el resultado real sin registrarte; con tu cuenta te lo llevas.",
     groups: { extract: "De documento a Excel", compare: "Comparar documentos", split: "Organizar escaneos", clean: "Limpiar hojas de cálculo" },
     account: {
       signedInAs: "Conectado como",
@@ -146,6 +149,7 @@ export const SHELL_COPY: Record<Locale, ShellCopy> = {
     demoHref: "/schedule",
     signin: "Sign in",
     allTools: "See all tools",
+    allToolsHint: "Free. See the real result without signing up; take it with you with an account.",
     groups: { extract: "Document to Excel", compare: "Compare documents", split: "Organise scans", clean: "Clean spreadsheets" },
     account: {
       signedInAs: "Signed in as",

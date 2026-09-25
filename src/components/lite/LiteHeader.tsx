@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ChevronDown, LogOut, Menu, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown, LogOut, Menu, X } from "lucide-react";
 import type { Locale } from "@/lib/locale";
 import type { ShellCopy } from "@/lib/lite/copy";
 import type { ToolCopy } from "@/lib/lite/copy";
@@ -193,7 +193,7 @@ export default function LiteHeader({
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--lite-line)] bg-[var(--lite-paper)]/85 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-[1080px] items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="relative mx-auto flex h-16 max-w-[1080px] items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex items-center gap-6">
           <Link
             href={hubPath}
@@ -213,7 +213,9 @@ export default function LiteHeader({
           </Link>
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Tavnit">
-            <div ref={toolsRef} className="relative">
+            {/* Not positioned: the panel below anchors to the header bar, so it
+                spans the header's width wherever the button sits. */}
+            <div ref={toolsRef}>
               <button
                 type="button"
                 onClick={() => setToolsOpen((v) => !v)}
@@ -225,30 +227,42 @@ export default function LiteHeader({
                 <ChevronDown size={14} className={`transition-transform ${toolsOpen ? "rotate-180" : ""}`} aria-hidden />
               </button>
               {toolsOpen && (
-                <div className="lite-pop absolute left-0 top-11 w-[720px] rounded-2xl border border-[var(--lite-line)] bg-white p-4 shadow-xl shadow-[#1c2321]/10">
-                  {/* Two columns: documents to Excel and spreadsheet cleaning on the
-                      left (the wide one, two tools per row), comparing and
-                      splitting on the right. */}
-                  <div className="grid grid-cols-[1.6fr_1fr] gap-x-6">
-                    {[groups.filter((g) => g.kind === "extract" || g.kind === "clean"), groups.filter((g) => g.kind !== "extract" && g.kind !== "clean")].map((col, ci) => (
-                      <div key={ci} className="space-y-3">
+                <div className="lite-pop absolute inset-x-4 top-[calc(100%+6px)] rounded-2xl border border-[var(--lite-line)] bg-white p-3 shadow-2xl shadow-[#1c2321]/10 sm:inset-x-6">
+                  {/* Two columns of about the same height, read in order: on the
+                      left (wide, two tools per row) documents to Excel, then
+                      cleaning spreadsheets; on the right comparing documents,
+                      organising scans, and the way to the hub. */}
+                  <div className="grid grid-cols-[2fr_1fr] divide-x divide-[var(--lite-line)]">
+                    {[
+                      groups.filter((g) => g.kind === "extract" || g.kind === "clean"),
+                      groups.filter((g) => g.kind === "compare" || g.kind === "split"),
+                    ].map((col, ci) => (
+                      <div key={ci} className="flex flex-col gap-4 px-3 py-2 first:pl-1 last:pr-1">
                         {col.map((g) => (
-                          <div key={g.kind}>
-                            <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--lite-muted)]">{g.title}</p>
-                            <div className={ci === 0 ? "grid grid-cols-2 gap-x-2" : ""}>
+                          <section key={g.kind} aria-label={g.title}>
+                            <p className="mb-1.5 px-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--lite-muted)]">{g.title}</p>
+                            <div className={ci === 0 ? "grid grid-cols-2 gap-x-1" : ""}>
                               {g.items.map((x) => (
                                 <ToolItem key={x.id} t={x} onPick={closeTools} />
                               ))}
                             </div>
-                          </div>
+                          </section>
                         ))}
+                        {ci === 1 && (
+                          <Link
+                            href={hubPath}
+                            onClick={closeTools}
+                            className="group mt-auto block rounded-xl bg-[#f6f8fb] p-4 transition-colors hover:bg-[var(--lite-blue-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
+                          >
+                            <span className="flex items-center justify-between gap-2 text-sm font-semibold text-[var(--lite-ink)]">
+                              {t.allTools}
+                              <ArrowRight size={16} className="shrink-0 text-[var(--lite-blue)] transition-transform group-hover:translate-x-0.5" aria-hidden />
+                            </span>
+                            <span className="mt-1.5 block text-xs leading-relaxed text-[var(--lite-muted)]">{t.allToolsHint}</span>
+                          </Link>
+                        )}
                       </div>
                     ))}
-                  </div>
-                  <div className="mt-2 border-t border-[var(--lite-line)] pt-3">
-                    <Link href={hubPath} onClick={closeTools} className="px-2 text-sm font-semibold text-[var(--lite-blue-ink)] hover:underline">
-                      {t.allTools} →
-                    </Link>
                   </div>
                 </div>
               )}
