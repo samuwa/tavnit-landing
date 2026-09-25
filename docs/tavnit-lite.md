@@ -153,20 +153,7 @@ Rutas: `POST /api/lite/clean/preview` (lee el archivo, sugiere columnas y separa
 - Traducción: `source_language: auto`, `skip_if_target_language`, `preserve_formatting`. Usa OpenAI por celda, por eso el máximo es 200 filas (`MODE_MAX_ROWS`).
 - Relleno de celdas vacías: un espacio `" "` (pandas no lo lee como NaN, no se cobra y los derivados lo saltan).
 
-| Cleaner | id |
-|---|---|
-| Moneda → USD | `33b11d72-617a-490f-9fc0-cf16b5af3897` |
-| Moneda → EUR | `f1763fe8-1e6a-4e70-87e4-75590da84b25` |
-| Moneda → GBP | `4764c580-89ce-4818-8ded-eb109eae4c89` |
-| Moneda → MXN | `8cec58a7-0bac-4f43-83c6-1ebfc78f4ef9` |
-| Moneda → BRL | `e0e11b6d-b7fa-489e-9d33-50ad210f313a` |
-| Moneda → CNY | `128af014-8b11-4cb0-b02a-d0d35c682631` |
-| Traducir → en | `79981315-2c66-48a0-9943-323eaff3e196` |
-| Traducir → es | `f9d6f8cc-fe61-484c-9362-6cc7b2fabf20` |
-| Traducir → pt | `f99b91a1-ae9d-48cd-a968-4faa1b231aab` |
-| Traducir → fr | `0f90807b-513c-4960-8f89-47bef9249f86` |
-| Traducir → de | `d28334a2-92fe-44ba-8221-42aeb4b6b6de` |
-| Traducir → zh | `7be2d396-69e2-43da-9c51-11e5151aa8d5` |
+Un Cleaner por destino: **30 monedas** (todas las del BCE; JPY, KRW e ISK con 0 decimales) y **43 idiomas** (cualquier código ISO 639-1 sirve: el motor se lo pasa al modelo). Los ids están en `defs/currency-converter.ts` y `defs/translate-columns.ts`. Para agregar un destino: clonar el Cleaner de USD o de `en` (cleaners + sus 20 cleaner_fields, cambiando `target_currency` / `target_language`) y sumar la línea en el def; el desplegable, la validación y el nombre (con `Intl.DisplayNames`) salen solos. Los primeros del desplegable son `POPULAR_OUTPUTS` en `clean.ts`. BGN salió de la lista: el BCE dejó de publicarlo cuando Bulgaria adoptó el euro.
 
 ## Recursos en la org Lite (2026-09-24)
 

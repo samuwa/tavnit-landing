@@ -8,7 +8,7 @@ export const contentType = "image/png";
 export default function OpengraphImage() {
   return liteOgImage({
     title: TOOL_COPY["translate-columns"].es.h1,
-    subtitle: "Gratis. Cualquier columna de texto, traducida al inglés, español, portugués, francés, alemán o chino.",
+    subtitle: "Gratis. Cualquier columna de texto, traducida a más de 40 idiomas.",
     locale: "es",
   });
 }

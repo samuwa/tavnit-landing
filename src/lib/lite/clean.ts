@@ -61,12 +61,17 @@ export function isAppendMode(mode: CleanMode): boolean {
  */
 export const SOURCE_CURRENCIES = [
   "USD", "EUR", "MXN", "BRL", "GBP", "CAD", "CNY", "JPY", "CHF", "AUD", "NZD", "HKD", "SGD", "INR", "KRW",
-  "SEK", "NOK", "DKK", "PLN", "CZK", "HUF", "RON", "BGN", "TRY", "ILS", "ZAR", "THB", "MYR", "IDR", "PHP", "ISK",
+  "SEK", "NOK", "DKK", "PLN", "CZK", "HUF", "RON", "TRY", "ILS", "ZAR", "THB", "MYR", "IDR", "PHP", "ISK",
 ] as const;
-/** One Cleaner per target currency. */
-export const TARGET_CURRENCIES = ["USD", "EUR", "GBP", "MXN", "BRL", "CNY"] as const;
-/** One Cleaner per target language (the source language is detected). */
-export const TARGET_LANGUAGES = ["es", "en", "pt", "fr", "de", "zh"] as const;
+/**
+ * Every target has its own Cleaner (defs/currency-converter.ts,
+ * defs/translate-columns.ts); these are the ones shown first in the
+ * dropdown, the rest follow A to Z.
+ */
+export const POPULAR_OUTPUTS: Partial<Record<CleanMode, readonly string[]>> = {
+  currency: ["USD", "EUR", "GBP", "MXN", "BRL", "CNY", "CAD", "JPY"],
+  translate: ["en", "es", "pt", "fr", "de", "zh", "it", "ja"],
+};
 
 export function isSourceCurrency(v: unknown): v is (typeof SOURCE_CURRENCIES)[number] {
   return typeof v === "string" && (SOURCE_CURRENCIES as readonly string[]).includes(v);

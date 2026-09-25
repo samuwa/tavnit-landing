@@ -6,9 +6,6 @@ import type { Locale } from "@/lib/locale";
  * chosen text column out. Every cell goes through a model, so the free
  * allowance is 200 rows instead of 500.
  */
-const LANGS_ES = { en: "Inglés", es: "Español", pt: "Portugués", fr: "Francés", de: "Alemán", zh: "Chino" };
-const LANGS_EN = { en: "English", es: "Spanish", pt: "Portuguese", fr: "French", de: "German", zh: "Chinese" };
-
 const translateColumns: Record<Locale, ToolCopyDef> = {
   es: {
     vocab: {
@@ -28,7 +25,7 @@ const translateColumns: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Traducir un Excel por columnas, gratis",
       description:
-        "Sube un Excel o CSV y traduce las columnas que elijas al inglés, español, portugués, francés, alemán o chino. La traducción se agrega al lado de cada columna. Gratis, sin registro para ver el resultado.",
+        "Sube un Excel o CSV y traduce las columnas que elijas a más de 40 idiomas: inglés, español, portugués, chino y más. La traducción se agrega al lado de cada columna. Gratis, sin registro para ver el resultado.",
       label: "Traducir columnas",
       h1: "Traduce las columnas de tu Excel",
       intro:
@@ -61,7 +58,7 @@ const translateColumns: Record<Locale, ToolCopyDef> = {
         ],
       },
       faqs: [
-        { q: "¿Qué idiomas puedo elegir?", a: "Inglés, español, portugués, francés, alemán y chino. El idioma de origen se detecta en cada celda, así que sirve aunque tu archivo mezcle idiomas." },
+        { q: "¿Qué idiomas puedo elegir?", a: "Más de 40: inglés, español, portugués, francés, alemán, chino, italiano, japonés, coreano, árabe, ruso, hindi, turco, vietnamita y muchos más. El idioma de origen se detecta en cada celda, así que sirve aunque tu archivo mezcle idiomas." },
         { q: "¿Qué pasa con los códigos, números y nombres propios?", a: "Se conservan. La traducción respeta el formato, las unidades y los códigos; una celda que ya está en el idioma de destino se deja igual." },
         { q: "¿Por qué el límite es de 200 filas?", a: "Porque cada celda se traduce con un modelo de lenguaje. En la versión gratis procesamos hasta 200 filas por archivo; con una cuenta no hay ese límite." },
         { q: "¿Qué pasa con mis columnas originales?", a: "Se quedan como estaban. La traducción se agrega en una columna nueva al lado, por ejemplo \"Descripción (EN)\"." },
@@ -78,8 +75,10 @@ const translateColumns: Record<Locale, ToolCopyDef> = {
           tooMany: "Puedes elegir hasta {max} columnas a la vez.",
           inputLabel: "",
           inputOptions: {},
+          outputPopular: "Más usados",
+          outputAll: "Todos los idiomas",
           outputLabel: "Traducir a",
-          outputOptions: LANGS_ES,
+          outputOptions: {},
           preview: "Primeras filas",
           run: "Traducir",
           change: "Cambiar archivo",
@@ -123,7 +122,7 @@ const translateColumns: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Translate Excel Columns, Free",
       description:
-        "Upload an Excel or CSV file and translate the columns you pick into English, Spanish, Portuguese, French, German or Chinese. Each translation is added next to its column. Free, no sign-up to see the result.",
+        "Upload an Excel or CSV file and translate the columns you pick into more than 40 languages: English, Spanish, Portuguese, Chinese and more. Each translation is added next to its column. Free, no sign-up to see the result.",
       label: "Translate columns",
       h1: "Translate the columns of your spreadsheet",
       intro:
@@ -156,7 +155,7 @@ const translateColumns: Record<Locale, ToolCopyDef> = {
         ],
       },
       faqs: [
-        { q: "Which languages can I pick?", a: "English, Spanish, Portuguese, French, German and Chinese. The source language is detected cell by cell, so it works even when your file mixes languages." },
+        { q: "Which languages can I pick?", a: "More than 40: English, Spanish, Portuguese, French, German, Chinese, Italian, Japanese, Korean, Arabic, Russian, Hindi, Turkish, Vietnamese and many more. The source language is detected cell by cell, so it works even when your file mixes languages." },
         { q: "What happens to codes, numbers and proper names?", a: "They are kept. The translation respects formatting, units and codes; a cell already in the target language is left as it is." },
         { q: "Why is the limit 200 rows?", a: "Because every cell is translated with a language model. The free version handles up to 200 rows per file; an account has no such limit." },
         { q: "What happens to my original columns?", a: "They stay as they were. The translation is added as a new column next to them, for example \"Description (ES)\"." },
@@ -173,8 +172,10 @@ const translateColumns: Record<Locale, ToolCopyDef> = {
           tooMany: "You can pick up to {max} columns at a time.",
           inputLabel: "",
           inputOptions: {},
+          outputPopular: "Most used",
+          outputAll: "All languages",
           outputLabel: "Translate into",
-          outputOptions: LANGS_EN,
+          outputOptions: {},
           preview: "First rows",
           run: "Translate",
           change: "Change file",

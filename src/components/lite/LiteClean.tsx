@@ -6,7 +6,7 @@ import { ArrowRight, Check, ChevronDown, Download, FileSpreadsheet, FileText, Lo
 import type { ToolCopy } from "@/lib/lite/copy";
 import { LITE_ACCEPT_SHEET, type LiteToolId } from "@/lib/lite/tools";
 import type { Locale } from "@/lib/locale";
-import { CLEAN_SLOTS, SOURCE_CURRENCIES, type CleanMode } from "@/lib/lite/clean";
+import { CLEAN_SLOTS, POPULAR_OUTPUTS, SOURCE_CURRENCIES, type CleanMode } from "@/lib/lite/clean";
 import AuthModal from "@/components/lite/AuthModal";
 import {
   BTN_DOWNLOAD,
@@ -502,6 +502,23 @@ function Setup({
       return code;
     }
   };
+  const languageName = (code: string) => {
+    try {
+      // "tl" is what the engine takes; the language is shown as Filipino.
+      const name = new Intl.DisplayNames([locale], { type: "language" }).of(code === "tl" ? "fil" : code) ?? code;
+      return name.charAt(0).toLocaleUpperCase(locale) + name.slice(1);
+    } catch {
+      return code;
+    }
+  };
+  const outputName = (k: string) =>
+    copy.setup.outputOptions[k] ?? (mode === "currency" ? `${k} · ${currencyName(k)}` : mode === "translate" ? languageName(k) : k);
+  // Currency and language lists are long: a dropdown with the usual ones first, the rest A to Z.
+  const long = outputs.length > 8;
+  const popular = (POPULAR_OUTPUTS[mode] ?? []).filter((k) => outputs.includes(k));
+  const rest = outputs
+    .filter((k) => !popular.includes(k))
+    .sort((a, b) => outputName(a).localeCompare(outputName(b), locale));
   const full = selected.length >= CLEAN_SLOTS;
   const toggle = (c: string) =>
     onChange({ selected: selected.includes(c) ? selected.filter((x) => x !== c) : full ? selected : [...selected, c] });
@@ -591,17 +608,43 @@ function Setup({
             )}
           </div>
         )}
-        <fieldset>
-          <legend className="text-sm font-semibold">{copy.setup.outputLabel}</legend>
-          <div className={`mt-2 ${outputs.length > 3 ? "grid grid-cols-2 gap-2" : "space-y-2"}`}>
-            {outputs.map((k) => (
-              <label key={k} className="flex cursor-pointer items-center gap-2 text-sm">
-                <input type="radio" name="lite-output" checked={output === k} onChange={() => onChange({ output: k })} className="accent-[var(--lite-blue)]" />
-                {copy.setup.outputOptions[k] ?? (mode === "currency" ? `${k} · ${currencyName(k)}` : k)}
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        {long ? (
+          <label className="block">
+            <span className="text-sm font-semibold">{copy.setup.outputLabel}</span>
+            <select
+              value={output}
+              onChange={(e) => onChange({ output: e.target.value })}
+              className="mt-2 block w-full max-w-xs rounded-lg border border-[var(--lite-line)] bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
+            >
+              <optgroup label={copy.setup.outputPopular ?? ""}>
+                {popular.map((k) => (
+                  <option key={k} value={k}>
+                    {outputName(k)}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label={copy.setup.outputAll ?? ""}>
+                {rest.map((k) => (
+                  <option key={k} value={k}>
+                    {outputName(k)}
+                  </option>
+                ))}
+              </optgroup>
+            </select>
+          </label>
+        ) : (
+          <fieldset>
+            <legend className="text-sm font-semibold">{copy.setup.outputLabel}</legend>
+            <div className={`mt-2 ${outputs.length > 3 ? "grid grid-cols-2 gap-2" : "space-y-2"}`}>
+              {outputs.map((k) => (
+                <label key={k} className="flex cursor-pointer items-center gap-2 text-sm">
+                  <input type="radio" name="lite-output" checked={output === k} onChange={() => onChange({ output: k })} className="accent-[var(--lite-blue)]" />
+                  {outputName(k)}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
       </div>
 
       <p className="mt-7 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--lite-muted)]">{copy.setup.preview}</p>

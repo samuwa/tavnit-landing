@@ -212,6 +212,9 @@ export interface CleanCopy {
     outputLabel: string;
     /** keyed by output option */
     outputOptions: Record<string, string>;
+    /** Long output lists (currency, language) are a dropdown: its two groups. */
+    outputPopular?: string;
+    outputAll?: string;
     preview: string;
     run: string;
     change: string;

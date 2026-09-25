@@ -8,9 +8,9 @@ import type { Locale } from "@/lib/locale";
  * copy says plainly which currencies are there and which are not.
  */
 const SUPPORTED_ES =
-  "Dólar (USD), euro (EUR), libra (GBP), peso mexicano (MXN), real (BRL), yuan (CNY), dólar canadiense, yen, franco suizo y otras monedas publicadas por el Banco Central Europeo, unas 30 en total.";
+  "Dólar (USD), euro (EUR), libra (GBP), peso mexicano (MXN), real (BRL), yuan (CNY), dólar canadiense, yen, franco suizo y las demás monedas que publica el Banco Central Europeo, 30 en total. Puedes convertir de cualquiera a cualquiera.";
 const SUPPORTED_EN =
-  "US dollar (USD), euro (EUR), pound (GBP), Mexican peso (MXN), real (BRL), yuan (CNY), Canadian dollar, yen, Swiss franc and the other currencies the European Central Bank publishes, about 30 in all.";
+  "US dollar (USD), euro (EUR), pound (GBP), Mexican peso (MXN), real (BRL), yuan (CNY), Canadian dollar, yen, Swiss franc and the rest of the currencies the European Central Bank publishes, 30 in all. You can convert from any of them to any of them.";
 
 const currencyConverter: Record<Locale, ToolCopyDef> = {
   es: {
@@ -31,7 +31,7 @@ const currencyConverter: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Convertir moneda en Excel con la tasa del día, gratis",
       description:
-        "Sube un Excel o CSV con precios o montos y recibe cada columna convertida a dólares, euros, pesos mexicanos u otra moneda, con la tasa de referencia del día. Gratis, sin registro para ver el resultado.",
+        "Sube un Excel o CSV con precios o montos y recibe cada columna convertida a dólares, euros, pesos mexicanos o cualquiera de 30 monedas, con la tasa de referencia del día. Gratis, sin registro para ver el resultado.",
       label: "Convertir moneda",
       h1: "Convierte los montos de tu Excel a otra moneda",
       intro:
@@ -83,6 +83,8 @@ const currencyConverter: Record<Locale, ToolCopyDef> = {
           sourceHint: "Monedas con tasa del Banco Central Europeo.",
           inputLabel: "Los decimales van con",
           inputOptions: { comma: "coma · 1.234,56", dot: "punto · 1,234.56" },
+          outputPopular: "Más usadas",
+          outputAll: "Todas las monedas",
           outputLabel: "Convertir a",
           outputOptions: {},
           preview: "Primeras filas",
@@ -128,7 +130,7 @@ const currencyConverter: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Convert Currency in Excel at Today's Rate, Free",
       description:
-        "Upload an Excel or CSV file with prices or amounts and get each column converted to dollars, euros, pounds or another currency at the day's reference rate. Free, no sign-up to see the result.",
+        "Upload an Excel or CSV file with prices or amounts and get each column converted to dollars, euros, pounds or any of 30 currencies at the day's reference rate. Free, no sign-up to see the result.",
       label: "Convert currency",
       h1: "Convert the amounts in your spreadsheet to another currency",
       intro:
@@ -180,6 +182,8 @@ const currencyConverter: Record<Locale, ToolCopyDef> = {
           sourceHint: "Currencies with a European Central Bank rate.",
           inputLabel: "Decimals use a",
           inputOptions: { comma: "comma · 1.234,56", dot: "point · 1,234.56" },
+          outputPopular: "Most used",
+          outputAll: "All currencies",
           outputLabel: "Convert to",
           outputOptions: {},
           preview: "First rows",
