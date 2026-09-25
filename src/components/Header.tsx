@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import type { Locale } from "@/lib/locale";
 import SiteSettings from "@/components/SiteSettings";
 import Logo from "@/components/Logo";
@@ -165,17 +165,20 @@ export default function Header({
 
         <div className="hidden lg:flex items-center gap-2 justify-self-end">
           <SiteSettings locale={locale} alternateHref={alternate} />
+          {/* Header scale of the hero's pair: a quiet link for the demo, the
+              brand gradient pill for the product; same height, no jump. */}
           <Link
             href={DEMO[locale].href}
-            className="inline-flex px-4 py-2 sm:py-2.5 rounded-lg text-sm sm:text-[15px] font-semibold text-fg-3 border border-tint/15 hover:text-fg hover:border-tint/30 hover:bg-tint/5 transition-colors"
+            className="inline-flex h-9 items-center rounded-full px-4 text-sm font-medium text-fg-3 transition-colors hover:bg-tint/[0.06] hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50"
           >
             {DEMO[locale].label}
           </Link>
           <Link
             href="https://app.tavnit.io"
-            className="inline-flex px-4 py-2 sm:px-6 sm:py-2.5 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-lg text-sm sm:text-[15px] font-semibold hover:-translate-y-0.5 transition-all shadow-md hover:shadow-lg"
+            className="group inline-flex h-9 items-center gap-1.5 rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] pl-4 pr-3.5 text-sm font-semibold tracking-[-0.01em] text-white shadow-[0_6px_18px_-8px_rgba(76,99,246,0.7)] transition-[filter,box-shadow] hover:shadow-[0_8px_22px_-8px_rgba(76,99,246,0.85)] hover:brightness-[1.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             {CTA[locale]}
+            <ArrowRight size={14} strokeWidth={2.25} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </Link>
         </div>
 
@@ -207,17 +210,18 @@ export default function Header({
               </Link>
             ))}
             <Link
-              href={DEMO[locale].href}
-              onClick={() => setMobileOpen(false)}
-              className="mt-4 px-6 py-3 rounded-lg text-center font-semibold text-fg-3 border border-tint/15 hover:text-fg"
-            >
-              {DEMO[locale].label}
-            </Link>
-            <Link
               href="https://app.tavnit.io"
-              className="mt-2 px-6 py-3 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-lg text-center font-semibold"
+              className="mt-5 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-[15px] font-semibold text-white shadow-[0_8px_24px_-10px_rgba(76,99,246,0.7)]"
             >
               {CTA[locale]}
+              <ArrowRight size={16} strokeWidth={2.25} />
+            </Link>
+            <Link
+              href={DEMO[locale].href}
+              onClick={() => setMobileOpen(false)}
+              className="mt-2 inline-flex h-12 items-center justify-center rounded-full border border-tint/10 text-[15px] font-semibold text-fg-2 hover:text-fg"
+            >
+              {DEMO[locale].label}
             </Link>
           </nav>
         </div>

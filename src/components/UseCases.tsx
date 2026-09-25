@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { InvoiceDemo, ContractDemo, ResumeDemo, ExpenseDemo } from "./UseCaseAnimations";
 
 const useCases = [
@@ -52,6 +52,49 @@ const useCases = [
     Demo: ExpenseDemo,
   },
 ];
+
+/** "Finance Teams": an eyebrow, not a sticker — a short brand hairline, then the words. */
+function Eyebrow({ children, small = false }: { children: React.ReactNode; small?: boolean }) {
+  return (
+    <p className={`flex items-center gap-2.5 font-semibold uppercase tracking-[0.16em] text-fg-4 ${small ? "mb-3 text-[10px]" : "mb-4 text-xs"}`}>
+      <span className="h-px w-6 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0]" aria-hidden />
+      {children}
+    </p>
+  );
+}
+
+function Label({ children }: { children: React.ReactNode }) {
+  return <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-5">{children}</h4>;
+}
+
+/** The solution reads as a pipeline, so it is drawn as one: numbered steps. */
+function Steps({ text, small = false }: { text: string; small?: boolean }) {
+  const steps = text.split("→").map((x) => x.trim()).filter(Boolean);
+  return (
+    <ol className="space-y-2">
+      {steps.map((step, i) => (
+        <li key={i} className={`flex gap-3 leading-relaxed text-fg-3 ${small ? "text-sm" : ""}`}>
+          <span className="mt-[3px] grid h-5 w-5 shrink-0 place-items-center rounded-full border border-tint/15 text-[10px] font-semibold tabular-nums text-fg-4">
+            {i + 1}
+          </span>
+          <span>{step.charAt(0).toUpperCase() + step.slice(1)}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/** The outcome, set as the thing to remember: a check in the brand gradient and the line. */
+function Outcome({ text, small = false }: { text: string; small?: boolean }) {
+  return (
+    <div className={`flex items-center gap-3 border-t border-tint/10 ${small ? "mt-auto pt-4" : "mt-7 pt-6"}`}>
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] text-white">
+        <Check size={14} strokeWidth={3} aria-hidden />
+      </span>
+      <span className={`font-semibold text-fg ${small ? "text-sm" : "text-lg"}`}>{text}</span>
+    </div>
+  );
+}
 
 export default function UseCases() {
   const [active, setActive] = useState(0);
@@ -110,25 +153,20 @@ export default function UseCases() {
               style={{ width: "calc(100vw - 4rem)" }}
             >
               <div className="glass-card rounded-xl p-5 border border-tint/10 flex flex-col h-full">
-                <span className="inline-block w-fit px-3 py-1 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-full text-[10px] font-semibold mb-3">
-                  {uc.badge}
-                </span>
-                <h3 className="text-lg font-bold text-fg mb-3">{uc.title}</h3>
+                <Eyebrow small>{uc.badge}</Eyebrow>
+                <h3 className="text-lg font-bold text-fg mb-4">{uc.title}</h3>
 
-                <div className="mb-3">
-                  <h4 className="text-[10px] font-bold text-fg-3 uppercase tracking-wider mb-1">The Problem</h4>
+                <div className="mb-4">
+                  <Label>The problem</Label>
                   <p className="text-sm text-fg-4 leading-relaxed">{uc.problem}</p>
                 </div>
 
-                <div className="mb-4">
-                  <h4 className="text-[10px] font-bold text-fg-3 uppercase tracking-wider mb-1">The Solution</h4>
-                  <p className="text-sm text-fg-4 leading-relaxed">{uc.solution}</p>
+                <div className="mb-5">
+                  <Label>The solution</Label>
+                  <Steps text={uc.solution} small />
                 </div>
 
-                <div className="flex items-center gap-2 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl mt-auto">
-                  <CheckCircle2 size={16} className="text-ok flex-shrink-0" />
-                  <span className="text-xs font-semibold text-fg">{uc.result}</span>
-                </div>
+                <Outcome text={uc.result} small />
               </div>
             </div>
           ))}
@@ -152,26 +190,36 @@ export default function UseCases() {
       {/* ── Desktop: Tabs + Animated Content ── */}
       <div className="hidden md:block max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-6 md:mb-8">
-          <h2 id="use-cases-heading" className="text-2xl md:text-4xl font-bold text-fg mb-1 md:mb-2">Built for Real-World Workflows</h2>
+          <h2 id="use-cases-heading" className="text-2xl md:text-4xl font-bold tracking-tight text-fg mb-1 md:mb-3">Built for Real-World Workflows</h2>
           <p className="text-sm md:text-lg text-fg-4 max-w-[600px] mx-auto">
             See how teams use Tavnit to automate document processing
           </p>
         </div>
 
-        <div className="flex gap-3 justify-center mb-6 flex-wrap">
-          {useCases.map((uc, i) => (
-            <button
-              key={uc.id}
-              onClick={() => setActive(i)}
-              className={`px-6 py-3 rounded-lg text-base font-semibold transition-all cursor-pointer ${
-                i === active
-                  ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-[0_0_20px_rgba(59,130,246,0.3)]"
-                  : "glass-card text-fg-3 hover:border-[#3b82f6]/40 hover:text-fg"
-              }`}
-            >
-              {uc.tab}
-            </button>
-          ))}
+        <div className="mb-8 flex justify-center">
+          <div role="tablist" aria-label="Use cases" className="inline-flex flex-wrap justify-center gap-1 rounded-full border border-tint/10 bg-tint/[0.03] p-1">
+            {useCases.map((uc, i) => (
+              <button
+                key={uc.id}
+                role="tab"
+                aria-selected={i === active}
+                onClick={() => setActive(i)}
+                className={`relative cursor-pointer rounded-full px-5 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50 ${
+                  i === active ? "text-fg" : "text-fg-4 hover:text-fg-2"
+                }`}
+              >
+                {i === active && (
+                  <motion.span
+                    layoutId="use-case-tab"
+                    className="absolute inset-0 rounded-full border border-tint/15 bg-bg shadow-sm"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    aria-hidden
+                  />
+                )}
+                <span className="relative">{uc.tab}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         <AnimatePresence mode="wait">
@@ -181,35 +229,30 @@ export default function UseCases() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center glass-card rounded-2xl p-6 md:p-8"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center glass-card rounded-2xl p-6 md:p-10"
           >
             <div>
-              <span className="inline-block px-3 py-1.5 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-full text-sm font-semibold mb-4">
-                {useCases[active].badge}
-              </span>
-              <h3 className="text-2xl md:text-3xl font-bold text-fg mb-4">{useCases[active].title}</h3>
+              <Eyebrow>{useCases[active].badge}</Eyebrow>
+              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-fg mb-6">{useCases[active].title}</h3>
 
-              <div className="mb-4">
-                <h4 className="text-base font-bold text-fg-3 uppercase tracking-wider mb-2">The Problem</h4>
+              <div className="mb-6">
+                <Label>The problem</Label>
                 <p className="text-fg-4 leading-relaxed">{useCases[active].problem}</p>
               </div>
 
-              <div className="mb-4">
-                <h4 className="text-base font-bold text-fg-3 uppercase tracking-wider mb-2">The Solution</h4>
-                <p className="text-fg-4 leading-relaxed">{useCases[active].solution}</p>
+              <div>
+                <Label>The solution</Label>
+                <Steps text={useCases[active].solution} />
               </div>
 
-              <div className="flex items-center gap-4 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl mt-6">
-                <CheckCircle2 size={20} className="text-ok flex-shrink-0" />
-                <span className="text-base font-semibold text-fg">{useCases[active].result}</span>
-              </div>
+              <Outcome text={useCases[active].result} />
 
               <Link
                 href={useCases[active].href}
-                className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-accent hover:underline"
+                className="group mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-fg-3 transition-colors hover:text-fg"
               >
                 Read the {useCases[active].tab.toLowerCase()} page
-                <ArrowRight size={15} />
+                <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
               </Link>
             </div>
 

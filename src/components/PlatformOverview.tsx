@@ -10,9 +10,9 @@ import {
   Table2,
   AudioLines,
   Waypoints,
-  AppWindow,
   ChevronDown,
 } from "lucide-react";
+import SectionEyebrow from "@/components/SectionEyebrow";
 
 /* Auto-tour timing */
 const ADVANCE_MS = 6000;
@@ -280,10 +280,7 @@ export default function PlatformOverview() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-accent-2 text-xs font-bold uppercase tracking-wider mb-5">
-            <AppWindow size={14} />
-            Platform tour
-          </div>
+          <SectionEyebrow align="center">Platform tour</SectionEyebrow>
           <h2
             id="platform-overview-heading"
             className="text-3xl md:text-4xl font-bold text-fg mb-3"

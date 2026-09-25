@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Bot, GitBranch, MonitorPlay, PackageCheck, ArrowRight, MousePointer2, Target } from "lucide-react";
+import { GitBranch, MonitorPlay, PackageCheck, ArrowRight, MousePointer2, Target } from "lucide-react";
+import SectionEyebrow from "@/components/SectionEyebrow";
 
 /* The fields a flow already extracted — the agent's working material.
    Each one is typed into the matching form field during its step. */
@@ -296,10 +297,7 @@ export default function AgentsShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-accent-2 text-xs font-bold uppercase tracking-wider mb-5">
-              <Bot size={14} />
-              New · Agents
-            </div>
+            <SectionEyebrow isNew>Agents</SectionEyebrow>
             <h2
               id="agents-heading"
               className="text-3xl md:text-4xl font-bold text-fg mb-4 leading-tight"

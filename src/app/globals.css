@@ -229,24 +229,43 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
 }
 
+/*
+ * The hero's primary call to action: the brand gradient, flat, in a pill of
+ * the same height as the secondary one, with a soft coloured shadow. It
+ * stands out by being the only solid colour there, not by its size. On
+ * hover the glow behind it wakes up; it does not jump.
+ */
 .hero-cta-primary {
   position: relative;
+  isolation: isolate;
+  background: linear-gradient(90deg, #3b82f6 0%, #6c42f0 100%);
+  box-shadow: 0 8px 24px -10px rgba(76, 99, 246, 0.7);
+  transition: box-shadow 0.3s ease, filter 0.3s ease;
 }
 
 .hero-cta-primary::after {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: 2px;
   border-radius: inherit;
-  background: linear-gradient(135deg, #3b82f6 0%, #6c42f0 100%);
+  background: linear-gradient(90deg, #3b82f6 0%, #6c42f0 100%);
   opacity: 0;
-  filter: blur(16px);
+  filter: blur(18px);
   z-index: -1;
   transition: opacity 0.4s ease;
 }
 
+.hero-cta-primary:hover {
+  filter: brightness(1.06);
+}
+
 .hero-cta-primary:hover::after {
   opacity: 0.5;
+}
+
+.hero-cta-primary:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.55);
+  outline-offset: 3px;
 }
 
 .gradient-text {

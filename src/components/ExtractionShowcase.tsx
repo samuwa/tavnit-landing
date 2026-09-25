@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, Wand2, ScanText, LayoutGrid, ArrowRight } from "lucide-react";
+import { Wand2, ScanText, LayoutGrid, ArrowRight } from "lucide-react";
+import SectionEyebrow from "@/components/SectionEyebrow";
 
 /* Fields appear one per step; the cleaning pass then normalizes the raw values */
 const fields = [
@@ -216,10 +217,7 @@ export default function ExtractionShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-accent-2 text-xs font-bold uppercase tracking-wider mb-5">
-              <Sparkles size={14} />
-              AI Extraction
-            </div>
+            <SectionEyebrow>AI Extraction</SectionEyebrow>
             <h2
               id="extraction-heading"
               className="text-3xl md:text-4xl font-bold text-fg mb-4 leading-tight"

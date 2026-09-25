@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import {
-  ClipboardCheck,
   BellRing,
   PencilLine,
   History,
@@ -10,6 +9,7 @@ import {
   Check,
   X,
 } from "lucide-react";
+import SectionEyebrow from "@/components/SectionEyebrow";
 
 const highlights = [
   {
@@ -163,10 +163,7 @@ export default function HumanInTheLoop() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-ok text-xs font-bold uppercase tracking-wider mb-5">
-              <ClipboardCheck size={14} />
-              Human in the Loop
-            </div>
+            <SectionEyebrow>Human in the Loop</SectionEyebrow>
             <h2
               id="hitl-heading"
               className="text-3xl md:text-4xl font-bold text-fg mb-4 leading-tight"

@@ -4,6 +4,7 @@ import type { UseCase } from "@/lib/use-cases";
 import type { Locale } from "@/lib/locale";
 import { toolsForUseCase } from "@/lib/lite/related";
 import { APP_URL } from "@/lib/site";
+import SectionEyebrow from "@/components/SectionEyebrow";
 
 /**
  * Body of a use-case page, shared by /use-cases/[slug] and the Spanish
@@ -120,9 +121,7 @@ export default function UseCaseArticle({
         )}
       </nav>
 
-      <span className="inline-block text-xs font-semibold text-accent bg-[#3b82f6]/10 px-2.5 py-1 rounded-md mb-4">
-        {uc.badge}
-      </span>
+      <SectionEyebrow className="mb-4">{uc.badge}</SectionEyebrow>
 
       <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight leading-tight">
         {uc.h1}

@@ -103,7 +103,7 @@ export default function CleanerIdeas({
   return (
     <section
       aria-labelledby="lite-cleaners-heading"
-      className="lite-pop rounded-2xl border border-[var(--lite-line)] bg-[var(--lite-blue-soft)]/60 p-5 sm:p-7"
+      className="lite-pop @container rounded-2xl border border-[var(--lite-line)] bg-[var(--lite-blue-soft)]/60 p-5 sm:p-7"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <h2 id="lite-cleaners-heading" className="lite-display text-2xl sm:text-[1.75rem]">
@@ -155,16 +155,20 @@ export default function CleanerIdeas({
         ))}
       </ul>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="max-w-[460px] text-sm text-[var(--lite-muted)]">{copy.outro}</p>
-        <div className="flex flex-wrap items-center gap-4">
-          <Link href="/docs/cleaners" className="inline-flex items-center gap-1 text-sm font-medium text-[var(--lite-blue-ink)] hover:underline">
+      {/* Text on the left takes what is left; the link and the button keep
+          their own width and never break, whatever the button says (its
+          label changes once the session is known). The breakpoints follow
+          the section's own width (container queries), not the window's. */}
+      <div className="mt-6 flex flex-col gap-4 @3xl:flex-row @3xl:items-center @3xl:justify-between @3xl:gap-8">
+        <p className="min-w-0 max-w-[460px] text-sm leading-relaxed text-[var(--lite-muted)] @3xl:flex-1">{copy.outro}</p>
+        <div className="flex shrink-0 flex-col items-start gap-3 @md:flex-row @md:items-center @md:gap-5">
+          <Link href="/docs/cleaners" className="inline-flex items-center gap-1 whitespace-nowrap text-sm font-medium text-[var(--lite-blue-ink)] hover:underline">
             {copy.learn}
             <ArrowRight size={14} aria-hidden />
           </Link>
           <Link
             href={APP_URL}
-            className="lite-brand lite-press inline-flex min-h-11 items-center justify-center rounded-lg px-5 text-sm font-semibold text-white shadow-sm shadow-[#3b82f6]/30 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
+            className="lite-brand lite-press inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-lg px-5 text-sm font-semibold text-white shadow-sm shadow-[#3b82f6]/30 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
           >
             {email ? copy.ctaSignedIn : copy.cta}
           </Link>

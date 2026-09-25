@@ -99,6 +99,7 @@ export default function WhatNext({
   const [playKey, setPlayKey] = useState(0);
   const [showInputs, setShowInputs] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const flowSceneRef = useRef<HTMLDivElement>(null);
   const chooseInput = (i: number) => {
     setActive(null);
     setActiveFlow(false);
@@ -122,7 +123,16 @@ export default function WhatNext({
     setPlayKey((k) => k + 1);
   }
   useEffect(() => {
-    if (flowSignal) sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!flowSignal) return;
+    // Centre the Flow scene itself (its title, description and animation),
+    // not the top of the section: that left the view between the heading
+    // and the scene. The scene mounts with this render, so wait a frame.
+    const id = requestAnimationFrame(() => {
+      const target = flowSceneRef.current ?? sectionRef.current;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      target?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    });
+    return () => cancelAnimationFrame(id);
   }, [flowSignal]);
   const fieldCount = columns.length || 13;
   const lineSet = new Set(lineFields);
@@ -541,7 +551,9 @@ export default function WhatNext({
         />
       )}
       {activeFlow && (
-        <Scene Stage={FlowScene} item={flowItem} copy={copy} playKey={playKey} onReplay={() => setPlayKey((k) => k + 1)} flow={flowExtra} />
+        <div ref={flowSceneRef} className="scroll-my-24">
+          <Scene Stage={FlowScene} item={flowItem} copy={copy} playKey={playKey} onReplay={() => setPlayKey((k) => k + 1)} flow={flowExtra} />
+        </div>
       )}
       {activeInput !== null && (
         <Scene

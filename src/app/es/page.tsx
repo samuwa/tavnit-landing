@@ -5,6 +5,7 @@ import MarketingPage from "@/components/MarketingPage";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { APP_URL, SITE_URL } from "@/lib/site";
 import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
+import SectionEyebrow from "@/components/SectionEyebrow";
 
 /**
  * Spanish landing page.
@@ -132,9 +133,7 @@ export default function SpanishLandingPage() {
           </Link>
         </p>
 
-        <span className="inline-block text-xs font-semibold text-accent bg-[#3b82f6]/10 px-2.5 py-1 rounded-md mb-4">
-          Operaciones documentales con IA
-        </span>
+        <SectionEyebrow className="mb-4">Operaciones documentales con IA</SectionEyebrow>
 
         <h1 className="text-3xl md:text-5xl font-extrabold text-fg mb-5 tracking-tight leading-tight">
           Extrae datos de tus documentos con IA, revísalos con tu equipo y actúa sobre ellos

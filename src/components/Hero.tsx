@@ -70,19 +70,21 @@ export default function Hero({ documentsProcessed }: { documentsProcessed: strin
             <Link
               href="https://app.tavnit.io"
               onClick={() => trackEvent("cta_click", { cta: "start_free_trial", location: "hero" })}
-              className="hero-cta-primary inline-flex items-center justify-center gap-2 px-7 py-3.5 sm:px-9 sm:py-4 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white rounded-xl text-base sm:text-lg font-bold hover:-translate-y-0.5 transition-all shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30"
+              className="hero-cta-primary group inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold tracking-[-0.01em] text-white"
             >
               Start Free Trial
-              <ArrowRight size={20} />
+              <ArrowRight size={16} strokeWidth={2.25} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </Link>
             <Link
               href="https://demo.tavnit.io"
               onClick={() => trackEvent("cta_click", { cta: "live_demo", location: "hero" })}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 border border-tint/15 text-fg-3 rounded-xl text-base sm:text-lg font-medium hover:bg-tint/5 hover:text-fg hover:border-tint/30 hover:-translate-y-0.5 transition-all"
+              className="group inline-flex h-12 items-center justify-center gap-3 rounded-full border border-tint/10 bg-bg/60 pl-1.5 pr-6 text-[15px] font-semibold tracking-[-0.01em] text-fg-2 backdrop-blur transition-colors hover:border-tint/25 hover:text-fg"
             >
-              <Play size={18} />
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-tint/[0.06] ring-1 ring-inset ring-tint/10 transition-colors group-hover:bg-tint/10">
+                <Play size={13} className="translate-x-px fill-current" />
+              </span>
               Try the Live Demo
             </Link>
           </div>
