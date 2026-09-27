@@ -579,7 +579,7 @@ export function docsRootSchema(locale: "en" | "es" = "en") {
         "@type": "ItemList",
         "@id": `${SITE_URL}${DOCS_HOME[locale]}#index`,
         name: locale === "es" ? "Documentación de Tavnit" : "Tavnit Documentation",
-        inLanguage: locale === "es" ? "es" : "en-US",
+        inLanguage: locale === "es" ? "es-PA" : "en-US",
         itemListOrder: "https://schema.org/ItemListOrderAscending",
         numberOfItems: sections.length,
         itemListElement: sections.map((section, i) => ({
@@ -677,7 +677,7 @@ export function docsPageSchema(
         isPartOf: { "@id": WEBSITE_ID },
         about: { "@id": SOFTWARE_ID },
         description: section.description,
-        inLanguage: locale === "es" ? "es" : "en-US",
+        inLanguage: locale === "es" ? "es-PA" : "en-US",
         datePublished: "2024-01-01",
         dateModified: BUILD_DATE,
         author: { "@id": ORG_ID },
