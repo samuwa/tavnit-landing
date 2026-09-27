@@ -18,7 +18,7 @@ import SectionEyebrow from "@/components/SectionEyebrow";
  *
  * It pairs with "/" via hreflang and is the entry point of the Spanish site:
  * use cases, integrations, guides and the demo form all have Spanish routes
- * (see src/lib/locale.ts). Docs and legal pages stay English. MarketingPage
+ * (see src/lib/locale.ts). The docs have their own Spanish twin under /es/documentacion. MarketingPage
  * sets lang="es" because the root layout owns <html lang="en"> and a
  * per-route root layout would mean restructuring the whole app tree.
  *

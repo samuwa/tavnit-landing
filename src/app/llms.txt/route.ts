@@ -1,5 +1,5 @@
 import { APP_URL, FEATURES, GITHUB_URL, LINKEDIN_URL, MCP_URL, SITE_URL, SUPPORT_EMAIL } from "@/lib/site";
-import { DOC_SECTIONS } from "@/components/docs/nav";
+import { DOC_SECTIONS, DOC_SECTIONS_ES } from "@/components/docs/nav";
 import { INTEGRATIONS } from "@/lib/integrations";
 import { isStripeEnabled } from "@/lib/platform";
 import { USE_CASES } from "@/lib/use-cases";
@@ -140,7 +140,8 @@ ${GUIDES_ES.map((g) => `- [${g.h1}](${SITE_URL}${esGuidePath(g)}): ${g.descripti
 
 - [Política de privacidad](${SITE_URL}/es/privacidad) y [Términos de servicio](${SITE_URL}/es/terminos): traducciones; la versión en inglés prevalece.
 
-Documentation is English-only.
+- [Documentación](${SITE_URL}/es/documentacion): la documentación completa en español, una página por pieza del producto:
+${DOC_SECTIONS_ES.map((s) => `  - [${s.label}](${SITE_URL}${s.href}): ${s.description}`).join("\n")}
 
 ## Integration surface
 

@@ -33,9 +33,8 @@ import type { Locale } from "@/lib/locale";
  *    the list into a mobile-only "Quick Links" block and desktop-only columns,
  *    which meant mobile users never saw Connect, and the two lists drifted.
  *
- * The Spanish footer links Spanish routes where they exist and says so where
- * they do not (docs): a Spanish visitor sent to an English page without
- * warning reads it as a broken site.
+ * The Spanish footer links Spanish routes, the Spanish docs included
+ * (/es/documentacion); /pricing is the one English page it still points to.
  */
 
 type FooterLink = { label: string; href: string; external?: boolean };
@@ -73,12 +72,15 @@ const DOC_GROUPS: DocSlug[][] = [
   ["buckets", "user-roles"],
   ["email-integration", "api-integration", "webhooks"],
 ];
-const DOC_SECTIONS_ALL = [...docsForFooterColumn("documentation"), ...docsForFooterColumn("integrations")].filter((s) => s.slug !== "mcp-connector");
-const placed = new Set(DOC_GROUPS.flat());
-const DOCS: FooterLink[][] = DOC_GROUPS.map((group, i) => [
-  ...group.flatMap((slug) => DOC_SECTIONS_ALL.filter((s) => s.slug === slug)),
-  ...(i === DOC_GROUPS.length - 1 ? DOC_SECTIONS_ALL.filter((s) => !placed.has(s.slug)) : []),
-].map((s) => ({ label: s.label, href: s.href })));
+function docLinks(locale: Locale): FooterLink[][] {
+  const all = [...docsForFooterColumn("documentation", locale), ...docsForFooterColumn("integrations", locale)].filter((s) => s.slug !== "mcp-connector");
+  const placed = new Set(DOC_GROUPS.flat());
+  return DOC_GROUPS.map((group, i) => [
+    ...group.flatMap((slug) => all.filter((s) => s.slug === slug)),
+    ...(i === DOC_GROUPS.length - 1 ? all.filter((s) => !placed.has(s.slug)) : []),
+  ].map((s) => ({ label: s.label, href: s.href })));
+}
+const DOCS: Record<Locale, FooterLink[][]> = { en: docLinks("en"), es: docLinks("es") };
 
 const COLUMNS: Record<Locale, FooterColumn[]> = {
   en: [
@@ -128,7 +130,7 @@ const COLUMNS: Record<Locale, FooterColumn[]> = {
     {
       title: "Recursos",
       links: [
-        { label: "Documentación", href: "/docs" },
+        { label: "Documentación", href: "/es/documentacion" },
         { label: "Guías", href: "/es/guias" },
         { label: "Agendar una demostración", href: "/es/agendar" },
       ],
@@ -161,7 +163,7 @@ const T: Record<
     demo: "Agendar demo",
     demoHref: "/es/agendar",
     docs: "Documentación",
-    docsLead: "Cómo funciona cada pieza, del primer Flow al API. En inglés.",
+    docsLead: "Cómo funciona cada pieza, del primer Flow a la API.",
     copyright: "© 2026 Tavnit",
     privacy: "Privacidad",
     privacyHref: "/es/privacidad",
@@ -247,7 +249,7 @@ export default function Footer({
             <p className="mt-2 max-w-[320px] text-sm leading-relaxed text-fg-6">{t.docsLead}</p>
           </div>
           <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4 lg:col-span-8">
-            {DOCS.map((group, i) => (
+            {DOCS[locale].map((group, i) => (
               <ul key={i} className="space-y-2.5">
                 {group.map((d) => (
                   <li key={d.href}>

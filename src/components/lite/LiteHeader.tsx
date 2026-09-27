@@ -269,7 +269,7 @@ export default function LiteHeader({
             </div>
             <Link href={t.nav.productHref} className={LINK}>{t.nav.product}</Link>
             <Link href={t.nav.useCasesHref} className={LINK}>{t.nav.useCases}</Link>
-            <Link href="/docs" className={LINK}>{t.nav.docs}</Link>
+            <Link href={locale === "es" ? "/es/documentacion" : "/docs"} className={LINK}>{t.nav.docs}</Link>
           </nav>
         </div>
 
@@ -310,7 +310,7 @@ export default function LiteHeader({
             <div className="mt-2 flex flex-col border-t border-[var(--lite-line)] pt-3">
               <Link href={t.nav.productHref} className={`${LINK} py-2.5`}>{t.nav.product}</Link>
               <Link href={t.nav.useCasesHref} className={`${LINK} py-2.5`}>{t.nav.useCases}</Link>
-              <Link href="/docs" className={`${LINK} py-2.5`}>{t.nav.docs}</Link>
+              <Link href={locale === "es" ? "/es/documentacion" : "/docs"} className={`${LINK} py-2.5`}>{t.nav.docs}</Link>
               <Link href={t.demoHref} className={`${LINK} py-2.5`}>{t.demo}</Link>
             </div>
             <div className="mt-4 flex flex-col gap-2 border-t border-[var(--lite-line)] pt-4">

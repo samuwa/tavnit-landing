@@ -162,7 +162,7 @@ export default function CleanerIdeas({
       <div className="mt-6 flex flex-col gap-4 @3xl:flex-row @3xl:items-center @3xl:justify-between @3xl:gap-8">
         <p className="min-w-0 max-w-[460px] text-sm leading-relaxed text-[var(--lite-muted)] @3xl:flex-1">{copy.outro}</p>
         <div className="flex shrink-0 flex-col items-start gap-3 @md:flex-row @md:items-center @md:gap-5">
-          <Link href="/docs/cleaners" className="inline-flex items-center gap-1 whitespace-nowrap text-sm font-medium text-[var(--lite-blue-ink)] hover:underline">
+          <Link href={locale === "es" ? "/es/documentacion/cleaners" : "/docs/cleaners"} className="inline-flex items-center gap-1 whitespace-nowrap text-sm font-medium text-[var(--lite-blue-ink)] hover:underline">
             {copy.learn}
             <ArrowRight size={14} aria-hidden />
           </Link>

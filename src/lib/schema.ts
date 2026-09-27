@@ -10,7 +10,7 @@ import {
   SUPPORT_EMAIL,
 } from "./site";
 import type { Faq } from "./faqs";
-import { DOC_BY_SLUG, DOC_SECTIONS, type DocSlug } from "@/components/docs/nav";
+import { DOCS_HOME, docSection, docSections, type DocSlug } from "@/components/docs/nav";
 
 /**
  * JSON-LD builders.
@@ -570,17 +570,19 @@ export function legalSchema(name: string, path: string, description: string) {
  * The ItemList enumerates every documentation route so crawlers see the full
  * set as a related collection rather than 13 unconnected pages.
  */
-export function docsRootSchema() {
+export function docsRootSchema(locale: "en" | "es" = "en") {
+  const sections = docSections(locale);
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "ItemList",
-        "@id": `${SITE_URL}/docs#index`,
-        name: "Tavnit Documentation",
+        "@id": `${SITE_URL}${DOCS_HOME[locale]}#index`,
+        name: locale === "es" ? "Documentación de Tavnit" : "Tavnit Documentation",
+        inLanguage: locale === "es" ? "es" : "en-US",
         itemListOrder: "https://schema.org/ItemListOrderAscending",
-        numberOfItems: DOC_SECTIONS.length,
-        itemListElement: DOC_SECTIONS.map((section, i) => ({
+        numberOfItems: sections.length,
+        itemListElement: sections.map((section, i) => ({
           "@type": "ListItem",
           position: i + 1,
           name: section.label,
@@ -614,22 +616,23 @@ export type DocsHowTo = {
  */
 export function docsPageSchema(
   slug: DocSlug,
-  options: { howTo?: DocsHowTo; primaryImage?: { url: string; caption: string; width: number; height: number } } = {},
+  options: {
+    howTo?: DocsHowTo;
+    primaryImage?: { url: string; caption: string; width: number; height: number };
+    locale?: "en" | "es";
+  } = {},
 ) {
-  const section = DOC_BY_SLUG[slug];
+  const locale = options.locale ?? "en";
+  const section = docSection(slug, locale);
   const url = `${SITE_URL}${section.href}`;
-  const isRoot = section.href === "/docs";
+  const docsHome = `${SITE_URL}${DOCS_HOME[locale]}`;
+  const isRoot = section.href === DOCS_HOME[locale];
+  const home = locale === "es" ? { name: "Inicio", url: `${SITE_URL}/es` } : { name: "Home", url: SITE_URL };
+  const docsName = locale === "es" ? "Documentación" : "Docs";
 
   const trail = isRoot
-    ? [
-        { name: "Home", url: SITE_URL },
-        { name: "Docs", url },
-      ]
-    : [
-        { name: "Home", url: SITE_URL },
-        { name: "Docs", url: `${SITE_URL}/docs` },
-        { name: section.label, url },
-      ];
+    ? [home, { name: docsName, url }]
+    : [home, { name: docsName, url: docsHome }, { name: section.label, url }];
 
   const image = options.primaryImage
     ? {
@@ -674,13 +677,13 @@ export function docsPageSchema(
         isPartOf: { "@id": WEBSITE_ID },
         about: { "@id": SOFTWARE_ID },
         description: section.description,
-        inLanguage: "en-US",
+        inLanguage: locale === "es" ? "es" : "en-US",
         datePublished: "2024-01-01",
         dateModified: BUILD_DATE,
         author: { "@id": ORG_ID },
         publisher: { "@id": ORG_ID },
         proficiencyLevel: "Beginner",
-        isPartOfCollection: { "@id": `${SITE_URL}/docs#index` },
+        isPartOfCollection: { "@id": `${docsHome}#index` },
         ...(image ? { primaryImageOfPage: { "@id": `${url}#primaryimage` } } : {}),
       },
       ...(image ? [image] : []),

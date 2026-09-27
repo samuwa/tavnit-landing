@@ -1,7 +1,7 @@
 import { execFileSync } from "node:child_process";
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
-import { DOC_SECTIONS } from "@/components/docs/nav";
+import { DOC_SECTIONS, DOC_SECTIONS_ES, DOC_BY_SLUG_ES } from "@/components/docs/nav";
 import { OWNED_INTEGRATIONS } from "@/lib/integrations";
 import { isStripeEnabled } from "@/lib/platform";
 import { USE_CASES } from "@/lib/use-cases";
@@ -68,6 +68,7 @@ const ROUTE_PAIRS: { en: string; es: string }[] = [
   ...STATIC_ROUTE_PAIRS,
   ...USE_CASES_ES.map((uc) => ({ en: `/use-cases/${uc.slug}`, es: esUseCasePath(uc) })),
   ...GUIDES_ES.map((g) => ({ en: `/guides/${g.slug}`, es: esGuidePath(g) })),
+  ...DOC_SECTIONS.map((d) => ({ en: d.href, es: DOC_BY_SLUG_ES[d.slug].href })),
 ];
 
 const ALTERNATES_BY_PATH = new Map(
@@ -261,6 +262,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       // /docs is the section entry point; the rest sit a rung below.
       priority: section.href === "/docs" ? 0.8 : 0.7,
+    })),
+    ...DOC_SECTIONS_ES.map((section) => ({
+      url: `${SITE_URL}${section.href}`,
+      lastModified: lastCommitDate(...docsSources(section.href)),
+      changeFrequency: "weekly" as const,
+      priority: section.href === "/es/documentacion" ? 0.8 : 0.7,
     })),
     // Legal pages are indexable — they are a trust/E-E-A-T signal — but rank
     // for nothing, so they sit at the bottom of the priority range.

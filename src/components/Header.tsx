@@ -27,12 +27,12 @@ const NAV: Record<Locale, { href: string; label: string }[]> = {
     { href: "/docs", label: "Docs" },
     { href: "/pricing", label: "Pricing" },
   ],
-  // Spanish routes where they exist; /pricing and /docs stay English.
+  // Spanish routes where they exist; /pricing stays English.
   es: [
     { href: "/es#como-funciona", label: "Producto" },
     { href: "/es/casos-de-uso", label: "Casos de uso" },
     { href: "/es/herramientas", label: "Herramientas gratis" },
-    { href: "/docs", label: "Docs" },
+    { href: "/es/documentacion", label: "Docs" },
     { href: "/pricing", label: "Precios" },
   ],
 };

@@ -500,7 +500,7 @@ export const BASE_ES: ToolCopy = {
         title: "El resultado te llega por correo",
         body: "Cuando termina la extracción, Tavnit manda un correo a las direcciones que configures en el Flow, con las filas en rows.csv adjunto. Si hay revisión, el correo espera la aprobación.",
         linkLabel: "Correo de salida",
-        href: "/docs/email-integration",
+        href: "/es/documentacion/integracion-por-correo",
         scene: [{ label: "Termina la extracción" }, { label: "Tavnit arma el correo" }, { label: "Llega a quien tú digas", result: "rows.csv adjunto" }],
       },
       {
@@ -509,7 +509,7 @@ export const BASE_ES: ToolCopy = {
         title: "Entra a tu ERP por webhook",
         body: "Al terminar, Tavnit hace un POST a la URL que le des con las filas y el run_id. Zapier, Make y n8n lo reciben con su disparador de webhook; no hace falta nada nativo.",
         linkLabel: "Webhooks",
-        href: "/docs/webhooks",
+        href: "/es/documentacion/webhooks",
         scene: [{ label: "Las filas ya extraídas" }, { label: "Un POST con rows y run_id" }, { label: "Aparecen en tu sistema", result: "6 líneas, nadie tecleó" }],
       },
       {
@@ -518,7 +518,7 @@ export const BASE_ES: ToolCopy = {
         title: "Una persona aprueba antes de contabilizar",
         body: "Activas la revisión en el Flow y cada corrida se pausa. El revisor ve la tabla editable junto al documento original: corrige celdas, excluye filas, agrega columnas, y aprueba o rechaza. Solo al aprobar sale el correo, el webhook y el Bucket; cada decisión queda en el registro. Hay un rol de solo revisor para quien no debe ver nada más.",
         linkLabel: "Revisión humana",
-        href: "/docs/human-in-the-loop",
+        href: "/es/documentacion/revision-humana",
         scene: [{ label: "La corrida se pausa para revisión" }, { label: "Una persona corrige junto al documento" }, { label: "Aprobada: recién ahí se entrega", result: "1 celda corregida · registrado" }],
       },
       {
@@ -536,7 +536,7 @@ export const BASE_ES: ToolCopy = {
         title: "Un Cleaner limpia y valida cada fila",
         body: "Formato de fecha, formato de número, campos calculados, conversión de moneda con tasas publicadas, y acciones condicionales: si una línea no cumple, se manda a revisión, se avisa por correo o por webhook.",
         linkLabel: "Cleaners",
-        href: "/docs/cleaners",
+        href: "/es/documentacion/cleaners",
         scene: [{ label: "Los datos tal como llegan" }, { label: "El Cleaner aplica tus reglas" }, { label: "Limpios, y lo que no cuadra, marcado", result: "fecha, número y suma en orden" }],
       },
       {
@@ -545,7 +545,7 @@ export const BASE_ES: ToolCopy = {
         title: "Un Agente entra al portal del proveedor",
         body: "Le escribes la misión en palabras, con una URL de inicio y las credenciales en una bóveda que el modelo nunca ve. Al terminar la extracción, el Agente arranca solo con los campos del documento y trae lo que pides con tipos: precio, plazo, archivos.",
         linkLabel: "Agentes",
-        href: "/docs/agents",
+        href: "/es/documentacion/agents",
         scene: [{ label: "Termina la extracción" }, { label: "El Agente navega el portal" }, { label: "Trae los datos, con tipos", result: "precio 18.50 · plazo 5 días" }],
       },
       {
@@ -554,7 +554,7 @@ export const BASE_ES: ToolCopy = {
         title: "Pregúntale a {your_docs}",
         body: "Las filas se guardan en un Bucket. Preguntas en lenguaje natural; Tavnit convierte la pregunta en un plan (suma, filtro, mes), lo ejecuta en la base de datos y responde con la cifra. El modelo nunca hace la aritmética.",
         linkLabel: "Buckets",
-        href: "/docs/buckets",
+        href: "/es/documentacion/buckets",
         scene: [{ label: "\"¿Cuánto le compramos a Istmo en agosto?\"" }, { label: "Un plan: suma · proveedor · mes" }, { label: "La cifra, calculada en la base", result: "B/. 12,480 en 4 {docs}" }],
       },
     ],
@@ -563,7 +563,7 @@ export const BASE_ES: ToolCopy = {
       title: "El Flow: tú decides las columnas",
       body: "Un Flow es la definición de un tipo de documento: la lista de campos que quieres sacar, cada uno con nombre, tipo de dato y si aparece una vez por documento o una por línea, más una pista de dónde buscar cuando hace falta. Lo activas y cada documento que llega se lee buscando exactamente esos campos; la tabla que sale tiene una columna por campo. Esta herramienta usa un Flow fijo de {doc} con {fields} campos. En tu cuenta agregas, quitas y renombras campos, y creas Flows para cualquier otro documento. Sin plantillas ni coordenadas.",
       linkLabel: "Cómo se define un Flow",
-      href: "/docs/flows",
+      href: "/es/documentacion/flows",
       scene: [{ label: "Defines los campos en dos grupos: del documento y de la tabla" }, { label: "Lee el encabezado una vez y la tabla fila por fila" }, { label: "Una fila por línea: lo del documento se repite, lo de la tabla cambia", result: "5 campos → 5 columnas" }],
       name: "{Doc}",
       kinds: ["Campos del documento", "Campos de la tabla"],
@@ -580,7 +580,7 @@ export const BASE_ES: ToolCopy = {
           title: "Reenvía el correo y ya está",
           body: "Cada Flow tiene su propia dirección, del tipo {doc}-lite-<id>@mg.tavnit.io. Reenvías el correo con {the_doc} adjunta y cada adjunto se convierte en una corrida. El asunto y el cuerpo no se leen.",
           linkLabel: "Entrada por correo",
-          href: "/docs/email-integration",
+          href: "/es/documentacion/integracion-por-correo",
           scene: [{ label: "Reenvías el correo con el adjunto" }, { label: "Llega a la dirección del Flow" }, { label: "Cada adjunto es una corrida", result: "1 adjunto → 1 corrida" }],
         },
         {
@@ -589,7 +589,7 @@ export const BASE_ES: ToolCopy = {
           title: "Súbela desde la app",
           body: "Arrastras el PDF o la foto al Flow y la corrida arranca al instante. Es lo mismo que hiciste aquí, con tu cuenta y sin cupo diario.",
           linkLabel: "Flows",
-          href: "/docs/flows",
+          href: "/es/documentacion/flows",
           scene: [{ label: "Arrastras el archivo al Flow" }, { label: "La corrida arranca" }, { label: "Las filas, en segundos", result: "igual que aquí, sin cupo" }],
         },
         {
@@ -598,7 +598,7 @@ export const BASE_ES: ToolCopy = {
           title: "Desde tu sistema, por API",
           body: "Un POST a /api/runs/process con el archivo y el flow_id, con tu API key. Responde 202 con el run_id; consultas GET /api/runs/<id> hasta que esté completed y ahí vienen las filas.",
           linkLabel: "API",
-          href: "/docs/api-integration",
+          href: "/es/documentacion/api",
           scene: [{ label: "POST con el archivo y el flow_id" }, { label: "202: run_id, en cola" }, { label: "GET hasta completed", result: "status: completed · 6 filas" }],
         },
         {
@@ -616,7 +616,7 @@ export const BASE_ES: ToolCopy = {
           title: "Varios documentos en un solo PDF",
           body: "Un Splitter encuentra dónde empieza cada documento, clasifica cada segmento según los tipos que le describes y manda cada uno a su Flow. Un escaneo con tres {docs} termina en tres corridas.",
           linkLabel: "Splitters",
-          href: "/docs/splitters",
+          href: "/es/documentacion/splitters",
           scene: [{ label: "Un PDF con tres {docs}" }, { label: "El Splitter corta y clasifica" }, { label: "Tres corridas, una por {doc}", result: "3 segmentos · 3 corridas" }],
         },
       ],

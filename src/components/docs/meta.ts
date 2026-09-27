@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { DOC_BY_SLUG, type DocSlug } from "./nav";
+import { docSection, type DocSlug } from "./nav";
+import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/lib/locale";
 
 /**
  * Per-route docs metadata.
@@ -9,8 +10,11 @@ import { DOC_BY_SLUG, type DocSlug } from "./nav";
  * pointed at the homepage — telling Google the whole docs section was a
  * duplicate of "/". Each page now self-canonicalises.
  */
-export function docMetadata(slug: DocSlug): Metadata {
-  const section = DOC_BY_SLUG[slug];
+export function docMetadata(slug: DocSlug, locale: Locale = "en"): Metadata {
+  const section = docSection(slug, locale);
+  // Every docs page has a twin in the other language. Both sides must emit
+  // the same hreflang block or Google ignores the pair (see locale.ts).
+  const pair = languageAlternates(docSection(slug, "en").href, docSection(slug, "es").href);
   return {
     // `absolute` on purpose. The root layout defines a `%s | Tavnit` template,
     // but a layout title only templates its *immediate* children — so /docs
@@ -22,14 +26,14 @@ export function docMetadata(slug: DocSlug): Metadata {
     // consistent and keeps the descriptive tail visible.
     title: { absolute: section.title },
     description: section.description,
-    alternates: { canonical: section.href },
+    alternates: { canonical: section.href, languages: pair },
     openGraph: {
       type: "article",
       url: section.href,
       title: section.title,
       description: section.description,
       siteName: "Tavnit",
-      locale: "en_US",
+      locale: locale === "es" ? ES_LOCALE_OG : EN_LOCALE_OG,
       // Restated because a child segment's `openGraph` replaces the parent's
       // wholesale, which would otherwise drop the generated OG image.
       images: ["/opengraph-image"],

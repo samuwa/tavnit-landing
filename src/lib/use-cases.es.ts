@@ -82,11 +82,11 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Correo electrónico", href: "/docs/email-integration", why: "El juego de documentos llega por correo, como siempre. Lo reenvías a una dirección de Tavnit y el proceso arranca solo." },
-      { label: "Splitters", href: "/docs/splitters", why: "La documentación del embarque suele venir en un solo PDF combinado. El Splitter la separa antes de extraer." },
-      { label: "Collections", href: "/docs/collections", why: "Identifica factura, lista de empaque y BL y envía cada uno al Flow correcto." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Clasifica la mercancía en el Arancel Nacional, convierte monedas y estandariza pesos y unidades." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "El corredor revisa cada clasificación antes de declarar, con registro de quién aprobó qué." },
+      { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "El juego de documentos llega por correo, como siempre. Lo reenvías a una dirección de Tavnit y el proceso arranca solo." },
+      { label: "Splitters", href: "/es/documentacion/splitters", why: "La documentación del embarque suele venir en un solo PDF combinado. El Splitter la separa antes de extraer." },
+      { label: "Collections", href: "/es/documentacion/collections", why: "Identifica factura, lista de empaque y BL y envía cada uno al Flow correcto." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Clasifica la mercancía en el Arancel Nacional, convierte monedas y estandariza pesos y unidades." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "El corredor revisa cada clasificación antes de declarar, con registro de quién aprobó qué." },
       { label: "Llenado de formularios", href: "/es/casos-de-uso/llenado-de-formularios", why: "Los datos extraídos y aprobados pre-llenan el formulario de declaración en lugar de re-tipearse." },
     ],
     faqs: [
@@ -156,11 +156,11 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Correo electrónico", href: "/docs/email-integration", why: "Los proveedores ya mandan las facturas por correo. Reenvía automáticamente la bandeja de cuentas por pagar y cada adjunto se procesa sin que nadie abra la aplicación." },
-      { label: "Splitters", href: "/docs/splitters", why: "Separa los escaneos en lote o engrapados en facturas individuales antes de la extracción." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Normaliza fechas, convierte monedas, empareja proveedores contra tu lista y marca la aritmética que no cuadra." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Retiene la ejecución hasta que alguien la apruebe — cada factura, o solo las que una regla marcó — con un registro de solo anexar de quién aprobó qué." },
-      { label: "Webhooks", href: "/docs/webhooks", why: "Envía el registro aprobado directo a tu sistema contable en el momento en que pasa la revisión." },
+      { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Los proveedores ya mandan las facturas por correo. Reenvía automáticamente la bandeja de cuentas por pagar y cada adjunto se procesa sin que nadie abra la aplicación." },
+      { label: "Splitters", href: "/es/documentacion/splitters", why: "Separa los escaneos en lote o engrapados en facturas individuales antes de la extracción." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Normaliza fechas, convierte monedas, empareja proveedores contra tu lista y marca la aritmética que no cuadra." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Retiene la ejecución hasta que alguien la apruebe — cada factura, o solo las que una regla marcó — con un registro de solo anexar de quién aprobó qué." },
+      { label: "Webhooks", href: "/es/documentacion/webhooks", why: "Envía el registro aprobado directo a tu sistema contable en el momento en que pasa la revisión." },
     ],
     faqs: [
       { q: "¿Procesa facturas escaneadas o fotografiadas?", a: "Sí. Escaneos, fotos y PDFs de imagen pasan por OCR antes de la extracción. La calidad sigue importando — un escaneo nítido se extrae con más confiabilidad que una foto de celular en ángulo — y por eso existe la revisión para los casos marginales." },
@@ -213,11 +213,11 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/docs/collections", why: "Los proveedores envían OC, facturas y notas de entrega a una sola dirección. Collections clasifica cada documento y lo envía al Flow correcto." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Mapea códigos de artículo y nombres de proveedor a tus datos maestros por búsqueda, verifica la aritmética de cada línea y marca los valores fuera de tolerancia." },
-      { label: "Buckets", href: "/docs/buckets", why: "Guarda OC y facturas en la misma estructura, así la conciliación a nivel de encabezado es una consulta por número de OC." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Solo las facturas marcadas se detienen para un revisor con nombre, con una bitácora de auditoría de solo anexar que registra quién aprobó qué." },
-      { label: "API", href: "/docs/api-integration", why: "Envía las facturas conciliadas y aprobadas a tu ERP o sistema de cuentas por pagar sin un paso manual." },
+      { label: "Collections", href: "/es/documentacion/collections", why: "Los proveedores envían OC, facturas y notas de entrega a una sola dirección. Collections clasifica cada documento y lo envía al Flow correcto." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Mapea códigos de artículo y nombres de proveedor a tus datos maestros por búsqueda, verifica la aritmética de cada línea y marca los valores fuera de tolerancia." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Guarda OC y facturas en la misma estructura, así la conciliación a nivel de encabezado es una consulta por número de OC." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Solo las facturas marcadas se detienen para un revisor con nombre, con una bitácora de auditoría de solo anexar que registra quién aprobó qué." },
+      { label: "API", href: "/es/documentacion/api", why: "Envía las facturas conciliadas y aprobadas a tu ERP o sistema de cuentas por pagar sin un paso manual." },
     ],
     faqs: [
       { q: "¿Qué es el PO matching o conciliación de órdenes de compra?", a: "Es la verificación de que una factura coincide con la orden de compra que factura: mismo proveedor, mismos artículos, mismas cantidades y precios. Una conciliación de dos vías compara la factura con la OC; una de tres vías revisa además la nota de recepción. Es el control que evita pagarle a un proveedor por algo que no se pidió o no se entregó." },
@@ -267,9 +267,9 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Flows", href: "/docs/flows", why: "Un solo Flow lee el diseño de cotización de cada proveedor en la misma estructura de campos — la condición previa para poder compararlas." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Convierte monedas para que cotizaciones en distintas divisas se comparen sobre la misma base." },
-      { label: "Buckets", href: "/docs/buckets", why: "Conserva las cotizaciones en el tiempo, así el precio de hoy se puede contrastar con lo que el mismo proveedor cotizó el trimestre pasado." },
+      { label: "Flows", href: "/es/documentacion/flows", why: "Un solo Flow lee el diseño de cotización de cada proveedor en la misma estructura de campos — la condición previa para poder compararlas." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Convierte monedas para que cotizaciones en distintas divisas se comparen sobre la misma base." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Conserva las cotizaciones en el tiempo, así el precio de hoy se puede contrastar con lo que el mismo proveedor cotizó el trimestre pasado." },
     ],
     faqs: [
       { q: "¿Cómo empareja artículos que cada proveedor describe de forma distinta?", a: "El emparejamiento es semántico y no exacto: las descripciones se comparan por significado, con un desempate por LLM que resuelve los pares ambiguos. “Perno hexagonal M8 50mm” y “Perno, hex., M8x50” quedan emparejados sin que tengas que mantener una lista de sinónimos." },
@@ -315,10 +315,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Correo electrónico", href: "/docs/email-integration", why: "Conductores y transportistas envían las pruebas de entrega fotografiadas por correo; reenviarlas procesa cada una al llegar." },
-      { label: "Flows", href: "/docs/flows", why: "Las líneas entregadas son campos de tabla, con la misma estructura que se usa para las órdenes de compra." },
-      { label: "Buckets", href: "/docs/buckets", why: "Guarda entregas y órdenes en un mismo lugar, así las diferencias aparecen como una consulta en lugar de una auditoría." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Revisa las capturas deficientes y las cantidades corregidas, donde el costo de equivocarse es una disputa." },
+      { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Conductores y transportistas envían las pruebas de entrega fotografiadas por correo; reenviarlas procesa cada una al llegar." },
+      { label: "Flows", href: "/es/documentacion/flows", why: "Las líneas entregadas son campos de tabla, con la misma estructura que se usa para las órdenes de compra." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Guarda entregas y órdenes en un mismo lugar, así las diferencias aparecen como una consulta en lugar de una auditoría." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Revisa las capturas deficientes y las cantidades corregidas, donde el costo de equivocarse es una disputa." },
     ],
     faqs: [
       { q: "¿Puede leer correcciones escritas a mano?", a: "Sí. La escritura a mano se extrae junto con el texto impreso, y aquí eso importa porque la cantidad escrita a mano suele ser la correcta." },
@@ -363,10 +363,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Flows", href: "/docs/flows", why: "Un Flow por cada tipo de documento fuente; el formulario toma datos de todos a la vez." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Convierte y calcula valores para que lo que llega al formulario ya esté en la unidad o el formato requerido." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Aprobación antes de emitir, con las correcciones y los campos de llenado humano capturados en el mismo paso." },
-      { label: "Correo electrónico", href: "/docs/email-integration", why: "Los documentos fuente reenviados a una dirección alimentan el llenado sin que nadie abra la aplicación." },
+      { label: "Flows", href: "/es/documentacion/flows", why: "Un Flow por cada tipo de documento fuente; el formulario toma datos de todos a la vez." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Convierte y calcula valores para que lo que llega al formulario ya esté en la unidad o el formato requerido." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Aprobación antes de emitir, con las correcciones y los campos de llenado humano capturados en el mismo paso." },
+      { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Los documentos fuente reenviados a una dirección alimentan el llenado sin que nadie abra la aplicación." },
     ],
     faqs: [
       { q: "¿Se puede llenar un formulario a partir de varios documentos?", a: "Sí. Cada tipo de documento fuente tiene su propio espacio, y el formulario se completa con todos juntos — que es el caso normal en declaraciones y reclamos." },
@@ -414,10 +414,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Flows", href: "/docs/flows", why: "Las pistas de extracción le dicen a la IA qué significa un término, algo que aquí pesa mucho más que en documentos con campos etiquetados." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Revisión en cada ejecución, con un registro permanente de quién confirmó cada término." },
-      { label: "Buckets", href: "/docs/buckets", why: "Convierte la cartera en una tabla consultable: qué contratos se renuevan el próximo trimestre, ordenados por plazo de preaviso." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Normaliza formatos de fecha y puede calcular la fecha límite de preaviso a partir del vencimiento y el plazo de preaviso." },
+      { label: "Flows", href: "/es/documentacion/flows", why: "Las pistas de extracción le dicen a la IA qué significa un término, algo que aquí pesa mucho más que en documentos con campos etiquetados." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Revisión en cada ejecución, con un registro permanente de quién confirmó cada término." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Convierte la cartera en una tabla consultable: qué contratos se renuevan el próximo trimestre, ordenados por plazo de preaviso." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Normaliza formatos de fecha y puede calcular la fecha límite de preaviso a partir del vencimiento y el plazo de preaviso." },
     ],
     faqs: [
       { q: "¿Funciona con contratos que no tienen una estructura consistente?", a: "Sí — ese es el caso normal. No hay plantilla que configurar. Describes los términos que quieres y el Flow los localiza donde aparezcan, y por eso las pistas de extracción importan más aquí que en documentos estructurados." },
@@ -463,10 +463,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Flows", href: "/docs/flows", why: "Las transacciones son campos de tabla, así que cada una vuelve como su propia fila tipada en lugar de un bloque de texto." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Deriva fechas completas a partir del período, verifica los saldos fila por fila y categoriza las contrapartes." },
-      { label: "Buckets", href: "/docs/buckets", why: "Las transacciones quedan en una tabla consultable — filtra por contraparte, agrupa por mes, grafica el saldo." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Envía a una persona solo los estados de cuenta que fallan la verificación de saldos, en lugar de revisarlos todos." },
+      { label: "Flows", href: "/es/documentacion/flows", why: "Las transacciones son campos de tabla, así que cada una vuelve como su propia fila tipada en lugar de un bloque de texto." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Deriva fechas completas a partir del período, verifica los saldos fila por fila y categoriza las contrapartes." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Las transacciones quedan en una tabla consultable — filtra por contraparte, agrupa por mes, grafica el saldo." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Envía a una persona solo los estados de cuenta que fallan la verificación de saldos, en lugar de revisarlos todos." },
     ],
     faqs: [
       { q: "¿Funciona con cualquier banco?", a: "Sí. No hay que configurar una plantilla por banco: el mismo Flow lee estados de cuenta de cualquier institución, incluidas cuentas empresariales y períodos históricos que una API de banca abierta no cubriría." },
@@ -513,10 +513,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Correo electrónico", href: "/docs/email-integration", why: "Los colaboradores reenvían los recibos a una dirección en vez de aprender una aplicación. Los recibos digitales se pueden reenviar automáticamente al llegar." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Asigna una categoría con IA, convierte moneda extranjera y estandariza los nombres de los comercios." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Revisión condicional — solo los gastos por encima de un umbral o fuera de política llegan a un aprobador." },
-      { label: "Buckets", href: "/docs/buckets", why: "Los gastos como una tabla que puedes agrupar, graficar y revisar en busca de duplicados antes de pagar." },
+      { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Los colaboradores reenvían los recibos a una dirección en vez de aprender una aplicación. Los recibos digitales se pueden reenviar automáticamente al llegar." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Asigna una categoría con IA, convierte moneda extranjera y estandariza los nombres de los comercios." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Revisión condicional — solo los gastos por encima de un umbral o fuera de política llegan a un aprobador." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Los gastos como una tabla que puedes agrupar, graficar y revisar en busca de duplicados antes de pagar." },
     ],
     faqs: [
       { q: "¿Puede leer la foto de un recibo arrugado?", a: "Normalmente sí. Fotos, papel térmico desteñido y recibos doblados pasan por OCR, aunque la calidad marca el techo — y por eso existe la revisión condicional para los casos en que el proceso tiene menos certeza." },
@@ -562,10 +562,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/docs/collections", why: "La evidencia mezclada que llega a un solo lugar se clasifica y se envía al Flow correcto antes de cualquier verificación." },
-      { label: "Flows", href: "/docs/flows", why: "Cada tipo de documento tiene su propio Flow, así una regla puede referirse a un campo con nombre en lugar de buscar en texto libre." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Un revisor firma la inspección, y la bitácora de solo anexar registra quién aceptó cada hallazgo." },
-      { label: "Buckets", href: "/docs/buckets", why: "Los resultados a lo largo del tiempo se vuelven reportables — cuántos juegos fallaron, en qué regla, en qué mes." },
+      { label: "Collections", href: "/es/documentacion/collections", why: "La evidencia mezclada que llega a un solo lugar se clasifica y se envía al Flow correcto antes de cualquier verificación." },
+      { label: "Flows", href: "/es/documentacion/flows", why: "Cada tipo de documento tiene su propio Flow, así una regla puede referirse a un campo con nombre en lugar de buscar en texto libre." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Un revisor firma la inspección, y la bitácora de solo anexar registra quién aceptó cada hallazgo." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Los resultados a lo largo del tiempo se vuelven reportables — cuántos juegos fallaron, en qué regla, en qué mes." },
     ],
     faqs: [
       { q: "¿Puede comparar valores entre documentos distintos?", a: "Sí — ese es el punto. Una inspección reúne el juego completo de documentos antes de evaluar, así las reglas pueden verificar que un valor de un documento coincide con el de otro, en lugar de validar cada uno por separado." },
@@ -611,10 +611,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/docs/collections", why: "Clasifica cada adjunto — formulario, cotización, factura, informe — y lo enruta al Flow construido para él." },
-      { label: "Correo electrónico", href: "/docs/email-integration", why: "Los reclamos llegan por correo; reenviarlos a la dirección de una Collection procesa cada adjunto en cuanto llega." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Normaliza fechas y monedas, y calcula la diferencia entre el monto reclamado y el evidenciado." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Los analistas aprueban o rechazan con un registro permanente de la decisión y de quién la tomó." },
+      { label: "Collections", href: "/es/documentacion/collections", why: "Clasifica cada adjunto — formulario, cotización, factura, informe — y lo enruta al Flow construido para él." },
+      { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Los reclamos llegan por correo; reenviarlos a la dirección de una Collection procesa cada adjunto en cuanto llega." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Normaliza fechas y monedas, y calcula la diferencia entre el monto reclamado y el evidenciado." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Los analistas aprueban o rechazan con un registro permanente de la decisión y de quién la tomó." },
     ],
     faqs: [
       { q: "¿Puede manejar un reclamo con muchos adjuntos distintos?", a: "Sí. Una Collection clasifica cada adjunto y lo enruta al Flow correcto, así un formulario de reclamo, una cotización y una factura los lee cada uno el Flow construido para ese tipo de documento." },
@@ -660,10 +660,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/docs/collections", why: "Clasifica lo que el cliente haya enviado — pasaporte, recibo de servicios, certificado de constitución — y envía cada documento al Flow correcto." },
-      { label: "Flows", href: "/docs/flows", why: "Un Flow por tipo de documento, para que una verificación pueda referirse a un campo con nombre en lugar de buscar en el texto." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Aprobación en cada onboarding, con un registro permanente de quién aprobó qué documento." },
-      { label: "Roles de usuario", href: "/docs/user-roles", why: "Restringe los documentos de identidad al equipo que los necesita, en lugar de a toda la organización." },
+      { label: "Collections", href: "/es/documentacion/collections", why: "Clasifica lo que el cliente haya enviado — pasaporte, recibo de servicios, certificado de constitución — y envía cada documento al Flow correcto." },
+      { label: "Flows", href: "/es/documentacion/flows", why: "Un Flow por tipo de documento, para que una verificación pueda referirse a un campo con nombre en lugar de buscar en el texto." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Aprobación en cada onboarding, con un registro permanente de quién aprobó qué documento." },
+      { label: "Roles de usuario", href: "/es/documentacion/roles-de-usuario", why: "Restringe los documentos de identidad al equipo que los necesita, en lugar de a toda la organización." },
     ],
     faqs: [
       { q: "¿Verifica que un documento sea auténtico?", a: "No. Tavnit extrae y estructura lo que los documentos dicen, y te permite comprobar la consistencia dentro de un juego de documentos. La verificación de autenticidad contra las autoridades emisoras es una especialidad aparte, y esto no la reemplaza." },
@@ -709,10 +709,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Flows", href: "/docs/flows", why: "Las pistas de extracción son esenciales aquí — el modelo necesita saber qué es una condición de terminación, no solo dónde buscar." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Calcula las fechas límite de revisión y de terminación a partir de la fecha de inicio y los plazos de preaviso." },
-      { label: "Buckets", href: "/docs/buckets", why: "El portafolio como tabla: qué contratos pueden terminarse el año que viene, ordenados por fecha límite de preaviso." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Revisa cada ficha. El costo de una fecha equivocada aquí se mide en años de canon." },
+      { label: "Flows", href: "/es/documentacion/flows", why: "Las pistas de extracción son esenciales aquí — el modelo necesita saber qué es una condición de terminación, no solo dónde buscar." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Calcula las fechas límite de revisión y de terminación a partir de la fecha de inicio y los plazos de preaviso." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "El portafolio como tabla: qué contratos pueden terminarse el año que viene, ordenados por fecha límite de preaviso." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Revisa cada ficha. El costo de una fecha equivocada aquí se mide en años de canon." },
     ],
     faqs: [
       { q: "¿Puede calcular las fechas de terminación anticipada y de revisión de canon?", a: "Sí. Extrae la fecha de inicio, el aniversario al que se ata el derecho y el plazo de preaviso, y un Cleaner de fórmula deriva la fecha límite real — que normalmente es lo que querías, más que la cláusula en sí." },
@@ -758,10 +758,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Correo electrónico", href: "/docs/email-integration", why: "Las obras y las agencias envían las hojas por correo al cierre de la semana; reenviarlas las procesa en cuanto llegan." },
-      { label: "Splitters", href: "/docs/splitters", why: "Un solo PDF con las hojas de toda una cuadrilla se convierte en un Run por trabajador." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Calcula horas a partir de los tiempos, cruza nombres con los registros de planilla y marca los totales que no cuadran." },
-      { label: "Revisión humana", href: "/docs/human-in-the-loop", why: "Solo las hojas que fallan una verificación llegan a una persona, que es lo que hace esto viable con una fecha límite de planilla encima." },
+      { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Las obras y las agencias envían las hojas por correo al cierre de la semana; reenviarlas las procesa en cuanto llegan." },
+      { label: "Splitters", href: "/es/documentacion/splitters", why: "Un solo PDF con las hojas de toda una cuadrilla se convierte en un Run por trabajador." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Calcula horas a partir de los tiempos, cruza nombres con los registros de planilla y marca los totales que no cuadran." },
+      { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Solo las hojas que fallan una verificación llegan a una persona, que es lo que hace esto viable con una fecha límite de planilla encima." },
     ],
     faqs: [
       { q: "¿Puede leer registros de horas escritos a mano?", a: "Sí. La escritura a mano se extrae igual que el texto impreso, aunque la confianza varía con la legibilidad — por eso vale la pena activar aquí el envío a revisión de las hojas inciertas." },
@@ -807,10 +807,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/docs/collections", why: "Las facturas de distintos servicios y proveedores llegan juntas y se envían automáticamente al Flow correcto." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Convierte las unidades a una sola base de reporte y calcula el consumo prorrateado por período." },
-      { label: "Buckets", href: "/docs/buckets", why: "Consumo por sitio y período como una tabla graficable — el formato que necesitan tanto finanzas como el reporte ESG." },
-      { label: "Correo electrónico", href: "/docs/email-integration", why: "Los proveedores envían las facturas por correo; reenviarlas construye el conjunto de datos sin un proyecto de digitación." },
+      { label: "Collections", href: "/es/documentacion/collections", why: "Las facturas de distintos servicios y proveedores llegan juntas y se envían automáticamente al Flow correcto." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Convierte las unidades a una sola base de reporte y calcula el consumo prorrateado por período." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Consumo por sitio y período como una tabla graficable — el formato que necesitan tanto finanzas como el reporte ESG." },
+      { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Los proveedores envían las facturas por correo; reenviarlas construye el conjunto de datos sin un proyecto de digitación." },
     ],
     faqs: [
       { q: "¿Maneja facturas de distintos servicios y proveedores?", a: "Sí. Una Collection clasifica cada factura y la envía al Flow correcto, así las facturas de luz, gas y agua las lee cada una el Flow construido para ellas, sea cual sea el formato del proveedor." },
@@ -857,10 +857,10 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Flows", href: "/docs/flows", why: "Los campos de tabla mantienen cada puesto y cada título como su propia fila, en vez de un solo bloque de texto." },
-      { label: "Cleaners", href: "/docs/cleaners", why: "Normaliza los nombres de habilidades a un vocabulario controlado y calcula la experiencia total a partir de las fechas de cada puesto." },
-      { label: "Buckets", href: "/docs/buckets", why: "Registros de candidatos como una tabla filtrable, con acceso por Bucket para que los datos de postulantes no sean visibles en toda la organización." },
-      { label: "Correo electrónico", href: "/docs/email-integration", why: "Las postulaciones que llegan por correo se procesan al recibirse, adjuntos incluidos." },
+      { label: "Flows", href: "/es/documentacion/flows", why: "Los campos de tabla mantienen cada puesto y cada título como su propia fila, en vez de un solo bloque de texto." },
+      { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Normaliza los nombres de habilidades a un vocabulario controlado y calcula la experiencia total a partir de las fechas de cada puesto." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Registros de candidatos como una tabla filtrable, con acceso por Bucket para que los datos de postulantes no sean visibles en toda la organización." },
+      { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Las postulaciones que llegan por correo se procesan al recibirse, adjuntos incluidos." },
     ],
     faqs: [
       { q: "¿Lee hojas de vida a dos columnas o con diseño gráfico?", a: "Sí. La extracción es consciente del diseño en vez de leer texto plano de arriba abajo, así que las barras laterales y los diseños a varias columnas no se intercalan en un texto sin sentido." },
@@ -906,9 +906,9 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Buckets", href: "/docs/buckets", why: "Las grabaciones completadas se exportan a un Bucket automáticamente, así las llamadas se acumulan en algo que puedes consultar y graficar." },
-      { label: "Webhooks", href: "/docs/webhooks", why: "Envía la tabla de salida a tus propios sistemas en cuanto una grabación termina de procesarse." },
-      { label: "Roles de usuario", href: "/docs/user-roles", why: "Los datos de conversaciones son sensibles; los roles y los permisos por Bucket los mantienen entre las personas que llevan el programa." },
+      { label: "Buckets", href: "/es/documentacion/buckets", why: "Las grabaciones completadas se exportan a un Bucket automáticamente, así las llamadas se acumulan en algo que puedes consultar y graficar." },
+      { label: "Webhooks", href: "/es/documentacion/webhooks", why: "Envía la tabla de salida a tus propios sistemas en cuanto una grabación termina de procesarse." },
+      { label: "Roles de usuario", href: "/es/documentacion/roles-de-usuario", why: "Los datos de conversaciones son sensibles; los roles y los permisos por Bucket los mantienen entre las personas que llevan el programa." },
     ],
     faqs: [
       { q: "¿Qué formatos de audio acepta?", a: "Se pueden subir y procesar grabaciones en MP3, WAV y FLAC." },

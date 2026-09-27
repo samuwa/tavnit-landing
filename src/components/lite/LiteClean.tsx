@@ -455,7 +455,7 @@ export default function LiteClean({
             {cc.automate.cta}
             <ArrowRight size={16} aria-hidden />
           </a>
-          <Link href="/docs/cleaners" className="text-sm font-semibold text-[var(--lite-blue)] underline underline-offset-4">
+          <Link href={locale === "es" ? "/es/documentacion/cleaners" : "/docs/cleaners"} className="text-sm font-semibold text-[var(--lite-blue)] underline underline-offset-4">
             {cc.automate.docs}
           </Link>
         </div>

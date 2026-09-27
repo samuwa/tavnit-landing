@@ -15,8 +15,10 @@ export default function DocsPageSchema({
   slug,
   howTo,
   primaryImage,
+  locale = "en",
 }: {
   slug: DocSlug;
+  locale?: "en" | "es";
   /** Only pass when the page renders these steps visibly. */
   howTo?: DocsHowTo;
   primaryImage?: { url: string; caption: string; width: number; height: number };
@@ -25,7 +27,7 @@ export default function DocsPageSchema({
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(docsPageSchema(slug, { howTo, primaryImage })),
+        __html: JSON.stringify(docsPageSchema(slug, { howTo, primaryImage, locale })),
       }}
     />
   );

@@ -113,8 +113,8 @@ export default function SpanishUseCasesHub() {
               demostración
             </Link>{" "}
             o empieza desde la{" "}
-            <Link href="/docs" className="text-accent hover:underline">
-              guía de inicio (en inglés)
+            <Link href="/es/documentacion" className="text-accent hover:underline">
+              guía de inicio
             </Link>
             .
           </p>

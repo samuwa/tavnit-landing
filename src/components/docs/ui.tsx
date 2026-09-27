@@ -12,9 +12,16 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AlertTriangle, ArrowUpRight, Check, CheckCircle, Copy, XCircle } from "lucide-react";
 
 /* ─── Reusable sub-components ─── */
+
+/** Spanish docs live under /es/documentacion; the chrome strings follow the URL. */
+export function useDocsLocale(): "en" | "es" {
+  const pathname = usePathname() ?? "";
+  return pathname === "/es" || pathname.startsWith("/es/") ? "es" : "en";
+}
 
 export function InfoBox({
   color,
@@ -104,6 +111,7 @@ export function BulletList({ items }: { items: React.ReactNode[] }) {
 
 export function CodeBlock({ lang, code }: { lang: string; code: string }) {
   const [copied, setCopied] = useState(false);
+  const es = useDocsLocale() === "es";
 
   const copy = async () => {
     await navigator.clipboard.writeText(code);
@@ -120,7 +128,7 @@ export function CodeBlock({ lang, code }: { lang: string; code: string }) {
           className="flex items-center gap-1.5 text-xs text-fg-4 hover:text-fg transition-colors px-2.5 py-1 rounded hover:bg-tint/10"
         >
           {copied ? <Check size={14} className="text-ok" /> : <Copy size={14} />}
-          {copied ? "Copied!" : "Copy"}
+          {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Copiar" : "Copy"}
         </button>
       </div>
       <pre className="p-4 overflow-x-auto bg-well/40 text-[13px] leading-relaxed">
@@ -320,13 +328,14 @@ export function Related({
 }: {
   links: { href: string; label: string; description: string }[];
 }) {
+  const es = useDocsLocale() === "es";
   return (
     <nav
-      aria-label="Related documentation"
+      aria-label={es ? "Documentación relacionada" : "Related documentation"}
       className="mt-10 rounded-xl border border-tint/[0.08] bg-tint/[0.03] p-6 backdrop-blur-sm"
     >
       <span className="text-xs font-semibold uppercase tracking-wider text-fg-5">
-        Keep reading
+        {es ? "Sigue leyendo" : "Keep reading"}
       </span>
       <ul className="mt-4 space-y-3">
         {links.map((link) => (

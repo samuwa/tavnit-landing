@@ -161,10 +161,10 @@ export default async function SpanishMcpIntegrationPage() {
             Probar gratis <ArrowRight size={17} />
           </Link>
           <Link
-            href="/docs/mcp-connector"
+            href="/es/documentacion/conector-mcp"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#3b82f6]/50 text-accent font-semibold hover:bg-[#3b82f6] hover:text-white transition-all"
           >
-            Guía de configuración (en inglés)
+            Guía de configuración
           </Link>
         </div>
 
@@ -275,10 +275,10 @@ export default async function SpanishMcpIntegrationPage() {
           </p>
           <ul className="space-y-2.5 text-fg-4">
             {[
-              [<Link key="c" href="/docs/collections" className="text-accent hover:underline">Collections</Link>, "siguen clasificando cada documento entrante y enviándolo al Flow correcto."],
-              [<Link key="cl" href="/docs/cleaners" className="text-accent hover:underline">Cleaners</Link>, "siguen estandarizando formatos, convirtiendo monedas y aplicando tus búsquedas."],
-              [<Link key="h" href="/docs/human-in-the-loop" className="text-accent hover:underline">Revisión humana</Link>, "sigue deteniendo un Run cuando lo pediste — un asistente no puede saltarse tu paso de aprobación."],
-              [<Link key="b" href="/docs/buckets" className="text-accent hover:underline">Buckets</Link>, "siguen recibiendo los resultados, así que lo que el asistente extrae queda consultable después."],
+              [<Link key="c" href="/es/documentacion/collections" className="text-accent hover:underline">Collections</Link>, "siguen clasificando cada documento entrante y enviándolo al Flow correcto."],
+              [<Link key="cl" href="/es/documentacion/cleaners" className="text-accent hover:underline">Cleaners</Link>, "siguen estandarizando formatos, convirtiendo monedas y aplicando tus búsquedas."],
+              [<Link key="h" href="/es/documentacion/revision-humana" className="text-accent hover:underline">Revisión humana</Link>, "sigue deteniendo un Run cuando lo pediste — un asistente no puede saltarse tu paso de aprobación."],
+              [<Link key="b" href="/es/documentacion/buckets" className="text-accent hover:underline">Buckets</Link>, "siguen recibiendo los resultados, así que lo que el asistente extrae queda consultable después."],
             ].map(([link, tail], i) => (
               <li key={i} className="flex gap-2.5 leading-relaxed">
                 <Check size={17} className="text-ok flex-shrink-0 mt-1" />
@@ -286,7 +286,6 @@ export default async function SpanishMcpIntegrationPage() {
               </li>
             ))}
           </ul>
-          <p className="text-xs text-fg-5 mt-4">La documentación técnica enlazada está en inglés.</p>
         </section>
 
         <section className="mb-16">
@@ -316,11 +315,11 @@ export default async function SpanishMcpIntegrationPage() {
           </div>
           <p className="text-sm text-fg-5 mt-4">
             Detalle completo en la{" "}
-            <Link href="/docs/mcp-connector" className="text-accent hover:underline">
+            <Link href="/es/documentacion/conector-mcp" className="text-accent hover:underline">
               documentación del conector
             </Link>{" "}
             y la{" "}
-            <Link href="/docs/user-roles" className="text-accent hover:underline">
+            <Link href="/es/documentacion/roles-de-usuario" className="text-accent hover:underline">
               referencia de roles de usuario
             </Link>
             . El endpoint del servidor es <code className="text-fg-3">{MCP_URL}</code>.
@@ -335,10 +334,10 @@ export default async function SpanishMcpIntegrationPage() {
             Toma un par de minutos y no requiere código.
           </p>
           <Link
-            href="/docs/mcp-connector"
+            href="/es/documentacion/conector-mcp"
             className="inline-flex items-center gap-2 text-accent font-semibold hover:underline"
           >
-            Leer la guía paso a paso (en inglés) <ArrowRight size={16} />
+            Leer la guía paso a paso <ArrowRight size={16} />
           </Link>
         </section>
 

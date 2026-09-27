@@ -62,7 +62,7 @@ const splitScannedPdf: Record<Locale, ToolCopyDef> = {
           title: "Del Splitter al Flow: cada documento a su extracción",
           body: "Un Splitter encuentra dónde empieza cada documento y lo clasifica según los tipos que le describes en palabras. Esta herramienta usa un Splitter fijo con ocho tipos y sin salidas: solo te entrega los documentos. En tu cuenta defines tus propios tipos y, para cada uno, adónde va: a un Flow que extrae sus campos (así se ve abajo, con {fields} campos), a un correo o a una Collection. Sin plantillas ni coordenadas.",
           linkLabel: "Cómo funciona un Splitter",
-          href: "/docs/splitters",
+          href: "/es/documentacion/splitters",
         },
         inputs: {
           show: "¿Cómo llega tu PDF?",

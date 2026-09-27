@@ -101,14 +101,14 @@ export default function SpanishIntegrationsPage() {
               <strong className="text-fg-2">Si son personas las que envían los documentos</strong>{" "}
               — por ejemplo, la bandeja de cuentas por pagar que recibe facturas de proveedores —
               usa el{" "}
-              <Link href="/docs/email-integration" className="text-accent hover:underline">correo electrónico</Link>.
+              <Link href="/es/documentacion/integracion-por-correo" className="text-accent hover:underline">correo electrónico</Link>.
               Nadie tiene que aprender una herramienta nueva; reenvían como ya lo hacen.
             </p>
             <p>
               <strong className="text-fg-2">Si es un sistema el que los envía</strong>, usa la{" "}
-              <Link href="/docs/api-integration" className="text-accent hover:underline">API REST</Link>{" "}
+              <Link href="/es/documentacion/api" className="text-accent hover:underline">API REST</Link>{" "}
               y recibe los resultados por{" "}
-              <Link href="/docs/webhooks" className="text-accent hover:underline">webhook</Link>.
+              <Link href="/es/documentacion/webhooks" className="text-accent hover:underline">webhook</Link>.
               Si prefieres no escribir el código intermedio, los mismos endpoints funcionan desde
               Zapier, Make, n8n y Power Automate.
             </p>
@@ -120,7 +120,6 @@ export default function SpanishIntegrationsPage() {
               consultar lo que ya extrajiste — sin que muevas archivos a mano.
             </p>
           </div>
-          <p className="text-xs text-fg-5 mt-4">La documentación técnica enlazada está en inglés.</p>
         </section>
 
         <div className="glass-card rounded-2xl p-8 text-center">

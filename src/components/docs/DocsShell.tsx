@@ -25,7 +25,8 @@ import {
   Workflow,
   X,
 } from "lucide-react";
-import { DOC_SECTIONS, type DocSlug } from "./nav";
+import { docSections, type DocSlug } from "./nav";
+import { useDocsLocale } from "./ui";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const Squares = dynamic(() => import("@/components/Squares"), { ssr: false });
@@ -41,7 +42,16 @@ const Squares = dynamic(() => import("@/components/Squares"), { ssr: false });
  *    previously setState handlers, which meant the 12 non-default sections had
  *    no URL and no crawlable link pointing at them. They are now real anchors.
  *  - Active state comes from usePathname() rather than local component state.
+ *
+ * One shell for both languages: the locale follows the URL (/es/documentacion
+ * is Spanish), which picks the sidebar list, the chrome strings and the
+ * EN/ES switch that links each page to its twin.
  */
+
+const T = {
+  en: { home: "/", back: "Back to home", toggle: "Toggle menu", goHome: "Go home", contents: "Contents", close: "Close menu", nav: "Documentation", switchLabel: "Español", switchShort: "ES", switchAria: "Leer esta página en español" },
+  es: { home: "/es", back: "Volver al inicio", toggle: "Abrir o cerrar el menú", goHome: "Ir al inicio", contents: "Contenido", close: "Cerrar el menú", nav: "Documentación", switchLabel: "English", switchShort: "EN", switchAria: "Read this page in English" },
+} as const;
 
 const ICONS: Record<DocSlug, React.ReactNode> = {
   "getting-started": <Layers size={20} />,
@@ -63,6 +73,12 @@ const ICONS: Record<DocSlug, React.ReactNode> = {
 export default function DocsShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const locale = useDocsLocale();
+  const t = T[locale];
+  const sections = docSections(locale);
+  const other = locale === "es" ? "en" : "es";
+  const current = sections.find((s) => s.href === pathname);
+  const twin = (current ? docSections(other).find((s) => s.slug === current.slug) : undefined) ?? docSections(other)[0];
 
   // Close sidebar on ESC
   useEffect(() => {
@@ -86,7 +102,7 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
   }, [sidebarOpen]);
 
   return (
-    <div className="min-h-screen text-fg">
+    <div className="min-h-screen text-fg" lang={locale}>
       {/* Fixed Squares background */}
       <div className="fixed inset-0 z-0 bg-bg" aria-hidden="true">
         <Squares direction="diagonal" speed={0.17} squareSize={45} />
@@ -101,21 +117,21 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="lg:hidden p-2 rounded-lg hover:bg-tint/10 transition-colors text-fg-3"
-              aria-label="Toggle menu"
+              aria-label={t.toggle}
               aria-expanded={sidebarOpen}
             >
               {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
             {/* Back arrow (desktop only) */}
             <Link
-              href="/"
+              href={t.home}
               className="hidden lg:flex items-center p-1.5 rounded-lg hover:bg-tint/10 transition-colors text-fg-4 hover:text-fg"
-              aria-label="Back to home"
+              aria-label={t.back}
             >
               <ArrowLeft size={18} />
             </Link>
             {/* Logo + Docs badge */}
-            <Link href="/" className="flex items-center gap-2 hover:opacity-85 transition-opacity">
+            <Link href={t.home} className="flex items-center gap-2 hover:opacity-85 transition-opacity">
               <Logo height={32} priority />
               <span className="text-sm font-semibold text-accent bg-[#3b82f6]/10 px-2.5 py-0.5 rounded-md">
                 Docs
@@ -125,12 +141,21 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
 
           {/* Right section: fills remaining space */}
           <div className="flex-1 flex items-center justify-end gap-2 px-4 md:px-6">
+            <Link
+              href={twin.href}
+              hrefLang={other}
+              aria-label={t.switchAria}
+              className="px-2.5 py-1.5 rounded-lg text-sm font-medium text-fg-4 hover:text-fg hover:bg-tint/10 transition-colors"
+            >
+              <span className="hidden sm:inline">{t.switchLabel}</span>
+              <span className="sm:hidden">{t.switchShort}</span>
+            </Link>
             <ThemeToggle />
             {/* Home icon (mobile only) */}
             <Link
-              href="/"
+              href={t.home}
               className="lg:hidden p-2 rounded-lg hover:bg-tint/10 transition-colors text-fg-3"
-              aria-label="Go home"
+              aria-label={t.goHome}
             >
               <Home size={20} />
             </Link>
@@ -154,17 +179,17 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
       >
         <div className="p-5">
           <div className="flex items-center justify-between mb-5">
-            <span className="text-xs font-semibold text-fg-5 uppercase tracking-wider">Contents</span>
+            <span className="text-xs font-semibold text-fg-5 uppercase tracking-wider">{t.contents}</span>
             <button
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden p-1 rounded hover:bg-tint/10 text-fg-5"
-              aria-label="Close menu"
+              aria-label={t.close}
             >
               <X size={16} />
             </button>
           </div>
-          <nav className="space-y-1" aria-label="Documentation">
-            {DOC_SECTIONS.map((item) => {
+          <nav className="space-y-1" aria-label={t.nav}>
+            {sections.map((item) => {
               const active = pathname === item.href;
               return (
                 <div key={item.slug}>
