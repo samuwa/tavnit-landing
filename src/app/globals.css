@@ -1576,3 +1576,16 @@ html:has(#hero) section[id] {
   .lite-draw { animation: none; stroke-dashoffset: 0; }
   dialog[open] { animation: none; }
 }
+
+/* "Docs" beside the logo in the docs header: Fraunces italic with the brand
+   gradient, the same mark as "Lite" (Tavnit Lite) and "Admin" (Tavnit Admin).
+   Dark is the default theme, so the lighter gradient is the base. */
+.docs-mark {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  background-image: linear-gradient(100deg, #7fb0ff 0%, #a88bff 85%);
+}
+[data-theme="light"] .docs-mark {
+  background-image: linear-gradient(100deg, #3b82f6 0%, #6c42f0 85%);
+}

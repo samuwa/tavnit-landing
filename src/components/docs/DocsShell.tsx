@@ -28,6 +28,7 @@ import {
 import { docSections, type DocSlug } from "./nav";
 import { useDocsLocale } from "./ui";
 import ThemeToggle from "@/components/ThemeToggle";
+import { docsDisplay } from "./fonts";
 
 const Squares = dynamic(() => import("@/components/Squares"), { ssr: false });
 
@@ -102,7 +103,7 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
   }, [sidebarOpen]);
 
   return (
-    <div className="min-h-screen text-fg" lang={locale}>
+    <div className={`min-h-screen text-fg ${docsDisplay.variable}`} lang={locale}>
       {/* Fixed Squares background */}
       <div className="fixed inset-0 z-0 bg-bg" aria-hidden="true">
         <Squares direction="diagonal" speed={0.17} squareSize={45} />
@@ -130,11 +131,15 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
             >
               <ArrowLeft size={18} />
             </Link>
-            {/* Logo + Docs badge */}
-            <Link href={t.home} className="flex items-center gap-2 hover:opacity-85 transition-opacity">
+            {/* Logo + "Docs": the brand's second voice, as on Tavnit Lite and
+                Tavnit Admin — a hairline, then the word in the display
+                serif's italic with the blue-to-violet gradient (globals.css
+                .docs-mark, lighter on the dark theme). Not a sticker. */}
+            <Link href={t.home} className="flex items-center gap-2.5 hover:opacity-85 transition-opacity">
               <Logo height={32} priority />
-              <span className="text-sm font-semibold text-accent bg-[#3b82f6]/10 px-2.5 py-0.5 rounded-md">
-                Docs
+              <span className="flex items-center gap-2.5" aria-label="Docs">
+                <span className="h-5 w-px bg-tint/15" aria-hidden />
+                <span className="docs-mark bg-clip-text pr-0.5 text-[21px] italic leading-none text-transparent">Docs</span>
               </span>
             </Link>
           </div>
