@@ -1,7 +1,27 @@
 import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
-import { AlertTriangle, ArrowLeftRight, BarChart3, Database, FileDown, FilePlus, FileUp, Fingerprint, Info, Lock, Shield, Table2, Users, Workflow } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowLeftRight,
+  BarChart3,
+  Code,
+  Database,
+  FileDown,
+  FilePlus,
+  FileUp,
+  Fingerprint,
+  HelpCircle,
+  Info,
+  Lock,
+  MessageSquare,
+  Search,
+  Shield,
+  Sparkles,
+  Table2,
+  Users,
+  Workflow,
+} from "lucide-react";
 import {
   BulletList,
   DataTable,
@@ -25,7 +45,7 @@ export default function Page() {
         primaryImage={{
           url: "/assets/docs-bucket-grid-2026-08.jpg",
           caption:
-            "A Tavnit Bucket open in the data grid, with typed columns and the Filter, Sort, formula, Graph and Export controls.",
+            "A Tavnit Bucket open in the data grid, with typed columns and the Filter, Sort, function row, Graph and Export controls.",
           width: 1327,
           height: 692,
         }}
@@ -37,9 +57,10 @@ export default function Page() {
 
         <DocCard icon={<Database size={24} />} title="What are Buckets?">
           <Lead>
-            A Bucket is a structured table that lives inside Tavnit. Flows write their extracted rows
-            into it automatically, you can append to it over the API or from a CSV, and you can
-            filter, sort, compute and chart the result without exporting it anywhere.
+            A Bucket is a structured table that lives inside Tavnit. Flows, Signals, Nets, agents
+            and pipelines write rows into it automatically, you can add rows over the API or from a
+            CSV or Excel file, and you can filter, sort, chart and question the result without
+            exporting it anywhere.
           </Lead>
           <p>
             A flow run stores the result of <em>one</em> document. A Bucket is where results
@@ -49,14 +70,15 @@ export default function Page() {
           </p>
           <Screenshot
             src="/assets/docs-bucket-grid-2026-08.jpg"
-            alt="A Tavnit Bucket named Data Set open in the grid view. Typed columns for age, sex, bmi, children, smoker, region and charges hold 1,339 rows, with Insert, Filter, Sort, formula, Graph and Export controls in the toolbar and a column list plus connected flows in the left panel."
+            alt="A Tavnit Bucket named Data Set open in the grid view. Typed columns for age, sex, bmi, children, smoker, region and charges hold 1,339 rows, with Insert, Filter, Sort, function row, Graph and Export controls in the toolbar and a column list plus connected flows in the left panel."
             caption="A Bucket in the grid. Column types are shown beside each name, and the row count and paging sit along the bottom."
             width={1327}
             height={692}
           />
           <InfoBox color="purple" icon={<Workflow size={20} />} title="Flows + Buckets">
-            You can link flows to buckets so that extracted data is automatically written into the bucket
-            after each document is processed. This lets you aggregate results from multiple runs into one place.
+            Turn on <strong>Bucket Export</strong> on a flow and map its output fields to Bucket
+            columns. From then on, every successful run appends its rows, so results from many
+            documents build up in one table.
           </InfoBox>
         </DocCard>
 
@@ -64,91 +86,134 @@ export default function Page() {
           <p>Buckets are ideal for:</p>
           <BulletList
             items={[
-              "Aggregating extraction results from multiple flow runs into a single table",
-              "Building datasets that combine document data with external sources",
-              "Syncing data from external systems via the API",
-              "Creating a central data store that multiple flows write into",
+              "Aggregating extraction results from many flow runs into a single table",
+              "Keeping reference data (price lists, catalogues, customer lists) that Cleaners look values up against",
+              "Syncing data in and out of external systems over the API",
+              "Collecting the structured output of Signals, Nets and agents next to your document data",
+              "Answering questions about your data in plain language, without a spreadsheet",
             ]}
           />
           <InfoBox color="blue" icon={<ArrowLeftRight size={20} />} title="Buckets vs Flow Runs">
             Flow runs store individual document results. Buckets aggregate data across runs
-            and external sources into a unified table you can export or query.
+            and other sources into one table you can query, chart and export.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<FilePlus size={24} />} title="Creating a Bucket">
-          <p>Follow these steps to create a bucket:</p>
+          <p>Owners and Admins can create Buckets:</p>
           <NumberedList
             items={[
-              'Go to the Buckets page from the main navigation',
-              'Click "New Bucket" and give it a name',
-              "Define the columns (name and data type for each)",
-              "Optionally link flows that should write data into this bucket",
-              "Save your bucket",
+              'Go to Buckets in the sidebar and click "Create Bucket" (or start "From template")',
+              "Enter a name and, optionally, a description, then pick an icon and a color",
+              'Click "Create Bucket". Tavnit then offers "Manage Access" to set who can see it, or "Open Bucket" to go straight to the grid',
+              'Add columns: in the grid use "Insert" → "Insert Column", or import a CSV or Excel file and let Tavnit create the columns for you',
+              'To fill it from a flow, open the flow, turn on "Bucket Export", link this Bucket and map the flow\'s fields to its columns',
             ]}
           />
+          <p>
+            Each column has a name and a data type: <strong>Text</strong>, <strong>Number</strong>,{" "}
+            <strong>Date</strong>, <strong>Checkbox</strong> or <strong>Dropdown</strong> (a fixed list
+            of at least two options). Types are what let sorting, filtering, aggregation and charts
+            behave correctly, so a numeric column that arrives as text is worth fixing at the source.
+          </p>
           <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="Column names matter">
-            When using the API, every row you send must have exactly the same column names as your bucket.
-            Choose clear, consistent names upfront.
+            When writing over the API, every row must use the Bucket&apos;s column names. A row with
+            a column the Bucket doesn&apos;t have aborts the whole write with a column mismatch
+            error, so choose clear, consistent names upfront.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<Fingerprint size={24} />} title="Finding Your Bucket ID & Name">
-          <p>To use the Buckets API, you need your bucket&apos;s ID and name. Both are available in the bucket info dialog:</p>
+          <p>
+            To use the Buckets API, you need your bucket&apos;s ID and name. Both are on the
+            bucket&apos;s details page:
+          </p>
           <NumberedList
             items={[
-              "Go to the Buckets page",
-              "Tap the info icon on the bucket you want to use",
-              "Copy the Bucket ID and Bucket Name (both are copyable with a single tap)",
+              'Go to Buckets and click "View details" on the Bucket you want',
+              "Copy the Bucket name from the header (it has a copy button)",
+              'Open "Bucket ID" under "Features" and copy the ID',
             ]}
           />
+          <p>
+            The details page also has a <strong>Schema</strong> tab (every column, its type and
+            flags), a <strong>Write History</strong> tab (each write, its source and how many rows it
+            added), and <strong>Linked Flows</strong>, the flows that export into this Bucket.
+          </p>
           <InfoBox color="green" icon={<Shield size={20} />} title="Safety check">
-            The API requires both bucket_id and bucket_name to prevent accidental writes to the wrong bucket.
-            If the name doesn&apos;t match the ID, the request is rejected.
+            The API requires both bucket_id and bucket_name to prevent accidental reads and writes
+            on the wrong bucket. If the name doesn&apos;t match the ID, the request is rejected.
           </InfoBox>
         </DocCard>
 
-        <DocCard icon={<Workflow size={24} />} title="Four ways data gets in">
+        <DocCard icon={<Workflow size={24} />} title="Where the data comes from">
           <Lead>
-            Nothing about a Bucket assumes the data came from a document. Flow exports, Cleaner
-            actions, agents, the API and CSV import all write into the same table, which is what
-            makes a Bucket useful as reference data as well as a destination.
+            Nothing about a Bucket assumes the data came from a document. Every source below writes
+            into the same table, which is what makes a Bucket useful as reference data as well as a
+            destination.
           </Lead>
           <DataTable
             head={["Source", "How it works", "Typical use"]}
             rows={[
               [
-                "Bucket export on a flow",
-                "Each completed run appends its rows, with extracted fields mapped onto Bucket columns.",
+                <Fragment key="f0">
+                  <DocLink href="/docs/flows">Bucket Export</DocLink> on a flow
+                </Fragment>,
+                "Each successful run appends its rows, with extracted fields mapped onto Bucket columns.",
                 "Accumulating every invoice you process into one table.",
               ],
               [
-                <Fragment key="f0">
+                <Fragment key="f1">
                   A <DocLink href="/docs/cleaners">Cleaner</DocLink> action
                 </Fragment>,
-                "A conditional action writes a value back into an existing Bucket row that a Lookup matched.",
+                "An action edits a value in an existing Bucket row that a Lookup matched.",
                 "Marking an order received, or decrementing a stock count.",
               ],
               [
-                <Fragment key="f1">
+                <Fragment key="f2">
                   An <DocLink href="/docs/agents">agent</DocLink>
                 </Fragment>,
-                "One row per agent run, with captures mapped onto columns.",
+                "An agent with a Bucket delivery writes its captures into the Bucket after each run.",
                 "Recording live supplier prices fetched from a portal.",
               ],
               [
-                <Fragment key="f2">
-                  The <DocLink href="/docs/api-integration">REST API</DocLink> or a CSV import
+                <Fragment key="f3">
+                  <DocLink href="/docs/signals">Signals</DocLink> and{" "}
+                  <DocLink href="/docs/nets">Nets</DocLink>
                 </Fragment>,
-                "Append rows directly, by request or by upload.",
-                "Loading a price list or customer catalogue to look values up against.",
+                "A Signal can export the rows it structures from each recording; a Net can export the rows of each completed catch.",
+                "Tracking call outcomes or social posts alongside document data.",
+              ],
+              [
+                <Fragment key="f4">
+                  A <DocLink href="/docs/pipelines">pipeline</DocLink>
+                </Fragment>,
+                "A Bucket node on the canvas stores what the steps before it produce.",
+                "Ending a multi-step pipeline in a table.",
+              ],
+              [
+                <Fragment key="f5">
+                  The <DocLink href="/docs/api-integration">REST API</DocLink>
+                </Fragment>,
+                "Append rows, or replace the table's rows, with one request.",
+                "Syncing a price list or customer catalogue from another system.",
+              ],
+              [
+                "CSV or Excel import",
+                "Upload a .csv, .xlsx or .xls file from the grid.",
+                "Loading an existing spreadsheet once.",
+              ],
+              [
+                "The grid itself",
+                "Anyone with edit access can add rows and type, paste or clear values.",
+                "Quick corrections and manual entries.",
               ],
             ]}
           />
           <InfoBox color="violet" icon={<ArrowLeftRight size={20} />} title="Buckets read as well as write">
             A Bucket is not only a destination. Cleaner <strong>Lookup</strong> fields pull values
             out of one to enrich a row, and <strong>Bucket Check</strong> fields ask whether a row
-            already exists — which is how de-duplication works. Load your catalogue into a Bucket and
+            already exists, which is how de-duplication works. Load your catalogue into a Bucket and
             every flow can match against it.
           </InfoBox>
           <InfoBox color="blue" icon={<Info size={20} />} title="Exports are always un-pivoted">
@@ -161,87 +226,223 @@ export default function Page() {
         <DocCard icon={<Table2 size={24} />} title="Working with the data">
           <Lead>
             The grid is closer to a spreadsheet than a read-only report. You can edit in place,
-            filter and sort, add computed columns, and page through large tables — a Bucket with
+            copy and paste cells, filter and sort, and page through large tables, so a Bucket with
             thousands of rows stays usable in the browser.
           </Lead>
           <DataTable
             head={["Control", "What it does"]}
             rows={[
-              ["Insert", "Add rows or columns to the table."],
-              ["Filter", "Narrow the view to rows matching conditions you set."],
-              ["Sort", "Order by one or more columns."],
+              ["Insert", "Add a row or a column, import a CSV or Excel file, or open Prompting."],
+              ["Filter", "Narrow the view to rows matching conditions you set on any column."],
+              ["Sort", "Order the rows by a column, ascending or descending."],
               [
-                <Fragment key="f3">
+                <Fragment key="f6">
                   <InlineCode>f(x)</InlineCode>
                 </Fragment>,
-                "Add a computed column derived from the others.",
+                "Show a function row under the grid with the sum, average, minimum, maximum or count of each column, calculated on the current page.",
               ],
-              ["Graph", "Chart the data in place — see below."],
-              ["Export", "Download the current rows as CSV."],
-              ["Undo / redo", "Step back through edits made in the grid."],
+              ["Graph", "Build a chart from the data (see Charts below)."],
+              ["Chat", "Open a side panel to ask questions about the data (see below)."],
+              ["Export", "Download every row in the Bucket as a CSV file."],
+              ["Undo / redo", "Step back and forward through edits made in the grid."],
             ]}
           />
           <p>
-            Each column carries a type — text, number, date or boolean — shown beside its name.
-            Types are what let sorting, aggregation and charts behave correctly, so a numeric column
-            that arrived as text is worth fixing at the source rather than in the grid.
+            People with view-only access see the same grid with a read-only notice: they can filter,
+            sort, chart and export, but not edit.
           </p>
+        </DocCard>
+
+        <DocCard icon={<Search size={24} />} title="AI Search on a column">
+          <Lead>
+            Exact matching fails when the same thing is written different ways: &ldquo;Acme
+            Corp.&rdquo;, &ldquo;ACME Corporation&rdquo;, &ldquo;acme&rdquo;. AI Search lets a Cleaner
+            match on meaning instead.
+          </Lead>
+          <NumberedList
+            items={[
+              'Open the Bucket, click a text column\'s header and choose "Edit column"',
+              'Turn on "AI Search"',
+              "Set the minimum similarity (1 to 100%, default 90%). Below that threshold a lookup returns empty instead of a weak match",
+              'Click "Save Changes". Tavnit indexes the column\'s values in the background',
+            ]}
+          />
+          <p>
+            Once it is on, a Cleaner <DocLink href="/docs/cleaners">Lookup</DocLink> can use the{" "}
+            <strong>AI Match</strong> operator against that column to find the closest row even when
+            the text doesn&apos;t match exactly. AI Search is available on text columns only.
+          </p>
+        </DocCard>
+
+        <DocCard icon={<Sparkles size={24} />} title="Prompting: ask questions in plain language">
+          <Lead>
+            Prompting answers questions like &ldquo;What is the total amount invoiced by each
+            supplier this year?&rdquo; straight from the Bucket, and shows how it got there.
+          </Lead>
+          <NumberedList
+            items={[
+              'In the grid, open "Insert" → "Prompting"',
+              'Under "Set up Prompting", choose the text columns to index and click "Enable". Tavnit groups their distinct values into categories so questions can filter by meaning',
+              'Type your question under "Ask a Question" (up to 2,000 characters) and click "Ask"',
+            ]}
+          />
+          <p>
+            Each answer comes with the <strong>Assumptions</strong> it made, the{" "}
+            <strong>Matched values</strong> it included or excluded, the result with a{" "}
+            <strong>Breakdown</strong> where relevant, and <strong>Sample rows</strong> so you can
+            check the data behind it. Past questions stay in <strong>History</strong>.
+          </p>
+          <InfoBox color="blue" icon={<Info size={20} />} title="Costs">
+            Each question costs 1 credit. Indexing columns costs 1 credit per 500 distinct values
+            (minimum 1). See <DocLink href="/docs/credits">Credits</DocLink>. Setting up Prompting
+            requires edit access to the Bucket.
+          </InfoBox>
+        </DocCard>
+
+        <DocCard icon={<MessageSquare size={24} />} title="Chat with the data">
+          <p>
+            The <strong>Chat</strong> button in the grid opens a side panel where you can have a
+            conversation about the Bucket: totals, breakdowns, or &ldquo;show me&rdquo; requests.
+            When an answer refers to a set of rows, click <strong>Show in grid</strong> to filter the
+            grid to them, and <strong>Clear view</strong> to go back. Chats are saved, so you can
+            return to one later or start a <strong>New chat</strong>.
+          </p>
+          <BulletList
+            items={[
+              "Chat needs Prompting enabled on at least one text column of the Bucket",
+              "Each organisation has a daily message allowance, shown in the panel; it resets the next day",
+              "Messages are limited to 2,000 characters",
+            ]}
+          />
+          <InfoBox color="yellow" icon={<Info size={20} />} title="Enabled on request">
+            Bucket chat is enabled per organisation. If you don&apos;t see the Chat button, contact
+            support to turn it on.
+          </InfoBox>
         </DocCard>
 
         <DocCard icon={<Lock size={24} />} title="Access Control">
           <p>
-            Every bucket has a visibility setting and supports per-member access grants,
-            so you can control exactly who can see or edit your data.
+            Every bucket has a visibility setting and supports per-member access grants, so you can
+            control exactly who can see or edit your data. Owners and Admins manage it from{" "}
+            <strong>Access</strong> on the details page.
           </p>
-          <InfoBox color="blue" icon={<Users size={20} />} title="Org-wide (default)">
-            All members of your organisation can view the bucket. Admins and owners can always edit it.
+          <InfoBox color="blue" icon={<Users size={20} />} title="Org-visible (default)">
+            All members of your organisation can view the bucket. By default Admins can edit and
+            Members can only view; you can change that person by person.
           </InfoBox>
           <InfoBox color="yellow" icon={<Lock size={20} />} title="Private">
-            Only users who have been explicitly granted access can see or edit this bucket.
-            Only admins and owners can make a bucket private.
+            Only the Owner and users who have been explicitly granted access can see this bucket.
+            Only the organisation Owner can make a bucket private, and Admins and Members without a
+            grant lose access immediately.
           </InfoBox>
-          <p>Member-level grants (for private buckets or fine-grained control):</p>
+          <p>Each person can be given one of two access levels:</p>
           <BulletList
             items={[
-              "View — can open the bucket and read its data",
-              "Edit — can add, update, and delete rows",
-              "Admin — can change columns, visibility, and manage other members' access",
+              "View only: can open the bucket and read its data",
+              "Editor: can also add, edit and delete rows",
             ]}
           />
+          <p>
+            On a private bucket there is a third option, <strong>No access</strong>. Owners always
+            have full access. Admins can set access for Members; only the Owner can change an
+            Admin&apos;s access. Changing columns and bucket settings stays with Owners and Admins
+            whatever the grant. See <DocLink href="/docs/user-roles">User Roles</DocLink> for the
+            full model.
+          </p>
         </DocCard>
 
         <DocCard icon={<BarChart3 size={24} />} title="Charts">
           <p>
-            You can create charts directly from bucket data to visualise trends and aggregations
-            without exporting to another tool.
+            You can chart bucket data directly to see trends and aggregations without exporting to
+            another tool.
           </p>
-          <InfoBox color="purple" icon={<BarChart3 size={20} />} title="Supported chart types">
-            Bar, Line, Pie, and Scatter charts are available. Each chart is saved with the bucket
-            and visible to anyone who can access it.
-          </InfoBox>
-          <p>Creating a chart:</p>
           <NumberedList
             items={[
-              "Open the bucket's detail page",
-              'Click "Add Chart" in the charts section',
-              "Choose chart type and select x-axis and y-axis fields",
-              "For bar and line charts, choose an aggregation (sum, average, count)",
-              "Save — the chart appears immediately and updates with new data",
+              'Click "Graph" in the grid toolbar',
+              "Choose a chart type: Bar, Line, Pie or Scatter (Tavnit marks the best fit for your data)",
+              "Pick the field to group by, and whether to count rows or aggregate a numeric field (sum, count, average, minimum or maximum)",
+              "Optionally sort, limit to the top 5, 10, 15 or 20, and set a title, color theme, legend and grid",
+              'Preview it, then click "Download as PNG" to keep it',
             ]}
           />
+          <InfoBox color="purple" icon={<BarChart3 size={20} />} title="Large Buckets">
+            Charts use every row for Buckets of up to 10,000 rows. Above that, Tavnit charts a sample
+            of about 10,000 rows and tells you so. Charts are not saved with the bucket: download the
+            PNG if you need it later.
+          </InfoBox>
         </DocCard>
 
-        <DocCard icon={<FileDown size={24} />} title="CSV Import & Export">
-          <p>Buckets support importing data from CSV files and exporting all rows to CSV.</p>
-          <InfoBox color="green" icon={<FileUp size={20} />} title="Import from CSV">
-            Upload a CSV file and Tavnit will map its columns to your bucket&apos;s columns.
-            Column names in the CSV must match the bucket&apos;s column names exactly.
+        <DocCard icon={<FileDown size={24} />} title="Import & Export">
+          <InfoBox color="green" icon={<FileUp size={20} />} title="Import CSV / Excel">
+            Choose &ldquo;Insert&rdquo; → &ldquo;Import CSV / Excel&rdquo; and pick a .csv, .xlsx or
+            .xls file. Tavnit matches file columns to Bucket columns by name; for the rest you can map
+            each one to an existing column, create it as a new column, or skip it, then click
+            &ldquo;Import&rdquo; (or &ldquo;Create &amp; Import&rdquo;).
           </InfoBox>
           <InfoBox color="blue" icon={<FileDown size={20} />} title="Export to CSV">
-            Download all current rows as a CSV file from the bucket&apos;s detail page.
-            Useful for sending data to other tools or creating offline backups.
+            &ldquo;Export&rdquo; downloads every row in the Bucket as a CSV file, regardless of the
+            filters on screen. Useful for sending data to other tools or keeping an offline backup.
           </InfoBox>
-          <p>Both import and export are available from the toolbar at the top of the bucket&apos;s data table.</p>
+        </DocCard>
+
+        <DocCard icon={<Code size={24} />} title="Buckets API">
+          <p>
+            Two endpoints work with your API key (<InlineCode>X-API-Key</InlineCode> header). Both
+            require <InlineCode>bucket_id</InlineCode> and <InlineCode>bucket_name</InlineCode>.
+          </p>
+          <DataTable
+            head={["Endpoint", "What it does"]}
+            rows={[
+              [
+                <Fragment key="f7">
+                  <InlineCode>POST /api/buckets/write</InlineCode>
+                </Fragment>,
+                "Adds rows (overwrite: false) or replaces the table's rows (overwrite: true). Up to 50,000 rows per request.",
+              ],
+              [
+                <Fragment key="f8">
+                  <InlineCode>GET /api/buckets/read</InlineCode>
+                </Fragment>,
+                "Returns the columns and a page of rows, with total_count and has_more. Use limit (default 100, max 1,000) and offset to page.",
+              ],
+            ]}
+          />
+          <p>
+            Full request and response examples are on the{" "}
+            <DocLink href="/docs/api-integration">API page</DocLink>.
+          </p>
+        </DocCard>
+
+        <DocCard icon={<HelpCircle size={24} />} title="Troubleshooting">
+          <DataTable
+            head={["Problem", "What to check"]}
+            rows={[
+              [
+                "The grid says it is read-only",
+                "You have view-only access. Ask an Owner or Admin to give you Editor access on this Bucket.",
+              ],
+              [
+                "An API write is rejected with a column mismatch",
+                "A row uses a column name the Bucket doesn't have. Compare your keys with the Schema tab.",
+              ],
+              [
+                "An API call is rejected with a bucket mismatch",
+                "bucket_name doesn't match the Bucket for that bucket_id. Copy both again from the details page.",
+              ],
+              [
+                "A flow runs but no rows appear",
+                "Check that Bucket Export is on for the flow and that its fields are mapped to columns. Only successful runs export.",
+              ],
+              [
+                "The Chat button is missing",
+                "Bucket chat is enabled per organisation; contact support.",
+              ],
+              [
+                "Chat says it isn't ready",
+                "Enable Prompting on at least one text column first.",
+              ],
+            ]}
+          />
         </DocCard>
 
         <Related
@@ -250,13 +451,13 @@ export default function Page() {
               href: "/docs/cleaners",
               label: "Look values up in a Bucket, and write back to it",
               description:
-                "Lookup, Bucket Check and the edit-row action — the field types that read and update stored rows.",
+                "Lookup, AI Match, Bucket Check and the edit-row action: the field types that read and update stored rows.",
             },
             {
               href: "/docs/api-integration",
-              label: "Append rows over the REST API",
+              label: "Read and write rows over the REST API",
               description:
-                "The Buckets endpoint, with Python and JavaScript examples and the bucket_id plus bucket_name safety check.",
+                "The Buckets endpoints, with examples and the bucket_id plus bucket_name safety check.",
             },
             {
               href: "/docs/user-roles",

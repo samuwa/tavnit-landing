@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DocsShell from "@/components/docs/DocsShell";
 import { docsRootSchema } from "@/lib/schema";
+import { DOCS_EMBED_SCRIPT } from "@/components/docs/embed";
 
 /**
  * Docs shell layout.
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <script dangerouslySetInnerHTML={{ __html: DOCS_EMBED_SCRIPT }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(docsRootSchema()) }}

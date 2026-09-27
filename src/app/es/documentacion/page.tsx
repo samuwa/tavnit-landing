@@ -6,12 +6,15 @@ import {
   Coins,
   Compass,
   FilePlus,
+  FlaskConical,
   Info,
   Map,
+  Rocket,
   Sparkles,
   Table2,
 } from "lucide-react";
 import {
+  BulletList,
   DataTable,
   DocCard,
   DocLink,
@@ -28,27 +31,27 @@ export const metadata = docMetadata("getting-started", "es");
 const HOW_TO = {
   name: "Extrae datos estructurados de un documento con Tavnit",
   description:
-    "Crea un Flow de Tavnit que defina los campos que quieres, sube un documento y recibe filas estructuradas, sin plantillas y sin código.",
+    "Crea un Flow de Tavnit desde una plantilla, desde un documento de ejemplo o desde cero, revisa sus campos, procesa un documento y lee el resultado estructurado, sin plantillas que dibujar y sin código.",
   steps: [
     {
-      name: "Crea un Flow",
-      text: "En la página \"Flows\", crea un Flow nuevo y ponle un nombre que describa el tipo de documento que va a procesar.",
+      name: "Abre el diálogo de creación",
+      text: "En la página \"Flows\", haz clic en \"Crear Flow\".",
     },
     {
-      name: "Define los campos",
-      text: "Sube un documento de muestra para que Tavnit sugiera campos. Luego agrega, renombra o elimina campos hasta que el esquema coincida con lo que realmente necesitas.",
+      name: "Elige un punto de partida",
+      text: "Elige \"Desde plantilla\" (una plantilla de Tavnit o una copia de uno de tus Flows), \"Sugerencia con IA\" (sube un PDF o una imagen de ejemplo y la IA arma los campos) o \"Desde cero\".",
     },
     {
-      name: "Activa el Flow",
-      text: "Cambia el Flow a \"Active\" para que pueda recibir documentos.",
+      name: "Ponle nombre y descripción",
+      text: "Dale al Flow un nombre de al menos 3 caracteres y una descripción de al menos 10 que diga qué documentos procesa.",
+    },
+    {
+      name: "Revisa el esquema de datos",
+      text: "En el builder, agrega, edita o elimina campos hasta que el esquema sea exactamente lo que necesitas. Un Flow nuevo ya está \"Activo\".",
     },
     {
       name: "Procesa un documento",
-      text: "Sube un documento en la app, envíalo por correo a la dirección del Flow o envíalo a la API. Aparece un Run en la página \"Runs\".",
-    },
-    {
-      name: "Revisa el resultado",
-      text: "Abre el Run para ver los campos de metadatos y las filas de tabla extraídos junto al documento original.",
+      text: "Haz clic en \"Run\", sube un documento real y revisa el resultado.",
     },
   ],
 };
@@ -76,117 +79,248 @@ export default function Page() {
         <DocCard icon={<Sparkles size={24} />} title="Qué hace Tavnit">
           <Lead>
             Tavnit lee documentos y te devuelve datos estructurados. Describes una sola vez los
-            campos que quieres, le envías facturas, recibos, órdenes de compra o formularios, y
-            obtienes filas con tipos definidos, sin crear una plantilla por cada diseño ni escribir
-            código de parsing.
+            campos que quieres, le envías facturas, recibos, órdenes de compra, estados de cuenta,
+            hojas de cálculo o formularios, y obtienes filas con tipos definidos, sin crear una
+            plantilla por cada diseño ni escribir código de parsing.
           </Lead>
           <p>
-            La extracción es el punto de partida, no todo el producto. Una vez que los datos existen,
-            se pueden normalizar, pasar por la revisión de una persona, guardar, enviar a tus
-            sistemas o entregar a un Agent que actúe con ellos. El resto de esta documentación cubre
-            esas etapas; esta página cubre la primera.
+            La extracción es el punto de partida, no todo el producto. A su alrededor, Tavnit puede
+            clasificar y separar los archivos que llegan, limpiar y enriquecer las filas, comparar y
+            verificar documentos entre sí, rellenar formularios, pausar para que una persona revise,
+            guardar resultados en tablas, entregarlos a tus sistemas y pasárselos a un Agente de
+            navegador que actúe con ellos. Esta página te da el mapa y te acompaña con tu primer
+            documento.
           </p>
+          <InfoBox color="violet" icon={<FlaskConical size={20} />} title="Algunas áreas están en Beta">
+            Pipelines, Subjects, Matchers, Inspectores, Fillers, Signals y Nets llevan la etiqueta{" "}
+            <strong>Beta</strong> en la app. Puedes usarlas hoy, pero sus pantallas y opciones todavía
+            pueden cambiar.
+          </InfoBox>
         </DocCard>
 
-        <DocCard icon={<Compass size={24} />} title="El vocabulario">
+        <DocCard icon={<Compass size={24} />} title="Un mapa de Tavnit">
           <Lead>
-            Seis palabras cubren casi todo en Tavnit. Aprende de qué se encarga cada una y el resto
-            de la documentación se lee mucho más rápido. La mayor parte de la confusión viene de
-            mezclar Flows, Collections y Splitters, que hacen tres trabajos distintos.
+            La barra lateral de la app agrupa cada área según su función, desde que entran los
+            documentos hasta que actúas con los datos. La documentación sigue los mismos grupos, así
+            que esta tabla también sirve como índice.
           </Lead>
           <DataTable
-            head={["Término", "Qué es", "Más información"]}
+            head={["Grupo", "Área", "Qué hace"]}
             rows={[
               [
-                "Flow",
-                "El esquema de un tipo de documento: los campos que quieres extraer, más las reglas y salidas asociadas. Todo empieza aquí.",
-                <Fragment key="f0">
-                  <DocLink href="/es/documentacion/flows">Flows</DocLink>
+                "Entrada",
+                <Fragment key="m0">
+                  <DocLink href="/es/documentacion/colecciones">Colecciones</DocLink>
                 </Fragment>,
+                "Una bandeja o endpoint para documentos mezclados: cada uno se clasifica y se envía al Flow correcto.",
               ],
               [
-                "Run",
-                "Un documento procesado por un Flow. Los Runs guardan el resultado extraído y el registro de lo que pasó.",
-                "Esta página",
-              ],
-              [
-                "Collection",
-                "Agrupa varios Flows para que los documentos de tipo desconocido se clasifiquen y se envíen al Flow correcto.",
-                <Fragment key="f1">
-                  <DocLink href="/es/documentacion/collections">Collections</DocLink>
+                "Entrada",
+                <Fragment key="m1">
+                  <DocLink href="/es/documentacion/subjects">Subjects</DocLink>
                 </Fragment>,
+                "Modela una entidad, como una compra o un paciente, y agrupa sus documentos en casos por referencia.",
               ],
               [
-                "Splitter",
-                "Divide un archivo que contiene varios documentos en partes separadas y luego envía cada parte a su destino.",
-                <Fragment key="f2">
+                "Entrada",
+                <Fragment key="m2">
                   <DocLink href="/es/documentacion/splitters">Splitters</DocLink>
                 </Fragment>,
+                "Corta un archivo que contiene varios documentos en documentos independientes y envía cada uno a su destino.",
               ],
               [
-                "Cleaner",
-                "Reglas que se aplican a las filas extraídas: cambiar formato, convertir, calcular, buscar valores y disparar acciones cuando algo se ve mal.",
-                <Fragment key="f3">
+                "Procesamiento",
+                <Fragment key="m3">
+                  <DocLink href="/es/documentacion/flows">Flows</DocLink>
+                </Fragment>,
+                "El esquema de un tipo de documento: los campos a extraer y todo lo que se les asocia. Todo empieza aquí.",
+              ],
+              [
+                "Procesamiento",
+                <Fragment key="m4">
                   <DocLink href="/es/documentacion/cleaners">Cleaners</DocLink>
                 </Fragment>,
+                "Cambian formato, convierten, calculan, buscan y validan las filas extraídas, y disparan acciones cuando algo se ve mal.",
               ],
               [
-                "Bucket",
-                "Una tabla estructurada donde se acumulan los resultados de muchos Runs, que puedes consultar y graficar dentro de Tavnit.",
-                <Fragment key="f4">
+                "Procesamiento",
+                <Fragment key="m5">
+                  <DocLink href="/es/documentacion/agentes">Agentes</DocLink>
+                </Fragment>,
+                "Agentes de navegador que cumplen una misión en lenguaje natural en un sitio web, muchas veces con datos extraídos como entrada.",
+              ],
+              [
+                "Inteligencia",
+                <Fragment key="m6">
+                  <DocLink href="/es/documentacion/matchers">Matchers</DocLink>
+                </Fragment>,
+                "Comparan registros línea por línea entre documentos: cotizaciones entre sí, una factura contra su orden.",
+              ],
+              [
+                "Inteligencia",
+                <Fragment key="m7">
+                  <DocLink href="/es/documentacion/inspectores">Inspectores</DocLink>
+                </Fragment>,
+                "Aplican una lista de verificación a un conjunto de documentos relacionados y dan un veredicto de aprobado o reprobado.",
+              ],
+              [
+                "Inteligencia",
+                <Fragment key="m8">
+                  <DocLink href="/es/documentacion/fillers">Fillers</DocLink>
+                </Fragment>,
+                "Rellenan plantillas de formularios PDF con datos extraídos de tus documentos.",
+              ],
+              [
+                "Orquestación",
+                <Fragment key="m9">
+                  <DocLink href="/es/documentacion/pipelines">Pipelines</DocLink>
+                </Fragment>,
+                "Encadenan pasos de principio a fin en un lienzo visual.",
+              ],
+              [
+                "Orquestación",
+                <Fragment key="m10">
+                  <DocLink href="/es/documentacion/mapa-del-pipeline">Mapa de Pipeline</DocLink>
+                </Fragment>,
+                "Una sola imagen de cómo se mueven los documentos en tu organización.",
+              ],
+              [
+                "Datos y actividad",
+                <Fragment key="m11">
                   <DocLink href="/es/documentacion/buckets">Buckets</DocLink>
                 </Fragment>,
+                "Tablas donde los resultados se acumulan entre Runs, listas para consultar, graficar y exportar.",
+              ],
+              [
+                "Datos y actividad",
+                <Fragment key="m12">
+                  <DocLink href="/es/documentacion/flows#runs">Runs</DocLink>
+                </Fragment>,
+                "El historial de cada documento procesado, con su resultado, su archivo original y su registro.",
+              ],
+              [
+                "Datos y actividad",
+                <Fragment key="m13">
+                  <DocLink href="/es/documentacion/revision-humana">Revisión Humana</DocLink>
+                </Fragment>,
+                "Una cola de revisión donde una persona aprueba, edita o rechaza resultados antes de que se entreguen.",
+              ],
+              [
+                "Audio",
+                <Fragment key="m14">
+                  <DocLink href="/es/documentacion/signals">Signals</DocLink>
+                </Fragment>,
+                "Convierten conversaciones grabadas en filas estructuradas.",
+              ],
+              [
+                "Social",
+                <Fragment key="m15">
+                  <DocLink href="/es/documentacion/nets">Nets</DocLink>
+                </Fragment>,
+                "Convierten publicaciones de redes sociales en filas estructuradas y tendencias.",
               ],
             ]}
           />
+          <InfoBox color="blue" icon={<Info size={20} />} title="¿No ves Agentes, Signals o Nets?">
+            Estas tres áreas se activan por organización. Si no aparecen en tu barra lateral,
+            contacta al equipo de Tavnit para que las habilite.
+          </InfoBox>
           <InfoBox color="violet" icon={<Info size={20} />} title="¿Cuál ordena mis documentos?">
             Si cada archivo contiene un documento pero no sabes de qué tipo es, usa una{" "}
-            <DocLink href="/es/documentacion/collections">Collection</DocLink>. Si un archivo
+            <DocLink href="/es/documentacion/colecciones">Colección</DocLink>. Si un archivo
             contiene varios documentos, usa un{" "}
-            <DocLink href="/es/documentacion/splitters">Splitter</DocLink>. Si ya sabes qué documento
-            es, envíalo directo al Flow y sáltate ambos.
+            <DocLink href="/es/documentacion/splitters">Splitter</DocLink>. Si los documentos van
+            juntos (la misma compra, el mismo paciente), usa un{" "}
+            <DocLink href="/es/documentacion/subjects">Subject</DocLink>. Si ya sabes qué documento
+            es, envíalo directo al Flow y sáltate los tres.
           </InfoBox>
+        </DocCard>
+
+        <DocCard icon={<Rocket size={24} />} title="Tus primeros minutos">
+          <Lead>
+            Una organización nueva empieza con un recorrido corto de configuración, así que casi
+            nunca te encuentras con una pantalla vacía.
+          </Lead>
+          <BulletList
+            items={[
+              <Fragment key="o0">
+                <strong>Preguntas de bienvenida.</strong> Después de crear tu organización, Tavnit te
+                hace cuatro preguntas rápidas: qué documentos procesarás, qué quieres lograr, cómo
+                llegan tus documentos hoy y aproximadamente cuántos manejas al mes. Toman unos 30
+                segundos y puedes elegir <strong>Omitir</strong>.
+              </Fragment>,
+              <Fragment key="o1">
+                <strong>Flows iniciales en un clic.</strong> Si respondiste, la página de Flows vacía
+                te ofrece las plantillas que coinciden con tus documentos bajo{" "}
+                <em>“Según tus respuestas, podemos dejarte listos:”</em>. Haz clic en{" "}
+                <strong>Crear estos flows</strong> y se crean por ti, listos para editar.
+              </Fragment>,
+              <Fragment key="o2">
+                <strong>Plantillas iniciales.</strong> Tavnit incluye Flows listos para facturas,
+                órdenes de compra, recibos, estados de cuenta, guías de remisión, resultados de
+                laboratorio, contratos, cotizaciones, notas de crédito, documentos de identidad y
+                currículums. Las plantillas que coinciden con tus respuestas aparecen primero.
+              </Fragment>,
+              <Fragment key="o3">
+                <strong>La guía de primeros pasos.</strong> Un panel pequeño en una esquina de la app
+                con tres pestañas: <strong>Checklist</strong> (pasos de configuración que se marcan
+                solos a medida que los completas), <strong>Esta pantalla</strong> (consejos para la
+                página en la que estás) y <strong>Funciones</strong> (todas las áreas disponibles para
+                ti). Si la ocultas, puedes reabrirla desde el menú <strong>Ayuda y Soporte</strong>.
+              </Fragment>,
+            ]}
+          />
         </DocCard>
 
         <DocCard icon={<FilePlus size={24} />} title="Paso 1: crea un Flow">
           <Lead>
             Un Flow es el esquema de un tipo de documento. Nómbralo según el documento y no según el
-            proyecto (<em>Facturas de proveedores</em>, no <em>Automatización Q1</em>), porque ese
-            nombre y la descripción son lo que una Collection usa después para enviarle documentos.
+            proyecto (<em>Facturas de proveedores</em>, no <em>Automatización Q1</em>), porque el
+            nombre y la descripción también son lo que usa una Colección para enviarle documentos.
           </Lead>
           <NumberedList
             items={[
               <Fragment key="f5">
-                En la página <strong>&ldquo;Flows&rdquo;</strong>, crea un Flow nuevo y ponle nombre.
+                En la página <strong>Flows</strong>, haz clic en <strong>Crear Flow</strong>.
               </Fragment>,
               <Fragment key="f6">
-                Sube un documento de muestra. Tavnit sugiere los campos que puede ver, lo cual es más
-                rápido que escribirlos desde cero.
+                Elige un punto de partida: <strong>Desde plantilla</strong> (una plantilla de Tavnit
+                o una copia de uno de tus propios Flows en <strong>Mis Flows</strong>),{" "}
+                <strong>Sugerencia con IA</strong> (sube un PDF o una imagen de ejemplo y la IA arma
+                los campos) o <strong>Desde cero</strong>.
               </Fragment>,
-              <Fragment key="f7">Agrega, renombra o elimina campos hasta que el esquema sea exactamente lo que necesitas.</Fragment>,
+              <Fragment key="f7">
+                Dale al Flow un nombre de al menos 3 caracteres y una descripción de al menos 10 que
+                diga qué documentos procesa.
+              </Fragment>,
               <Fragment key="f8">
-                Cambia el Flow a <strong>&ldquo;Active&rdquo;</strong>.
+                En el builder, agrega, edita o elimina campos hasta que el esquema sea exactamente lo
+                que necesitas. Un Flow nuevo ya está <strong>Activo</strong>.
               </Fragment>,
-              <Fragment key="f9">Procesa un documento y revisa el resultado.</Fragment>,
+              <Fragment key="f9">
+                Haz clic en <strong>Run</strong>, sube un documento real y revisa el resultado.
+              </Fragment>,
             ]}
           />
           <p>
-            <DocLink href="/es/documentacion/flows">Flows</DocLink> explica cada uno de estos pasos
-            en detalle: tipos de campo, tipos de datos y las pistas que le dicen a la IA dónde buscar.
+            <DocLink href="/es/documentacion/flows">Flows</DocLink> explica cada uno de estos pasos a
+            fondo: tipos de campo, tipos de datos, las pistas que le dicen a la IA dónde buscar y el
+            botón <strong>Diagnosticar</strong>, que propone correcciones cuando el Flow ya tiene
+            Runs reales.
           </p>
-          <InfoBox color="blue" icon={<Info size={20} />} title="Escribe también una descripción">
-            La descripción es opcional para la extracción, pero clave para el enrutamiento. Un Flow
-            con una descripción clara se puede agregar después a una{" "}
-            <DocLink href="/es/documentacion/collections">Collection</DocLink>; uno llamado{" "}
-            <em>Flow 3</em> sin descripción no se puede enrutar de forma confiable.
+          <InfoBox color="blue" icon={<Info size={20} />} title="La descripción importa">
+            La descripción es obligatoria y cumple dos funciones: ayuda a la IA a extraer con más
+            precisión y es lo que permite que una{" "}
+            <DocLink href="/es/documentacion/colecciones">Colección</DocLink> envíe documentos al
+            Flow. Una descripción vaga empeora ambas cosas.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<Table2 size={24} />} title="Paso 2: campos de metadatos y campos de tabla">
           <Lead>
-            Tavnit distingue los valores que aparecen una vez por documento de los que se repiten.
-            Esa sola distinción define la forma de todo lo que sigue: el payload de tu webhook, las
-            filas de tu Bucket y tu CSV siguen esa estructura.
+            Tavnit distingue los valores que aparecen una vez por documento de los valores que se
+            repiten. Esa sola distinción define la forma de todo lo que viene después: el payload de
+            tu webhook, las filas de tu Bucket y tu CSV la siguen.
           </Lead>
           <DataTable
             head={["Tipo de campo", "Aparece", "En una factura"]}
@@ -199,35 +333,41 @@ export default function Page() {
               [
                 "Campo de tabla",
                 "Una vez por línea",
-                "Descripción, cantidad, precio unitario, monto",
+                "Descripción, cantidad, precio unitario, importe",
               ],
             ]}
           />
           <p>
-            Cada campo también tiene un tipo (texto, número, fecha, mixto o imagen) y elegirlo bien
-            importa más de lo que parece: un total con tipo texto no se puede sumar, comparar ni
-            graficar. <DocLink href="/es/documentacion/flows">Flows</DocLink> cubre el esquema
-            completo en detalle, incluidas las pistas de extracción, los campos compuestos y cómo
-            corregir un campo que sale mal.
+            Cada campo también tiene un tipo de dato (Text, Number, Date, Mixed/Alphanumeric o
+            Image; el editor de campos muestra estos nombres en inglés), y acertar importa más de lo
+            que parece: un total con tipo texto no se puede sumar, comparar ni graficar. Un Flow que
+            solo tiene campos de metadatos devuelve una sola fila por documento.{" "}
+            <DocLink href="/es/documentacion/flows">Flows</DocLink> cubre el esquema completo,
+            incluidas las pistas de extracción, los campos compuestos y cómo corregir un campo que
+            sale mal.
           </p>
         </DocCard>
 
         <DocCard icon={<Clock size={24} />} title="Paso 3: envía documentos">
           <Lead>
-            Hay cuatro formas de enviar documentos y todas producen el mismo tipo de Run. Empieza
-            subiendo un archivo a mano para comprobar que el Flow funciona y luego cambia a la vía
-            que coincida con cómo te llegan realmente los documentos.
+            Hay cuatro vías de entrada y todas producen el mismo tipo de Run. Empieza con una subida
+            manual para comprobar que el Flow funciona y luego cambia a la vía que coincida con cómo
+            te llegan los documentos en realidad.
           </Lead>
           <DataTable
             head={["Vía", "Ideal para", "Configuración"]}
             rows={[
-              ["Subir en la app", "Pruebas y documentos sueltos", "Ninguna"],
+              [
+                "Subir en la app",
+                "Pruebas y documentos puntuales",
+                "Ninguna. Selecciona varios archivos a la vez y cada uno se convierte en su propio Run",
+              ],
               [
                 <Fragment key="f10">
                   <DocLink href="/es/documentacion/integracion-por-correo">Correo</DocLink>
                 </Fragment>,
                 "Documentos que ya llegan a una bandeja de entrada",
-                "Activa el disparador y reenvía el correo a la dirección",
+                "Activa el \"Disparador por Email\" del Flow y reenvía los correos a su dirección",
               ],
               [
                 <Fragment key="f11">
@@ -241,71 +381,53 @@ export default function Page() {
                   <DocLink href="/es/documentacion/conector-mcp">Conector MCP</DocLink>
                 </Fragment>,
                 "Trabajo puntual desde un asistente de IA",
-                "Genera una URL de conector",
+                "Se habilita por organización a pedido; luego, una URL de conector desde Integraciones",
               ],
             ]}
           />
+          <p>
+            Los Flows aceptan PDF, imágenes (PNG, JPG, JPEG y JFIF) y hojas de cálculo (XLSX, XLS y
+            CSV). En una hoja de cálculo, el Flow lee la primera hoja visible. Los documentos
+            escaneados se detectan y se leen con OCR automáticamente.
+          </p>
           <Screenshot
             src="/assets/tour2-runs.jpg"
-            alt="La página &quot;Runs&quot; de Tavnit con la lista de documentos procesados, cada uno con su Flow, quién lo disparó, su origen y su estado, debajo de indicadores de Runs completados, Runs en curso, créditos usados y total de Runs."
-            caption="Cada documento se convierte en un Run. La página &quot;Runs&quot; muestra qué se procesó, cómo llegó y cómo terminó."
+            alt="La página Runs de Tavnit con documentos procesados, cada uno con su Flow, quién lo inició, su origen y su estado, debajo de indicadores de Runs completados, Runs en ejecución, créditos usados y total de Runs."
+            caption="Cada documento se convierte en un Run. La página Runs muestra qué se procesó, cómo llegó y cómo terminó."
           />
           <p>
             Abre cualquier Run para ver los campos extraídos junto al documento original, además del
             registro de lo que pasó durante el procesamiento. Ese registro es el primer lugar donde
-            buscar cuando un resultado no es lo que esperabas.
+            buscar cuando un resultado no es el que esperabas.
           </p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Cuánto cuesta cada cosa">
+        <DocCard icon={<Coins size={24} />} title="Cuánto cuesta">
           <Lead>
-            Tavnit cobra en créditos. La extracción se cobra por página, así que un PDF de diez
-            páginas cuesta diez créditos, produzca una fila o doscientas. Las demás operaciones
-            tienen sus propias tarifas.
+            Tavnit cobra en créditos de un único saldo por organización. La extracción se cobra por
+            página, así que un PDF de diez páginas cuesta diez créditos, produzca una fila o
+            doscientas. Cada una de las demás funciones tiene su propia tarifa.
           </Lead>
-          <DataTable
-            head={["Operación", "Costo"]}
-            rows={[
-              ["Extraer un documento", "1 crédito por página"],
-              [
-                <Fragment key="f13">
-                  Enrutamiento con{" "}
-                  <DocLink href="/es/documentacion/collections">Collection</DocLink>
-                </Fragment>,
-                "1 crédito por documento, se cobra haya o no coincidencia",
-              ],
-              [
-                <Fragment key="f14">
-                  <DocLink href="/es/documentacion/splitters">Dividir</DocLink> un paquete
-                </Fragment>,
-                "1 crédito por página del archivo original",
-              ],
-              [
-                <Fragment key="f15">
-                  <DocLink href="/es/documentacion/cleaners">Limpiar</DocLink> con un sweep
-                </Fragment>,
-                "1 crédito por cada 500 celdas no vacías, redondeado hacia arriba",
-              ],
-              [
-                <Fragment key="f16">
-                  Tiempo de ejecución de un{" "}
-                  <DocLink href="/es/documentacion/agents">Agent</DocLink>
-                </Fragment>,
-                "3 créditos por minuto de navegador, redondeado hacia arriba, se cobra aunque el Run falle",
-              ],
+          <BulletList
+            items={[
+              "Extracción: 1 crédito por página. Una hoja de cálculo se cobra según su equivalente en páginas.",
+              "El enrutamiento, la separación, la limpieza, los Agentes, los Matchers y las demás funciones tienen su propia tarifa, detallada en la página de créditos.",
+              "Los pasos se suman: un documento que se separa, se enruta y luego se extrae paga los tres, así que enviarlo directo a su Flow es el hábito más económico cuando ya sabes su tipo.",
+              "Armar un Flow con \"Sugerencia con IA\" y usar \"Diagnosticar\" en un Flow son gratis.",
+              "Un Run necesita un saldo de créditos positivo para empezar. Los créditos ya usados no se reembolsan si un Run se cancela o falla.",
             ]}
           />
-          <InfoBox color="yellow" icon={<Info size={20} />} title="Los pasos encadenados se suman">
-            Un documento que se divide, se enruta con una Collection y luego se extrae paga los tres
-            pasos. Normalmente vale la pena, pero por eso enviar el documento directo al Flow, cuando
-            ya sabes de qué tipo es, es el hábito más económico.
-          </InfoBox>
+          <p>
+            Consulta <DocLink href="/es/documentacion/creditos">Créditos y facturación</DocLink> para
+            ver la lista completa de precios. Para agregar créditos a tu organización, contacta al
+            equipo de Tavnit.
+          </p>
         </DocCard>
 
-        <DocCard icon={<Map size={24} />} title="Qué sigue">
+        <DocCard icon={<Map size={24} />} title="Hacia dónde seguir">
           <Lead>
-            Cuando la extracción ya funciona, el siguiente paso depende de qué está mal en los datos
-            o de qué necesitas hacer con ellos. Estas son las direcciones más comunes.
+            Cuando la extracción ya funciona, el siguiente paso depende de qué está mal en los datos o
+            de qué necesitas hacer con ellos.
           </Lead>
           <DataTable
             head={["Si necesitas…", "Lee"]}
@@ -317,15 +439,15 @@ export default function Page() {
                 </Fragment>,
               ],
               [
-                "Corregir formatos, convertir monedas, calcular totales o marcar filas con errores",
+                "Corregir formatos, convertir monedas, calcular totales o marcar filas con problemas",
                 <Fragment key="f18">
                   <DocLink href="/es/documentacion/cleaners">Cleaners</DocLink>
                 </Fragment>,
               ],
               [
-                "Que una persona revise los resultados antes de enviarlos",
+                "Que una persona revise los resultados antes de que se envíen",
                 <Fragment key="f19">
-                  <DocLink href="/es/documentacion/revision-humana">Revisión humana</DocLink>
+                  <DocLink href="/es/documentacion/revision-humana">Revisión Humana</DocLink>
                 </Fragment>,
               ],
               [
@@ -336,15 +458,28 @@ export default function Page() {
                 </Fragment>,
               ],
               [
-                "Mantener los resultados juntos y consultarlos",
+                "Guardar los resultados juntos y consultarlos",
                 <Fragment key="f21">
                   <DocLink href="/es/documentacion/buckets">Buckets</DocLink>
                 </Fragment>,
               ],
               [
+                "Comparar documentos o verificarlos contra una lista de reglas",
+                <Fragment key="f24">
+                  <DocLink href="/es/documentacion/matchers">Matchers</DocLink> e{" "}
+                  <DocLink href="/es/documentacion/inspectores">Inspectores</DocLink>
+                </Fragment>,
+              ],
+              [
+                "Conectar varios pasos en un solo proceso",
+                <Fragment key="f25">
+                  <DocLink href="/es/documentacion/pipelines">Pipelines</DocLink>
+                </Fragment>,
+              ],
+              [
                 "Actuar con los datos en otro sitio web",
                 <Fragment key="f22">
-                  <DocLink href="/es/documentacion/agents">Agents</DocLink>
+                  <DocLink href="/es/documentacion/agentes">Agentes</DocLink>
                 </Fragment>,
               ],
               [
@@ -363,19 +498,18 @@ export default function Page() {
               href: "/es/documentacion/flows",
               label: "Construye a fondo el esquema de datos de un Flow",
               description:
-                "Tipos de campo, tipos de datos, pistas de extracción, campos compuestos y todo lo que puedes asociar a un Flow.",
+                "Tipos de campo, tipos de datos, pistas de extracción, campos compuestos, Runs y todo lo que puedes asociar a un Flow.",
+            },
+            {
+              href: "/es/documentacion/creditos",
+              label: "Mira cuánto cuesta cada función",
+              description: "Las tarifas en créditos de cada paso y cuándo se cobran.",
             },
             {
               href: "/es/documentacion/api",
               label: "Procesa documentos con la API REST de Tavnit",
               description:
                 "Subida multipart y base64, autenticación con API key, ejemplos en Python y JavaScript, y recetas sin código.",
-            },
-            {
-              href: "/es/documentacion/cleaners",
-              label: "Limpia y enriquece los datos extraídos",
-              description:
-                "Los tipos de campo que cambian formato, convierten, calculan y validan lo que extrajo un Flow.",
             },
             {
               href: "/es/documentacion/integracion-por-correo",
@@ -386,7 +520,7 @@ export default function Page() {
               href: "/es/documentacion/mapa-del-pipeline",
               label: "Mira cómo se conecta todo",
               description:
-                "Un mapa en vivo de tus Flows, Collections, Splitters, Cleaners y Buckets.",
+                "Un mapa en vivo de tus Flows, Colecciones, Splitters, Cleaners y Buckets.",
             },
           ]}
         />

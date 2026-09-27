@@ -34,16 +34,18 @@ export function InfoBox({
   title: string;
   children: React.ReactNode;
 }) {
-  const styles: Record<string, string> = {
-    purple: "border-[#3b82f6] bg-[#3b82f6]/10",
-    violet: "border-[#6c42f0] bg-[#6c42f0]/10",
-    green: "border-emerald-500 bg-emerald-500/10",
-    blue: "border-blue-500 bg-blue-500/10",
-    yellow: "border-yellow-500 bg-yellow-500/10",
+  // Calm callouts: a tinted surface, a hairline border and the colour carried
+  // by the icon, instead of the old heavy left bar.
+  const styles: Record<string, { box: string; icon: string }> = {
+    purple: { box: "border-accent/20 bg-accent/[0.06]", icon: "text-accent" },
+    blue: { box: "border-accent/20 bg-accent/[0.06]", icon: "text-accent" },
+    violet: { box: "border-violet-2/25 bg-violet-2/[0.07]", icon: "text-violet-2" },
+    green: { box: "border-ok/25 bg-ok/[0.07]", icon: "text-ok" },
+    yellow: { box: "border-amber-500/30 bg-amber-500/[0.08]", icon: "text-amber-600" },
   };
   return (
-    <div className={`flex gap-4 p-4 rounded-lg border-l-4 ${styles[color]} my-4`}>
-      <div className="flex-shrink-0 mt-0.5 opacity-80">{icon}</div>
+    <div className={`flex gap-3.5 rounded-xl border px-4 py-3.5 ${styles[color].box} my-4`}>
+      <div className={`flex-shrink-0 mt-0.5 ${styles[color].icon}`}>{icon}</div>
       <div>
         <strong className="text-fg block mb-1">{title}</strong>
         <p className="text-fg-4 text-sm leading-relaxed">{children}</p>
@@ -54,8 +56,8 @@ export function InfoBox({
 
 export function WarningBox({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex gap-3 p-4 rounded-lg border-l-4 border-yellow-500 bg-yellow-500/10 my-4">
-      <AlertTriangle size={20} className="flex-shrink-0 mt-0.5 text-yellow-500" />
+    <div className="flex gap-3.5 rounded-xl border border-amber-500/30 bg-amber-500/[0.08] px-4 py-3.5 my-4">
+      <AlertTriangle size={20} className="flex-shrink-0 mt-0.5 text-amber-600" />
       <p className="text-fg-3 text-sm leading-relaxed">{children}</p>
     </div>
   );
@@ -71,10 +73,12 @@ export function DocCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-tint/[0.03] border border-tint/[0.08] backdrop-blur-sm rounded-xl p-6 md:p-8 mb-6">
-      <div className="flex items-center gap-3 mb-4">
-        <span className="text-accent">{icon}</span>
-        <h2 className="text-xl font-bold text-fg">{title}</h2>
+    <div className="docs-sheet rounded-2xl border border-tint/[0.08] bg-panel p-6 md:p-8 mb-6">
+      <div className="flex items-center gap-3 mb-5">
+        <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-lg bg-accent/10 text-accent [&>svg]:h-[18px] [&>svg]:w-[18px]">
+          {icon}
+        </span>
+        <h2 className="docs-display text-[23px] leading-tight text-fg">{title}</h2>
       </div>
       <div className="text-fg-3 leading-relaxed space-y-3 text-[15px]">{children}</div>
     </div>
@@ -86,7 +90,7 @@ export function NumberedList({ items }: { items: React.ReactNode[] }) {
     <ol className="space-y-3 my-4">
       {items.map((item, i) => (
         <li key={i} className="flex gap-3">
-          <span className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] flex items-center justify-center text-xs font-bold text-white">
+          <span className="docs-display flex-shrink-0 w-7 h-7 rounded-full border border-accent/30 bg-accent/[0.07] flex items-center justify-center text-[15px] italic text-accent">
             {i + 1}
           </span>
           <span className="text-fg-3 text-[15px] leading-relaxed pt-0.5">{item}</span>
@@ -101,7 +105,7 @@ export function BulletList({ items }: { items: React.ReactNode[] }) {
     <ul className="space-y-2 my-3 ml-1">
       {items.map((item, i) => (
         <li key={i} className="flex gap-3 text-fg-3 text-[15px]">
-          <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#3b82f6] mt-2" />
+          <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-accent mt-2" />
           <span>{item}</span>
         </li>
       ))}
@@ -195,7 +199,7 @@ export function RoleBadge({ label, color, icon, subtitle }: { label: string; col
  */
 export function Lead({ children }: { children: React.ReactNode }) {
   return (
-    <p className="border-l-2 border-[#3b82f6]/50 pl-4 text-[16.5px] leading-relaxed text-fg-2">
+    <p className="border-l-2 border-accent/40 pl-4 text-[17px] leading-relaxed text-fg-2">
       {children}
     </p>
   );
@@ -236,7 +240,7 @@ export function DataTable({
 }) {
   return (
     <div className="my-5">
-      <div className="overflow-x-auto rounded-lg border border-tint/[0.08]">
+      <div className="overflow-x-auto rounded-xl border border-tint/[0.1] bg-panel">
         <table className="w-full border-collapse text-left text-[14px]">
           {caption && (
             <caption className="px-4 py-2.5 text-left text-xs text-fg-5">
@@ -244,7 +248,7 @@ export function DataTable({
             </caption>
           )}
           <thead>
-            <tr className="bg-tint/[0.05]">
+            <tr className="bg-tint/[0.04]">
               {head.map((cell) => (
                 <th
                   key={cell}
@@ -332,7 +336,7 @@ export function Related({
   return (
     <nav
       aria-label={es ? "Documentación relacionada" : "Related documentation"}
-      className="mt-10 rounded-xl border border-tint/[0.08] bg-tint/[0.03] p-6 backdrop-blur-sm"
+      className="docs-sheet mt-10 rounded-2xl border border-tint/[0.08] bg-panel p-6"
     >
       <span className="text-xs font-semibold uppercase tracking-wider text-fg-5">
         {es ? "Sigue leyendo" : "Keep reading"}

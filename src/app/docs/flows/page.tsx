@@ -6,15 +6,20 @@ import {
   Boxes,
   Braces,
   Crosshair,
+  FileInput,
   FilePlus,
+  HeartPulse,
+  History,
   Image as ImageIcon,
   Info,
   LifeBuoy,
   Play,
   Puzzle,
+  RotateCcw,
   Sparkles,
   Table2,
   Type,
+  Wand2,
 } from "lucide-react";
 import {
   BulletList,
@@ -36,11 +41,11 @@ export const metadata = docMetadata("flows");
 const HOW_TO = {
   name: "Build a Tavnit flow that extracts structured data from a document",
   description:
-    "Create a flow, define its metadata and table fields, add extraction hints so the AI knows where to look, and activate it.",
+    "Create a flow, define its metadata and table fields, add extraction hints only where they are needed, and test it on a real document.",
   steps: [
     {
       name: "Create the flow and describe it",
-      text: "On the Flows page, create a flow. Give it a name and a description of the documents it handles — the description also helps the AI extract more accurately.",
+      text: "On the Flows page, click Create Flow and pick a template, an AI suggestion or a blank flow. Give it a name and a description of the documents it handles — the description also helps the AI extract more accurately.",
     },
     {
       name: "Add metadata fields",
@@ -51,12 +56,12 @@ const HOW_TO = {
       text: "Add a field for each column of the repeating line-item table, such as description, quantity, unit price and amount.",
     },
     {
-      name: "Add extraction hints",
-      text: "For any field that is ambiguous, add hints: real example values, the label it sits next to, the area of the page it appears in, or the printed column header.",
+      name: "Add extraction hints where needed",
+      text: "Add hints only to the fields that need them: real example values, the label a value sits next to, the page area it appears in, or the printed column header.",
     },
     {
-      name: "Activate and test",
-      text: "Switch the flow to Active and process one real document. Compare the result against the source and tighten the hints on any field that came back wrong.",
+      name: "Test on a real document",
+      text: "A new flow is already Active. Click Run, process one real document, compare the result against the source and tighten the hints on any field that came back wrong.",
     },
   ],
 };
@@ -83,9 +88,9 @@ export default function Page() {
         <DocCard icon={<Sparkles size={24} />} title="What a flow is">
           <Lead>
             A flow is the definition of one document type: the fields you want extracted, the hints
-            that tell the AI where to find them, and everything attached downstream. It is the only
-            object in Tavnit that turns a document into data — Collections, Splitters and Cleaners
-            all exist to feed or refine what a flow produces.
+            that tell the AI where to find them, and everything attached downstream. It is the
+            object in Tavnit that turns a document into data — Collections, Subjects, Splitters and
+            Cleaners all exist to feed or refine what a flow produces.
           </Lead>
           <p>
             There is no template to draw and no coordinates to map. You describe the fields in plain
@@ -101,7 +106,57 @@ export default function Page() {
           <InfoBox color="blue" icon={<Info size={20} />} title="Only the schema is required">
             A flow needs at least one field. Everything else in the rail — Cleaner, agent, webhook,
             email, Bucket export, review — is optional and can be added later without rebuilding
-            anything.
+            anything. Owners and Admins can create and edit flows.
+          </InfoBox>
+        </DocCard>
+
+        <DocCard icon={<FilePlus size={24} />} title="Create a flow">
+          <Lead>
+            Click <strong>Create Flow</strong> on the Flows page and Tavnit asks{" "}
+            <em>“How do you want to start?”</em>. All three paths end in the same editable flow, so
+            pick whichever gets you to a good first draft fastest.
+          </Lead>
+          <DataTable
+            head={["Option", "What it does", "Best when"]}
+            rows={[
+              [
+                "From a template",
+                <Fragment key="c0">
+                  Opens a gallery with two tabs. <strong>Tavnit templates</strong> are ready-made
+                  flows with fields and hints already filled in; <strong>My flows</strong> lets you{" "}
+                  <strong>Create Copy</strong> of one of your own active flows.
+                </Fragment>,
+                "Your document is a common type, or close to a flow you already have.",
+              ],
+              [
+                "AI suggestion",
+                "Upload a sample PDF or image. The AI reads it, detects the fields and drafts a name, a description and a schema with hints. Uncheck what you do not need and edit any field before creating the flow.",
+                "Your document is specific to your business and you want a head start.",
+              ],
+              [
+                "Start from scratch",
+                "An empty schema. You define every field yourself.",
+                "You know exactly what you need, or you are rebuilding an existing process.",
+              ],
+            ]}
+          />
+          <p>
+            Tavnit templates cover invoices, purchase orders, receipts, bank statements, delivery
+            notes, lab results, contracts, quotes, credit notes, ID documents and resumes. If you
+            answered the welcome questions when you set up your organization, the templates that
+            match your documents are shown first, and the empty Flows page offers to create them all
+            in one click with <strong>Create these flows</strong>.
+          </p>
+          <p>
+            Every path finishes with a name (at least 3 characters) and a description (at least 10
+            characters). The flow opens in the builder with a short <em>“Set up your flow”</em>{" "}
+            guide, and it is <strong>Active</strong> from the start — use the switch in the top bar
+            to deactivate it. An inactive flow cannot be run.
+          </p>
+          <InfoBox color="green" icon={<Info size={20} />} title="AI suggestion is free">
+            Drafting a flow from a sample document does not create a run and costs no credits. Treat
+            the draft as a starting point — delete what you will not use, because every extra field
+            is more to review and more that can go wrong.
           </InfoBox>
         </DocCard>
 
@@ -143,7 +198,12 @@ export default function Page() {
             document.
           </InfoBox>
           <p>
-            A flow can also stamp <strong>system columns</strong> onto every row it outputs — the
+            A flow with <strong>only metadata fields</strong> — an ID document, a certificate, a
+            one-page form — returns a single row per document holding those values, so the result
+            still lands in your table view, Bucket, webhook and email like any other run.
+          </p>
+          <p>
+            A flow can also stamp <strong>System Columns</strong> onto every row it outputs — the
             flow ID, the flow name and the run ID. Turn these on when several flows write into one{" "}
             <DocLink href="/docs/buckets">Bucket</DocLink> and you need to know which document a row
             came from.
@@ -174,7 +234,7 @@ export default function Page() {
                 </Fragment>,
               ],
               [
-                "Mixed / alphanumeric",
+                "Mixed/Alphanumeric",
                 "Values that blend letters and digits — part numbers, container codes, tax IDs",
                 "Use this rather than Number when leading zeros or letters must survive.",
               ],
@@ -243,16 +303,16 @@ export default function Page() {
             rows={[
               [
                 "Source type",
-                "Whether the data sits in a real ruled table or in free-form text that only reads like a list. Set free-form when there is no visible grid.",
+                "Table for data in a real table with columns; Free-form for row-like values in unstructured text, such as a contract.",
               ],
               [
-                "Column header",
+                "Column headers",
                 "The header text as printed. List every variant your vendors use so one field matches them all.",
               ],
               ["Expected range", "A sanity range for the numbers in that column."],
               ["Example values", "Real cell values from your documents."],
               [
-                "Field meaning",
+                "Additional info",
                 "What the column actually represents, when the header alone is ambiguous — “unit price before discount”.",
               ],
             ]}
@@ -261,10 +321,11 @@ export default function Page() {
             Add fields, run one real document, and only add hints where the result was wrong.
             Hinting everything up front costs time on fields that were never ambiguous, and an
             over-specified hint can make extraction worse by ruling out a layout you did not
-            anticipate.
+            anticipate. Once the flow has a few runs, <strong>Diagnose</strong> can propose hints for
+            you.
           </InfoBox>
           <p>
-            Example values are skipped for <strong>date</strong> and <strong>image</strong> fields,
+            Example values are skipped for <strong>Date</strong> and <strong>Image</strong> fields,
             so put any date guidance in the additional-hints box instead.
           </p>
         </DocCard>
@@ -288,30 +349,30 @@ export default function Page() {
             ]}
           />
           <p>
-            Sub-fields hold single values, so they can be text, number, date or mixed — but not
-            images. Composite fields are only available on table fields, because the whole point is
-            unpacking a repeating cell.
+            Sub-fields hold single values, so they can be Text, Number, Date or Mixed/Alphanumeric —
+            but not Image. Composite fields are only available on table fields, because the whole
+            point is unpacking a repeating cell.
           </p>
           <InfoBox color="blue" icon={<Boxes size={20} />} title="Multi-value metadata fields">
             The metadata equivalent is <strong>Accept multiple values</strong>. Turn it on when a
             single document can legitimately carry several of the same thing — a set of receipt
             numbers, several purchase-order references — and the field returns a list instead of one
-            value.
+            value. It is not available on Image fields.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<ImageIcon size={24} />} title="Extracting images">
           <Lead>
-            An image-typed field pulls a figure out of the document rather than text: a product
-            photo, a signature, a stamp, a logo. A metadata image field holds one image per
-            document; a table image field gives each row the image belonging to it.
+            An Image field pulls a figure out of the document rather than text: a product photo, a
+            signature, a stamp, a logo. A metadata image field holds one image per document; a
+            table image field gives each row the image belonging to it.
           </Lead>
           <BulletList
             items={[
               "Images are stored privately, so they arrive downstream as time-limited links rather than raw bytes",
-              "The same link appears in the webhook payload, the email output and the CSV cell",
-              "Download promptly rather than storing the link — it expires",
-              "Image fields cannot be composite, and example-value hints do not apply to them",
+              "The same kind of link appears in the webhook payload, the email output and the CSV cell; an export from the run page generates fresh links",
+              "Links in deliveries are valid for seven days — download the image rather than storing the link",
+              "Image fields cannot be composite or accept multiple values, and example-value hints do not apply to them",
             ]}
           />
         </DocCard>
@@ -325,39 +386,75 @@ export default function Page() {
           <NumberedList
             items={[
               <Fragment key="f5">
-                Create the flow. Give it a name that describes the document (
-                <em>Supplier invoices</em>) and a real description — it improves extraction accuracy
-                and is what a <DocLink href="/docs/collections">Collection</DocLink> matches on
-                later.
+                Click <strong>Create Flow</strong> and pick a template, an AI suggestion or a blank
+                flow. Give it a name that describes the document (<em>Supplier invoices</em>) and a
+                real description — it improves extraction accuracy and is what a{" "}
+                <DocLink href="/docs/collections">Collection</DocLink> matches on later.
               </Fragment>,
               <Fragment key="f6">
-                Add a <strong>metadata field</strong> for each value that appears once per document,
-                setting the data type as you go.
+                Under <strong>Metadata Fields</strong>, click <strong>Add Field</strong> for each
+                value that appears once per document, setting the data type as you go.
               </Fragment>,
               <Fragment key="f7">
-                Add a <strong>table field</strong> for each column of the repeating line-item table.
+                Under <strong>Table Fields</strong>, add a field for each column of the repeating
+                line-item table.
               </Fragment>,
               <Fragment key="f8">
                 Add <strong>extraction hints</strong> only to the fields that need them.
               </Fragment>,
               <Fragment key="f9">
-                Switch the flow to <strong>Active</strong>, process one real document, and compare
-                the result against the source.
+                The flow is already <strong>Active</strong>. Click <strong>Run</strong>, process one
+                real document, and compare the result against the source.
               </Fragment>,
             ]}
           />
-          <InfoBox color="blue" icon={<Info size={20} />} title="Let field discovery do the first draft">
-            Uploading a sample document during setup gets you a suggested set of fields to edit,
-            which is faster and usually more complete than typing them from memory. Treat it as a
-            starting point — delete what you will not use, because every extra field is more to
-            review and more that can go wrong.
-          </InfoBox>
+          <p>Drag fields by their handle to reorder them.</p>
           <WarningBox>
             Renaming a field changes the key in every downstream consumer: the webhook payload, the
             Bucket column mapping, the CSV header and any{" "}
             <DocLink href="/docs/cleaners">Cleaner</DocLink> that reads it. Check what is attached
             before renaming a field on a flow that is already running.
           </WarningBox>
+        </DocCard>
+
+        <DocCard icon={<FileInput size={24} />} title="What files a flow reads">
+          <Lead>
+            A flow accepts PDFs, images and spreadsheets, through every route — upload, email and
+            API. Tavnit decides how to read each file, so you do not configure anything per format.
+          </Lead>
+          <DataTable
+            head={["File", "Formats", "How it is read"]}
+            rows={[
+              [
+                "PDF",
+                "PDF",
+                "Digital PDFs are read directly. Scanned PDFs are detected automatically and read with OCR first.",
+              ],
+              [
+                "Image",
+                "PNG, JPG, JPEG, JFIF",
+                "Read like a scanned page. JFIF is the JPEG variant some Windows browsers save by default, and works like any JPEG.",
+              ],
+              [
+                "Spreadsheet",
+                "XLSX, XLS, CSV",
+                "The first visible sheet is read. Other and hidden sheets are ignored, so put the data you want on the first sheet. Credits are charged by the sheet's page equivalent.",
+              ],
+            ]}
+          />
+          <p>
+            Very large sheets are rejected with a clear error before any credits are charged. To
+            process each sheet of a workbook as its own document, send it through a{" "}
+            <DocLink href="/docs/splitters">Splitter</DocLink> instead.
+          </p>
+          <InfoBox color="blue" icon={<Info size={20} />} title="Bad Scan: force OCR for files that extract badly">
+            Scanned documents already get OCR automatically. Some files look digital but carry a
+            broken text layer — a scan with a poor embedded transcript, a PDF exported from an odd
+            tool. For those, open <strong>Bad Scan</strong> in the flow&apos;s settings and turn it
+            on: every file in the flow is then read with OCR first, and extraction works from the
+            recovered text. If OCR is unavailable or fails, the run falls back to the standard
+            pipeline automatically. Bad Scan costs no extra credits.
+          </InfoBox>
         </DocCard>
 
         <DocCard icon={<Braces size={24} />} title="What you can attach to a flow">
@@ -373,7 +470,7 @@ export default function Page() {
                 <Fragment key="f10">
                   <DocLink href="/docs/email-integration">Email Trigger</DocLink>
                 </Fragment>,
-                "Gives the flow its own inbox address so forwarded attachments are processed automatically.",
+                "Gives the flow its own inbox address so forwarded documents (PDF, image or spreadsheet) are processed automatically.",
               ],
               [
                 "Inputs",
@@ -399,14 +496,14 @@ export default function Page() {
               [
                 "Processing",
                 "Form Templates",
-                "Fills a PDF template from the extracted values.",
+                "Fills a PDF template from a run's extracted values.",
               ],
               [
                 "Outputs",
                 <Fragment key="f14">
                   <DocLink href="/docs/email-integration">Email Output</DocLink>
                 </Fragment>,
-                "Emails results to one or more addresses when a run completes.",
+                "Emails results to one or more addresses after each successful run, with optional JSON, CSV, filled-form and original-document attachments.",
               ],
               [
                 "Outputs",
@@ -427,8 +524,9 @@ export default function Page() {
                 <Fragment key="f17">
                   <DocLink href="/docs/human-in-the-loop">Human in the Loop</DocLink>
                 </Fragment>,
-                "Pauses runs for a named reviewer before anything is delivered.",
+                "Pauses runs for a reviewer before anything is delivered.",
               ],
+              ["Settings", "Bad Scan", "Forces OCR for every file in the flow (see above)."],
               [
                 "Settings",
                 "Flow ID",
@@ -439,53 +537,174 @@ export default function Page() {
               ],
             ]}
           />
+          <p>
+            <strong>Email Trigger options.</strong> Once the trigger is on, the panel shows the
+            flow&apos;s inbox address and two settings. <strong>Allowed Senders</strong> limits who
+            can start a run by email; leave it empty to accept any sender.{" "}
+            <strong>Process Email Body</strong> also extracts from the message text itself, either{" "}
+            <em>Only when nothing is attached</em> (the default, so a cover note never starts a
+            second run) or <em>Always</em>. The sender&apos;s address is recorded on each run and
+            shown on the Runs page. <DocLink href="/docs/email-integration">Email Integration</DocLink>{" "}
+            covers the details.
+          </p>
         </DocCard>
 
-        <DocCard icon={<Play size={24} />} title="What happens when a run executes">
+        <DocCard icon={<HeartPulse size={24} />} title="Diagnose a flow">
           <Lead>
-            Every document becomes a run, and every run moves through the same sequence. Knowing the
-            order tells you where to look when something arrives late, arrives wrong, or does not
-            arrive at all.
+            Once a flow has processed some documents, the <strong>Diagnose</strong> button in the
+            flow&apos;s top bar opens the <strong>Flow doctor</strong>. It studies your recent
+            completed runs, finds the fields that keep coming back empty or with the wrong type, and
+            proposes corrections.
           </Lead>
           <NumberedList
             items={[
-              "The document is stored and the run is queued.",
-              "Extraction reads it and produces metadata values and table rows, charged at one credit per page.",
-              "If a Cleaner is attached, it sweeps those rows — conversions, computed columns, lookups.",
-              "Conditional rules fire: rows can be dropped, notifications sent, review requested.",
-              "If review is required, the run pauses and nothing is delivered until a reviewer approves.",
-              "Outputs run in order: email, webhook, Bucket export, form fill, then any chained agent.",
-            ]}
-          />
-          <DataTable
-            head={["Run status", "Meaning"]}
-            rows={[
-              ["Queued", "Stored and waiting for a worker."],
-              ["Processing / running", "Being extracted, or resuming after an approval."],
-              [
-                "Awaiting review",
-                <Fragment key="f19">
-                  Paused for <DocLink href="/docs/human-in-the-loop">human review</DocLink>. Nothing
-                  has been delivered yet.
-                </Fragment>,
-              ],
-              ["Completed", "Extraction finished and every configured output has run."],
-              ["Cancelled", "A reviewer rejected the run, so nothing was delivered."],
-              ["Failed", "The document could not be processed. The run's log says why."],
+              <Fragment key="d0">
+                Open the flow and click <strong>Diagnose</strong>. The button appears once the flow
+                has at least one field, for Owners and Admins.
+              </Fragment>,
+              "Tavnit reads the recent runs, re-reads a few of the documents where fields failed, and drafts corrections. This takes a moment.",
+              <Fragment key="d1">
+                Review the result. Each problem field shows how often it was empty or had the wrong
+                type, with the <strong>Current</strong> hint beside the <strong>Proposed</strong>{" "}
+                one. It may also offer a <strong>Suggested description</strong>.
+              </Fragment>,
+              <Fragment key="d2">
+                Keep or edit the fixes you agree with and click <strong>Apply</strong>. Nothing
+                changes until you apply; closing the panel discards the proposals.
+              </Fragment>,
             ]}
           />
           <p>
-            Everything a run did is recorded in its log, including which outputs fired and what each
-            one returned. That log is the first place to look before assuming a delivery problem is
-            on your side.
+            If everything looks fine you will see <em>“Extraction looks healthy”</em>. Diagnose is
+            free and only runs when you click it. Re-run a real document after applying fixes to
+            confirm they helped.
+          </p>
+        </DocCard>
+
+        <div id="runs" className="scroll-mt-24">
+          <DocCard icon={<Play size={24} />} title="Runs: what happens when a document is processed">
+            <Lead>
+              Every document becomes a run, and every run moves through the same sequence. Knowing
+              the order tells you where to look when something arrives late, arrives wrong, or does
+              not arrive at all.
+            </Lead>
+            <NumberedList
+              items={[
+                "The document is stored and the run is queued.",
+                "Extraction reads it and produces metadata values and table rows, charged at one credit per page.",
+                "If a Cleaner is attached, it sweeps those rows — conversions, computed columns, lookups.",
+                "Conditional rules fire: rows can be dropped, notifications sent, review requested.",
+                "If review is required, the run pauses and nothing is delivered until a reviewer approves.",
+                "Outputs run: email, Bucket export and webhook. The run is then marked completed, and a linked agent, if any, starts.",
+              ]}
+            />
+            <DataTable
+              head={["Run status", "Meaning"]}
+              rows={[
+                ["Pending (queued)", "Stored and waiting for a worker."],
+                ["Processing", "Being extracted, cleaned or delivered. The run page shows the current stage."],
+                [
+                  "Retrying",
+                  "A previous attempt failed for a temporary reason and the run was queued again automatically (see below).",
+                ],
+                [
+                  "Awaiting HITL review",
+                  <Fragment key="f19">
+                    Paused for <DocLink href="/docs/human-in-the-loop">human review</DocLink>.
+                    Nothing has been delivered yet.
+                  </Fragment>,
+                ],
+                ["Completed", "Extraction finished and every configured output has run."],
+                [
+                  "Cancelled",
+                  "Someone cancelled the run while it was queued or processing, or a reviewer rejected it. Nothing more is delivered.",
+                ],
+                ["Failed", "The document could not be processed. The run's log says why."],
+              ]}
+            />
+          </DocCard>
+        </div>
+
+        <DocCard icon={<History size={24} />} title="Working with runs">
+          <Lead>
+            The <strong>Runs</strong> page lists every run in your organization; each flow also has
+            its own <strong>Recent Runs</strong> tab. Use <strong>Filter</strong> to narrow by
+            status, date range, flow, user, source or a pasted run ID.
+          </Lead>
+          <DataTable
+            head={["Action", "Where", "Notes"]}
+            rows={[
+              [
+                "View Details",
+                "Run actions menu, or click the row",
+                "Extracted data beside the source file, the run information and the processing log.",
+              ],
+              [
+                "Download CSV",
+                "Run actions menu",
+                "Completed runs only. Export CSV and Export JSON are also on the run page.",
+              ],
+              [
+                "Download File",
+                "Run actions menu, or Download on the run page",
+                "The original source file. Spreadsheets cannot be previewed inline, so download them to view.",
+              ],
+              [
+                "Cancel Run",
+                "Run actions menu",
+                "Only for runs still queued or running. Credits already used are not refunded.",
+              ],
+            ]}
+          />
+          <p>
+            The <strong>Triggered By</strong> column shows who started the run — the user for an
+            upload, or the sender&apos;s address for a run that arrived by email. The{" "}
+            <strong>Source</strong> column says how it arrived: manual upload, API, email and so on.
+          </p>
+        </DocCard>
+
+        <DocCard icon={<RotateCcw size={24} />} title="Failed runs and automatic retries">
+          <Lead>
+            Most failures are the document&apos;s fault — an unreadable file, an unsupported type,
+            not enough credits — and retrying would not help. A few are not: a processing worker
+            restarts mid-run, or an AI provider has a temporary outage. For those, an organization
+            can have Tavnit retry on its own.
+          </Lead>
+          <NumberedList
+            items={[
+              <Fragment key="r0">
+                Go to <strong>Settings</strong> → <strong>Organization</strong> →{" "}
+                <strong>Failed runs</strong>. Only the Owner can see this tab.
+              </Fragment>,
+              <Fragment key="r1">
+                Turn on <strong>Automatically retry failed runs</strong>.
+              </Fragment>,
+              <Fragment key="r2">
+                Set <strong>Maximum retries per run</strong> to 1, 2 or 3.
+              </Fragment>,
+            ]}
+          />
+          <BulletList
+            items={[
+              "A retried run keeps the same run ID, so API polling, webhooks and links keep working.",
+              "Credits are charged once per run, however many attempts it takes.",
+              "Outputs only fire when a run completes, so a retry never delivers a document twice.",
+              "Never retried: invalid files, unsupported types, missing credits, cancelled runs, runs paused for review, and runs created more than a day ago.",
+              "A run lost to a worker restart is detected automatically. With auto-retry on it is queued again; with it off, it is marked Failed.",
+              "The run page lists Previous attempts, each marked Lost worker or Failed with its error, and the Runs list shows a retry badge.",
+            ]}
+          />
+          <p>
+            To hear about runs that end in failure, add addresses under{" "}
+            <strong>Run Failure Notifications</strong> in the same tab.
           </p>
         </DocCard>
 
         <DocCard icon={<LifeBuoy size={24} />} title="Improving extraction quality">
           <Lead>
             When a field comes back wrong, the fix is nearly always in that field&apos;s definition
-            rather than in the document. Work through these in order — the first two solve most
-            cases.
+            rather than in the document. Start with <strong>Diagnose</strong> if the flow has runs,
+            then work through these — the first two solve most cases.
           </Lead>
           <DataTable
             head={["Symptom", "Likely cause", "Fix"]}
@@ -518,17 +737,27 @@ export default function Page() {
               [
                 "Leading zeros or letters dropped",
                 "The field is typed as Number.",
-                "Change it to Mixed / alphanumeric.",
+                "Change it to Mixed/Alphanumeric.",
               ],
               [
                 "Columns confused with each other",
                 "Two columns have similar headers.",
-                "Add the printed column header, and the field meaning.",
+                "Add the printed column headers, and describe the column in Additional info.",
               ],
               [
                 "Good on some vendors, poor on others",
                 "The hints describe one vendor's layout.",
                 "Add the other vendors' label and header variants to the same field.",
+              ],
+              [
+                "Garbled text from a file that looks digital",
+                "The PDF's embedded text layer is broken.",
+                "Turn on Bad Scan so the flow reads it with OCR.",
+              ],
+              [
+                "A spreadsheet comes back empty or partial",
+                "The data is not on the first visible sheet.",
+                "Move it to the first sheet, or use a Splitter for multi-sheet workbooks.",
               ],
             ]}
           />
@@ -536,6 +765,10 @@ export default function Page() {
             Re-run the same document after each change. Editing four hints at once and re-running
             tells you the result improved but not which change did it — and one of the four may have
             made things worse.
+          </InfoBox>
+          <InfoBox color="blue" icon={<Wand2 size={20} />} title="Fix the data, not the extraction">
+            If the value is right but the format is not — dates, currencies, units, casing — leave the
+            flow alone and add a <DocLink href="/docs/cleaners">Cleaner</DocLink>.
           </InfoBox>
         </DocCard>
 
@@ -546,6 +779,12 @@ export default function Page() {
               label: "Normalise and enrich what a flow extracts",
               description:
                 "Reformat dates, convert currencies, compute totals and flag rows that break a rule.",
+            },
+            {
+              href: "/docs/email-integration",
+              label: "Send documents to a flow by email",
+              description:
+                "The inbox address, allowed senders, email body processing and email output.",
             },
             {
               href: "/docs/collections",
@@ -564,6 +803,11 @@ export default function Page() {
               label: "See the payload a flow produces",
               description:
                 "How metadata fields and table fields appear in the JSON your endpoint receives.",
+            },
+            {
+              href: "/docs/credits",
+              label: "Understand what runs cost",
+              description: "Per-page extraction credits and the rates for every other feature.",
             },
           ]}
         />

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import DocsShell from "@/components/docs/DocsShell";
 import { docsRootSchema } from "@/lib/schema";
+import { DOCS_EMBED_SCRIPT } from "@/components/docs/embed";
 
 /**
  * Spanish docs layout. The twin of src/app/docs/layout.tsx: same shell (it
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 export default function DocsLayoutEs({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <script dangerouslySetInnerHTML={{ __html: DOCS_EMBED_SCRIPT }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(docsRootSchema("es")) }}

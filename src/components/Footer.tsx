@@ -67,10 +67,10 @@ const USE_CASES_SHOWN = 5;
  * always left one alone on its own row.
  */
 const DOC_GROUPS: DocSlug[][] = [
-  ["getting-started", "flows", "collections", "splitters"],
-  ["cleaners", "human-in-the-loop", "agents", "pipeline-map"],
-  ["buckets", "user-roles"],
-  ["email-integration", "api-integration", "webhooks"],
+  ["getting-started", "credits", "flows", "collections", "splitters", "subjects"],
+  ["cleaners", "agents", "matchers", "inspectors", "fillers"],
+  ["buckets", "human-in-the-loop", "pipelines", "pipeline-map", "user-roles"],
+  ["email-integration", "api-integration", "webhooks", "signals", "nets"],
 ];
 function docLinks(locale: Locale): FooterLink[][] {
   const all = [...docsForFooterColumn("documentation", locale), ...docsForFooterColumn("integrations", locale)].filter((s) => s.slug !== "mcp-connector");

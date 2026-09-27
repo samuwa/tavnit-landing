@@ -27,7 +27,55 @@ export type DocSlug =
   | "api-integration"
   | "webhooks"
   | "mcp-connector"
-  | "user-roles";
+  | "user-roles"
+  | "credits"
+  | "subjects"
+  | "matchers"
+  | "inspectors"
+  | "fillers"
+  | "pipelines"
+  | "signals"
+  | "nets";
+
+/**
+ * Sidebar groups, the same layers as the app's own sidebar (input,
+ * processing, intelligence, data...) so the docs teach the product's map.
+ */
+export type DocGroup =
+  | "start"
+  | "orchestration"
+  | "input"
+  | "processing"
+  | "intelligence"
+  | "verticals"
+  | "data"
+  | "integrate"
+  | "organization";
+
+export const DOC_GROUP_LABELS: Record<Locale, Record<DocGroup, string>> = {
+  en: {
+    start: "Get started",
+    orchestration: "Orchestration",
+    input: "Input",
+    processing: "Processing",
+    intelligence: "Intelligence",
+    verticals: "Audio & social",
+    data: "Data & review",
+    integrate: "Integrations",
+    organization: "Organization",
+  },
+  es: {
+    start: "Empezar",
+    orchestration: "Orquestación",
+    input: "Entrada",
+    processing: "Procesamiento",
+    intelligence: "Inteligencia",
+    verticals: "Audio y social",
+    data: "Datos y revisión",
+    integrate: "Integraciones",
+    organization: "Organización",
+  },
+};
 
 /**
  * Which footer column links to this page.
@@ -42,6 +90,7 @@ export type FooterColumn = "documentation" | "integrations";
 
 export type DocSection = {
   slug: DocSlug;
+  group: DocGroup;
   /** Sidebar label — short. */
   label: string;
   /** On-page <h1>. */
@@ -61,6 +110,7 @@ export type DocSection = {
 export const DOC_SECTIONS: DocSection[] = [
   {
     slug: "getting-started",
+    group: "start",
     label: "Getting Started",
     heading: "Getting Started",
     href: "/docs",
@@ -70,17 +120,41 @@ export const DOC_SECTIONS: DocSection[] = [
     footerColumn: "documentation",
   },
   {
-    slug: "flows",
-    label: "Flows",
-    heading: "Flows",
-    href: "/docs/flows",
-    title: "Flows — Define What Tavnit Extracts from Each Document",
+    slug: "credits",
+    group: "start",
+    label: "Credits & Billing",
+    heading: "Credits & Billing",
+    href: "/docs/credits",
+    title: "Credits — What Each Tavnit Feature Costs and How Billing Works",
     description:
-      "Build a flow's data schema: metadata and table fields, data types, extraction hints that tell the AI where to look, and composite and multi-value fields.",
+      "How Tavnit credits work: the price of each step (extraction, routing, splits, sweeps, agents, matchers and more), when you are charged and how to top up.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "pipelines",
+    group: "orchestration",
+    label: "Pipelines",
+    heading: "Pipelines",
+    href: "/docs/pipelines",
+    title: "Pipelines — Chain Tavnit Steps End to End on a Canvas",
+    description:
+      "Connect splitters, collections, flows, agents, buckets, matchers, inspectors and fillers on one canvas, or describe the pipeline in plain language.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "pipeline-map",
+    group: "orchestration",
+    label: "Pipeline Map",
+    heading: "Pipeline Map",
+    href: "/docs/pipeline-map",
+    title: "Pipeline Map — Visualise Your Document Workflow End to End",
+    description:
+      "See how documents move through Splitters, Collections, flows, Cleaners, agents, matchers, inspectors, fillers, Signals and Buckets in one map.",
     footerColumn: "documentation",
   },
   {
     slug: "collections",
+    group: "input",
     label: "Collections",
     heading: "Collections",
     href: "/docs/collections",
@@ -90,17 +164,19 @@ export const DOC_SECTIONS: DocSection[] = [
     footerColumn: "documentation",
   },
   {
-    slug: "cleaners",
-    label: "Cleaners",
-    heading: "Cleaners",
-    href: "/docs/cleaners",
-    title: "Cleaners — Field Type Reference for Extracted Data",
+    slug: "subjects",
+    group: "input",
+    label: "Subjects",
+    heading: "Subjects",
+    href: "/docs/subjects",
+    title: "Subjects — Group Documents into Cases Automatically",
     description:
-      "Every Cleaner field type: AI formatting, date and number formats, formulas, categories, lookups, currency and unit conversion, HS codes and conditions.",
+      "Model entities like purchases or patients, collect their documents into Cases by reference ID or intake email, and run checks on each case.",
     footerColumn: "documentation",
   },
   {
     slug: "splitters",
+    group: "input",
     label: "Splitters",
     heading: "Splitters",
     href: "/docs/splitters",
@@ -110,17 +186,30 @@ export const DOC_SECTIONS: DocSection[] = [
     footerColumn: "integrations",
   },
   {
-    slug: "buckets",
-    label: "Buckets",
-    heading: "Buckets",
-    href: "/docs/buckets",
-    title: "Buckets — Structured Storage for Extracted Document Data",
+    slug: "flows",
+    group: "processing",
+    label: "Flows",
+    heading: "Flows",
+    href: "/docs/flows",
+    title: "Flows — Define What Tavnit Extracts from Each Document",
     description:
-      "Store extracted results in built-in structured tables, append rows over the API, control per-bucket access, and chart the data without exporting it.",
+      "Build a flow's data schema: metadata and table fields, data types, extraction hints that tell the AI where to look, and composite and multi-value fields.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "cleaners",
+    group: "processing",
+    label: "Cleaners",
+    heading: "Cleaners",
+    href: "/docs/cleaners",
+    title: "Cleaners — Field Type Reference for Extracted Data",
+    description:
+      "Every Cleaner field type, from AI formatting, dates and formulas to lookups, currency, HS codes, Human Input, anomaly checks and date calculations.",
     footerColumn: "documentation",
   },
   {
     slug: "agents",
+    group: "processing",
     label: "Agents",
     heading: "Agents",
     href: "/docs/agents",
@@ -130,7 +219,74 @@ export const DOC_SECTIONS: DocSection[] = [
     footerColumn: "documentation",
   },
   {
+    slug: "matchers",
+    group: "intelligence",
+    label: "Matchers",
+    heading: "Matchers",
+    href: "/docs/matchers",
+    title: "Matchers — Compare Quotes, Invoices and Orders Line by Line",
+    description:
+      "Match line items across documents semantically, compare prices or quantities, pick a champion and review the result. Benchmark and multilateral modes.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "inspectors",
+    group: "intelligence",
+    label: "Inspectors",
+    heading: "Inspectors",
+    href: "/docs/inspectors",
+    title: "Inspectors — Deterministic Compliance Checks Across Documents",
+    description:
+      "Build a checklist over a set of related documents and get a pass or fail verdict every time: dates, cross-document comparisons, patterns and AI checks.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "fillers",
+    group: "intelligence",
+    label: "Fillers",
+    heading: "Fillers",
+    href: "/docs/fillers",
+    title: "Fillers — Fill PDF Forms from Extracted Document Data",
+    description:
+      "Map fillable PDF templates to data extracted from your documents and produce completed forms automatically, with optional human review.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "signals",
+    group: "verticals",
+    label: "Signals",
+    heading: "Signals",
+    href: "/docs/signals",
+    title: "Signals — Turn Recorded Conversations into Structured Data",
+    description:
+      "Configure a Signal to structure audio conversations into rows: members, recorders, the Waves each recording produces and where the data goes.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "nets",
+    group: "verticals",
+    label: "Nets",
+    heading: "Nets",
+    href: "/docs/nets",
+    title: "Nets — Structure Social Media Posts into Data (Beta)",
+    description:
+      "Point a Net at social media sources, test it, and turn each catch of posts into structured rows and trends you can store and analyse.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "buckets",
+    group: "data",
+    label: "Buckets",
+    heading: "Buckets",
+    href: "/docs/buckets",
+    title: "Buckets — Structured Storage for Extracted Document Data",
+    description:
+      "Store extracted results in built-in structured tables, append rows over the API, control per-bucket access, and chart the data without exporting it.",
+    footerColumn: "documentation",
+  },
+  {
     slug: "human-in-the-loop",
+    group: "data",
     label: "Human in the Loop",
     heading: "Human in the Loop",
     href: "/docs/human-in-the-loop",
@@ -140,17 +296,8 @@ export const DOC_SECTIONS: DocSection[] = [
     footerColumn: "documentation",
   },
   {
-    slug: "pipeline-map",
-    label: "Pipeline Map",
-    heading: "Pipeline Map",
-    href: "/docs/pipeline-map",
-    title: "Pipeline Map — Visualise Your Document Workflow End to End",
-    description:
-      "See how documents move through flows, Collections, Cleaners, Splitters, review and delivery in a single visual map of your workspace.",
-    footerColumn: "documentation",
-  },
-  {
     slug: "email-integration",
+    group: "integrate",
     label: "Email Integration",
     heading: "Email Integration",
     href: "/docs/email-integration",
@@ -161,16 +308,18 @@ export const DOC_SECTIONS: DocSection[] = [
   },
   {
     slug: "api-integration",
+    group: "integrate",
     label: "API Integration",
     heading: "API Integration",
     href: "/docs/api-integration",
     title: "Document Extraction REST API — Python, JavaScript and No-Code",
     description:
-      "Process documents with the Tavnit REST API: multipart or base64 upload, API-key auth, Python and JavaScript examples, plus Zapier, Make and n8n recipes.",
+      "The Tavnit REST API reference: every endpoint for flows, collections, splitters, cleaners, buckets, agents, pipelines and more, plus no-code recipes.",
     footerColumn: "integrations",
   },
   {
     slug: "webhooks",
+    group: "integrate",
     label: "Webhooks",
     heading: "Webhooks",
     href: "/docs/webhooks",
@@ -181,6 +330,7 @@ export const DOC_SECTIONS: DocSection[] = [
   },
   {
     slug: "mcp-connector",
+    group: "integrate",
     label: "MCP Connector",
     heading: "MCP Connector",
     href: "/docs/mcp-connector",
@@ -191,12 +341,13 @@ export const DOC_SECTIONS: DocSection[] = [
   },
   {
     slug: "user-roles",
+    group: "organization",
     label: "User Roles",
     heading: "User Roles",
     href: "/docs/user-roles",
-    title: "User Roles — Owner, Admin and Member Permissions",
+    title: "User Roles — Owner, Admin, Member and HITL Only Permissions",
     description:
-      "Owner, Admin and Member roles, what each can do across flows, Cleaners, Buckets and billing, and how per-bucket visibility and access grants layer on top.",
+      "Owner, Admin, Member and HITL Only: what each role can do in every feature, invitations, API keys, and how per-bucket visibility and grants layer on top.",
     footerColumn: "integrations",
   },
 ];
@@ -216,6 +367,7 @@ export const DOC_BY_SLUG = Object.fromEntries(
 export const DOC_SECTIONS_ES: DocSection[] = [
   {
     slug: "getting-started",
+    group: "start",
     label: "Primeros pasos",
     heading: "Primeros pasos",
     href: "/es/documentacion",
@@ -225,37 +377,63 @@ export const DOC_SECTIONS_ES: DocSection[] = [
     footerColumn: "documentation",
   },
   {
-    slug: "flows",
-    label: "Flows",
-    heading: "Flows",
-    href: "/es/documentacion/flows",
-    title: "Flows: define qué extrae Tavnit de cada documento",
+    slug: "credits",
+    group: "start",
+    label: "Créditos y facturación",
+    heading: "Créditos y facturación",
+    href: "/es/documentacion/creditos",
+    title: "Créditos: cuánto cuesta cada función de Tavnit",
     description:
-      "Arma el esquema de un Flow: campos de metadatos y de tabla, tipos de datos, pistas de extracción para la IA y campos compuestos o de varios valores.",
+      "Cómo funcionan los créditos de Tavnit: el precio de cada paso (extracción, enrutamiento, Splitters, limpiezas, Agentes y más), cuándo se cobra y cómo recargar.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "pipelines",
+    group: "orchestration",
+    label: "Pipelines",
+    heading: "Pipelines",
+    href: "/es/documentacion/pipelines",
+    title: "Pipelines: encadena los pasos de Tavnit en un lienzo",
+    description:
+      "Conecta Splitters, Colecciones, Flows, Agentes, Buckets, Matchers, Inspectores y Fillers en un lienzo, o describe el pipeline en lenguaje natural.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "pipeline-map",
+    group: "orchestration",
+    label: "Mapa de Pipeline",
+    heading: "Mapa de Pipeline",
+    href: "/es/documentacion/mapa-del-pipeline",
+    title: "Mapa de Pipeline: todo tu flujo de documentos en un vistazo",
+    description:
+      "Mira cómo pasan los documentos por Splitters, Colecciones, Flows, Cleaners, Agentes, Matchers, Inspectores, Fillers, Signals y Buckets en un solo mapa.",
     footerColumn: "documentation",
   },
   {
     slug: "collections",
-    label: "Collections",
-    heading: "Collections",
-    href: "/es/documentacion/collections",
-    title: "Collections: envía cada documento al Flow correcto",
+    group: "input",
+    label: "Colecciones",
+    heading: "Colecciones",
+    href: "/es/documentacion/colecciones",
+    title: "Colecciones: envía cada documento al Flow correcto",
     description:
       "Agrupa Flows y Splitters detrás de un solo punto de entrada. Tavnit clasifica cada documento por su primera página y lo enruta, con un Flow de respaldo.",
     footerColumn: "documentation",
   },
   {
-    slug: "cleaners",
-    label: "Cleaners",
-    heading: "Cleaners",
-    href: "/es/documentacion/cleaners",
-    title: "Cleaners: referencia de tipos de campo para tus datos",
+    slug: "subjects",
+    group: "input",
+    label: "Subjects",
+    heading: "Subjects",
+    href: "/es/documentacion/subjects",
+    title: "Subjects: agrupa documentos en expedientes automáticamente",
     description:
-      "Todos los tipos de campo de un Cleaner: formato con IA, fechas y números, fórmulas, categorías, búsquedas, conversión de moneda y unidades, códigos HS.",
+      "Modela entidades como compras o pacientes, reúne sus documentos en expedientes por número de referencia o correo de entrada y revisa cada uno.",
     footerColumn: "documentation",
   },
   {
     slug: "splitters",
+    group: "input",
     label: "Splitters",
     heading: "Splitters",
     href: "/es/documentacion/splitters",
@@ -265,7 +443,96 @@ export const DOC_SECTIONS_ES: DocSection[] = [
     footerColumn: "integrations",
   },
   {
+    slug: "flows",
+    group: "processing",
+    label: "Flows",
+    heading: "Flows",
+    href: "/es/documentacion/flows",
+    title: "Flows: define qué extrae Tavnit de cada documento",
+    description:
+      "Arma el esquema de un Flow: campos de metadatos y de tabla, tipos de datos, pistas de extracción para la IA y campos compuestos o de varios valores.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "cleaners",
+    group: "processing",
+    label: "Cleaners",
+    heading: "Cleaners",
+    href: "/es/documentacion/cleaners",
+    title: "Cleaners: referencia de tipos de campo para tus datos",
+    description:
+      "Todos los tipos de campo de un Cleaner: formato con IA, fechas y números, fórmulas, categorías, búsquedas, conversión de moneda y unidades, códigos HS.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "agents",
+    group: "processing",
+    label: "Agentes",
+    heading: "Agentes",
+    href: "/es/documentacion/agentes",
+    title: "Agentes: agentes de IA que actúan con tus datos",
+    description:
+      "Dale a un Agente una misión y una URL de inicio. Variables, secretos, capturas, entregas, horarios, límites y cómo encadenarlo a un Flow.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "matchers",
+    group: "intelligence",
+    label: "Matchers",
+    heading: "Matchers",
+    href: "/es/documentacion/matchers",
+    title: "Matchers: compara cotizaciones y facturas línea por línea",
+    description:
+      "Empareja líneas entre documentos por significado, compara precios o cantidades, elige al ganador y revisa el resultado. Modos benchmark y multilateral.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "inspectors",
+    group: "intelligence",
+    label: "Inspectores",
+    heading: "Inspectores",
+    href: "/es/documentacion/inspectores",
+    title: "Inspectores: revisiones de cumplimiento entre documentos",
+    description:
+      "Arma una lista de verificación sobre un grupo de documentos y obtén siempre un veredicto aprobado o rechazado: fechas, comparaciones, patrones y IA.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "fillers",
+    group: "intelligence",
+    label: "Fillers",
+    heading: "Fillers",
+    href: "/es/documentacion/fillers",
+    title: "Fillers: llena formularios PDF con los datos extraídos",
+    description:
+      "Conecta plantillas PDF rellenables con los datos extraídos de tus documentos y obtén formularios completos automáticamente, con revisión humana opcional.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "signals",
+    group: "verticals",
+    label: "Signals",
+    heading: "Signals",
+    href: "/es/documentacion/signals",
+    title: "Signals: convierte conversaciones grabadas en datos",
+    description:
+      "Configura un Signal para estructurar conversaciones de audio en filas: participantes, grabadoras, las Waves de cada grabación y a dónde van los datos.",
+    footerColumn: "documentation",
+  },
+  {
+    slug: "nets",
+    group: "verticals",
+    label: "Nets",
+    heading: "Nets",
+    href: "/es/documentacion/nets",
+    title: "Nets: estructura publicaciones de redes sociales (beta)",
+    description:
+      "Apunta un Net a fuentes de redes sociales, pruébalo y convierte cada captura de publicaciones en filas y tendencias que puedes guardar y analizar.",
+    footerColumn: "documentation",
+  },
+  {
     slug: "buckets",
+    group: "data",
     label: "Buckets",
     heading: "Buckets",
     href: "/es/documentacion/buckets",
@@ -275,19 +542,10 @@ export const DOC_SECTIONS_ES: DocSection[] = [
     footerColumn: "documentation",
   },
   {
-    slug: "agents",
-    label: "Agents",
-    heading: "Agents",
-    href: "/es/documentacion/agents",
-    title: "Agents: agentes de IA que actúan con tus datos",
-    description:
-      "Dale a un Agent una misión en lenguaje natural y una URL de inicio. Tipos de captura, Agents encadenados a Flows, descargas, límites y costo en créditos.",
-    footerColumn: "documentation",
-  },
-  {
     slug: "human-in-the-loop",
-    label: "Revisión humana",
-    heading: "Revisión humana",
+    group: "data",
+    label: "Revisión Humana",
+    heading: "Revisión Humana",
     href: "/es/documentacion/revision-humana",
     title: "Revisión humana con un historial de auditoría completo",
     description:
@@ -295,37 +553,30 @@ export const DOC_SECTIONS_ES: DocSection[] = [
     footerColumn: "documentation",
   },
   {
-    slug: "pipeline-map",
-    label: "Mapa del pipeline",
-    heading: "Mapa del pipeline",
-    href: "/es/documentacion/mapa-del-pipeline",
-    title: "Mapa del pipeline: todo tu flujo de documentos en un vistazo",
-    description:
-      "Mira cómo pasan los documentos por Flows, Collections, Cleaners, Splitters, revisión y entrega en un solo mapa visual de tu espacio de trabajo.",
-    footerColumn: "documentation",
-  },
-  {
     slug: "email-integration",
+    group: "integrate",
     label: "Integración por correo",
     heading: "Integración por correo",
     href: "/es/documentacion/integracion-por-correo",
     title: "Extrae datos de adjuntos de correo automáticamente",
     description:
-      "Reenvía documentos a la dirección de un Flow, Collection o Splitter y cada adjunto se extrae solo. Tipos de archivo, motivos de omisión y resultados.",
+      "Reenvía documentos a la dirección de un Flow, Colección, Splitter u otra función y cada adjunto se procesa solo. Tipos de archivo, remitentes y resultados.",
     footerColumn: "integrations",
   },
   {
     slug: "api-integration",
+    group: "integrate",
     label: "Integración por API",
     heading: "Integración por API",
     href: "/es/documentacion/api",
     title: "API REST de extracción de documentos: Python, JS y no-code",
     description:
-      "Procesa documentos con la API REST de Tavnit: subida multipart o base64, autenticación con API key, ejemplos en Python y JavaScript, y Zapier, Make y n8n.",
+      "Referencia de la API REST de Tavnit: cada endpoint de Flows, Colecciones, Splitters, Cleaners, Buckets, Agentes, Pipelines y más, con recetas no-code.",
     footerColumn: "integrations",
   },
   {
     slug: "webhooks",
+    group: "integrate",
     label: "Webhooks",
     heading: "Webhooks",
     href: "/es/documentacion/webhooks",
@@ -336,6 +587,7 @@ export const DOC_SECTIONS_ES: DocSection[] = [
   },
   {
     slug: "mcp-connector",
+    group: "integrate",
     label: "Conector MCP",
     heading: "Conector MCP",
     href: "/es/documentacion/conector-mcp",
@@ -346,12 +598,13 @@ export const DOC_SECTIONS_ES: DocSection[] = [
   },
   {
     slug: "user-roles",
+    group: "organization",
     label: "Roles de usuario",
     heading: "Roles de usuario",
     href: "/es/documentacion/roles-de-usuario",
-    title: "Roles de usuario: permisos de Owner, Admin y Member",
+    title: "Roles de usuario: Propietario, Administrador, Miembro, HITL",
     description:
-      "Los roles Owner, Admin y Member, qué puede hacer cada uno en Flows, Cleaners, Buckets y facturación, y cómo se suman los permisos por Bucket.",
+      "Propietario, Administrador, Miembro y Solo HITL: qué puede hacer cada rol en cada función, invitaciones, API keys y permisos por Bucket.",
     footerColumn: "integrations",
   },
 ];

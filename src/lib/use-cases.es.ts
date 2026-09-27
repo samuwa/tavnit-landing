@@ -84,7 +84,7 @@ export const USE_CASES_ES: UseCaseEs[] = [
     pipeline: [
       { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "El juego de documentos llega por correo, como siempre. Lo reenvías a una dirección de Tavnit y el proceso arranca solo." },
       { label: "Splitters", href: "/es/documentacion/splitters", why: "La documentación del embarque suele venir en un solo PDF combinado. El Splitter la separa antes de extraer." },
-      { label: "Collections", href: "/es/documentacion/collections", why: "Identifica factura, lista de empaque y BL y envía cada uno al Flow correcto." },
+      { label: "Collections", href: "/es/documentacion/colecciones", why: "Identifica factura, lista de empaque y BL y envía cada uno al Flow correcto." },
       { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Clasifica la mercancía en el Arancel Nacional, convierte monedas y estandariza pesos y unidades." },
       { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "El corredor revisa cada clasificación antes de declarar, con registro de quién aprobó qué." },
       { label: "Llenado de formularios", href: "/es/casos-de-uso/llenado-de-formularios", why: "Los datos extraídos y aprobados pre-llenan el formulario de declaración en lugar de re-tipearse." },
@@ -213,7 +213,7 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/es/documentacion/collections", why: "Los proveedores envían OC, facturas y notas de entrega a una sola dirección. Collections clasifica cada documento y lo envía al Flow correcto." },
+      { label: "Collections", href: "/es/documentacion/colecciones", why: "Los proveedores envían OC, facturas y notas de entrega a una sola dirección. Collections clasifica cada documento y lo envía al Flow correcto." },
       { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Mapea códigos de artículo y nombres de proveedor a tus datos maestros por búsqueda, verifica la aritmética de cada línea y marca los valores fuera de tolerancia." },
       { label: "Buckets", href: "/es/documentacion/buckets", why: "Guarda OC y facturas en la misma estructura, así la conciliación a nivel de encabezado es una consulta por número de OC." },
       { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Solo las facturas marcadas se detienen para un revisor con nombre, con una bitácora de auditoría de solo anexar que registra quién aprobó qué." },
@@ -562,7 +562,7 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/es/documentacion/collections", why: "La evidencia mezclada que llega a un solo lugar se clasifica y se envía al Flow correcto antes de cualquier verificación." },
+      { label: "Collections", href: "/es/documentacion/colecciones", why: "La evidencia mezclada que llega a un solo lugar se clasifica y se envía al Flow correcto antes de cualquier verificación." },
       { label: "Flows", href: "/es/documentacion/flows", why: "Cada tipo de documento tiene su propio Flow, así una regla puede referirse a un campo con nombre en lugar de buscar en texto libre." },
       { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Un revisor firma la inspección, y la bitácora de solo anexar registra quién aceptó cada hallazgo." },
       { label: "Buckets", href: "/es/documentacion/buckets", why: "Los resultados a lo largo del tiempo se vuelven reportables — cuántos juegos fallaron, en qué regla, en qué mes." },
@@ -611,7 +611,7 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/es/documentacion/collections", why: "Clasifica cada adjunto — formulario, cotización, factura, informe — y lo enruta al Flow construido para él." },
+      { label: "Collections", href: "/es/documentacion/colecciones", why: "Clasifica cada adjunto — formulario, cotización, factura, informe — y lo enruta al Flow construido para él." },
       { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Los reclamos llegan por correo; reenviarlos a la dirección de una Collection procesa cada adjunto en cuanto llega." },
       { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Normaliza fechas y monedas, y calcula la diferencia entre el monto reclamado y el evidenciado." },
       { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Los analistas aprueban o rechazan con un registro permanente de la decisión y de quién la tomó." },
@@ -660,7 +660,7 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/es/documentacion/collections", why: "Clasifica lo que el cliente haya enviado — pasaporte, recibo de servicios, certificado de constitución — y envía cada documento al Flow correcto." },
+      { label: "Collections", href: "/es/documentacion/colecciones", why: "Clasifica lo que el cliente haya enviado — pasaporte, recibo de servicios, certificado de constitución — y envía cada documento al Flow correcto." },
       { label: "Flows", href: "/es/documentacion/flows", why: "Un Flow por tipo de documento, para que una verificación pueda referirse a un campo con nombre en lugar de buscar en el texto." },
       { label: "Revisión humana", href: "/es/documentacion/revision-humana", why: "Aprobación en cada onboarding, con un registro permanente de quién aprobó qué documento." },
       { label: "Roles de usuario", href: "/es/documentacion/roles-de-usuario", why: "Restringe los documentos de identidad al equipo que los necesita, en lugar de a toda la organización." },
@@ -807,7 +807,7 @@ export const USE_CASES_ES: UseCaseEs[] = [
       },
     ],
     pipeline: [
-      { label: "Collections", href: "/es/documentacion/collections", why: "Las facturas de distintos servicios y proveedores llegan juntas y se envían automáticamente al Flow correcto." },
+      { label: "Collections", href: "/es/documentacion/colecciones", why: "Las facturas de distintos servicios y proveedores llegan juntas y se envían automáticamente al Flow correcto." },
       { label: "Cleaners", href: "/es/documentacion/cleaners", why: "Convierte las unidades a una sola base de reporte y calcula el consumo prorrateado por período." },
       { label: "Buckets", href: "/es/documentacion/buckets", why: "Consumo por sitio y período como una tabla graficable — el formato que necesitan tanto finanzas como el reporte ESG." },
       { label: "Correo electrónico", href: "/es/documentacion/integracion-por-correo", why: "Los proveedores envían las facturas por correo; reenviarlas construye el conjunto de datos sin un proyecto de digitación." },

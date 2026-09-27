@@ -6,12 +6,15 @@ import {
   Coins,
   Compass,
   FilePlus,
+  FlaskConical,
   Info,
   Map,
+  Rocket,
   Sparkles,
   Table2,
 } from "lucide-react";
 import {
+  BulletList,
   DataTable,
   DocCard,
   DocLink,
@@ -28,27 +31,27 @@ export const metadata = docMetadata("getting-started");
 const HOW_TO = {
   name: "Extract structured data from a document with Tavnit",
   description:
-    "Create a Tavnit flow that defines the fields you want, upload a document, and get structured rows back — no templates and no code.",
+    "Create a Tavnit flow from a template, from a sample document or from scratch, check its fields, process a document and read the structured result — no templates to draw and no code.",
   steps: [
     {
-      name: "Create a flow",
-      text: "On the Flows page, create a new flow and give it a name that describes the document type it will handle.",
+      name: "Open the create dialog",
+      text: "On the Flows page, click Create Flow.",
     },
     {
-      name: "Define the fields",
-      text: "Upload a sample document so Tavnit can suggest fields, then add, rename or remove them until the schema matches what you actually need.",
+      name: "Pick a starting point",
+      text: "Choose From a template (a Tavnit template or a copy of one of your flows), AI suggestion (upload a sample PDF or image and the AI drafts the fields), or Start from scratch.",
     },
     {
-      name: "Activate the flow",
-      text: "Switch the flow to Active so it can accept documents.",
+      name: "Name and describe the flow",
+      text: "Give the flow a name of at least 3 characters and a description of at least 10 that says which documents it handles.",
+    },
+    {
+      name: "Review the data schema",
+      text: "In the builder, add, edit or delete fields until the schema is exactly what you need. A new flow is already Active.",
     },
     {
       name: "Process a document",
-      text: "Upload a document in the app, email it to the flow's address, or post it to the API. A run appears on the Runs page.",
-    },
-    {
-      name: "Read the result",
-      text: "Open the run to see the extracted metadata fields and table rows next to the source document.",
+      text: "Click Run, upload one real document and check the result.",
     },
   ],
 };
@@ -75,107 +78,236 @@ export default function Page() {
         <DocCard icon={<Sparkles size={24} />} title="What Tavnit does">
           <Lead>
             Tavnit reads documents and gives you structured data back. You describe the fields you
-            want once, send it invoices, receipts, purchase orders or forms, and get typed rows out —
-            without building a template per layout or writing any parsing code.
+            want once, send it invoices, receipts, purchase orders, statements, spreadsheets or
+            forms, and get typed rows out — without building a template per layout or writing any
+            parsing code.
           </Lead>
           <p>
-            Extraction is the starting point rather than the whole product. Once the data exists, it
-            can be normalised, checked by a person, stored, delivered to your systems, or handed to
-            an agent that acts on it. The rest of these docs cover those stages; this page covers the
-            first one.
+            Extraction is the starting point rather than the whole product. Around it, Tavnit can
+            sort and split incoming files, clean and enrich the rows, compare and check documents
+            against each other, fill forms, pause for a person to review, store results in tables,
+            deliver them to your systems, and hand them to a browser agent that acts on them. This
+            page gives you the map and walks you through your first document.
           </p>
+          <InfoBox color="violet" icon={<FlaskConical size={20} />} title="Some areas are in Beta">
+            Pipelines, Subjects, Matchers, Inspectors, Fillers, Signals and Nets carry a{" "}
+            <strong>Beta</strong> label in the app. You can use them today, but their screens and
+            options may still change.
+          </InfoBox>
         </DocCard>
 
-        <DocCard icon={<Compass size={24} />} title="The vocabulary">
+        <DocCard icon={<Compass size={24} />} title="A map of Tavnit">
           <Lead>
-            Six words cover almost everything in Tavnit. Learn what each one owns and the rest of the
-            documentation reads much faster — most confusion comes from mixing up flows, Collections
-            and Splitters, which do three different jobs.
+            The app&apos;s sidebar groups every area by the job it does, from getting documents in to
+            acting on the data. The docs follow the same groups, so this table doubles as a table of
+            contents.
           </Lead>
           <DataTable
-            head={["Term", "What it is", "Read more"]}
+            head={["Group", "Area", "What it does"]}
             rows={[
               [
-                "Flow",
-                "The schema for one document type: the fields you want extracted, plus the rules and outputs attached to it. Everything starts here.",
-                <Fragment key="f0">
-                  <DocLink href="/docs/flows">Flows</DocLink>
-                </Fragment>,
-              ],
-              [
-                "Run",
-                "One document processed by one flow. Runs hold the extracted result and the log of what happened.",
-                "This page",
-              ],
-              [
-                "Collection",
-                "Groups several flows so incoming documents of unknown type are classified and routed to the right one.",
-                <Fragment key="f1">
+                "Input",
+                <Fragment key="m0">
                   <DocLink href="/docs/collections">Collections</DocLink>
                 </Fragment>,
+                "One inbox or endpoint for mixed documents: each one is classified and routed to the right flow.",
               ],
               [
-                "Splitter",
-                "Breaks one file that holds several documents into separate parts, then sends each part onward.",
-                <Fragment key="f2">
+                "Input",
+                <Fragment key="m1">
+                  <DocLink href="/docs/subjects">Subjects</DocLink>
+                </Fragment>,
+                "Model an entity such as a purchase or a patient, and gather its documents into cases by reference.",
+              ],
+              [
+                "Input",
+                <Fragment key="m2">
                   <DocLink href="/docs/splitters">Splitters</DocLink>
                 </Fragment>,
+                "Cut one file that holds several documents into separate documents and send each one onward.",
               ],
               [
-                "Cleaner",
-                "Rules applied to extracted rows: reformat, convert, compute, look up, and trigger actions when something looks wrong.",
-                <Fragment key="f3">
+                "Processing",
+                <Fragment key="m3">
+                  <DocLink href="/docs/flows">Flows</DocLink>
+                </Fragment>,
+                "The schema for one document type: the fields to extract and everything attached to them. Everything starts here.",
+              ],
+              [
+                "Processing",
+                <Fragment key="m4">
                   <DocLink href="/docs/cleaners">Cleaners</DocLink>
                 </Fragment>,
+                "Reformat, convert, compute, look up and validate extracted rows, and trigger actions when something looks wrong.",
               ],
               [
-                "Bucket",
-                "A structured table where results accumulate across runs, queryable and chartable inside Tavnit.",
-                <Fragment key="f4">
+                "Processing",
+                <Fragment key="m5">
+                  <DocLink href="/docs/agents">Agents</DocLink>
+                </Fragment>,
+                "Browser agents that carry out a plain-language mission on a website, often using extracted data as input.",
+              ],
+              [
+                "Intelligence",
+                <Fragment key="m6">
+                  <DocLink href="/docs/matchers">Matchers</DocLink>
+                </Fragment>,
+                "Compare records line by line across documents — quotes against each other, an invoice against its order.",
+              ],
+              [
+                "Intelligence",
+                <Fragment key="m7">
+                  <DocLink href="/docs/inspectors">Inspectors</DocLink>
+                </Fragment>,
+                "Run a checklist over a set of related documents and get a pass or fail verdict.",
+              ],
+              [
+                "Intelligence",
+                <Fragment key="m8">
+                  <DocLink href="/docs/fillers">Fillers</DocLink>
+                </Fragment>,
+                "Fill PDF form templates with data extracted from your documents.",
+              ],
+              [
+                "Orchestration",
+                <Fragment key="m9">
+                  <DocLink href="/docs/pipelines">Pipelines</DocLink>
+                </Fragment>,
+                "Chain steps end to end on a visual canvas.",
+              ],
+              [
+                "Orchestration",
+                <Fragment key="m10">
+                  <DocLink href="/docs/pipeline-map">Pipeline Map</DocLink>
+                </Fragment>,
+                "One picture of how documents move through your organization.",
+              ],
+              [
+                "Data & activity",
+                <Fragment key="m11">
                   <DocLink href="/docs/buckets">Buckets</DocLink>
                 </Fragment>,
+                "Tables where results accumulate across runs, ready to query, chart and export.",
+              ],
+              [
+                "Data & activity",
+                <Fragment key="m12">
+                  <DocLink href="/docs/flows#runs">Runs</DocLink>
+                </Fragment>,
+                "The history of every processed document, with its result, source file and log.",
+              ],
+              [
+                "Data & activity",
+                <Fragment key="m13">
+                  <DocLink href="/docs/human-in-the-loop">Human in the Loop</DocLink>
+                </Fragment>,
+                "A review queue where a person approves, edits or rejects results before they are delivered.",
+              ],
+              [
+                "Audio",
+                <Fragment key="m14">
+                  <DocLink href="/docs/signals">Signals</DocLink>
+                </Fragment>,
+                "Turn recorded conversations into structured rows.",
+              ],
+              [
+                "Social",
+                <Fragment key="m15">
+                  <DocLink href="/docs/nets">Nets</DocLink>
+                </Fragment>,
+                "Turn social media posts into structured rows and trends.",
               ],
             ]}
           />
+          <InfoBox color="blue" icon={<Info size={20} />} title="Not seeing Agents, Signals or Nets?">
+            These three areas are switched on per organization. If they are missing from your
+            sidebar, contact the Tavnit team to have them enabled.
+          </InfoBox>
           <InfoBox color="violet" icon={<Info size={20} />} title="Which one sorts my documents?">
             If each file holds one document but you do not know its type, use a{" "}
             <DocLink href="/docs/collections">Collection</DocLink>. If one file holds several
-            documents, use a <DocLink href="/docs/splitters">Splitter</DocLink>. If you already know
-            what the document is, send it straight to the flow and skip both.
+            documents, use a <DocLink href="/docs/splitters">Splitter</DocLink>. If documents belong
+            together — the same purchase, the same patient — use a{" "}
+            <DocLink href="/docs/subjects">Subject</DocLink>. If you already know what the document
+            is, send it straight to the flow and skip all three.
           </InfoBox>
+        </DocCard>
+
+        <DocCard icon={<Rocket size={24} />} title="Your first minutes">
+          <Lead>
+            A new organization starts with a short setup path, so you rarely face an empty screen.
+          </Lead>
+          <BulletList
+            items={[
+              <Fragment key="o0">
+                <strong>Welcome questions.</strong> After you create your organization, Tavnit asks
+                four quick questions: what documents you will process, what you want to accomplish,
+                how your documents arrive today and roughly how many you handle a month. They take
+                about 30 seconds, and you can <strong>Skip</strong> them.
+              </Fragment>,
+              <Fragment key="o1">
+                <strong>One-click starter flows.</strong> If you answered, the empty Flows page
+                offers the templates that match your documents under{" "}
+                <em>“Based on your answers, we can set these up for you”</em>. Click{" "}
+                <strong>Create these flows</strong> and they are created for you, ready to edit.
+              </Fragment>,
+              <Fragment key="o2">
+                <strong>Starter templates.</strong> Tavnit ships ready-made flows for invoices,
+                purchase orders, receipts, bank statements, delivery notes, lab results, contracts,
+                quotes, credit notes, ID documents and resumes. Templates that match your answers
+                are shown first.
+              </Fragment>,
+              <Fragment key="o3">
+                <strong>The getting-started guide.</strong> A small panel in the corner of the app
+                with three tabs: <strong>Checklist</strong> (setup steps that tick themselves off as
+                you complete them), <strong>This screen</strong> (tips for the page you are on) and{" "}
+                <strong>Features</strong> (every area available to you). If you hide it, reopen it
+                from the <strong>Help &amp; Support</strong> menu.
+              </Fragment>,
+            ]}
+          />
         </DocCard>
 
         <DocCard icon={<FilePlus size={24} />} title="Step 1: create a flow">
           <Lead>
             A flow is the schema for one document type. Name it after the document rather than the
-            project — <em>Supplier invoices</em>, not <em>Q1 automation</em> — because that name and
-            description are what a Collection later uses to route documents to it.
+            project — <em>Supplier invoices</em>, not <em>Q1 automation</em> — because the name and
+            description are also what a Collection uses to route documents to it.
           </Lead>
           <NumberedList
             items={[
               <Fragment key="f5">
-                On the <strong>Flows</strong> page, create a new flow and name it.
+                On the <strong>Flows</strong> page, click <strong>Create Flow</strong>.
               </Fragment>,
               <Fragment key="f6">
-                Upload a sample document. Tavnit suggests the fields it can see, which is faster than
-                typing them from scratch.
+                Pick a starting point: <strong>From a template</strong> (a Tavnit template, or a copy
+                of one of your own flows under <strong>My flows</strong>),{" "}
+                <strong>AI suggestion</strong> (upload a sample PDF or image and the AI drafts the
+                fields), or <strong>Start from scratch</strong>.
               </Fragment>,
-              <Fragment key="f7">Add, rename or delete fields until the schema is exactly what you need.</Fragment>,
+              <Fragment key="f7">
+                Give the flow a name of at least 3 characters and a description of at least 10 that
+                says which documents it handles.
+              </Fragment>,
               <Fragment key="f8">
-                Switch the flow to <strong>Active</strong>.
+                In the builder, add, edit or delete fields until the schema is exactly what you
+                need. A new flow is already <strong>Active</strong>.
               </Fragment>,
-              <Fragment key="f9">Send one document through and check the result.</Fragment>,
+              <Fragment key="f9">
+                Click <strong>Run</strong>, upload one real document and check the result.
+              </Fragment>,
             ]}
           />
           <p>
-            <DocLink href="/docs/flows">Flows</DocLink> walks through each of these steps properly —
-            field kinds, data types and the hints that tell the AI where to look.
+            <DocLink href="/docs/flows">Flows</DocLink> covers each of these steps in depth — field
+            kinds, data types, the hints that tell the AI where to look, and the{" "}
+            <strong>Diagnose</strong> button that proposes fixes once a flow has real runs.
           </p>
-          <InfoBox color="blue" icon={<Info size={20} />} title="Write a description too">
-            The description is optional for extraction but load-bearing for routing. A flow with a
-            clear description can be dropped into a{" "}
-            <DocLink href="/docs/collections">Collection</DocLink> later; one called{" "}
-            <em>Flow 3</em> with no description cannot be routed to reliably.
+          <InfoBox color="blue" icon={<Info size={20} />} title="The description matters">
+            The description is required, and it earns its place twice: it helps the AI extract more
+            accurately, and it is what lets a{" "}
+            <DocLink href="/docs/collections">Collection</DocLink> route documents to the flow. A
+            vague description makes both worse.
           </InfoBox>
         </DocCard>
 
@@ -201,10 +333,11 @@ export default function Page() {
             ]}
           />
           <p>
-            Each field also has a type — text, number, date, mixed or image — and getting it right
-            matters more than it looks: a total typed as text will not sum, compare or chart.{" "}
-            <DocLink href="/docs/flows">Flows</DocLink> covers the full schema in depth, including
-            extraction hints, composite fields and how to fix a field that comes back wrong.
+            Each field also has a data type — Text, Number, Date, Mixed/Alphanumeric or Image — and
+            getting it right matters more than it looks: a total typed as text will not sum, compare
+            or chart. A flow with only metadata fields returns a single row per document.{" "}
+            <DocLink href="/docs/flows">Flows</DocLink> covers the full schema, including extraction
+            hints, composite fields and how to fix a field that comes back wrong.
           </p>
         </DocCard>
 
@@ -216,13 +349,17 @@ export default function Page() {
           <DataTable
             head={["Route", "Good for", "Setup"]}
             rows={[
-              ["Upload in the app", "Testing, and one-off documents", "Nothing"],
+              [
+                "Upload in the app",
+                "Testing, and one-off documents",
+                "Nothing. Select several files at once and each becomes its own run",
+              ],
               [
                 <Fragment key="f10">
                   <DocLink href="/docs/email-integration">Email</DocLink>
                 </Fragment>,
                 "Documents that already arrive in an inbox",
-                "Enable the trigger, forward mail to the address",
+                "Turn on the flow's Email Trigger and forward mail to its address",
               ],
               [
                 <Fragment key="f11">
@@ -236,10 +373,15 @@ export default function Page() {
                   <DocLink href="/docs/mcp-connector">MCP connector</DocLink>
                 </Fragment>,
                 "Ad-hoc work from an AI assistant",
-                "Generate a connector URL",
+                "Enabled per organization on request, then a connector URL from Integrations",
               ],
             ]}
           />
+          <p>
+            Flows accept PDFs, images (PNG, JPG, JPEG and JFIF) and spreadsheets (XLSX, XLS and CSV).
+            For a spreadsheet, the flow reads the first visible sheet. Scanned documents are detected
+            and read with OCR automatically.
+          </p>
           <Screenshot
             src="/assets/tour2-runs.jpg"
             alt="The Tavnit Runs page listing processed documents, each with its flow, who triggered it, its source and its status, above summary tiles for completed runs, running runs, credits used and total runs."
@@ -254,51 +396,29 @@ export default function Page() {
 
         <DocCard icon={<Coins size={24} />} title="What things cost">
           <Lead>
-            Tavnit bills in credits. Extraction is charged per page, so a ten-page PDF costs ten
-            credits whether it produces one row or two hundred. The other operations have their own
-            rates.
+            Tavnit bills in credits from one balance per organization. Extraction is charged per
+            page, so a ten-page PDF costs ten credits whether it produces one row or two hundred.
+            Every other feature has its own rate.
           </Lead>
-          <DataTable
-            head={["Operation", "Cost"]}
-            rows={[
-              ["Extracting a document", "1 credit per page"],
-              [
-                <Fragment key="f13">
-                  <DocLink href="/docs/collections">Collection</DocLink> routing
-                </Fragment>,
-                "1 credit per document, charged whether or not a match is found",
-              ],
-              [
-                <Fragment key="f14">
-                  <DocLink href="/docs/splitters">Splitting</DocLink> a bundle
-                </Fragment>,
-                "1 credit per page of the source file",
-              ],
-              [
-                <Fragment key="f15">
-                  <DocLink href="/docs/cleaners">Cleaning</DocLink> a sweep
-                </Fragment>,
-                "1 credit per 500 non-empty cells, rounded up",
-              ],
-              [
-                <Fragment key="f16">
-                  <DocLink href="/docs/agents">Agent</DocLink> runtime
-                </Fragment>,
-                "3 credits per minute of browser time, rounded up, charged even if the run fails",
-              ],
+          <BulletList
+            items={[
+              "Extraction: 1 credit per page. A spreadsheet is charged by its page equivalent.",
+              "Routing, splitting, cleaning, agents, matching and the other features each have their own rate, listed on the Credits page.",
+              "Steps stack: a document that is split, routed and then extracted pays for all three, so sending a document straight to its flow is the cheaper habit when you know its type.",
+              "Drafting a flow with AI suggestion and running Diagnose on a flow are free.",
+              "A run needs a positive credit balance to start. Credits already used are not refunded when a run is cancelled or fails.",
             ]}
           />
-          <InfoBox color="yellow" icon={<Info size={20} />} title="Chained steps stack">
-            A document that is split, routed by a Collection and then extracted pays for all three.
-            That is usually still worth it, but it is why sending a document straight to the flow —
-            when you already know its type — is the cheaper habit.
-          </InfoBox>
+          <p>
+            See <DocLink href="/docs/credits">Credits &amp; Billing</DocLink> for the full price
+            list. To add credits to your organization, contact the Tavnit team.
+          </p>
         </DocCard>
 
         <DocCard icon={<Map size={24} />} title="Where to go next">
           <Lead>
             Once extraction works, the next step depends on what is wrong with the data or what you
-            need to do with it. These are the three most common directions.
+            need to do with it.
           </Lead>
           <DataTable
             head={["If you need to…", "Read"]}
@@ -335,6 +455,19 @@ export default function Page() {
                 </Fragment>,
               ],
               [
+                "Compare documents, or check them against a list of rules",
+                <Fragment key="f24">
+                  <DocLink href="/docs/matchers">Matchers</DocLink> and{" "}
+                  <DocLink href="/docs/inspectors">Inspectors</DocLink>
+                </Fragment>,
+              ],
+              [
+                "Connect several steps into one process",
+                <Fragment key="f25">
+                  <DocLink href="/docs/pipelines">Pipelines</DocLink>
+                </Fragment>,
+              ],
+              [
                 "Act on the data somewhere else on the web",
                 <Fragment key="f22">
                   <DocLink href="/docs/agents">Agents</DocLink>
@@ -356,19 +489,18 @@ export default function Page() {
               href: "/docs/flows",
               label: "Build a flow's data schema in depth",
               description:
-                "Field kinds, data types, extraction hints, composite fields, and everything you can attach to a flow.",
+                "Field kinds, data types, extraction hints, composite fields, runs and everything you can attach to a flow.",
+            },
+            {
+              href: "/docs/credits",
+              label: "See what each feature costs",
+              description: "Credit rates for every step, and when you are charged.",
             },
             {
               href: "/docs/api-integration",
               label: "Process documents with the Tavnit REST API",
               description:
                 "Multipart and base64 upload, API-key auth, Python and JavaScript examples, plus no-code recipes.",
-            },
-            {
-              href: "/docs/cleaners",
-              label: "Clean and enrich extracted data",
-              description:
-                "The field types that reformat, convert, compute and validate what a flow extracted.",
             },
             {
               href: "/docs/email-integration",

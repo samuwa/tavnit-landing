@@ -1,13 +1,14 @@
 import { Fraunces } from "next/font/google";
 
 /**
- * The display serif behind the brand's second voice ("Lite", "Admin",
- * "Docs"): Fraunces italic, only for the mark next to the logo.
+ * The display serif of the docs, as on Tavnit Lite: upright for page and
+ * section titles, italic for the "Docs" mark beside the logo and the step
+ * numerals.
  */
 export const docsDisplay = Fraunces({
   subsets: ["latin"],
   weight: ["500"],
-  style: ["italic"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });

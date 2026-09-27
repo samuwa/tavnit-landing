@@ -12,10 +12,32 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        // The Spanish docs follow the app's Spanish names (Colecciones,
+        // Agentes); these two lived under the English words for a day.
+        source: "/es/documentacion/collections",
+        destination: "/es/documentacion/colecciones",
+        permanent: true,
+      },
+      {
+        source: "/es/documentacion/agents",
+        destination: "/es/documentacion/agentes",
+        permanent: true,
+      },
     ];
   },
   async headers() {
+    // The docs are embedded by the app (app.tavnit.io/docs, see
+    // components/docs/embed.ts). Only the app and this site may frame them;
+    // localhost covers the app's dev server.
+    const docsFrame = [
+      { key: "Content-Security-Policy", value: "frame-ancestors 'self' https://app.tavnit.io http://localhost:*" },
+    ];
     return [
+      { source: "/docs", headers: docsFrame },
+      { source: "/docs/:path*", headers: docsFrame },
+      { source: "/es/documentacion", headers: docsFrame },
+      { source: "/es/documentacion/:path*", headers: docsFrame },
       {
         // The Vercel preview/production alias (tavnit-landing.vercel.app)
         // serves the whole site with a 200 and is crawlable. Every page

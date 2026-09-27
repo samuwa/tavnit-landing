@@ -1589,3 +1589,60 @@ html:has(#hero) section[id] {
 [data-theme="light"] .docs-mark {
   background-image: linear-gradient(100deg, #3b82f6 0%, #6c42f0 85%);
 }
+
+/* Docs embedded in the app (components/docs/embed.ts): no site header, the
+   sidebar and content start at the top, and a small menu button stands in
+   for the header's hamburger on narrow screens. */
+[data-docs-embed] .docs-header { display: none; }
+[data-docs-embed] .docs-sidebar { top: 0; }
+[data-docs-embed] .docs-main { padding-top: 0; }
+@media (max-width: 1023px) {
+  [data-docs-embed] .docs-embed-menu { display: block; }
+  [data-docs-embed] .docs-main { padding-top: 3rem; }
+}
+
+/* ─── Docs design (Tavnit Lite language) ───────────────────────────────
+   Paper and ink on the light theme, the site's night palette on the dark
+   one; titles in Fraunces (--font-display, loaded by DocsShell); white
+   sheets with a soft shadow instead of glass. */
+.docs-display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+/* Page titles: every docs page renders its <h1> with the old gradient
+   utilities; the docs restyle them here in one place. */
+.docs-main h1 {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  font-size: clamp(2.25rem, 1.6rem + 2.2vw, 3.1rem);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--fg);
+}
+.docs-canvas {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(1200px 420px at 70% -120px, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    linear-gradient(to right, var(--tint-04) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--tint-04) 1px, transparent 1px);
+  background-size: auto, 48px 48px, 48px 48px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 55%, rgba(0,0,0,0.35) 100%);
+          mask-image: linear-gradient(to bottom, #000 0, #000 55%, rgba(0,0,0,0.35) 100%);
+}
+[data-theme="light"] .docs-canvas {
+  background-image:
+    radial-gradient(1100px 380px at 70% -140px, rgba(59, 130, 246, 0.09), transparent 70%),
+    linear-gradient(to right, rgba(28, 35, 33, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(28, 35, 33, 0.045) 1px, transparent 1px);
+}
+.docs-sheet { box-shadow: 0 1px 0 var(--tint-04) inset, 0 18px 40px -30px rgba(0, 0, 0, 0.6); }
+[data-theme="light"] .docs-sheet {
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 1px 2px rgba(28, 35, 33, 0.06),
+    0 24px 48px -30px rgba(28, 35, 33, 0.3);
+}
+[data-docs-embed] .docs-embed-brand { display: flex; }

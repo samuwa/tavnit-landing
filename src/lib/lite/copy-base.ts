@@ -545,7 +545,7 @@ export const BASE_ES: ToolCopy = {
         title: "Un Agente entra al portal del proveedor",
         body: "Le escribes la misión en palabras, con una URL de inicio y las credenciales en una bóveda que el modelo nunca ve. Al terminar la extracción, el Agente arranca solo con los campos del documento y trae lo que pides con tipos: precio, plazo, archivos.",
         linkLabel: "Agentes",
-        href: "/es/documentacion/agents",
+        href: "/es/documentacion/agentes",
         scene: [{ label: "Termina la extracción" }, { label: "El Agente navega el portal" }, { label: "Trae los datos, con tipos", result: "precio 18.50 · plazo 5 días" }],
       },
       {

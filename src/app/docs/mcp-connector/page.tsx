@@ -4,6 +4,7 @@ import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   AlertTriangle,
+  Coins,
   Info,
   KeyRound,
   LifeBuoy,
@@ -35,27 +36,27 @@ export const metadata = docMetadata("mcp-connector");
 const HOW_TO = {
   name: "Connect Tavnit to claude.ai with the MCP connector",
   description:
-    "Generate a Tavnit connector URL on the Integrations page and add it to claude.ai as a custom connector, so your assistant can run documents through your flows and query your Buckets.",
+    "Generate a Tavnit connector URL on the Integrations page and add it to claude.ai as a custom connector, so your assistant can work with your Tavnit data.",
   steps: [
     {
       name: "Open Integrations in Tavnit",
-      text: "Sign in to the Tavnit app and open Integrations from the sidebar. Confirm you are in the organization whose data you want the assistant to reach.",
+      text: "Sign in to the Tavnit app and open Integrations from the sidebar. Check that you are in the organization whose data the assistant should reach.",
     },
     {
       name: "Generate the connector URL",
-      text: "Find the Custom Connector card and select Generate connector URL. Tavnit issues a URL from your own API key and shows when it was created and when it expires.",
+      text: "In the Custom Connector card, select Generate connector URL. Tavnit issues the URL from your API key and shows when it was created and when it expires.",
     },
     {
       name: "Copy the URL",
-      text: "Copy the connector URL to your clipboard. Treat it as a credential — anyone holding it can reach your organization's flows and Buckets.",
+      text: "Copy the connector URL with the copy button. Treat it like a password.",
     },
     {
       name: "Add it as a custom connector in claude.ai",
-      text: "In claude.ai go to Settings, then Connectors, then Add custom connector, and paste the URL. A Claude Pro plan or above is required.",
+      text: "In claude.ai go to Settings, then Connectors, then Add custom connector, and paste the URL. Custom connectors need a Claude Pro plan or above.",
     },
     {
       name: "Confirm the connection",
-      text: "Start a new chat and ask the assistant to list your flows. If it answers with your flow names, the connector is live.",
+      text: "Start a new chat and ask the assistant which Tavnit tools it has. If it lists them, the connector is live.",
     },
   ],
 };
@@ -72,16 +73,15 @@ export default function Page() {
         <DocCard icon={<Plug size={24} />} title="What the MCP connector does">
           <Lead>
             The MCP connector adds your Tavnit organization as a tool inside an AI assistant. Once
-            it is connected, you can ask the assistant to run a document through one of your flows
-            or answer questions from a Bucket, and it works against your live Tavnit data instead of
-            guessing.
+            it is connected, you can ask the assistant about your Tavnit data in plain language and
+            it answers from your live account instead of guessing.
           </Lead>
           <p>
             MCP (Model Context Protocol) is the open standard that lets AI assistants call external
-            tools. Tavnit exposes an MCP endpoint, and the connector URL is the credential that
-            points a client at your organization. It works with <strong>claude.ai</strong> (Pro and
-            above), <strong>Cursor</strong>, and any other client that accepts a remote MCP server
-            URL.
+            tools. Tavnit runs an MCP server at <InlineCode>mcp.tavnit.io</InlineCode>, and the
+            connector URL is the credential that points a client at your organization. It works with{" "}
+            <strong>claude.ai</strong> (Pro and above), <strong>Cursor</strong>, and any other client
+            that accepts a remote MCP server URL.
           </p>
           <p>
             For what the connector is for, and how it compares to pasting a file into a chat, see
@@ -91,19 +91,18 @@ export default function Page() {
             </Link>
             .
           </p>
-          <InfoBox color="blue" icon={<Info size={20} />} title="Setup, not evaluation">
-            This page covers connecting an assistant you already have to a Tavnit account you
-            already have. It assumes you know what your flows and Buckets are for — if you are still
-            setting those up, start with the extraction basics and come back.
+          <InfoBox color="blue" icon={<Info size={20} />} title="Enabled on request">
+            The connector is turned on per organization. If you don&apos;t see the Custom Connector
+            card on the Integrations page, contact support to have it enabled for your
+            organization.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<KeyRound size={24} />} title="Before you start">
           <Lead>
-            You need three things: a Tavnit organization with the connector enabled, a personal API
-            key, and an MCP client. The connector is issued from your own key, so it can only reach
-            the organization you were signed in to when you generated it, with your role&apos;s
-            permissions.
+            You need three things: an organization with the connector enabled, your API key, and an
+            MCP client. The connector is issued from your own key, so it reaches only the
+            organization you were in when you generated it, and the assistant acts with that key.
           </Lead>
           <DataTable
             head={["Requirement", "Where it comes from"]}
@@ -111,16 +110,16 @@ export default function Page() {
               [
                 "Custom Connector card",
                 <Fragment key="f0">
-                  Visible on the <strong>Integrations</strong> page. The connector is rolling out
-                  gradually — if the card is not there, ask support to enable it for your
-                  organization.
+                  On the <strong>Integrations</strong> page, only when the connector is enabled for
+                  your organization. Ask support if it is missing.
                 </Fragment>,
               ],
               [
-                "A Tavnit API key",
+                "Your API key",
                 <Fragment key="f1">
-                  Also on the Integrations page, one per member per organization. If it is missing,
-                  sign out and back in.
+                  The <strong>API Key</strong> card on the same page: one key per member per
+                  organization. If it says <em>No API key found. Please log in again.</em>, sign out
+                  and back in.
                 </Fragment>,
               ],
               [
@@ -131,12 +130,12 @@ export default function Page() {
                 </Fragment>,
               ],
               [
-                "A role that can act",
+                "Your role",
                 <Fragment key="f3">
-                  The assistant inherits your permissions. A Member cannot make the assistant do
-                  something a Member cannot do in the app — see{" "}
-                  <DocLink href="/docs/user-roles">user roles and permissions</DocLink>
-                  .
+                  The assistant uses your API key, so it can do only what your key can do. For
+                  example, a key of the <strong>HITL Only</strong> role is refused by processing
+                  requests. See <DocLink href="/docs/user-roles">user roles</DocLink> and{" "}
+                  <DocLink href="/docs/api-integration">the API page</DocLink>.
                 </Fragment>,
               ],
             ]}
@@ -145,15 +144,14 @@ export default function Page() {
 
         <DocCard icon={<Settings2 size={24} />} title="Connect claude.ai">
           <Lead>
-            Generate the URL in Tavnit, then paste it into claude.ai as a custom connector. The
-            whole setup is five steps and takes about a minute; there is nothing to install and no
-            configuration file to edit.
+            Generate the URL in Tavnit, then paste it into claude.ai as a custom connector. There is
+            nothing to install and no configuration file to edit.
           </Lead>
           <NumberedList
             items={[
               <Fragment key="f4">
                 Open <strong>Integrations</strong> in the Tavnit sidebar. Check the organization
-                switcher first — the connector is bound to whichever organization you are in.
+                switcher first: the connector is bound to whichever organization you are in.
               </Fragment>,
               <Fragment key="f5">
                 In the <strong>Custom Connector</strong> card, select{" "}
@@ -165,8 +163,8 @@ export default function Page() {
                 paste the URL.
               </Fragment>,
               <Fragment key="f8">
-                Open a new chat and ask it to list your flows. Getting your real flow names back
-                confirms the connection.
+                Open a new chat and ask the assistant which Tavnit tools it has. If it lists them, the
+                connector is live.
               </Fragment>,
             ]}
           />
@@ -174,9 +172,9 @@ export default function Page() {
 
         <DocCard icon={<Settings2 size={24} />} title="Connect Cursor or another MCP client">
           <Lead>
-            Any client that supports remote MCP servers takes the same URL. In Cursor, add it as a
-            remote MCP server rather than a command-based one — there is no local process to run,
-            because the connector points at a hosted endpoint.
+            Any client that supports remote MCP servers takes the same URL. Add it as a remote (URL)
+            server, not a command-based one: there is no local process to run, because the connector
+            points at a hosted server.
           </Lead>
           <NumberedList
             items={[
@@ -186,70 +184,54 @@ export default function Page() {
                 <strong>remote</strong> / URL type.
               </Fragment>,
               <Fragment key="f10">
-                Paste the connector URL as the server URL. No separate API key field is needed — the
+                Paste the connector URL as the server URL. No separate API key field is needed: the
                 URL already carries the credential.
               </Fragment>,
               "Reload the client and check that Tavnit appears in its tool list.",
             ]}
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="One URL, several clients">
-            The same connector URL can be pasted into more than one client. They all act as the same
-            member in the same organization, so a refresh disconnects all of them at once.
+            You have one connector URL at a time, and you can paste it into more than one client.
+            They all act as you in the same organization, so a refresh disconnects all of them at
+            once.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<Sparkles size={24} />} title="What your assistant can do">
           <Lead>
-            The connector exposes two capabilities: running documents through your flows, and
-            reading the data you have already extracted. Everything else — building flows, editing
-            Cleaners, managing the team — stays in the app.
+            Through the connector, the assistant works with your organization&apos;s Tavnit data
+            using your API key. Building and configuring flows, Cleaners, pipelines and your team
+            stays in the app.
           </Lead>
-          <BulletList
-            items={[
-              <Fragment key="f11">
-                <strong>Process documents through your flows</strong> and get the structured result
-                back in the conversation.
-              </Fragment>,
-              <Fragment key="f12">
-                <strong>Read and search your Buckets</strong> — ask questions about data you have
-                already extracted, without exporting it first.
-              </Fragment>,
-            ]}
-          />
-          <p className="pt-1">Prompts that work well:</p>
-          <DataTable
-            head={["Ask this", "What happens"]}
-            rows={[
-              [
-                <Fragment key="f13"><em>&ldquo;Run this invoice through my Supplier Invoices flow.&rdquo;</em></Fragment>,
-                "The attached document is processed by that flow and the extracted fields come back in the chat.",
-              ],
-              [
-                <Fragment key="f14"><em>&ldquo;What did we pay Acme Corp last month, from my Invoices bucket?&rdquo;</em></Fragment>,
-                "The assistant queries the Bucket and answers from the stored rows.",
-              ],
-              [
-                <Fragment key="f15"><em>&ldquo;Which flows do I have?&rdquo;</em></Fragment>,
-                "A quick connectivity check — a real list means the connector is working.",
-              ],
-            ]}
-          />
-          <InfoBox
-            color="yellow"
-            icon={<AlertTriangle size={20} />}
-            title="Runs through the connector still cost credits"
-          >
-            A document processed by the assistant is an ordinary flow run and is billed the same way
-            as one you upload yourself. If a flow has{" "}
-            <DocLink href="/docs/human-in-the-loop">human review</DocLink>{" "}
-            enabled, the run pauses for a reviewer instead of returning results immediately.
+          <p>
+            The tools the connector offers are listed by your MCP client, and the quickest way to see
+            them is to ask the assistant. Ask in plain language and name the flow, Bucket or run you
+            mean, the way it appears in the app.
+          </p>
+          <InfoBox color="blue" icon={<Info size={20} />} title="Your data, your organization">
+            The connector only reaches the organization it was generated in. To work with another
+            organization, switch to it in Tavnit and generate a URL there.
           </InfoBox>
+        </DocCard>
+
+        <DocCard icon={<Coins size={24} />} title="Credits">
+          <Lead>
+            Work done through the connector is billed like the same work done any other way: it
+            consumes your organization&apos;s credits normally.
+          </Lead>
+          <p>
+            Any run started through the connector is an ordinary run: it costs what the same run
+            costs from the app or the API, and if its flow has{" "}
+            <DocLink href="/docs/human-in-the-loop">human review</DocLink> enabled, it still pauses
+            for a reviewer. See <DocLink href="/docs/credits">Credits</DocLink> for what each
+            kind of work costs.
+          </p>
         </DocCard>
 
         <DocCard icon={<RefreshCw size={24} />} title="Expiry and refreshing">
           <Lead>
             Connector URLs are time-limited. The Custom Connector card shows when the URL was created
-            and when it expires, and warns you as the expiry approaches. Refreshing issues a new URL
+            and how long it has left, and warns you in its last 24 hours. Refreshing issues a new URL
             and invalidates the old one immediately.
           </Lead>
           <DataTable
@@ -257,12 +239,12 @@ export default function Page() {
             rows={[
               [
                 "Active",
-                "The URL plus a created date and a remaining-time label.",
+                <Fragment key="s0">The URL, <em>created …</em> and <em>expires in …d</em>.</Fragment>,
                 "Nothing.",
               ],
               [
-                "Expiring soon",
-                <Fragment key="f16">An amber notice: <em>Connector expires soon — refresh now to avoid disruption.</em></Fragment>,
+                "Expiring soon (under 24 hours)",
+                <Fragment key="f16">The remaining time in hours or minutes, and an amber notice: <em>Connector expires soon — refresh now to avoid disruption.</em></Fragment>,
                 "Refresh, then paste the new URL into every client using it.",
               ],
               [
@@ -272,8 +254,12 @@ export default function Page() {
               ],
             ]}
           />
+          <p>
+            To refresh, select <strong>Refresh URL</strong> and confirm with{" "}
+            <strong>Refresh</strong> in the <em>Refresh connector URL?</em> dialog.
+          </p>
           <WarningBox>
-            Refreshing is not a rotation you can stage. The moment you confirm it, the previous URL
+            Refreshing is not a rotation you can stage. The moment you confirm, the previous URL
             stops working and every assistant holding it fails until you paste the new one. Refresh
             when you can update the clients straight away.
           </WarningBox>
@@ -281,16 +267,15 @@ export default function Page() {
 
         <DocCard icon={<AlertTriangle size={24} />} title="Treat the URL like a password">
           <Lead>
-            The connector URL is a bearer credential. Anyone who has it can reach your
-            organization&apos;s flows and Buckets as you, without signing in. It is safe to paste
-            into an MCP client&apos;s settings; it is not safe to share in a ticket, a chat message,
-            or a screenshot.
+            The connector URL is a credential. Anyone who has it can reach your organization&apos;s
+            data as you, without signing in. It is safe to paste into an MCP client&apos;s settings;
+            it is not safe to share in a ticket, a chat message or a screenshot.
           </Lead>
           <BulletList
             items={[
               "Do not commit it to a repository or paste it into a shared document.",
               "Blur or crop it out of any screenshot before sharing.",
-              "If it leaks, refresh immediately — that invalidates the exposed URL on the spot.",
+              "If it leaks, refresh it immediately: that invalidates the exposed URL on the spot.",
               "Regenerating your API key is a separate action on the same page; do that too if you think the key itself is exposed.",
             ]}
           />
@@ -299,20 +284,19 @@ export default function Page() {
         <DocCard icon={<LifeBuoy size={24} />} title="Troubleshooting">
           <Lead>
             Most connector problems are one of four things: the feature is not enabled, the session
-            has lapsed, the URL has expired, or the client is holding a URL that was replaced by a
-            refresh.
+            has lapsed, the URL has expired, or the client is holding a URL that a refresh replaced.
           </Lead>
           <DataTable
             head={["Symptom", "Cause", "Fix"]}
             rows={[
               [
                 "No Custom Connector card on Integrations",
-                "The connector is not enabled for your organization yet.",
+                "The connector is not enabled for your organization.",
                 "Contact support to have it turned on.",
               ],
               [
-                <Fragment key="f18"><InlineCode>Custom connectors require a valid Tavnit session</InlineCode></Fragment>,
-                "Your sign-in has lapsed, so Tavnit cannot issue a URL.",
+                <Fragment key="f18"><InlineCode>Custom connectors require a valid Tavnit session. Try signing out and back in.</InlineCode></Fragment>,
+                "Tavnit could not validate your key to issue or read the URL.",
                 "Sign out and back in, then generate the URL again.",
               ],
               [
@@ -327,8 +311,8 @@ export default function Page() {
               ],
               [
                 "The assistant cannot perform an action",
-                "Your role does not allow it.",
-                "The connector inherits your permissions — check your role before assuming a connector fault.",
+                "Your role or your credits do not allow it.",
+                "Check your role and your credit balance before assuming a connector fault.",
               ],
             ]}
           />
@@ -336,15 +320,15 @@ export default function Page() {
 
         <DocCard icon={<MessageSquare size={24} />} title="When to use the connector instead of the API">
           <Lead>
-            Use the connector for conversational, ad-hoc work — one-off documents, questions about
-            stored data, exploratory analysis. Use the REST API for anything scheduled, high-volume,
-            or embedded in another system, where you need explicit error handling and retries.
+            Use the connector for conversational, ad-hoc work: one-off questions, exploring stored
+            data, quick checks. Use the REST API for anything scheduled, high-volume or embedded in
+            another system, where you need explicit error handling and retries.
           </Lead>
           <DataTable
             head={["Situation", "Use"]}
             rows={[
               ["A colleague asks what a supplier billed last quarter", "MCP connector"],
-              ["One invoice landed in your inbox and you want it extracted now", "MCP connector"],
+              ["You want to explore your data in a chat", "MCP connector"],
               ["Every invoice from a vendor portal, nightly", "REST API or an email trigger"],
               ["Your own product needs the extracted data", "REST API plus webhooks"],
             ]}
@@ -355,27 +339,27 @@ export default function Page() {
           links={[
             {
               href: "/docs/api-integration",
-              label: "Process documents with the Tavnit REST API",
+              label: "Tavnit REST API reference",
               description:
-                "Multipart and base64 upload, API-key auth, Python and JavaScript examples.",
+                "Every endpoint, with API-key auth, request fields, responses and Python and JavaScript examples.",
             },
             {
               href: "/docs/buckets",
               label: "Store extracted data in Buckets",
               description:
-                "The structured tables the assistant reads when you ask it questions about your data.",
+                "The structured tables your extracted data lives in.",
             },
             {
               href: "/docs/user-roles",
               label: "User roles and permissions",
               description:
-                "What Owner, Admin and Member can each do — the same limits apply to the connector.",
+                "What Owner, Admin, Member and HITL Only can each do.",
             },
             {
-              href: "/docs/human-in-the-loop",
-              label: "Pause runs for human review",
+              href: "/docs/credits",
+              label: "How credits are charged",
               description:
-                "Why a run started by an assistant might wait for a reviewer instead of returning results.",
+                "Connector work consumes credits like any other run.",
             },
           ]}
         />

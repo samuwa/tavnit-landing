@@ -275,7 +275,7 @@ export default async function SpanishMcpIntegrationPage() {
           </p>
           <ul className="space-y-2.5 text-fg-4">
             {[
-              [<Link key="c" href="/es/documentacion/collections" className="text-accent hover:underline">Collections</Link>, "siguen clasificando cada documento entrante y enviándolo al Flow correcto."],
+              [<Link key="c" href="/es/documentacion/colecciones" className="text-accent hover:underline">Collections</Link>, "siguen clasificando cada documento entrante y enviándolo al Flow correcto."],
               [<Link key="cl" href="/es/documentacion/cleaners" className="text-accent hover:underline">Cleaners</Link>, "siguen estandarizando formatos, convirtiendo monedas y aplicando tus búsquedas."],
               [<Link key="h" href="/es/documentacion/revision-humana" className="text-accent hover:underline">Revisión humana</Link>, "sigue deteniendo un Run cuando lo pediste — un asistente no puede saltarse tu paso de aprobación."],
               [<Link key="b" href="/es/documentacion/buckets" className="text-accent hover:underline">Buckets</Link>, "siguen recibiendo los resultados, así que lo que el asistente extrae queda consultable después."],

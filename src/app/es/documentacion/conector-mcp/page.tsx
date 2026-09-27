@@ -4,6 +4,7 @@ import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   AlertTriangle,
+  Coins,
   Info,
   KeyRound,
   LifeBuoy,
@@ -35,27 +36,27 @@ export const metadata = docMetadata("mcp-connector", "es");
 const HOW_TO = {
   name: "Conecta Tavnit a claude.ai con el conector MCP",
   description:
-    "Genera una URL de conector de Tavnit en la página \"Integrations\" y agrégala a claude.ai como conector personalizado, para que tu asistente procese documentos con tus Flows y consulte tus Buckets.",
+    "Genera una URL de conector de Tavnit en la página Integraciones y agrégala a claude.ai como conector personalizado, para que tu asistente trabaje con tus datos de Tavnit.",
   steps: [
     {
-      name: "Abre \"Integrations\" en Tavnit",
-      text: "Inicia sesión en la app de Tavnit y abre \"Integrations\" desde la barra lateral. Confirma que estás en la organización cuyos datos quieres que el asistente consulte.",
+      name: "Abre Integraciones en Tavnit",
+      text: "Inicia sesión en la app de Tavnit y abre Integraciones desde la barra lateral. Confirma que estás en la organización cuyos datos debe consultar el asistente.",
     },
     {
       name: "Genera la URL del conector",
-      text: "Busca la tarjeta \"Custom Connector\" y selecciona \"Generate connector URL\". Tavnit emite una URL a partir de tu propia API key y muestra cuándo se creó y cuándo vence.",
+      text: "En la tarjeta Conector Personalizado, selecciona Generar URL del conector. Tavnit emite la URL a partir de tu API key y muestra cuándo se creó y cuándo vence.",
     },
     {
       name: "Copia la URL",
-      text: "Copia la URL del conector al portapapeles. Trátala como una credencial: cualquiera que la tenga puede acceder a los Flows y Buckets de tu organización.",
+      text: "Copia la URL del conector con el botón de copiar. Trátala como una contraseña.",
     },
     {
       name: "Agrégala como conector personalizado en claude.ai",
-      text: "En claude.ai ve a \"Settings\", luego a \"Connectors\" y luego a \"Add custom connector\", y pega la URL. Se requiere un plan Claude Pro o superior.",
+      text: "En claude.ai ve a Settings, luego a Connectors y luego a Add custom connector, y pega la URL. Los conectores personalizados requieren un plan Claude Pro o superior.",
     },
     {
       name: "Confirma la conexión",
-      text: "Inicia un chat nuevo y pídele al asistente que liste tus Flows. Si responde con los nombres de tus Flows, el conector está activo.",
+      text: "Inicia un chat nuevo y pregúntale al asistente qué herramientas de Tavnit tiene. Si te las enumera, el conector está activo.",
     },
   ],
 };
@@ -72,16 +73,17 @@ export default function Page() {
         <DocCard icon={<Plug size={24} />} title="Qué hace el conector MCP">
           <Lead>
             El conector MCP agrega tu organización de Tavnit como una herramienta dentro de un
-            asistente de IA. Una vez conectado, puedes pedirle al asistente que procese un documento
-            con uno de tus Flows o que responda preguntas a partir de un Bucket, y trabaja con tus
-            datos reales de Tavnit en lugar de adivinar.
+            asistente de IA. Una vez conectado, puedes preguntarle al asistente sobre tus datos de
+            Tavnit en lenguaje natural, y te responde a partir de tu cuenta real en lugar de
+            adivinar.
           </Lead>
           <p>
             MCP (Model Context Protocol) es el estándar abierto que permite a los asistentes de IA
-            usar herramientas externas. Tavnit expone un endpoint MCP, y la URL del conector es la
-            credencial que dirige a un cliente hacia tu organización. Funciona con{" "}
-            <strong>claude.ai</strong> (Pro o superior), <strong>Cursor</strong> y cualquier otro
-            cliente que acepte la URL de un servidor MCP remoto.
+            usar herramientas externas. Tavnit tiene un servidor MCP en{" "}
+            <InlineCode>mcp.tavnit.io</InlineCode>, y la URL del conector es la credencial que
+            dirige a un cliente hacia tu organización. Funciona con <strong>claude.ai</strong> (Pro
+            o superior), <strong>Cursor</strong> y cualquier otro cliente que acepte la URL de un
+            servidor MCP remoto.
           </p>
           <p>
             Para saber para qué sirve el conector y cómo se compara con pegar un archivo en un chat,
@@ -91,36 +93,35 @@ export default function Page() {
             </Link>
             .
           </p>
-          <InfoBox color="blue" icon={<Info size={20} />} title="Configuración, no evaluación">
-            Esta página explica cómo conectar un asistente que ya tienes a una cuenta de Tavnit que
-            ya tienes. Supone que sabes para qué sirven tus Flows y Buckets. Si todavía los estás
-            configurando, empieza por los conceptos básicos de extracción y vuelve después.
+          <InfoBox color="blue" icon={<Info size={20} />} title="Se habilita a pedido">
+            El conector se activa por organización. Si no ves la tarjeta Conector Personalizado en
+            la página Integraciones, contacta a soporte para que lo habiliten en tu organización.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<KeyRound size={24} />} title="Antes de empezar">
           <Lead>
-            Necesitas tres cosas: una organización de Tavnit con el conector habilitado, una API key
-            personal y un cliente MCP. El conector se emite a partir de tu propia key, así que solo
-            puede acceder a la organización en la que tenías la sesión iniciada al generarlo, con los
-            permisos de tu rol.
+            Necesitas tres cosas: una organización con el conector habilitado, tu API key y un
+            cliente MCP. El conector se emite a partir de tu propia key, así que solo llega a la
+            organización en la que estabas al generarlo, y el asistente actúa con esa key.
           </Lead>
           <DataTable
             head={["Requisito", "De dónde sale"]}
             rows={[
               [
-                "Tarjeta \"Custom Connector\"",
+                "Tarjeta “Conector Personalizado”",
                 <Fragment key="f0">
-                  Aparece en la página <strong>&ldquo;Integrations&rdquo;</strong>. El conector se
-                  está habilitando de forma gradual. Si no ves la tarjeta, pide a soporte que lo
-                  active para tu organización.
+                  En la página <strong>Integraciones</strong>, solo cuando el conector está
+                  habilitado para tu organización. Si no aparece, pídelo a soporte.
                 </Fragment>,
               ],
               [
-                "Una API key de Tavnit",
+                "Tu API key",
                 <Fragment key="f1">
-                  También en la página &ldquo;Integrations&rdquo;, una por miembro y por
-                  organización. Si no aparece, cierra sesión y vuelve a iniciarla.
+                  La tarjeta <strong>Clave API</strong> de la misma página: una key por miembro y por
+                  organización. Si dice{" "}
+                  <em>No se encontró clave API. Por favor inicia sesión nuevamente.</em>, cierra
+                  sesión y vuelve a iniciarla.
                 </Fragment>,
               ],
               [
@@ -131,12 +132,13 @@ export default function Page() {
                 </Fragment>,
               ],
               [
-                "Un rol con permisos para actuar",
+                "Tu rol",
                 <Fragment key="f3">
-                  El asistente hereda tus permisos. Un Member no puede hacer que el asistente haga
-                  algo que un Member no puede hacer en la app. Consulta{" "}
-                  <DocLink href="/es/documentacion/roles-de-usuario">roles de usuario y permisos</DocLink>
-                  .
+                  El asistente usa tu API key, así que solo puede hacer lo que tu key permite. Por
+                  ejemplo, las solicitudes de procesamiento rechazan la key de un rol{" "}
+                  <strong>Solo HITL</strong>. Consulta{" "}
+                  <DocLink href="/es/documentacion/roles-de-usuario">roles de usuario</DocLink> y{" "}
+                  <DocLink href="/es/documentacion/api">la página de la API</DocLink>.
                 </Fragment>,
               ],
             ]}
@@ -145,29 +147,28 @@ export default function Page() {
 
         <DocCard icon={<Settings2 size={24} />} title="Conecta claude.ai">
           <Lead>
-            Genera la URL en Tavnit y pégala en claude.ai como conector personalizado. Todo el
-            proceso son cinco pasos y toma alrededor de un minuto. No hay nada que instalar ni
-            archivos de configuración que editar.
+            Genera la URL en Tavnit y pégala en claude.ai como conector personalizado. No hay nada
+            que instalar ni archivos de configuración que editar.
           </Lead>
           <NumberedList
             items={[
               <Fragment key="f4">
-                Abre <strong>&ldquo;Integrations&rdquo;</strong> en la barra lateral de Tavnit.
-                Revisa primero el selector de organización: el conector queda vinculado a la
-                organización en la que estés.
+                Abre <strong>Integraciones</strong> en la barra lateral de Tavnit. Revisa primero el
+                selector de organización: el conector queda vinculado a la organización en la que
+                estés.
               </Fragment>,
               <Fragment key="f5">
-                En la tarjeta <strong>&ldquo;Custom Connector&rdquo;</strong>, selecciona{" "}
-                <strong>&ldquo;Generate connector URL&rdquo;</strong>.
+                En la tarjeta <strong>Conector Personalizado</strong>, selecciona{" "}
+                <strong>Generar URL del conector</strong>.
               </Fragment>,
               <Fragment key="f6">Copia la URL con el botón de copiar.</Fragment>,
               <Fragment key="f7">
-                En claude.ai, ve a <strong>&ldquo;Settings → Connectors → Add custom connector&rdquo;</strong>{" "}
-                y pega la URL.
+                En claude.ai, ve a <strong>Settings → Connectors → Add custom connector</strong> y
+                pega la URL.
               </Fragment>,
               <Fragment key="f8">
-                Abre un chat nuevo y pídele que liste tus Flows. Si recibes los nombres reales de tus
-                Flows, la conexión funciona.
+                Abre un chat nuevo y pregúntale al asistente qué herramientas de Tavnit tiene. Si te
+                las enumera, el conector está activo.
               </Fragment>,
             ]}
           />
@@ -175,125 +176,112 @@ export default function Page() {
 
         <DocCard icon={<Settings2 size={24} />} title="Conecta Cursor u otro cliente MCP">
           <Lead>
-            Cualquier cliente compatible con servidores MCP remotos acepta la misma URL. En Cursor,
-            agrégala como servidor MCP remoto y no como uno basado en comandos: no hay ningún proceso
-            local que ejecutar, porque el conector apunta a un endpoint alojado.
+            Cualquier cliente compatible con servidores MCP remotos acepta la misma URL. Agrégala
+            como servidor remoto (por URL), no como uno basado en comandos: no hay ningún proceso
+            local que ejecutar, porque el conector apunta a un servidor alojado.
           </Lead>
           <NumberedList
             items={[
-              "Genera y copia la URL del conector desde la página \"Integrations\", como se explicó arriba.",
+              "Genera y copia la URL del conector desde la página Integraciones, como arriba.",
               <Fragment key="f9">
                 En Cursor, abre la configuración de MCP y agrega un servidor nuevo de tipo{" "}
                 <strong>remoto</strong> / URL.
               </Fragment>,
               <Fragment key="f10">
-                Pega la URL del conector como URL del servidor. No necesitas un campo aparte para la
-                API key: la URL ya incluye la credencial.
+                Pega la URL del conector como URL del servidor. No hace falta un campo aparte para la
+                API key: la URL ya lleva la credencial.
               </Fragment>,
-              "Recarga el cliente y comprueba que Tavnit aparece en su lista de herramientas.",
+              "Recarga el cliente y confirma que Tavnit aparece en su lista de herramientas.",
             ]}
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="Una URL, varios clientes">
-            Puedes pegar la misma URL del conector en más de un cliente. Todos actúan como el mismo
-            miembro en la misma organización, así que al renovarla se desconectan todos a la vez.
+            Tienes una sola URL de conector a la vez y puedes pegarla en más de un cliente. Todos
+            actúan como tú en la misma organización, así que al actualizarla se desconectan todos a
+            la vez.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<Sparkles size={24} />} title="Qué puede hacer tu asistente">
           <Lead>
-            El conector ofrece dos capacidades: procesar documentos con tus Flows y leer los datos
-            que ya extrajiste. Todo lo demás (crear Flows, editar Cleaners, administrar el equipo)
-            se hace en la app.
+            A través del conector, el asistente trabaja con los datos de Tavnit de tu organización
+            usando tu API key. Crear y configurar Flows, Cleaners, Pipelines y tu equipo sigue
+            haciéndose en la app.
           </Lead>
-          <BulletList
-            items={[
-              <Fragment key="f11">
-                <strong>Procesar documentos con tus Flows</strong> y recibir el resultado
-                estructurado en la conversación.
-              </Fragment>,
-              <Fragment key="f12">
-                <strong>Leer y buscar en tus Buckets</strong>: haz preguntas sobre datos que ya
-                extrajiste, sin exportarlos primero.
-              </Fragment>,
-            ]}
-          />
-          <p className="pt-1">Instrucciones que funcionan bien:</p>
-          <DataTable
-            head={["Pide esto", "Qué pasa"]}
-            rows={[
-              [
-                <Fragment key="f13"><em>&ldquo;Procesa esta factura con mi Flow Supplier Invoices.&rdquo;</em></Fragment>,
-                "Ese Flow procesa el documento adjunto y los campos extraídos aparecen en el chat.",
-              ],
-              [
-                <Fragment key="f14"><em>&ldquo;¿Cuánto le pagamos a Acme Corp el mes pasado, según mi Bucket Invoices?&rdquo;</em></Fragment>,
-                "El asistente consulta el Bucket y responde a partir de las filas guardadas.",
-              ],
-              [
-                <Fragment key="f15"><em>&ldquo;¿Qué Flows tengo?&rdquo;</em></Fragment>,
-                "Una comprobación rápida de conexión: si recibes una lista real, el conector funciona.",
-              ],
-            ]}
-          />
-          <InfoBox
-            color="yellow"
-            icon={<AlertTriangle size={20} />}
-            title="Los Runs por el conector también consumen créditos"
-          >
-            Un documento procesado por el asistente es un Run normal del Flow y se cobra igual que
-            uno que subes tú. Si un Flow tiene la{" "}
-            <DocLink href="/es/documentacion/revision-humana">revisión humana</DocLink>{" "}
-            activada, el Run se pausa hasta que lo apruebe un revisor en lugar de devolver los
-            resultados de inmediato.
+          <p>
+            Tu cliente MCP muestra las herramientas que ofrece el conector, y la forma más rápida de
+            verlas es preguntarle al asistente. Pregunta en lenguaje natural y nombra el Flow, el
+            Bucket o el run al que te refieres tal como aparece en la app.
+          </p>
+          <InfoBox color="blue" icon={<Info size={20} />} title="Tus datos, tu organización">
+            El conector solo llega a la organización en la que se generó. Para trabajar con otra
+            organización, cámbiate a ella en Tavnit y genera una URL ahí.
           </InfoBox>
         </DocCard>
 
-        <DocCard icon={<RefreshCw size={24} />} title="Vencimiento y renovación">
+        <DocCard icon={<Coins size={24} />} title="Créditos">
           <Lead>
-            Las URLs del conector tienen un tiempo limitado. La tarjeta &ldquo;Custom
-            Connector&rdquo; muestra cuándo se creó la URL y cuándo vence, y te avisa cuando se
-            acerca el vencimiento. Al renovarla se emite una URL nueva y la anterior deja de
-            funcionar de inmediato.
+            El trabajo que se hace a través del conector se cobra igual que el mismo trabajo hecho
+            de cualquier otra forma: consume los créditos de tu organización con normalidad.
+          </Lead>
+          <p>
+            Cualquier run iniciado a través del conector es un run normal: cuesta lo mismo que desde
+            la app o la API, y si su Flow tiene la{" "}
+            <DocLink href="/es/documentacion/revision-humana">revisión humana</DocLink> activada,
+            igual se pausa para un revisor. Consulta{" "}
+            <DocLink href="/es/documentacion/creditos">Créditos</DocLink> para ver cuánto cuesta cada
+            tipo de trabajo.
+          </p>
+        </DocCard>
+
+        <DocCard icon={<RefreshCw size={24} />} title="Vencimiento y actualización">
+          <Lead>
+            Las URLs del conector tienen una vigencia limitada. La tarjeta Conector Personalizado
+            muestra cuándo se creó la URL y cuánto le queda, y te avisa en sus últimas 24 horas. Al
+            actualizarla se emite una URL nueva y la anterior queda invalidada de inmediato.
           </Lead>
           <DataTable
-            head={["Estado", "Qué ves", "Qué hacer"]}
+            head={["Estado", "Lo que ves", "Qué hacer"]}
             rows={[
               [
                 "Activa",
-                "La URL con su fecha de creación y una etiqueta con el tiempo restante.",
+                "La URL, la fecha de creación y los días que le quedan.",
                 "Nada.",
               ],
               [
-                "Por vencer",
-                <Fragment key="f16">Un aviso ámbar: <em>Connector expires soon — refresh now to avoid disruption.</em></Fragment>,
-                "Renuévala y pega la URL nueva en cada cliente que la use.",
+                "Vence pronto (menos de 24 horas)",
+                <Fragment key="f16">El tiempo restante en horas o minutos y un aviso ámbar: <em>El conector expira pronto — actualiza ahora para evitar interrupciones.</em></Fragment>,
+                "Actualízala y pega la URL nueva en cada cliente que la use.",
               ],
               [
                 "Vencida",
-                <Fragment key="f17">Un aviso rojo: <em>This connector has expired. Refresh to generate a new URL.</em></Fragment>,
-                "Renuévala y vuelve a pegarla. Los clientes con la URL anterior ya dejaron de funcionar.",
+                <Fragment key="f17">Un aviso rojo: <em>Este conector ha expirado. Actualiza para generar una nueva URL.</em></Fragment>,
+                "Actualízala y vuelve a pegarla. Los clientes con la URL anterior ya dejaron de funcionar.",
               ],
             ]}
           />
+          <p>
+            Para actualizarla, selecciona <strong>Actualizar URL</strong> y confirma con{" "}
+            <strong>Actualizar</strong> en el diálogo <em>¿Actualizar URL del conector?</em>.
+          </p>
           <WarningBox>
-            La renovación no es una rotación que puedas preparar con anticipación. En cuanto la
-            confirmas, la URL anterior deja de funcionar y todos los asistentes que la usan fallan
-            hasta que pegues la nueva. Renuévala cuando puedas actualizar los clientes enseguida.
+            Actualizar no es una rotación que puedas escalonar. En cuanto confirmas, la URL anterior
+            deja de funcionar y todos los asistentes que la usan fallan hasta que pegues la nueva.
+            Actualízala cuando puedas cambiar los clientes enseguida.
           </WarningBox>
         </DocCard>
 
         <DocCard icon={<AlertTriangle size={24} />} title="Trata la URL como una contraseña">
           <Lead>
-            La URL del conector es una credencial de portador. Cualquiera que la tenga puede acceder
-            a los Flows y Buckets de tu organización como si fueras tú, sin iniciar sesión. Es seguro
-            pegarla en la configuración de un cliente MCP; no es seguro compartirla en un ticket, un
-            mensaje de chat o una captura de pantalla.
+            La URL del conector es una credencial. Cualquiera que la tenga puede acceder a los datos
+            de tu organización como si fuera tú, sin iniciar sesión. Es seguro pegarla en la
+            configuración de un cliente MCP; no lo es compartirla en un ticket, un mensaje de chat o
+            una captura de pantalla.
           </Lead>
           <BulletList
             items={[
               "No la subas a un repositorio ni la pegues en un documento compartido.",
               "Difumínala o recórtala de cualquier captura de pantalla antes de compartirla.",
-              "Si se filtra, renuévala de inmediato: así la URL expuesta deja de funcionar al instante.",
+              "Si se filtra, actualízala de inmediato: eso invalida la URL expuesta al instante.",
               "Regenerar tu API key es una acción aparte en la misma página; hazlo también si crees que la key quedó expuesta.",
             ]}
           />
@@ -301,37 +289,37 @@ export default function Page() {
 
         <DocCard icon={<LifeBuoy size={24} />} title="Solución de problemas">
           <Lead>
-            La mayoría de los problemas con el conector se deben a una de cuatro causas: la función
-            no está habilitada, la sesión caducó, la URL venció o el cliente usa una URL que fue
-            reemplazada al renovarla.
+            Casi todos los problemas del conector se deben a una de cuatro cosas: la función no está
+            habilitada, la sesión caducó, la URL venció o el cliente tiene una URL que se reemplazó
+            al actualizarla.
           </Lead>
           <DataTable
             head={["Síntoma", "Causa", "Solución"]}
             rows={[
               [
-                "No aparece la tarjeta \"Custom Connector\" en \"Integrations\"",
-                "El conector todavía no está habilitado para tu organización.",
+                "No aparece la tarjeta Conector Personalizado en Integraciones",
+                "El conector no está habilitado para tu organización.",
                 "Contacta a soporte para que lo activen.",
               ],
               [
-                <Fragment key="f18"><InlineCode>Custom connectors require a valid Tavnit session</InlineCode></Fragment>,
-                "Tu sesión caducó, así que Tavnit no puede emitir una URL.",
+                <Fragment key="f18"><InlineCode>Los conectores personalizados requieren una sesión válida de Tavnit. Intenta cerrar sesión y volver a iniciarla.</InlineCode></Fragment>,
+                "Tavnit no pudo validar tu key para emitir o leer la URL.",
                 "Cierra sesión, vuelve a iniciarla y genera la URL de nuevo.",
               ],
               [
                 "El asistente dejó de ver Tavnit",
-                "La URL venció o alguien la renovó.",
-                "Busca en la tarjeta un aviso de vencida o por vencer, renuévala y vuelve a pegarla en cada cliente.",
+                "La URL venció o alguien la actualizó.",
+                "Revisa si la tarjeta muestra un aviso de vencida o por vencer, actualízala y vuelve a pegarla en cada cliente.",
               ],
               [
                 "El asistente ve datos equivocados",
-                "La URL se generó mientras estabas en otra organización.",
-                "Cambia de organización en Tavnit, genera una URL nueva y reemplaza la anterior.",
+                "La URL se generó cuando estabas en otra organización.",
+                "Cámbiate de organización en Tavnit, genera una URL nueva y reemplaza la anterior.",
               ],
               [
                 "El asistente no puede realizar una acción",
-                "Tu rol no lo permite.",
-                "El conector hereda tus permisos. Revisa tu rol antes de suponer que el conector falla.",
+                "Tu rol o tus créditos no lo permiten.",
+                "Revisa tu rol y tu saldo de créditos antes de suponer que falla el conector.",
               ],
             ]}
           />
@@ -339,17 +327,16 @@ export default function Page() {
 
         <DocCard icon={<MessageSquare size={24} />} title="Cuándo usar el conector en lugar de la API">
           <Lead>
-            Usa el conector para trabajo conversacional y puntual: documentos sueltos, preguntas
-            sobre datos guardados, análisis exploratorio. Usa la API REST para todo lo programado,
-            de alto volumen o integrado en otro sistema, donde necesitas manejo explícito de errores
-            y reintentos.
+            Usa el conector para trabajo conversacional y puntual: preguntas sueltas, explorar datos
+            guardados, revisiones rápidas. Usa la API REST para todo lo programado, de alto volumen o
+            integrado en otro sistema, donde necesitas manejo de errores y reintentos explícitos.
           </Lead>
           <DataTable
             head={["Situación", "Usa"]}
             rows={[
               ["Un colega pregunta cuánto facturó un proveedor el trimestre pasado", "Conector MCP"],
-              ["Te llegó una factura al correo y quieres extraerla ahora", "Conector MCP"],
-              ["Todas las facturas del portal de un proveedor, cada noche", "API REST o un disparador por correo"],
+              ["Quieres explorar tus datos en un chat", "Conector MCP"],
+              ["Todas las facturas de un portal de proveedores, cada noche", "API REST o un disparador por correo"],
               ["Tu propio producto necesita los datos extraídos", "API REST más webhooks"],
             ]}
           />
@@ -359,27 +346,27 @@ export default function Page() {
           links={[
             {
               href: "/es/documentacion/api",
-              label: "Procesa documentos con la API REST de Tavnit",
+              label: "Referencia de la API REST de Tavnit",
               description:
-                "Subida multipart y base64, autenticación con API key, ejemplos en Python y JavaScript.",
+                "Todos los endpoints, con autenticación por API key, campos, respuestas y ejemplos en Python y JavaScript.",
             },
             {
               href: "/es/documentacion/buckets",
-              label: "Guarda los datos extraídos en Buckets",
+              label: "Guarda datos extraídos en Buckets",
               description:
-                "Las tablas estructuradas que lee el asistente cuando le haces preguntas sobre tus datos.",
+                "Las tablas estructuradas donde viven tus datos extraídos.",
             },
             {
               href: "/es/documentacion/roles-de-usuario",
               label: "Roles de usuario y permisos",
               description:
-                "Qué puede hacer cada rol (Owner, Admin y Member). Los mismos límites aplican al conector.",
+                "Lo que pueden hacer Propietario, Administrador, Miembro y Solo HITL.",
             },
             {
-              href: "/es/documentacion/revision-humana",
-              label: "Pausa Runs para revisión humana",
+              href: "/es/documentacion/creditos",
+              label: "Cómo se cobran los créditos",
               description:
-                "Por qué un Run iniciado por un asistente podría esperar a un revisor en lugar de devolver resultados.",
+                "El trabajo del conector consume créditos como cualquier otro run.",
             },
           ]}
         />
