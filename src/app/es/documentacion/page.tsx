@@ -3,7 +3,6 @@ import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   Clock,
-  Coins,
   Compass,
   FilePlus,
   FlaskConical,
@@ -392,35 +391,13 @@ export default function Page() {
           </p>
           <Screenshot
             src="/assets/tour2-runs.jpg"
-            alt="La página Runs de Tavnit con documentos procesados, cada uno con su Flow, quién lo inició, su origen y su estado, debajo de indicadores de Runs completados, Runs en ejecución, créditos usados y total de Runs."
+            alt="La página Runs de Tavnit con documentos procesados, cada uno con su Flow, quién lo inició, su origen y su estado, debajo de indicadores de Runs completados, Runs en ejecución y total de Runs."
             caption="Cada documento se convierte en un Run. La página Runs muestra qué se procesó, cómo llegó y cómo terminó."
           />
           <p>
             Abre cualquier Run para ver los campos extraídos junto al documento original, además del
             registro de lo que pasó durante el procesamiento. Ese registro es el primer lugar donde
             buscar cuando un resultado no es el que esperabas.
-          </p>
-        </DocCard>
-
-        <DocCard icon={<Coins size={24} />} title="Cuánto cuesta">
-          <Lead>
-            Tavnit cobra en créditos de un único saldo por organización. La extracción se cobra por
-            página, así que un PDF de diez páginas cuesta diez créditos, produzca una fila o
-            doscientas. Cada una de las demás funciones tiene su propia tarifa.
-          </Lead>
-          <BulletList
-            items={[
-              "Extracción: 1 crédito por página. Una hoja de cálculo se cobra según su equivalente en páginas.",
-              "El enrutamiento, la separación, la limpieza, los Agentes, los Matchers y las demás funciones tienen su propia tarifa, detallada en la página de créditos.",
-              "Los pasos se suman: un documento que se separa, se enruta y luego se extrae paga los tres, así que enviarlo directo a su Flow es el hábito más económico cuando ya sabes su tipo.",
-              "Armar un Flow con \"Sugerencia con IA\" y usar \"Diagnosticar\" en un Flow son gratis.",
-              "Un Run necesita un saldo de créditos positivo para empezar. Los créditos ya usados no se reembolsan si un Run se cancela o falla.",
-            ]}
-          />
-          <p>
-            Consulta <DocLink href="/es/documentacion/creditos">Créditos y facturación</DocLink> para
-            ver la lista completa de precios. Para agregar créditos a tu organización, contacta al
-            equipo de Tavnit.
           </p>
         </DocCard>
 
@@ -499,11 +476,6 @@ export default function Page() {
               label: "Construye a fondo el esquema de datos de un Flow",
               description:
                 "Tipos de campo, tipos de datos, pistas de extracción, campos compuestos, Runs y todo lo que puedes asociar a un Flow.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Mira cuánto cuesta cada función",
-              description: "Las tarifas en créditos de cada paso y cuándo se cobran.",
             },
             {
               href: "/es/documentacion/api",

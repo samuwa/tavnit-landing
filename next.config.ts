@@ -24,6 +24,17 @@ const nextConfig: NextConfig = {
         destination: "/es/documentacion/agentes",
         permanent: true,
       },
+      {
+        // Credit billing is off: the credits pages were withdrawn.
+        source: "/docs/credits",
+        destination: "/docs",
+        permanent: false,
+      },
+      {
+        source: "/es/documentacion/creditos",
+        destination: "/es/documentacion",
+        permanent: false,
+      },
     ];
   },
   async headers() {

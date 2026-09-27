@@ -299,9 +299,7 @@ export default function Page() {
             revises los datos detrás de ella. Las preguntas anteriores quedan en{" "}
             <strong>Historial</strong>.
           </p>
-          <InfoBox color="blue" icon={<Info size={20} />} title="Costos">
-            Cada pregunta cuesta 1 crédito. Indexar columnas cuesta 1 crédito por cada 500 valores
-            distintos (mínimo 1). Consulta <DocLink href="/es/documentacion/creditos">Créditos</DocLink>.
+          <InfoBox color="blue" icon={<Info size={20} />} title="Acceso">
             Para configurar Prompting necesitas acceso de edición al Bucket.
           </InfoBox>
         </DocCard>

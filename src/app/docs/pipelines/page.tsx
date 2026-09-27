@@ -4,7 +4,6 @@ import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   AlertTriangle,
   Code2,
-  Coins,
   FlaskConical,
   GitBranch,
   HelpCircle,
@@ -262,7 +261,7 @@ export default function Page() {
               </Fragment>,
             ]}
           />
-          <p>Drafting is free: it does not run anything or use credits.</p>
+          <p>Drafting does not run anything.</p>
         </DocCard>
 
         <DocCard icon={<Upload size={24} />} title="Sources: how documents get in">
@@ -408,18 +407,6 @@ export default function Page() {
           </p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Cost">
-          <p>
-            A Pipeline has no price of its own. Each step pays exactly what the feature costs when you
-            use it directly: a flow run pays per page, an agent by its runtime, an Inspector its AI
-            comparisons, and so on. Bucket writes and Outputs are free. Starting an execution only
-            needs a positive credit balance.
-          </p>
-          <p>
-            See <DocLink href="/docs/credits">Credits</DocLink> for what each feature costs.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code2 size={24} />} title="API">
           <span id="api" />
           <p>
@@ -431,7 +418,7 @@ export default function Page() {
           <CodeBlock lang="JSON — 202 response" code={EXECUTE_RESPONSE} />
           <p>
             A definition that isn&apos;t executable returns 400 with{" "}
-            <InlineCode>validation_errors</InlineCode>; an empty balance returns 402; an inactive
+            <InlineCode>validation_errors</InlineCode>; a 402 means your organization can&apos;t start new work right now (contact the Tavnit team); an inactive
             Pipeline returns 400. Follow progress on the Executions tab. To stop an execution:
           </p>
           <CodeBlock lang="bash — cancel an execution" code={CANCEL_CURL} />

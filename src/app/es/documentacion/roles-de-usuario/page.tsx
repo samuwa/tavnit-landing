@@ -44,8 +44,8 @@ export default function Page() {
           <DataTable
             head={["Rol", "En una línea", "Asígnalo a"]}
             rows={[
-              ["Propietario", "Control total, incluida la configuración de la organización, la facturación y la eliminación de la organización.", "Las personas responsables de la cuenta."],
-              ["Administrador", "Crea y gestiona todo y administra el equipo, excepto la configuración de la organización y la facturación.", "Quien configura Flows, Cleaners, Pipelines y Buckets en el día a día."],
+              ["Propietario", "Control total, incluida la configuración de la organización y la eliminación de la organización.", "Las personas responsables de la cuenta."],
+              ["Administrador", "Crea y gestiona todo y administra el equipo, excepto la configuración de la organización.", "Quien configura Flows, Cleaners, Pipelines y Buckets en el día a día."],
               ["Miembro", "Ejecuta lo que ya existe, trabaja expedientes y lee resultados. No puede cambiar la mayor parte de la configuración.", "Personas que procesan documentos pero no deben modificar el pipeline."],
               ["Solo HITL", "Solo puede revisar los elementos que tiene asignados.", "Aprobadores y auditores que nunca deben tocar la configuración ni los datos."],
             ]}
@@ -70,7 +70,6 @@ export default function Page() {
               "Todo lo que puede hacer un Administrador (ver abajo)",
               "Invitar personas con cualquier rol, y cambiar el rol de cualquier otro miembro o eliminarlo, incluidos Administradores y otros Propietarios",
               'Editar la organización en Configuración → "Organización": nombre, zona horaria, notificaciones de fallo de Run y el reintento automático de "Runs fallidos"',
-              'Ver y gestionar "Facturación y Uso"',
               "Eliminar la organización",
               "Hacer privado un Bucket y definir el acceso de los Administradores a cualquier Bucket",
             ]}
@@ -81,7 +80,7 @@ export default function Page() {
           <InfoBox color="blue" icon={<Info size={20} />} title="Usuarios avanzados de confianza">
             Los Administradores llevan la operación del día a día. Pueden crear y cambiar cualquier
             cosa del espacio de trabajo y gestionar a los Miembros, pero no pueden tocar la
-            configuración de la organización, la facturación ni a otros Administradores.
+            configuración de la organización ni a otros Administradores.
           </InfoBox>
           <p>Los Administradores pueden:</p>
           <BulletList
@@ -99,7 +98,7 @@ export default function Page() {
           <p>Los Administradores no pueden:</p>
           <BulletList
             items={[
-              "Editar la configuración de la organización ni ver la facturación",
+              "Editar la configuración de la organización",
               "Eliminar la organización",
               "Hacer privado un Bucket",
               "Cambiar el rol, el acceso o la membresía de otro Administrador o de un Propietario",
@@ -133,7 +132,7 @@ export default function Page() {
               "Editar o eliminar configuración que no crearon, ni activar o desactivar funciones de un Flow (webhook, disparador de email, salida por email, limpieza de datos, Exportar a Bucket)",
               "Invitar, eliminar o cambiar el rol de nadie",
               "Ver Buckets privados sin un permiso explícito, ni abrir la página de Acceso de un Bucket",
-              "Ver la configuración de la organización, la facturación ni el Registro de Auditoría",
+              "Ver la configuración de la organización ni el Registro de Auditoría",
             ]}
           />
           <InfoBox color="yellow" icon={<Info size={20} />} title="Quien crea conserva la edición">
@@ -167,7 +166,7 @@ export default function Page() {
               "Ver el Panel, los Runs ni la configuración de ninguna función",
               "Leer o escribir datos de Buckets fuera de una revisión",
               "Llamar a la API de procesamiento: esos endpoints rechazan el rol directamente",
-              "Invitar a nadie, ni ver la facturación o la configuración de la organización",
+              "Invitar a nadie, ni ver la configuración de la organización",
             ]}
           />
           <InfoBox color="yellow" icon={<Info size={20} />} title="La asignación sigue siendo aparte">
@@ -258,7 +257,6 @@ export default function Page() {
 
               <PermissionGroupHeader label="Organización" />
               <PermissionRow label="Editar la configuración de la organización" owner={true} admin={false} member={false} note="Nombre, zona horaria, notificaciones, reintento automático de Runs fallidos" />
-              <PermissionRow label="Ver y gestionar la facturación" owner={true} admin={false} member={false} />
               <PermissionRow label="Eliminar la organización" owner={true} admin={false} member={false} />
             </div>
           </div>

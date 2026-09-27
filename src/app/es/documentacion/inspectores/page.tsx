@@ -5,7 +5,6 @@ import {
   CalendarClock,
   ClipboardCheck,
   Code,
-  Coins,
   FileStack,
   FileText,
   FlaskConical,
@@ -297,7 +296,7 @@ export default function Page() {
           </p>
           <p>
             Desmarca lo que no necesites, edita cualquier check con el lápiz y haz clic en{" "}
-            <strong>Agregar checks</strong>. Todo queda editable. Las sugerencias son gratis.
+            <strong>Agregar checks</strong>. Todo queda editable.
           </p>
         </DocCard>
 
@@ -306,7 +305,7 @@ export default function Page() {
             El panel <strong>Prueba en seco</strong> prueba el checklist contra runs completados:
             elige un run de muestra para cada documento, o <strong>Sin documento (ausente)</strong>,
             y el veredicto se reevalúa al instante mientras editas. Usa el mismo motor de reglas que
-            las inspecciones reales. Nada se guarda ni se cobra, y las condiciones con IA se asumen
+            las inspecciones reales. Nada se guarda, y las condiciones con IA se asumen
             aprobadas porque el modelo solo corre durante inspecciones reales.
           </p>
         </DocCard>
@@ -449,25 +448,6 @@ export default function Page() {
           <p>Con revisión humana, las salidas se envían después de aprobar.</p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Costo">
-          <DataTable
-            head={["Paso", "Créditos"]}
-            rows={[
-              ["Enrutar cada archivo subido a un slot", "1 crédito por archivo, sea cual sea el resultado"],
-              ["Extraer cada documento enrutado", "El cobro habitual de extracción del flow"],
-              ["Evaluar el checklist", "Gratis"],
-              ["Cada condición AI match o AI check que se alcanza", "1 crédito por condición, por inspección"],
-              ["Sugerir checks y Prueba en seco", "Gratis"],
-            ]}
-          />
-          <p>
-            Las inspecciones que se ejecutan desde un caso de Subject reutilizan runs existentes, así
-            que solo se cobran las condiciones con IA. Consulta{" "}
-            <DocLink href="/es/documentacion/creditos">Créditos</DocLink> para ver saldos y cómo
-            agregar más.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code size={24} />} title="API">
           <p>
             Envía documentos a un inspector con tu API key. Copia el ID desde{" "}
@@ -491,7 +471,8 @@ curl -X POST https://run.tavnit.io/api/inspectors/<inspector_id>/process \\
               <Fragment key="a1">
                 La respuesta es <InlineCode>202</InlineCode> con <InlineCode>inspection_id</InlineCode>{" "}
                 e <InlineCode>inspection_file_id</InlineCode>. Un <InlineCode>402</InlineCode>{" "}
-                significa que el saldo no alcanza para el crédito de enrutamiento.
+                significa que tu organización no puede iniciar trabajo nuevo en este momento; contacta
+                al equipo de Tavnit.
               </Fragment>,
               <Fragment key="a2">
                 Con la política Manual, termina con{" "}

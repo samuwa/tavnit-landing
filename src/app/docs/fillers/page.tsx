@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   ClipboardCheck,
   Code,
-  Coins,
   FilePlus,
   FileText,
   HelpCircle,
@@ -60,8 +59,7 @@ export default function Page() {
           </InfoBox>
           <InfoBox color="blue" icon={<Info size={20} />} title="Filling itself is deterministic">
             AI reads the source documents (through their flows) and can sort uploads into slots.
-            Writing values into the form is a plain copy of the mapped values — no AI, and no
-            credits.
+            Writing values into the form is a plain copy of the mapped values — no AI.
           </InfoBox>
         </DocCard>
 
@@ -302,24 +300,6 @@ export default function Page() {
           <p>The filled PDFs reach you through the Filler&apos;s email or webhook output.</p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="What Fillers cost">
-          <DataTable
-            head={["Charge", "When"]}
-            rows={[
-              ["Free", "Filling the templates, attaching existing runs, assigning an unmatched file by hand."],
-              [
-                "1 credit per document",
-                "For each document routed with Upload & route or Add documents — charged whatever the routing decides.",
-              ],
-              ["The flow's extraction charge", "For each document a slot's flow processes."],
-            ]}
-          />
-          <p>
-            Uploads are refused when the balance cannot cover them. See{" "}
-            <DocLink href="/docs/credits">Credits &amp; Billing</DocLink>.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Users size={24} />} title="Who can do what">
           <BulletList
             items={[
@@ -396,11 +376,6 @@ export default function Page() {
               href: "/docs/pipelines",
               label: "Run a Filler inside a Pipeline",
               description: "Chain splitters, flows and fillers on one canvas.",
-            },
-            {
-              href: "/docs/credits",
-              label: "What everything costs",
-              description: "Every credit price in Tavnit, in one table.",
             },
           ]}
         />

@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   ArrowLeftRight,
   Code,
-  Coins,
   Eye,
   FilePlus,
   FolderInput,
@@ -118,8 +117,7 @@ export default function Page() {
             ]}
           />
           <p>
-            Routing costs a credit per document, so it is not free to route something you could have
-            addressed directly. Where the caller knows the type, tell the flow.
+            Where the caller knows the type, tell the flow.
           </p>
         </DocCard>
 
@@ -230,7 +228,7 @@ export default function Page() {
               ],
               [
                 "Failed",
-                "The document could not be routed at all: an unsupported or unreadable file, a Collection with no active destinations, or an empty credit balance.",
+                "The document could not be routed at all: an unsupported or unreadable file, or a Collection with no active destinations.",
               ],
             ]}
           />
@@ -272,32 +270,8 @@ export default function Page() {
             cycle. A Splitter that already sends documents to this Collection appears greyed out in
             the Splitters list and cannot be added, and at run time a segment produced by a Splitter
             is never routed back into that same Splitter, so a mis-set configuration cannot spin
-            documents in a circle and burn credits.
+            documents in a circle.
           </InfoBox>
-        </DocCard>
-
-        <DocCard icon={<Coins size={24} />} title="What routing costs">
-          <Lead>
-            Routing is charged one credit per document. The credit is taken once the file has been
-            accepted and before it is classified, so it is independent of the outcome: a cancelled
-            run still costs its routing credit.
-          </Lead>
-          <DataTable
-            head={["Charge", "When"]}
-            rows={[
-              ["1 credit", "Per document routed by a Collection: matched, sent to the default flow or cancelled."],
-              [
-                "The flow's own charge",
-                "On top, once the document reaches a flow and is extracted. The run's credit breakdown shows Routing and Extraction separately.",
-              ],
-            ]}
-          />
-          <p>
-            A file rejected before routing (unsupported type, unreadable file, no active
-            destinations) is not charged. If the balance is empty when a document arrives, the
-            Collection run fails before routing and nothing is processed. See{" "}
-            <DocLink href="/docs/credits">credits</DocLink>.
-          </p>
         </DocCard>
 
         <DocCard icon={<Mail size={24} />} title="Sending documents to a Collection">
@@ -393,7 +367,7 @@ export default function Page() {
           </Lead>
           <BulletList
             items={[
-              "Click a routed run to open the flow run (or the split) it created, with its extracted data and a credit breakdown that includes the routing credit.",
+              "Click a routed run to open the flow run (or the split) it created, with its extracted data.",
               "Click a run that did not reach a destination to open the Collection Run dialog: status, document, source, the written routing reason and any error message. A run that is still pending or routing can be cancelled from there with Cancel Run.",
               "A run that fell back to the default flow shows that flow as its destination; its reason starts with “No clear match. Using default flow.”",
             ]}
@@ -428,10 +402,6 @@ export default function Page() {
               [
                 "A Splitter cannot be added",
                 "It already sends documents to this Collection; adding it would create a loop.",
-              ],
-              [
-                "A run Failed with a credit error",
-                "The balance was empty when the document arrived. Contact the team to add credits, then send the document again.",
               ],
             ]}
           />

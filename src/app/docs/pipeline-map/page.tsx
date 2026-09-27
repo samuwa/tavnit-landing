@@ -241,7 +241,7 @@ export default function Page() {
           />
           <InfoBox color="violet" icon={<Database size={20} />} title="Structure, not results">
             Apart from line thickness, the map shows how things are connected, not what flowed
-            through them. For individual results, credits and failures, use Runs and each
+            through them. For individual results and failures, use Runs and each
             object&apos;s own history.
           </InfoBox>
         </DocCard>

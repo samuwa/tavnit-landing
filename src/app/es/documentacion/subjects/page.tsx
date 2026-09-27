@@ -6,7 +6,6 @@ import {
   Bot,
   Briefcase,
   Code,
-  Coins,
   FilePlus,
   FileText,
   FolderInput,
@@ -237,13 +236,13 @@ export default function Page() {
           <p>
             Una vez conocido el expediente, Tavnit elige el tipo de documento. Un Subject con un
             solo tipo no necesita decidir nada. Con varios tipos, un clasificador de IA lee la
-            primera página y elige entre ellos: es el único paso con IA y cuesta un crédito.
+            primera página y elige entre ellos: es el único paso con IA.
           </p>
           <InfoBox color="green" icon={<ShieldCheck size={20} />} title="Subir directamente a un expediente evita el enrutamiento">
             Un documento que sueltas en la página de un expediente, envías a la dirección propia del
             expediente o publicas en el expediente mediante la API ya sabe cuál es su expediente.
             Las subidas desde la página del expediente y por la API además indican el tipo de
-            documento, así que no se clasifica nada ni se cobra crédito de enrutamiento.
+            documento, así que no se clasifica nada.
           </InfoBox>
         </DocCard>
 
@@ -293,8 +292,7 @@ export default function Page() {
             items={[
               <Fragment key="h1">
                 <strong>Assign</strong>: elige un expediente y un tipo de documento. Tavnit inicia
-                el Run del Flow sobre el archivo guardado, sin volver a subirlo y sin crédito de
-                enrutamiento. Se permite asignarlo a un expediente cerrado, porque una persona lo
+                el Run del Flow sobre el archivo guardado, sin volver a subirlo. Se permite asignarlo a un expediente cerrado, porque una persona lo
                 eligió de forma explícita.
               </Fragment>,
               <Fragment key="h2">
@@ -352,8 +350,7 @@ export default function Page() {
           <p>
             Haz clic en <strong>Run</strong> junto a la revisión. El resultado aparece en el
             expediente con su estado y, en las inspecciones, el veredicto; ábrelo para ver la
-            comparación o la lista de verificación completa. Las revisiones se cobran como cualquier
-            otro Match o inspección.
+            comparación o la lista de verificación completa.
           </p>
         </DocCard>
 
@@ -389,7 +386,7 @@ export default function Page() {
               ],
               [
                 <InlineCode key="a2">POST /api/cases/&lt;case_id&gt;/docs</InlineCode>,
-                "Sube directamente a un expediente (doc_type_id es obligatorio si el Subject tiene varios tipos). Sin cargo de enrutamiento; devuelve el run_id.",
+                "Sube directamente a un expediente (doc_type_id es obligatorio si el Subject tiene varios tipos). Devuelve el run_id.",
               ],
               [
                 <InlineCode key="a3">POST /api/subjects/&lt;subject_id&gt;/cases</InlineCode>,
@@ -409,27 +406,6 @@ export default function Page() {
               ],
             ]}
           />
-        </DocCard>
-
-        <DocCard icon={<Coins size={24} />} title="Cuánto cuestan los Subjects">
-          <DataTable
-            head={["Cargo", "Cuándo"]}
-            rows={[
-              ["Gratis", "Encontrar el expediente por referencia o nombre, retener documentos, asignarlos a mano."],
-              [
-                "1 crédito por documento",
-                "Solo cuando el Subject tiene más de un tipo de documento y el clasificador de IA elige el tipo; se cobra sin importar lo que responda.",
-              ],
-              ["El cargo de extracción del Flow", "Por cada documento archivado, cuando su Run lo procesa."],
-              ["El cargo propio de la revisión", "Cuando ejecutas un Matcher o un Inspector en un expediente."],
-            ]}
-          />
-          <p>
-            Si el saldo no alcanza para el crédito de clasificación, el documento queda retenido en
-            lugar de fallar, y puedes asignarlo a mano. Consulta{" "}
-            <DocLink href="/es/documentacion/creditos">Créditos y facturación</DocLink> para ver
-            todos los precios.
-          </p>
         </DocCard>
 
         <DocCard icon={<Users size={24} />} title="Quién puede hacer qué">
@@ -476,10 +452,6 @@ export default function Page() {
                 "Flow for document type … is unavailable",
                 "El Flow del tipo se eliminó o se desactivó. Asigna al tipo un Flow activo.",
               ],
-              [
-                "Insufficient credits for document-type classification",
-                "Agrega créditos o asigna el documento a mano (gratis).",
-              ],
             ]}
           />
           <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="Los tipos de documento necesitan un Flow activo">
@@ -504,11 +476,6 @@ export default function Page() {
               href: "/es/documentacion/integracion-por-correo",
               label: "Direcciones de correo y adjuntos",
               description: "Formatos de dirección, tipos de archivo aceptados y listas de remitentes permitidos.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Cuánto cuesta todo",
-              description: "Todos los precios en créditos de Tavnit y qué pasa cuando se acaba el saldo.",
             },
           ]}
         />

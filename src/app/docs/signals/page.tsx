@@ -4,7 +4,6 @@ import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   AudioLines,
   Code2,
-  Coins,
   FilePlus,
   FlaskConical,
   HelpCircle,
@@ -41,7 +40,6 @@ const RUN_RESPONSE = `{
   "signal_id": "…",
   "status": "queued",
   "audio_seconds": 754,
-  "estimated_max_credits": 13,
   "message": "Wave queued for processing."
 }`;
 
@@ -160,7 +158,7 @@ export default function Page() {
             ]}
           />
           <p>
-            Long silences are cut before any processing and are never billed, so a full-shift
+            Long silences are cut before any processing, so a full-shift
             recording with long quiet stretches is fine. The spoken language is detected
             automatically. A Signal that has been deactivated can&apos;t run Waves until you activate
             it again.
@@ -176,7 +174,7 @@ export default function Page() {
         <DocCard icon={<Table2 size={24} />} title="Reading a Wave">
           <Lead>
             A completed Wave shows the duration (and how much of it was speech), the number of
-            interactions (and how many were excluded), turns and credits charged.
+            interactions (and how many were excluded) and turns.
           </Lead>
           <BulletList
             items={[
@@ -265,16 +263,6 @@ export default function Page() {
           />
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Cost">
-          <p>
-            A Wave costs <strong>1 credit per started minute of detected speech</strong>, with a
-            minimum of 1. Silence that is cut is not counted. You need at least 1 credit to start a
-            Wave; after the silence scan, a Wave whose real cost exceeds your balance fails before any
-            AI processing, and credits are only deducted once a Wave completes. The Wave page shows
-            the credits charged. See <DocLink href="/docs/credits">Credits</DocLink>.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code2 size={24} />} title="API">
           <p>
             Copy the ID from <strong>&ldquo;Signal ID&rdquo;</strong> on the Signal&apos;s page and
@@ -284,9 +272,8 @@ export default function Page() {
           <CodeBlock lang="bash — queue a Wave" code={RUN_CURL} />
           <CodeBlock lang="JSON — 202 response" code={RUN_RESPONSE} />
           <p>
-            <InlineCode>estimated_max_credits</InlineCode> is an upper bound from the raw duration;
-            the real figure is based on detected speech. Errors: 400 for a missing, empty,
-            unsupported or too-long file, 402 when the balance is below 1 credit, 403/404 when the
+            Errors: 400 for a missing, empty, unsupported or too-long file, 402 when your
+            organization can&apos;t start new work right now (contact the Tavnit team), 403/404 when the
             Signal isn&apos;t in your organisation. Follow the Wave in the app. See the{" "}
             <DocLink href="/docs/api-integration">REST API</DocLink> page for authentication.
           </p>
@@ -314,7 +301,7 @@ export default function Page() {
               ["“Run Wave” is disabled", "The Signal is inactive. Activate it first."],
               ["Speakers are assigned to the wrong member type", "Add descriptions to your member types saying how to tell them apart (role, what they typically say)."],
               ["Conversations land in Other", "Describe each interaction type more concretely, or leave interaction types empty to capture everything."],
-              ["The Wave failed after queuing", "Check your credit balance against the speech length, and that the recording has at most 2 hours of speech."],
+              ["The Wave failed after queuing", "Check that the recording has at most 2 hours of speech."],
             ]}
           />
         </DocCard>
@@ -330,11 +317,6 @@ export default function Page() {
               href: "/docs/webhooks",
               label: "Receive results by webhook",
               description: "How Tavnit posts results to your endpoint.",
-            },
-            {
-              href: "/docs/credits",
-              label: "How credits are charged",
-              description: "Per-feature costs, including audio minutes.",
             },
             {
               href: "/docs/nets",

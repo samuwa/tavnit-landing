@@ -133,8 +133,8 @@ export default function Page() {
             completado) y arma reglas como formato con IA, formatos de fecha y número, fórmulas,
             categorías, condicionales y conversiones. Puedes desmarcar cualquier sugerencia o abrirla
             en el mismo editor que usa el constructor; una regla marcada &ldquo;Necesita
-            ajuste&rdquo; hay que corregirla antes de que sea válida. Sugerir reglas no consume
-            créditos, y todo queda editable después de crear el Cleaner.
+            ajuste&rdquo; hay que corregirla antes de que sea válida. Todo queda editable
+            después de crear el Cleaner.
           </InfoBox>
           <p>
             <strong>Desde cero</strong> abre el constructor, donde le pones nombre al Cleaner y
@@ -630,10 +630,9 @@ export default function Page() {
           </InfoBox>
         </DocCard>
 
-        <DocCard icon={<Clock size={24} />} title="Limpiezas y créditos">
+        <DocCard icon={<Clock size={24} />} title="Limpiezas">
           <Lead>
-            Una limpieza es una ejecución de un Cleaner sobre un lote de filas. Cada limpieza se cobra
-            según las celdas que limpió, no según la cantidad de documentos.
+            Una limpieza es una ejecución de un Cleaner sobre un lote de filas.
           </Lead>
           <DataTable
             head={["Cómo empieza una limpieza", "Cuándo usarla"]}
@@ -649,15 +648,6 @@ export default function Page() {
               ["API", "Envía un archivo o filas en JSON al Cleaner desde tus propios sistemas. Consulta más abajo."],
             ]}
           />
-          <p>
-            Los créditos de limpieza se cobran por cada 500 celdas no vacías de la salida limpia,
-            redondeando hacia arriba, con un mínimo de un crédito. Las celdas vacías y los campos
-            excluidos no cuentan, así que una tabla ancha con muchas columnas opcionales cuesta menos
-            de lo que sugieren sus dimensiones; cada campo de Búsqueda suma una celda por fila. Los
-            tipos de campo con IA no tienen un cargo aparte. Consulta{" "}
-            <DocLink href="/es/documentacion/creditos">créditos</DocLink> para ver cómo encaja la
-            limpieza con el resto de tu saldo.
-          </p>
         </DocCard>
 
         <DocCard icon={<Table2 size={24} />} title="La página de una limpieza">
@@ -667,7 +657,7 @@ export default function Page() {
           </Lead>
           <BulletList
             items={[
-              "Estado (Procesando, Completado, Fallido o Cancelado) con las Filas, los Créditos y el Origen de la limpieza.",
+              "Estado (Procesando, Completado, Fallido o Cancelado) con las Filas y el Origen de la limpieza.",
               "Advertencias: problemas por fila, como una fórmula que dividió entre cero o un valor que no se pudo leer como número. Cada problema queda ligado a la fila que lo causó, así una fila mala no hace fallar la limpieza.",
               "Información de la Limpieza: el Cleaner, cuándo se creó la limpieza, y el Run de Origen y el Flow cuando vino de un Flow.",
               "La tabla de datos, con un selector Limpiados / Pivotado / Sin Procesar para comparar la salida con lo que entró, y Expandir para verla a pantalla completa. Puedes seleccionar y copiar celdas.",
@@ -782,11 +772,6 @@ export default function Page() {
               label: "Busca valores en Buckets y escribe de vuelta en ellos",
               description:
                 "Las tablas estructuradas con las que trabajan Búsqueda, Verificación, los menús de Entrada Humana y Edit Bucket Row.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Entiende los créditos de limpieza",
-              description: "Cómo encajan los cobros por celda de la limpieza con el resto de tu saldo.",
             },
             {
               href: "/es/documentacion/webhooks",

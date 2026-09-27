@@ -157,8 +157,8 @@ export default function Page() {
             interruptor de la barra superior para desactivarlo. Un Flow inactivo no se puede
             ejecutar.
           </p>
-          <InfoBox color="green" icon={<Info size={20} />} title="La sugerencia con IA es gratis">
-            Armar un Flow a partir de un documento de ejemplo no crea un Run ni consume créditos.
+          <InfoBox color="green" icon={<Info size={20} />} title="La sugerencia con IA no crea un Run">
+            Armar un Flow a partir de un documento de ejemplo no crea un Run.
             Toma el borrador como punto de partida: elimina lo que no vayas a usar, porque cada campo
             extra es más que revisar y más que puede fallar.
           </InfoBox>
@@ -454,12 +454,12 @@ export default function Page() {
               [
                 "Hoja de cálculo",
                 "XLSX, XLS, CSV",
-                "Se lee la primera hoja visible. Las demás hojas y las ocultas se ignoran, así que pon los datos que quieres en la primera hoja. Los créditos se cobran según el equivalente en páginas de la hoja.",
+                "Se lee la primera hoja visible. Las demás hojas y las ocultas se ignoran, así que pon los datos que quieres en la primera hoja.",
               ],
             ]}
           />
           <p>
-            Las hojas muy grandes se rechazan con un error claro antes de cobrar créditos. Para
+            Las hojas muy grandes se rechazan con un error claro. Para
             procesar cada hoja de un libro como un documento propio, envíalo a un{" "}
             <DocLink href="/es/documentacion/splitters">Splitter</DocLink>.
           </p>
@@ -469,8 +469,7 @@ export default function Page() {
             de mala calidad, un PDF exportado desde una herramienta rara. Para esos casos, abre{" "}
             <strong>Escaneo Deficiente</strong> en los ajustes del Flow y actívalo: cada archivo del
             Flow se lee primero con OCR y la extracción trabaja sobre el texto recuperado. Si el OCR
-            no está disponible o falla, el Run vuelve automáticamente al proceso estándar. Escaneo
-            Deficiente no cuesta créditos extra.
+            no está disponible o falla, el Run vuelve automáticamente al proceso estándar.
           </InfoBox>
         </DocCard>
 
@@ -602,8 +601,8 @@ export default function Page() {
             ]}
           />
           <p>
-            Si todo está bien, verás <em>“La extracción se ve saludable”</em>. Diagnosticar es gratis
-            y solo se ejecuta cuando haces clic. Después de aplicar correcciones, vuelve a procesar un
+            Si todo está bien, verás <em>“La extracción se ve saludable”</em>. Diagnosticar solo
+            se ejecuta cuando haces clic. Después de aplicar correcciones, vuelve a procesar un
             documento real para confirmar que ayudaron.
           </p>
         </DocCard>
@@ -617,7 +616,7 @@ export default function Page() {
             <NumberedList
               items={[
                 "El documento se guarda y el Run queda en cola.",
-                "La extracción lo lee y produce valores de metadatos y filas de tabla, a un crédito por página.",
+                "La extracción lo lee y produce valores de metadatos y filas de tabla.",
                 "Si hay un Cleaner asociado, hace la limpieza de esas filas: conversiones, columnas calculadas, búsquedas.",
                 "Se disparan las reglas condicionales: se pueden descartar filas, enviar notificaciones o pedir revisión.",
                 "Si se requiere revisión, el Run se pausa y no se entrega nada hasta que un revisor lo apruebe.",
@@ -682,7 +681,7 @@ export default function Page() {
               [
                 "Cancelar Run",
                 "Menú de acciones del Run",
-                "Solo para Runs en cola o en ejecución. Los créditos ya usados no se reembolsan.",
+                "Solo para Runs en cola o en ejecución.",
               ],
             ]}
           />
@@ -695,8 +694,8 @@ export default function Page() {
 
         <DocCard icon={<RotateCcw size={24} />} title="Runs fallidos y reintentos automáticos">
           <Lead>
-            La mayoría de los fallos son culpa del documento (un archivo ilegible, un tipo no
-            soportado, falta de créditos) y reintentar no ayudaría. Algunos no: un worker de
+            La mayoría de los fallos son culpa del documento (un archivo ilegible o un tipo no
+            soportado) y reintentar no ayudaría. Algunos no: un worker de
             procesamiento se reinicia a mitad del Run o un proveedor de IA tiene una caída temporal.
             Para esos casos, una organización puede hacer que Tavnit reintente por su cuenta.
           </Lead>
@@ -717,9 +716,8 @@ export default function Page() {
           <BulletList
             items={[
               "Un Run reintentado conserva el mismo ID, así que las consultas a la API, los webhooks y los enlaces siguen funcionando.",
-              "Los créditos se cobran una sola vez por Run, sin importar cuántos intentos haga falta.",
               "Las salidas solo se disparan cuando un Run se completa, así que un reintento nunca entrega un documento dos veces.",
-              "Nunca se reintentan: archivos inválidos, tipos no soportados, falta de créditos, Runs cancelados, Runs en pausa para revisión y Runs creados hace más de un día.",
+              "Nunca se reintentan: archivos inválidos, tipos no soportados, Runs cancelados, Runs en pausa para revisión y Runs creados hace más de un día.",
               "Un Run que se pierde por el reinicio de un worker se detecta automáticamente. Con el reintento automático activado vuelve a la cola; con él desactivado, se marca como Fallido.",
               "La página del Run lista los Intentos anteriores, cada uno marcado como Worker perdido o Falló con su error, y la lista de Runs muestra una insignia de reintento.",
             ]}
@@ -834,12 +832,6 @@ export default function Page() {
               label: "Mira el payload que produce un Flow",
               description:
                 "Cómo aparecen los campos de metadatos y de tabla en el JSON que recibe tu endpoint.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Entiende cuánto cuestan los Runs",
-              description:
-                "Los créditos por página de la extracción y las tarifas de cada una de las demás funciones.",
             },
           ]}
         />

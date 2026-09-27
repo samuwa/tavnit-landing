@@ -67,7 +67,7 @@ const USE_CASES_SHOWN = 5;
  * always left one alone on its own row.
  */
 const DOC_GROUPS: DocSlug[][] = [
-  ["getting-started", "credits", "flows", "collections", "splitters", "subjects"],
+  ["getting-started", "flows", "collections", "splitters", "subjects"],
   ["cleaners", "agents", "matchers", "inspectors", "fillers"],
   ["buckets", "human-in-the-loop", "pipelines", "pipeline-map", "user-roles"],
   ["email-integration", "api-integration", "webhooks", "signals", "nets"],

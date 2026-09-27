@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   ClipboardCheck,
   Code,
-  Coins,
   FilePlus,
   FlaskConical,
   Info,
@@ -61,7 +60,7 @@ export default function Page() {
             funcionamiento todavía puede cambiar.
           </InfoBox>
           <InfoBox color="blue" icon={<Info size={20} />} title="Pruébalo sin cuenta">
-            Las herramientas gratis{" "}
+            Las herramientas{" "}
             <DocLink href="/es/herramientas/comparar-factura-con-orden-de-compra">
               Comparar factura con orden de compra
             </DocLink>{" "}
@@ -291,8 +290,7 @@ export default function Page() {
           <BulletList
             items={[
               <Fragment key="t1">
-                <strong>Filas</strong>, <strong>Créditos</strong> y <strong>Celdas</strong>: el
-                tamaño del resultado y lo que costó.
+                <strong>Filas</strong> y <strong>Celdas</strong>: el tamaño del resultado.
               </Fragment>,
               <Fragment key="t2">
                 <strong>Advertencias</strong>: por ejemplo, un run excluido porque su campo
@@ -347,9 +345,9 @@ export default function Page() {
             rows={[
               [
                 "Aprobar",
-                "La tabla de comparación y la columna Campeón se reconstruyen a partir de tus enlaces corregidos, se cobran los créditos y se envían las salidas.",
+                "La tabla de comparación y la columna Campeón se reconstruyen a partir de tus enlaces corregidos y se envían las salidas.",
               ],
-              ["Rechazar", "El match se cancela con tu motivo. No se cobran créditos ni se envían salidas."],
+              ["Rechazar", "El match se cancela con tu motivo. No se envían salidas."],
             ]}
           />
           <p>
@@ -381,27 +379,6 @@ export default function Page() {
           <p>Con la revisión humana activa, las salidas se envían solo después de aprobar.</p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Costo">
-          <p>
-            Un match se cobra por <strong>celdas</strong>: los valores no vacíos de los campos
-            identificador, de emparejamiento, de comparación y de contexto de los runs que compara.
-            Cada 200 celdas cuestan 1 crédito, redondeando hacia arriba, con un mínimo de 1 crédito
-            por match.
-          </p>
-          <BulletList
-            items={[
-              "Benchmark: las celdas de cada run se cuentan una vez.",
-              "Multilateral: cada run se compara con todos los demás, así que las celdas se cuentan una vez por pareja, es decir, el total multiplicado por el número de runs menos uno. Tres runs cuestan el doble que los mismos tres runs en modo Benchmark.",
-              "Los créditos se verifican antes de poner el match en cola y se cobran cuando se completa (o cuando un revisor lo aprueba). Los matches fallidos o rechazados no se cobran.",
-              "La extracción de los documentos la cobra el flow por separado, como siempre, incluidos los runs que crea el disparador por correo.",
-            ]}
-          />
-          <p>
-            Consulta <DocLink href="/es/documentacion/creditos">Créditos</DocLink> para ver saldos y
-            cómo agregar más.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code size={24} />} title="API">
           <p>
             Inicia un match desde tu propio sistema con tu API key. Copia el ID desde{" "}
@@ -424,10 +401,10 @@ export default function Page() {
                 ser uno de los <InlineCode>run_ids</InlineCode>. Omítelo en Multilateral.
               </Fragment>,
               <Fragment key="a3">
-                La respuesta es <InlineCode>202</InlineCode> con <InlineCode>match_id</InlineCode>,{" "}
-                <InlineCode>status</InlineCode> (<InlineCode>queued</InlineCode>),{" "}
-                <InlineCode>cells_count</InlineCode> y <InlineCode>credits_required</InlineCode>. Un{" "}
-                <InlineCode>402</InlineCode> significa que el saldo no alcanza; un{" "}
+                La respuesta es <InlineCode>202</InlineCode> con <InlineCode>match_id</InlineCode>{" "}
+                y <InlineCode>status</InlineCode> (<InlineCode>queued</InlineCode>). Un{" "}
+                <InlineCode>402</InlineCode> significa que tu organización no puede iniciar trabajo
+                nuevo en este momento; contacta al equipo de Tavnit. Un{" "}
                 <InlineCode>400</InlineCode> explica qué está mal en la solicitud.
               </Fragment>,
               "Configura un Webhook en el matcher para recibir la tabla de comparación cuando el match se complete.",
@@ -506,11 +483,6 @@ export default function Page() {
               href: "/es/documentacion/revision-humana",
               label: "Colas de revisión",
               description: "Donde los runs, matches e inspecciones pausados esperan a un revisor.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Cómo se cobran los créditos",
-              description: "El precio por celda de los matches junto con el de cada paso.",
             },
           ]}
         />

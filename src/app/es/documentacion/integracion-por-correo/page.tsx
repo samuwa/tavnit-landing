@@ -123,7 +123,7 @@ export default function Page() {
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="Un Run por adjunto">
             Un correo con tres facturas adjuntas genera tres Runs separados, cada uno con su propio
-            resultado, su propio cobro de créditos y su propia fila en la lista de Runs. No genera un
+            resultado y su propia fila en la lista de Runs. No genera un
             solo Run con tres documentos.
           </InfoBox>
           <WarningBox>
@@ -310,7 +310,7 @@ export default function Page() {
             rows={[
               [
                 "Un Flow",
-                "Extrae de la primera hoja visible. El Run se cobra en equivalentes de página, según cuántas páginas ocuparía la hoja impresa.",
+                "Extrae de la primera hoja visible.",
               ],
               [
                 "Una Colección",
@@ -323,7 +323,7 @@ export default function Page() {
             ]}
           />
           <p>
-            Las hojas muy grandes se rechazan con un error antes de cobrar créditos. Para cargar una
+            Las hojas muy grandes se rechazan con un error. Para cargar una
             hoja de cálculo como filas estructuradas, usa una limpieza de un{" "}
             <DocLink href="/es/documentacion/cleaners">Cleaner</DocLink>.
           </p>
@@ -333,7 +333,7 @@ export default function Page() {
           <Lead>
             A veces los servidores de correo entregan el mismo mensaje más de una vez, por ejemplo
             después de un tiempo de espera agotado. Tavnit reconoce un mensaje reentregado a la misma
-            dirección y no lo vuelve a procesar, así que un reintento nunca genera Runs ni cobros
+            dirección y no lo vuelve a procesar, así que un reintento nunca genera Runs
             duplicados.
           </Lead>
           <BulletList

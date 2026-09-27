@@ -208,10 +208,6 @@ export default function ApiIntegrationContentEs() {
                 un <DocLink href="/es/documentacion/webhooks">webhook</DocLink> configurado en la
                 función.
               </Fragment>,
-              <Fragment key="b3">
-                El trabajo por API cuesta los mismos créditos que el mismo trabajo en la app.
-                Consulta <DocLink href="/es/documentacion/creditos">Créditos</DocLink>.
-              </Fragment>,
             ]}
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="Funciones en Beta">
@@ -292,7 +288,7 @@ export default function ApiIntegrationContentEs() {
             traen un texto en <InlineCode>error</InlineCode>, a veces un{" "}
             <InlineCode>message</InlineCode> y claves adicionales que explican el problema:
           </p>
-          <CodeBlock lang="Ejemplo 402" code={API_ERROR_EXAMPLE} />
+          <CodeBlock lang="Ejemplo 409" code={API_ERROR_EXAMPLE} />
           <DataTable
             head={["Código", "Significado"]}
             rows={[
@@ -300,7 +296,7 @@ export default function ApiIntegrationContentEs() {
               ["202", "Aceptado: el trabajo quedó en cola. Guarda el id que devuelve."],
               ["400", "Falta un campo obligatorio o no es válido, el tipo de archivo no es compatible, o el recurso está inactivo o sin configurar."],
               ["401", "Falta la X-API-Key o no es válida."],
-              ["402", "No hay créditos suficientes para empezar. El cuerpo indica cuántos se necesitan y cuántos hay."],
+              ["402", "Tu organización no puede iniciar trabajo nuevo en este momento; contacta al equipo de Tavnit."],
               ["403", "El recurso es de otra organización, tu rol es Solo HITL o no eres revisor de ese elemento."],
               ["404", "El ID no existe en tu organización."],
               ["409", "Conflicto con el estado actual: nombre de Bucket que no coincide, ya cancelado o terminado, caso cerrado, espacio ya ocupado."],
@@ -447,8 +443,7 @@ export default function ApiIntegrationContentEs() {
           <Endpoint method="POST" path="/splits/run" />
           <p>
             El mismo cuerpo que <InlineCode>/runs/process</InlineCode>, con{" "}
-            <InlineCode>splitter_id</InlineCode>. Las páginas se cuentan de antemano y tu saldo debe
-            cubrirlas (si no, responde 402).
+            <InlineCode>splitter_id</InlineCode>.
           </p>
           <LangToggle lang={lang} setLang={setLang} />
           {lang === "python" ? (
@@ -494,9 +489,7 @@ export default function ApiIntegrationContentEs() {
           )}
           <CodeBlock lang="Respuesta 202" code={SWEEP_RUN_RESPONSE} />
           <p>
-            Los créditos se estiman según el número de celdas y se verifican antes de poner el
-            sweep en cola (402 si no alcanzan). Un Cleaner con una configuración inválida responde
-            400 con <InlineCode>validation_errors</InlineCode>. Consulta{" "}
+            Un Cleaner con una configuración inválida responde 400 con <InlineCode>validation_errors</InlineCode>. Consulta{" "}
             <DocLink href="/es/documentacion/cleaners">Cleaners</DocLink>.
           </p>
         </DocCard>
@@ -564,8 +557,7 @@ export default function ApiIntegrationContentEs() {
             de entrada del Agente para este run. Solo se usan las variables que el Agente declara, y
             nunca se aceptan valores secretos. También puedes llamar a{" "}
             <InlineCode>POST /bots/runs</InlineCode> con <InlineCode>bot_id</InlineCode> en el
-            cuerpo. Tu saldo debe cubrir al menos un minuto de navegador (si no, 402); los minutos
-            reales se cobran al terminar el run. Cada llamada inicia un run nuevo que se cobra.
+            cuerpo. Cada llamada inicia un run nuevo.
           </p>
           <CodeBlock lang="Solicitud" code={AGENT_TRIGGER_REQUEST} />
           <p>
@@ -579,9 +571,9 @@ export default function ApiIntegrationContentEs() {
           <DataTable
             head={["Endpoint", "Qué hace"]}
             rows={[
-              ["GET /bot-runs/{bot_run_id}", "Un run: estado, tiempos, créditos cobrados, input (sin secretos) y output con enlaces firmados a archivos. También en GET /bots/{agent_id}/runs/{bot_run_id}."],
+              ["GET /bot-runs/{bot_run_id}", "Un run: estado, tiempos, input (sin secretos) y output con enlaces firmados a archivos. También en GET /bots/{agent_id}/runs/{bot_run_id}."],
               ["GET /bots/{agent_id}/runs", "Del más reciente al más antiguo, sin input ni output. Consulta: status (queued, running, completed, failed, cancelled), limit (de 1 a 100; por defecto 20), offset. Devuelve runs y total."],
-              ["POST /bot-runs/{bot_run_id}/cancel", "Cancela un run en espera, en cola o en ejecución. Los minutos ya usados se cobran. 409 si el run ya terminó. También en POST /bots/{agent_id}/runs/{bot_run_id}/cancel."],
+              ["POST /bot-runs/{bot_run_id}/cancel", "Cancela un run en espera, en cola o en ejecución. 409 si el run ya terminó. También en POST /bots/{agent_id}/runs/{bot_run_id}/cancel."],
             ]}
           />
           <CodeBlock lang="GET /bot-runs/{bot_run_id}" code={AGENT_RUN_RESPONSE} />
@@ -603,8 +595,7 @@ export default function ApiIntegrationContentEs() {
           />
           <CodeBlock lang="Solicitud" code={MATCHER_RUN_REQUEST} />
           <p>
-            Los créditos dependen del número de celdas comparadas y se verifican primero (402). No
-            hay un endpoint de API para leer un match: recibe el resultado en el webhook o la salida
+            No hay un endpoint de API para leer un match: recibe el resultado en el webhook o la salida
             por correo del Matcher, o en la app. Consulta{" "}
             <DocLink href="/es/documentacion/matchers">Matchers</DocLink>.
           </p>
@@ -620,9 +611,7 @@ export default function ApiIntegrationContentEs() {
           <p>
             <InlineCode>file</InlineCode> multipart. Sin <InlineCode>inspection_id</InlineCode> se
             crea una inspección nueva; envía el <InlineCode>inspection_id</InlineCode> devuelto para
-            agregarle más documentos (debe seguir recibiendo archivos; si no, 409). Cada documento
-            cuesta el crédito de enrutamiento por adelantado (402 si no alcanza), más su extracción.
-            El Inspector debe estar activo.
+            agregarle más documentos (debe seguir recibiendo archivos; si no, 409). El Inspector debe estar activo.
           </p>
           <CodeBlock lang="Solicitud" code={INSPECTOR_PROCESS_REQUEST} />
           <DataTable
@@ -648,7 +637,7 @@ export default function ApiIntegrationContentEs() {
             head={["Endpoint", "Qué hace"]}
             rows={[
               ["POST /fillers/{filler_id}/fills", "Abre un fill (201, devuelve fill_id). El Filler necesita una plantilla y el mapeo de campos."],
-              ["POST /fills/{fill_id}/route-upload", "Archivo multipart; la IA lo dirige a un espacio libre (202). Cuesta el crédito de enrutamiento."],
+              ["POST /fills/{fill_id}/route-upload", "Archivo multipart; la IA lo dirige a un espacio libre (202)."],
               ["POST /fills/{fill_id}/inputs/{input_id}/upload", "Archivo multipart para un espacio concreto; inicia el run de ese espacio (202)."],
               ["POST /fills/{fill_id}/inputs/{input_id}/attach-run", "JSON run_id: reutiliza un run completado para un espacio (202)."],
               ["POST /fills/{fill_id}/fire", "Llena ahora en lugar de esperar todos los espacios. 400 con missing_inputs si un espacio obligatorio está vacío."],
@@ -668,8 +657,7 @@ export default function ApiIntegrationContentEs() {
           <Endpoint method="POST" path="/pipelines/{pipeline_id}/execute" />
           <p>
             <InlineCode>file</InlineCode> multipart o <InlineCode>file_base64</InlineCode> +{" "}
-            <InlineCode>filename</InlineCode>; PDF o imagen. Tu saldo debe cubrir al menos 1 crédito
-            (si no, 402), y luego cada paso cobra sus propios créditos. 400 si el Pipeline está
+            <InlineCode>filename</InlineCode>; PDF o imagen. 400 si el Pipeline está
             inactivo o su grafo no puede ejecutarse (con <InlineCode>validation_errors</InlineCode>).
           </p>
           <CodeBlock lang="Solicitud" code={PIPELINE_EXECUTE_REQUEST} />
@@ -687,9 +675,7 @@ export default function ApiIntegrationContentEs() {
           <Endpoint method="POST" path="/signals/{signal_id}/run" />
           <p>
             <InlineCode>file</InlineCode> multipart o base64. Audio de hasta 150 MB y 8 horas, con
-            un máximo de 2 horas de voz detectada. Se cobra 1 crédito por minuto de voz detectada
-            (mínimo 1); el silencio no se cobra. <InlineCode>estimated_max_credits</InlineCode> es
-            el tope calculado con la duración total. Tu saldo debe cubrir al menos 1 crédito (402).
+            un máximo de 2 horas de voz detectada.
           </p>
           <CodeBlock lang="Solicitud" code={SIGNAL_RUN_REQUEST} />
           <p>
@@ -729,14 +715,12 @@ export default function ApiIntegrationContentEs() {
           <p>
             Sin cuerpo, el Catch continúa donde terminó el anterior. Envía{" "}
             <InlineCode>window_start</InlineCode> y/o <InlineCode>window_end</InlineCode> (fechas
-            ISO) para recuperar un rango específico. Los créditos se cobran cuando el Catch se
-            completa, y no se cobra nada por un Catch fallido o cancelado. 402 si faltan créditos,
-            409 si la Net está inactiva o ya hay en curso un Catch que continúa desde el anterior.
+            ISO) para recuperar un rango específico. 409 si la Net está inactiva o ya hay en curso un Catch que continúa desde el anterior.
           </p>
           <CodeBlock lang="Solicitud" code={NET_CATCH_REQUEST} />
           <p>
-            Consulta <InlineCode>{"GET /catches/{catch_id}"}</InlineCode>: estado, etapa, conteos,
-            créditos y, una vez completado, <InlineCode>output</InlineCode> con columnas y filas.
+            Consulta <InlineCode>{"GET /catches/{catch_id}"}</InlineCode>: estado, etapa, conteos y,
+            una vez completado, <InlineCode>output</InlineCode> con columnas y filas.
             Cancela con <InlineCode>{"POST /catches/{catch_id}/cancel"}</InlineCode>. Consulta{" "}
             <DocLink href="/es/documentacion/nets">Nets</DocLink>.
           </p>
@@ -1035,11 +1019,6 @@ export default function ApiIntegrationContentEs() {
             href: "/es/documentacion/webhooks",
             label: "Recibe resultados con webhooks",
             description: "El payload que Tavnit envía cuando un run termina y cómo construir un receptor.",
-          },
-          {
-            href: "/es/documentacion/creditos",
-            label: "Cómo se cobran los créditos",
-            description: "Cuánto cuesta cada tipo de trabajo y qué pasa cuando se acaba el saldo.",
           },
           {
             href: "/es/documentacion/conector-mcp",

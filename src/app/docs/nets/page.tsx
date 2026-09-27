@@ -6,7 +6,6 @@ import {
   AlertTriangle,
   CalendarClock,
   Code2,
-  Coins,
   FilePlus,
   FlaskConical,
   HelpCircle,
@@ -130,7 +129,7 @@ export default function Page() {
           <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="No keyword search">
             Instagram has no keyword search, so a Net always starts from accounts, hashtags, places or
             post links. Put your keywords in the relevance rule. Posts that fail the rule are dropped
-            before comments, media or columns cost anything.
+            before comments, media or columns are processed.
           </InfoBox>
           <DataTable
             head={["Limit", "Default", "Range"]}
@@ -159,13 +158,13 @@ export default function Page() {
         <DocCard icon={<FlaskConical size={24} />} title="The Test tab">
           <Lead>
             <strong>&ldquo;Run test&rdquo;</strong> fetches a small sample from your scope, shows what
-            is kept, dropped or excluded, and previews the table, before any Catch. Tests are free.
+            is kept, dropped or excluded, and previews the table, before any Catch.
           </Lead>
           <BulletList
             items={[
               "The test always uses your current edits, including unsaved ones. Save them when the results look right.",
               "Tabs: Kept, Dropped, Excluded and Table preview (the first kept posts with their comments, structured with your columns).",
-              "“Per Catch (estimate)” projects posts per day, posts per Catch, rows per Catch and credits per Catch. “At least” means the sample hit its cap.",
+              "“Per Catch (estimate)” projects posts per day, posts per Catch, and rows per Catch. “At least” means the sample hit its cap.",
               "“Tune the scope” suggests hashtags or accounts to add or exclude and a revised rule; one click updates the draft, then test again to compare.",
               "If you only changed the rule or columns, “Test again” reuses the last sample: no new fetch, only your rule and columns run again.",
             ]}
@@ -187,7 +186,7 @@ export default function Page() {
               </Fragment>,
               <Fragment key="r3">
                 Click <strong>&ldquo;Start Catch&rdquo;</strong>. The Catch appears under{" "}
-                <strong>&ldquo;Catches&rdquo;</strong> with its window, posts kept, rows, credits,
+                <strong>&ldquo;Catches&rdquo;</strong> with its window, posts kept, rows,
                 status and source (Manual, Scheduled or API).
               </Fragment>,
             ]}
@@ -202,11 +201,11 @@ export default function Page() {
             While it runs, a Catch shows its stage: Fetching posts, Checking relevance, Fetching
             comments, Reading images and audio, Filling your columns, and Delivering. It ends as
             completed, failed or cancelled. <strong>&ldquo;Cancel Catch&rdquo;</strong> stops it;
-            nothing is charged or delivered, and the posts can be caught again.
+            nothing is delivered, and the posts can be caught again.
           </p>
           <p>
-            A completed Catch shows new posts, kept posts, comments, rows, images read, audio
-            transcribed and credits. Its table can be filtered to posts or comments, searched, and
+            A completed Catch shows new posts, kept posts, comments, rows, images read and audio
+            transcribed. Its table can be filtered to posts or comments, searched, and
             downloaded as CSV or JSON; each row links to the post (&ldquo;Open post&rdquo;) and each
             value says where it came from (the item&apos;s text, the parent post, the Reel&apos;s
             audio, metadata or an image).
@@ -261,26 +260,6 @@ export default function Page() {
           />
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Cost">
-          <p>A Catch is charged when it completes, adding up four parts:</p>
-          <DataTable
-            head={["Part", "Rate"]}
-            rows={[
-              ["Posts fetched (relevance check)", "1 credit per 50 posts"],
-              ["Rows structured (kept posts and comments)", "1 credit per 10 rows"],
-              ["Images read", "1 credit per 5 images"],
-              ["Reel audio transcribed", "1 credit per 60 seconds"],
-            ]}
-          />
-          <p>
-            Each part is rounded up, and a Catch that fetched anything costs at least 1 credit. A
-            Catch with nothing new in its window, a failed Catch and a cancelled Catch cost nothing,
-            and tests are free. You need at least 1 credit to start a Catch. The Test tab&apos;s
-            estimate shows what a Catch of your Net is likely to cost. See{" "}
-            <DocLink href="/docs/credits">Credits</DocLink>.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code2 size={24} />} title="API">
           <p>
             Copy the ID from <strong>&ldquo;Net ID&rdquo;</strong> and queue a Catch. An empty body
@@ -300,7 +279,7 @@ export default function Page() {
           <CodeBlock lang="bash — Catch status and output" code={STATUS_CURL} />
           <p>
             <InlineCode>POST /api/catches/CATCH_ID/cancel</InlineCode> cancels a queued or running
-            Catch. Errors: 400 for a bad window, 402 for insufficient credits, 403 when Nets
+            Catch. Errors: 400 for a bad window, 402 when your organization can&apos;t start new work right now (contact the Tavnit team), 403 when Nets
             aren&apos;t enabled for your organisation, 409 for an inactive Net or a &ldquo;since the
             last Catch&rdquo; Catch already in progress. See the{" "}
             <DocLink href="/docs/api-integration">REST API</DocLink> page for authentication.
@@ -357,11 +336,6 @@ export default function Page() {
               href: "/docs/signals",
               label: "Structure recorded conversations with Signals",
               description: "The same idea for audio: members, rules and fields per turn.",
-            },
-            {
-              href: "/docs/credits",
-              label: "How credits are charged",
-              description: "Per-feature costs, including Catches.",
             },
             {
               href: "/docs/api-integration",

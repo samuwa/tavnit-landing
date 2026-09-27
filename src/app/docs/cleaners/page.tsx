@@ -130,8 +130,7 @@ export default function Page() {
             recent completed run) and drafts rules such as AI formatting, date and number formats,
             formulas, categories, conditionals and conversions. You can uncheck any suggestion or
             open it in the same editor the builder uses; a rule marked &ldquo;Needs attention&rdquo;
-            needs a fix before it is valid. Suggesting rules does not use credits, and everything
-            stays editable after the Cleaner is created.
+            needs a fix before it is valid. Everything stays editable after the Cleaner is created.
           </InfoBox>
           <p>
             <strong>Start from scratch</strong> opens the builder, where you name the Cleaner and
@@ -611,10 +610,9 @@ export default function Page() {
           </InfoBox>
         </DocCard>
 
-        <DocCard icon={<Clock size={24} />} title="Sweeps and credits">
+        <DocCard icon={<Clock size={24} />} title="Sweeps">
           <Lead>
-            A sweep is one execution of a Cleaner over a batch of rows. Each sweep is billed on the
-            cells it cleaned, not on the number of documents.
+            A sweep is one execution of a Cleaner over a batch of rows.
           </Lead>
           <DataTable
             head={["How a sweep starts", "When to use it"]}
@@ -630,14 +628,6 @@ export default function Page() {
               ["API", "Send a file or JSON rows to the Cleaner from your own systems. See below."],
             ]}
           />
-          <p>
-            Cleaning credits are charged per 500 non-empty cells in the cleaned output, rounded up,
-            with a one-credit minimum. Empty cells and excluded fields are not counted, so a wide
-            table with many optional columns costs less than its dimensions suggest; each Lookup
-            field adds one cell per row. The AI-powered field types do not add a separate charge.
-            See <DocLink href="/docs/credits">credits</DocLink> for how cleaning fits with the rest
-            of your balance.
-          </p>
         </DocCard>
 
         <DocCard icon={<Table2 size={24} />} title="The sweep page">
@@ -647,7 +637,7 @@ export default function Page() {
           </Lead>
           <BulletList
             items={[
-              "Status (Processing, Completed, Failed or Cancelled) with the Rows, Credits and Source of the sweep.",
+              "Status (Processing, Completed, Failed or Cancelled) with the Rows and Source of the sweep.",
               "Warnings: per-row problems such as a formula that divided by zero or a value that could not be read as a number. Problems stay attached to the row that caused them, so one bad row does not fail the sweep.",
               "Sweep Information: the Cleaner, when the sweep was created, and the source run and flow when it came from a flow.",
               "The data table, with a Cleaned / Pivoted / Raw toggle to compare the output with what came in, and Expand for a full-screen view. You can select and copy cells.",
@@ -760,11 +750,6 @@ export default function Page() {
               label: "Look values up in Buckets and write back to them",
               description:
                 "The structured tables Lookup, Bucket Check, Human Input menus and Edit Bucket Row work against.",
-            },
-            {
-              href: "/docs/credits",
-              label: "Understand cleaning credits",
-              description: "How cell-based cleaning charges fit with the rest of your balance.",
             },
             {
               href: "/docs/webhooks",

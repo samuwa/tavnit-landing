@@ -244,7 +244,7 @@ export default function Page() {
           />
           <InfoBox color="violet" icon={<Database size={20} />} title="Estructura, no resultados">
             Salvo el grosor de las líneas, el mapa muestra cómo están conectadas las cosas, no lo que
-            pasó por ellas. Para resultados individuales, créditos y fallos, usa Runs y el historial de
+            pasó por ellas. Para resultados individuales y fallos, usa Runs y el historial de
             cada objeto.
           </InfoBox>
         </DocCard>

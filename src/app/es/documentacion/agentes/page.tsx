@@ -418,8 +418,8 @@ export default function Page() {
 
         <DocCard icon={<CalendarClock size={24} />} title="Ejecutar un Agente">
           <Lead>
-            Un Agente puede arrancar de cinco maneras. Arranque como arranque, pasa por la misma
-            verificación de créditos, los mismos límites y las mismas entregas.
+            Un Agente puede arrancar de cinco maneras. Arranque como arranque, pasa por los mismos
+            límites y las mismas entregas.
           </Lead>
           <DataTable
             head={["Disparador", "Cómo"]}
@@ -450,7 +450,7 @@ export default function Page() {
               "La programación solo se ejecuta mientras el Agente está activo",
               "Los Runs arrancan aproximadamente un minuto después de la hora programada, o más tarde si todos los workers están ocupados",
               "Una ventana perdida no se repite: tras un retraso, el Agente se ejecuta una vez, no una por cada horario perdido",
-              "Un Run programado que no puede arrancar (el Run anterior sigue en curso o no hay créditos suficientes) aparece como un Run fallido que explica el motivo",
+              "Un Run programado que no puede arrancar (el Run anterior sigue en curso o tu organización no puede iniciar trabajo nuevo en este momento) aparece como un Run fallido que explica el motivo",
               "Las fallas de los Runs programados y por API generan una notificación en la app para quien creó el Agente, ya que nadie está mirando la página del Run",
             ]}
           />
@@ -477,7 +477,7 @@ export default function Page() {
           />
           <BulletList
             items={[
-              "Un Run que espera su turno muestra el estado En espera; no ocupa un worker ni se cobra",
+              "Un Run que espera su turno muestra el estado En espera; no ocupa un worker",
               "Pueden esperar hasta 20 Runs por Agente; a partir de ahí se rechazan los nuevos disparadores (la API responde 429)",
               "Un Run que espera más de 24 horas se marca como fallido",
               "Solo espera un Run programado a la vez, así que un Agente lento con una programación frecuente no acumula Runs",
@@ -506,15 +506,14 @@ export default function Page() {
             items={[
               "Pasos: un registro de lo que hizo el Agente, en orden",
               "Salida capturada y Archivos capturados, con descargas",
-              "Resumen: duración, créditos usados, llamadas LLM y tokens",
+              "Resumen: duración, llamadas LLM y tokens",
               "Ver sesión en vivo mientras se ejecuta y Ver repetición de sesión después",
               "Identificadores (ID del Run e ID de Sesión) para las solicitudes de soporte",
             ]}
           />
           <p>
             <strong>Cancelar Run</strong> detiene un Run en espera, en cola o en ejecución. La sesión
-            del navegador termina en pocos segundos y no se entrega nada. Los minutos de navegador ya
-            usados se cobran igual.
+            del navegador termina en pocos segundos y no se entrega nada.
           </p>
           <InfoBox color="blue" icon={<Info size={20} />} title="Depura con la repetición, no con la salida">
             Cuando un Agente devuelve un valor incorrecto, la repetición suele mostrar el porqué en
@@ -523,7 +522,7 @@ export default function Page() {
           </InfoBox>
         </DocCard>
 
-        <DocCard icon={<Gauge size={24} />} title="Límites y créditos">
+        <DocCard icon={<Gauge size={24} />} title="Límites">
           <Lead>
             Los Runs tienen topes para que una misión que sale mal no se ejecute para siempre. Hay dos
             límites, ambos configurables por Agente en <strong>Ajustes → Límites</strong>. Deja un campo
@@ -541,22 +540,6 @@ export default function Page() {
               ],
             ]}
           />
-          <p>
-            <strong>Costo:</strong> 3 créditos por minuto de tiempo de navegador. El tiempo se redondea
-            hacia arriba al minuto completo siguiente, con un mínimo de un minuto. Consulta{" "}
-            <DocLink href="/es/documentacion/creditos">créditos</DocLink>.
-          </p>
-          <WarningBox>
-            El tiempo de navegador se cobra tanto si el Run se completa como si falla o se cancela. Una
-            misión que da vueltas hasta chocar con un tope de 20 minutos cuesta los 20 minutos
-            completos. Mantén baja la duración máxima en los Agentes que todavía estás ajustando.
-          </WarningBox>
-          <p>
-            Para iniciar un Run necesitas créditos para al menos un minuto (3). El costo exacto no se
-            conoce de antemano, así que Tavnit verifica el saldo antes de empezar y cobra los minutos
-            reales cuando el Run termina. Si el saldo se agota en el camino, se cobra lo que quede y la
-            página del Run registra la diferencia. Para agregar créditos, contacta al equipo de Tavnit.
-          </p>
         </DocCard>
 
         <DocCard icon={<Terminal size={24} />} title="Disparar desde la API">
@@ -579,7 +562,7 @@ export default function Page() {
               ],
               [
                 <InlineCode key="a2">{"GET /bot-runs/{bot_run_id}"}</InlineCode>,
-                "Estado, tiempos, créditos cobrados, entradas y salida (con enlaces a los archivos).",
+                "Estado, tiempos, entradas y salida (con enlaces a los archivos).",
               ],
               [
                 <InlineCode key="a3">{"GET /bots/{agent_id}/runs"}</InlineCode>,
@@ -592,8 +575,8 @@ export default function Page() {
             ]}
           />
           <p>
-            Cada llamada a la API inicia un Run nuevo que se cobra. Si no hay créditos suficientes, la
-            respuesta es 402. Para la referencia completa de solicitudes y respuestas, consulta la{" "}
+            Cada llamada a la API inicia un Run nuevo. Un 402 significa que tu organización no puede
+            iniciar trabajo nuevo en este momento; contacta al equipo de Tavnit. Para la referencia completa de solicitudes y respuestas, consulta la{" "}
             <DocLink href="/es/documentacion/api">página de la API</DocLink>. Si prefieres no llamar al
             Agente directamente, dispara el Flow vinculado y deja que el Agente lo siga.
           </p>
@@ -645,7 +628,7 @@ export default function Page() {
               ],
               [
                 "Un Run programado aparece como fallido sin haberse ejecutado",
-                "El Run anterior seguía en curso o no había créditos suficientes. El mensaje del Run dice cuál.",
+                "El Run anterior seguía en curso o tu organización no podía iniciar trabajo nuevo en ese momento. El mensaje del Run dice cuál.",
               ],
             ]}
           />
@@ -673,11 +656,6 @@ export default function Page() {
               href: "/es/documentacion/pipelines",
               label: "Pon Agentes en un Pipeline",
               description: "Encadena Flows, Agentes y otros pasos sobre un lienzo.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Créditos",
-              description: "Cómo se cobran los minutos de navegador junto con el resto de Tavnit.",
             },
           ]}
         />

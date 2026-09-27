@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   ArrowLeftRight,
   Code,
-  Coins,
   Eye,
   FilePlus,
   FolderInput,
@@ -119,8 +118,7 @@ export default function Page() {
             ]}
           />
           <p>
-            El enrutamiento cuesta un crédito por documento, así que enrutar algo que podrías haber
-            enviado directamente no es gratis. Si quien envía conoce el tipo, díselo al Flow.
+            Si quien envía conoce el tipo, díselo al Flow.
           </p>
         </DocCard>
 
@@ -234,7 +232,7 @@ export default function Page() {
               ],
               [
                 "Fallido",
-                "El documento no se pudo enrutar: un archivo no compatible o ilegible, una Colección sin destinos activos o un saldo de créditos en cero.",
+                "El documento no se pudo enrutar: un archivo no compatible o ilegible, o una Colección sin destinos activos.",
               ],
             ]}
           />
@@ -277,32 +275,8 @@ export default function Page() {
             que podría formar un ciclo. Un Splitter que ya envía documentos a esta Colección aparece
             atenuado en la lista de Splitters y no se puede agregar, y durante la ejecución un
             segmento producido por un Splitter nunca se enruta de vuelta a ese mismo Splitter. Así,
-            una configuración mal hecha no puede hacer girar documentos en círculo y gastar créditos.
+            una configuración mal hecha no puede hacer girar documentos en círculo.
           </InfoBox>
-        </DocCard>
-
-        <DocCard icon={<Coins size={24} />} title="Cuánto cuesta el enrutamiento">
-          <Lead>
-            El enrutamiento cuesta un crédito por documento. El crédito se cobra cuando el archivo ya
-            fue aceptado y antes de clasificarlo, así que no depende del resultado: un Run cancelado
-            también cuesta su crédito de enrutamiento.
-          </Lead>
-          <DataTable
-            head={["Cargo", "Cuándo"]}
-            rows={[
-              ["1 crédito", "Por cada documento que enruta una Colección: con coincidencia, enviado al Flow predeterminado o cancelado."],
-              [
-                "El cargo propio del Flow",
-                "Adicional, cuando el documento llega a un Flow y se extrae. El desglose de créditos del Run muestra Enrutamiento y Extracción por separado.",
-              ],
-            ]}
-          />
-          <p>
-            Un archivo rechazado antes de enrutar (tipo no compatible, archivo ilegible, sin destinos
-            activos) no se cobra. Si el saldo está en cero cuando llega un documento, el Run de
-            Colección falla antes de enrutar y no se procesa nada. Consulta{" "}
-            <DocLink href="/es/documentacion/creditos">créditos</DocLink>.
-          </p>
         </DocCard>
 
         <DocCard icon={<Mail size={24} />} title="Enviar documentos a una Colección">
@@ -399,7 +373,7 @@ export default function Page() {
           </Lead>
           <BulletList
             items={[
-              "Haz clic en un Run enrutado para abrir el Run del Flow (o la separación) que creó, con sus datos extraídos y un desglose de créditos que incluye el crédito de enrutamiento.",
+              "Haz clic en un Run enrutado para abrir el Run del Flow (o la separación) que creó, con sus datos extraídos.",
               "Haz clic en un Run que no llegó a un destino para abrir el diálogo Run de Colección: estado, documento, origen, la razón de enrutamiento escrita y cualquier mensaje de error. Un Run que todavía está pendiente o enrutándose se puede cancelar desde ahí con Cancelar Run.",
               "Un Run que usó el Flow predeterminado muestra ese Flow como destino; su motivo empieza con “No clear match. Using default flow.”",
             ]}
@@ -434,10 +408,6 @@ export default function Page() {
               [
                 "No se puede agregar un Splitter",
                 "Ya envía documentos a esta Colección; agregarlo crearía un bucle.",
-              ],
-              [
-                "Un Run falló por un error de créditos",
-                "El saldo estaba en cero cuando llegó el documento. Contacta al equipo para agregar créditos y vuelve a enviar el documento.",
               ],
             ]}
           />

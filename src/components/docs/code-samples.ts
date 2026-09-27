@@ -681,7 +681,6 @@ export const SPLIT_RUN_RESPONSE = `{
   "split_id": "c74a0b12-3e69-4f85-b0d7-58e2a9c61f70",
   "status": "pending",
   "pages_count": 12,
-  "credits_required": 12,
   "message": "Split queued for processing."
 }`;
 
@@ -690,8 +689,6 @@ export const SWEEP_RUN_RESPONSE = `{
   "sweep_id": "5d2e8a61-0b4f-4c3e-9a7d-1f6b2c8e4a90",
   "status": "queued",
   "cleaner_id": "YOUR_CLEANER_ID",
-  "cells_count": 1840,
-  "credits_required": 4,
   "message": "Sweep queued for processing."
 }`;
 
@@ -752,7 +749,6 @@ export const AGENT_RUN_RESPONSE = `{
     "started_at": "2026-09-01T09:00:04Z",
     "finished_at": "2026-09-01T09:03:10Z",
     "duration_seconds": 186,
-    "credits_charged": 12,
     "llm_requests": 9,
     "error_message": null,
     "replay_url": "https://...",
@@ -772,9 +768,7 @@ export const MATCHER_RUN_REQUEST = `curl -X POST "${API_BASE}/matchers/YOUR_MATC
   "match_id": "...",
   "status": "queued",
   "mode": "benchmark",
-  "run_ids": ["RUN_A", "RUN_B"],
-  "cells_count": 640,
-  "credits_required": 4
+  "run_ids": ["RUN_A", "RUN_B"]
 }`;
 
 export const INSPECTOR_PROCESS_REQUEST = `curl -X POST "${API_BASE}/inspectors/YOUR_INSPECTOR_ID/process" \\
@@ -825,7 +819,6 @@ export const SIGNAL_RUN_REQUEST = `curl -X POST "${API_BASE}/signals/YOUR_SIGNAL
   "signal_id": "YOUR_SIGNAL_ID",
   "status": "queued",
   "audio_seconds": 754,
-  "estimated_max_credits": 13,
   "auto_created_wave": true
 }`;
 
@@ -880,9 +873,8 @@ curl -X POST "${API_BASE}/runs/RUN_ID/hitl/reject" \\
 
 export const API_ERROR_EXAMPLE = `{
   "success": false,
-  "error": "Insufficient credits",
-  "credits_required": 12,
-  "available_credits": 3
+  "error": "Bucket mismatch",
+  "message": "bucket_name does not match the target bucket. Verify both bucket_id and bucket_name before retrying."
 }`;
 
 export const API_KEY_RESPONSE = `{

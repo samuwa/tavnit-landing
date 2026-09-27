@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   ClipboardCheck,
   Code,
-  Coins,
   FilePlus,
   FileText,
   HelpCircle,
@@ -63,7 +62,7 @@ export default function Page() {
           <InfoBox color="blue" icon={<Info size={20} />} title="El rellenado en sí es determinista">
             La IA lee los documentos de origen (a través de sus Flows) y puede ordenar las subidas
             en sus entradas. Escribir los valores en el formulario es una copia directa de los
-            valores asignados: sin IA y sin créditos.
+            valores asignados: sin IA.
           </InfoBox>
         </DocCard>
 
@@ -317,24 +316,6 @@ export default function Page() {
           <p>Los PDFs rellenados te llegan por la salida de correo o de webhook del Filler.</p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Cuánto cuestan los Fillers">
-          <DataTable
-            head={["Cargo", "Cuándo"]}
-            rows={[
-              ["Gratis", "Rellenar las plantillas, adjuntar Runs existentes, asignar a mano un archivo sin coincidencia."],
-              [
-                "1 crédito por documento",
-                "Por cada documento enrutado con Subir y enrutar o Añadir documentos; se cobra sin importar lo que decida el enrutado.",
-              ],
-              ["El cargo de extracción del Flow", "Por cada documento que procesa el Flow de una entrada."],
-            ]}
-          />
-          <p>
-            Las subidas se rechazan cuando el saldo no alcanza. Consulta{" "}
-            <DocLink href="/es/documentacion/creditos">Créditos y facturación</DocLink>.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Users size={24} />} title="Quién puede hacer qué">
           <BulletList
             items={[
@@ -412,11 +393,6 @@ export default function Page() {
               href: "/es/documentacion/pipelines",
               label: "Ejecuta un Filler dentro de un Pipeline",
               description: "Encadena Splitters, Flows y Fillers en un mismo lienzo.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Cuánto cuesta todo",
-              description: "Todos los precios en créditos de Tavnit, en una sola tabla.",
             },
           ]}
         />

@@ -6,7 +6,6 @@ import {
   Bot,
   Briefcase,
   Code,
-  Coins,
   FilePlus,
   FileText,
   FolderInput,
@@ -235,12 +234,12 @@ export default function Page() {
           <p>
             Once the Case is known, Tavnit picks the document type. A Subject with one document type
             needs no decision. With several types, an AI classifier reads the first page and chooses
-            among them — this is the only AI step, and it costs one credit.
+            among them — this is the only AI step.
           </p>
           <InfoBox color="green" icon={<ShieldCheck size={20} />} title="Uploading straight into a Case skips routing">
             A document dropped on a Case page, sent to the Case&apos;s own address, or posted to the
             Case over the API already knows its Case. Uploads on the Case page and over the API also
-            name the document type, so nothing is classified and no routing credit is charged.
+            name the document type, so nothing is classified.
           </InfoBox>
         </DocCard>
 
@@ -288,7 +287,7 @@ export default function Page() {
             items={[
               <Fragment key="h1">
                 <strong>Assign</strong> it: pick a Case and a document type. Tavnit starts the
-                flow run on the stored file — no new upload and no routing credit. Assigning to a
+                flow run on the stored file — no new upload. Assigning to a
                 closed Case is allowed, because a person chose it explicitly.
               </Fragment>,
               <Fragment key="h2">
@@ -344,7 +343,6 @@ export default function Page() {
           <p>
             Click <strong>Run</strong> next to a check. Its result is listed on the Case with its
             status and, for inspections, the verdict; open it for the full comparison or checklist.
-            Checks are charged like any other match or inspection.
           </p>
         </DocCard>
 
@@ -377,7 +375,7 @@ export default function Page() {
               ],
               [
                 <InlineCode key="a2">POST /api/cases/&lt;case_id&gt;/docs</InlineCode>,
-                "Upload straight into a Case (doc_type_id is required when the Subject has several types). No routing charge; returns the run_id.",
+                "Upload straight into a Case (doc_type_id is required when the Subject has several types). Returns the run_id.",
               ],
               [
                 <InlineCode key="a3">POST /api/subjects/&lt;subject_id&gt;/cases</InlineCode>,
@@ -397,26 +395,6 @@ export default function Page() {
               ],
             ]}
           />
-        </DocCard>
-
-        <DocCard icon={<Coins size={24} />} title="What Subjects cost">
-          <DataTable
-            head={["Charge", "When"]}
-            rows={[
-              ["Free", "Finding the Case by reference or name, holding documents, manual assignment."],
-              [
-                "1 credit per document",
-                "Only when the Subject has more than one document type and the AI classifier picks the type — charged whatever it answers.",
-              ],
-              ["The flow's extraction charge", "Per document filed, once its run processes it."],
-              ["The check's own charge", "When you run a Matcher or Inspector on a Case."],
-            ]}
-          />
-          <p>
-            If the balance cannot cover the classification credit, the document is held rather than
-            failed, and you can assign it by hand. See{" "}
-            <DocLink href="/docs/credits">Credits &amp; Billing</DocLink> for every price.
-          </p>
         </DocCard>
 
         <DocCard icon={<Users size={24} />} title="Who can do what">
@@ -462,10 +440,6 @@ export default function Page() {
                 "Flow for document type … is unavailable",
                 "The type's flow was deleted or deactivated. Point the type at an active flow.",
               ],
-              [
-                "Insufficient credits for document-type classification",
-                "Add credits, or assign the document by hand (free).",
-              ],
             ]}
           />
           <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="Document types need an active flow">
@@ -490,11 +464,6 @@ export default function Page() {
               href: "/docs/email-integration",
               label: "Email addresses and attachments",
               description: "Address formats, accepted file types and sender whitelists.",
-            },
-            {
-              href: "/docs/credits",
-              label: "What everything costs",
-              description: "Every credit price in Tavnit, and what happens when the balance runs out.",
             },
           ]}
         />

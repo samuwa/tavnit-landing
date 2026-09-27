@@ -407,8 +407,8 @@ export default function Page() {
 
         <DocCard icon={<CalendarClock size={24} />} title="Running an agent">
           <Lead>
-            An agent can be started five ways. However it starts, it goes through the same credit
-            check, limits and deliveries.
+            An agent can be started five ways. However it starts, it goes through the same limits
+            and deliveries.
           </Lead>
           <DataTable
             head={["Trigger", "How"]}
@@ -439,7 +439,7 @@ export default function Page() {
               "The schedule only fires while the agent is active",
               "Runs start within about a minute of the scheduled time, later if all workers are busy",
               "A missed window is not replayed: after a delay the agent fires once, not once per missed slot",
-              "A scheduled run that can't start (the previous run is still going, or there are not enough credits) appears as a failed run that says why",
+              "A scheduled run that can't start (the previous run is still going, or your organization can't start new work right now) appears as a failed run that says why",
               "Failures of scheduled and API runs send the agent's creator an in-app notification, since nobody is watching the run page",
             ]}
           />
@@ -466,7 +466,7 @@ export default function Page() {
           />
           <BulletList
             items={[
-              "A run waiting for its turn shows the status Waiting; it holds no worker and is not billed",
+              "A run waiting for its turn shows the status Waiting; it holds no worker",
               "Up to 20 runs can wait per agent; beyond that, new triggers are refused (the API answers 429)",
               "A run that waits more than 24 hours is marked failed",
               "Only one scheduled run waits at a time, so a slow agent on a fast schedule can't pile up",
@@ -495,15 +495,14 @@ export default function Page() {
             items={[
               "Steps: a log of what the agent did, in order",
               "Captured output and Captured files, with downloads",
-              "Summary: duration, credits used, LLM calls and tokens",
+              "Summary: duration, LLM calls and tokens",
               "Watch live session while it runs, View session replay afterwards",
               "Identifiers (run ID and session ID) for support requests",
             ]}
           />
           <p>
             <strong>Cancel run</strong> stops a waiting, queued or running run. The browser session
-            ends within a few seconds and nothing is delivered. Browser minutes already used are still
-            billed.
+            ends within a few seconds and nothing is delivered.
           </p>
           <InfoBox color="blue" icon={<Info size={20} />} title="Debug from the replay, not the output">
             When an agent returns the wrong value, the replay usually shows why in seconds: it logged
@@ -512,7 +511,7 @@ export default function Page() {
           </InfoBox>
         </DocCard>
 
-        <DocCard icon={<Gauge size={24} />} title="Limits and credits">
+        <DocCard icon={<Gauge size={24} />} title="Limits">
           <Lead>
             Runs are bounded so a mission that goes wrong cannot run forever. Two limits apply, both
             set per agent under <strong>Settings → Limits</strong>. Leave a field empty to use the
@@ -530,22 +529,6 @@ export default function Page() {
               ],
             ]}
           />
-          <p>
-            <strong>Cost:</strong> 3 credits per minute of browser time. Time is rounded up to the
-            next whole minute, with a one-minute minimum. See{" "}
-            <DocLink href="/docs/credits">credits</DocLink>.
-          </p>
-          <WarningBox>
-            Browser time is billed whether the run completes, fails or is cancelled. A mission that
-            loops until it hits a 20-minute ceiling costs the full 20 minutes. Keep the max runtime
-            low on agents you are still tuning.
-          </WarningBox>
-          <p>
-            Starting a run needs at least one minute&apos;s worth of credits (3). The exact cost is
-            not known in advance, so Tavnit checks the balance before starting and charges the actual
-            minutes when the run ends. If the balance runs out in the meantime, whatever is left is
-            charged and the run page notes the shortfall. To add credits, contact the Tavnit team.
-          </p>
         </DocCard>
 
         <DocCard icon={<Terminal size={24} />} title="Triggering from the API">
@@ -567,7 +550,7 @@ export default function Page() {
               ],
               [
                 <InlineCode key="a2">{"GET /bot-runs/{bot_run_id}"}</InlineCode>,
-                "Status, timings, credits charged, inputs and output (with file links).",
+                "Status, timings, inputs and output (with file links).",
               ],
               [
                 <InlineCode key="a3">{"GET /bots/{agent_id}/runs"}</InlineCode>,
@@ -580,7 +563,8 @@ export default function Page() {
             ]}
           />
           <p>
-            Every API call starts a new, billed run. Insufficient credits return 402. For the full
+            Every API call starts a new run. A 402 means your organization can&apos;t start new work
+            right now; contact the Tavnit team. For the full
             request and response reference, see the{" "}
             <DocLink href="/docs/api-integration">API page</DocLink>. If you would rather not call the
             agent directly, trigger the linked flow and let the agent follow.
@@ -633,7 +617,7 @@ export default function Page() {
               ],
               [
                 "A scheduled run shows as failed without running",
-                "The previous run was still in progress, or there were not enough credits. The run's message says which.",
+                "The previous run was still in progress, or your organization couldn't start new work at the time. The run's message says which.",
               ],
             ]}
           />
@@ -661,11 +645,6 @@ export default function Page() {
               href: "/docs/pipelines",
               label: "Put agents in a pipeline",
               description: "Chain flows, agents and other steps on a canvas.",
-            },
-            {
-              href: "/docs/credits",
-              label: "Credits",
-              description: "How browser minutes are billed alongside the rest of Tavnit.",
             },
           ]}
         />

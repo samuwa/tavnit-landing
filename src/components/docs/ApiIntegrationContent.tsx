@@ -207,10 +207,6 @@ export default function ApiIntegrationContent() {
                 background. You get the result by polling (runs, agent runs, Catches, cases) or on a{" "}
                 <DocLink href="/docs/webhooks">webhook</DocLink> configured on the feature.
               </Fragment>,
-              <Fragment key="b3">
-                API work costs the same credits as the same work in the app. See{" "}
-                <DocLink href="/docs/credits">Credits</DocLink>.
-              </Fragment>,
             ]}
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="Beta features">
@@ -288,7 +284,7 @@ export default function ApiIntegrationContent() {
             <InlineCode>error</InlineCode> string, sometimes a <InlineCode>message</InlineCode>, and
             extra keys that explain the problem:
           </p>
-          <CodeBlock lang="402 example" code={API_ERROR_EXAMPLE} />
+          <CodeBlock lang="409 example" code={API_ERROR_EXAMPLE} />
           <DataTable
             head={["Status", "Meaning"]}
             rows={[
@@ -296,7 +292,7 @@ export default function ApiIntegrationContent() {
               ["202", "Accepted: the work is queued. Keep the returned id."],
               ["400", "A required field is missing or invalid, the file type is not supported, or the resource is inactive or not set up."],
               ["401", "Missing or invalid X-API-Key."],
-              ["402", "Not enough credits to start. The body says how many are needed and how many are available."],
+              ["402", "Your organization can't start new work right now; contact the Tavnit team."],
               ["403", "The resource belongs to another organization, your role is HITL Only, or you are not a reviewer of that item."],
               ["404", "The ID does not exist in your organization."],
               ["409", "Conflict with the current state: bucket name mismatch, already cancelled or finished, case closed, slot already filled."],
@@ -442,8 +438,7 @@ export default function ApiIntegrationContent() {
           <Endpoint method="POST" path="/splits/run" />
           <p>
             Same body as <InlineCode>/runs/process</InlineCode>, with{" "}
-            <InlineCode>splitter_id</InlineCode>. The pages are counted up front and your balance
-            must cover them (402 otherwise).
+            <InlineCode>splitter_id</InlineCode>.
           </p>
           <LangToggle lang={lang} setLang={setLang} />
           {lang === "python" ? (
@@ -489,8 +484,7 @@ export default function ApiIntegrationContent() {
           )}
           <CodeBlock lang="202 response" code={SWEEP_RUN_RESPONSE} />
           <p>
-            Credits are estimated from the number of cells and checked before the sweep is queued
-            (402 if short). A cleaner with an invalid setup answers 400 with{" "}
+            A cleaner with an invalid setup answers 400 with{" "}
             <InlineCode>validation_errors</InlineCode>. See{" "}
             <DocLink href="/docs/cleaners">Cleaners</DocLink>.
           </p>
@@ -557,8 +551,7 @@ export default function ApiIntegrationContent() {
             agent&apos;s input variables for this run. Only variables the agent declares are used,
             and secret values are never accepted. You can also call{" "}
             <InlineCode>POST /bots/runs</InlineCode> with <InlineCode>bot_id</InlineCode> in the
-            body. Your balance must cover at least one browser minute (402 otherwise); the real
-            minutes are charged when the run ends. Every call starts a new, billed run.
+            body. Every call starts a new run.
           </p>
           <CodeBlock lang="Request" code={AGENT_TRIGGER_REQUEST} />
           <p>
@@ -572,9 +565,9 @@ export default function ApiIntegrationContent() {
           <DataTable
             head={["Endpoint", "What it does"]}
             rows={[
-              ["GET /bot-runs/{bot_run_id}", "One run: status, timings, credits charged, input (secrets removed) and output with signed file links. Also at GET /bots/{agent_id}/runs/{bot_run_id}."],
+              ["GET /bot-runs/{bot_run_id}", "One run: status, timings, input (secrets removed) and output with signed file links. Also at GET /bots/{agent_id}/runs/{bot_run_id}."],
               ["GET /bots/{agent_id}/runs", "Newest first, without input and output. Query: status (queued, running, completed, failed, cancelled), limit (1 to 100, default 20), offset. Returns runs and total."],
-              ["POST /bot-runs/{bot_run_id}/cancel", "Cancels a waiting, queued or running run. Minutes already used are billed. 409 when the run already finished. Also at POST /bots/{agent_id}/runs/{bot_run_id}/cancel."],
+              ["POST /bot-runs/{bot_run_id}/cancel", "Cancels a waiting, queued or running run. 409 when the run already finished. Also at POST /bots/{agent_id}/runs/{bot_run_id}/cancel."],
             ]}
           />
           <CodeBlock lang="GET /bot-runs/{bot_run_id}" code={AGENT_RUN_RESPONSE} />
@@ -596,8 +589,7 @@ export default function ApiIntegrationContent() {
           />
           <CodeBlock lang="Request" code={MATCHER_RUN_REQUEST} />
           <p>
-            Credits depend on the number of cells compared and are checked first (402). There is no
-            API endpoint to read a match: get the result on the matcher&apos;s webhook or email
+            There is no API endpoint to read a match: get the result on the matcher&apos;s webhook or email
             output, or in the app. See <DocLink href="/docs/matchers">Matchers</DocLink>.
           </p>
         </DocCard>
@@ -612,8 +604,7 @@ export default function ApiIntegrationContent() {
           <p>
             Multipart <InlineCode>file</InlineCode>. Without <InlineCode>inspection_id</InlineCode> a
             new inspection is created; pass the returned <InlineCode>inspection_id</InlineCode> to
-            add more documents to it (it must still be collecting, 409 otherwise). Each document
-            costs the routing credit up front (402 if short), plus its extraction. The inspector
+            add more documents to it (it must still be collecting, 409 otherwise). The inspector
             must be active.
           </p>
           <CodeBlock lang="Request" code={INSPECTOR_PROCESS_REQUEST} />
@@ -640,7 +631,7 @@ export default function ApiIntegrationContent() {
             head={["Endpoint", "What it does"]}
             rows={[
               ["POST /fillers/{filler_id}/fills", "Opens a fill (201, returns fill_id). The filler needs a template and field mappings."],
-              ["POST /fills/{fill_id}/route-upload", "Multipart file; AI routes it into an open slot (202). Costs the routing credit."],
+              ["POST /fills/{fill_id}/route-upload", "Multipart file; AI routes it into an open slot (202)."],
               ["POST /fills/{fill_id}/inputs/{input_id}/upload", "Multipart file for a specific slot; starts that slot's run (202)."],
               ["POST /fills/{fill_id}/inputs/{input_id}/attach-run", "JSON run_id: reuse a completed run for a slot (202)."],
               ["POST /fills/{fill_id}/fire", "Fills now instead of waiting for every slot. 400 with missing_inputs when a required slot is empty."],
@@ -660,8 +651,7 @@ export default function ApiIntegrationContent() {
           <Endpoint method="POST" path="/pipelines/{pipeline_id}/execute" />
           <p>
             Multipart <InlineCode>file</InlineCode> or <InlineCode>file_base64</InlineCode> +{" "}
-            <InlineCode>filename</InlineCode>; PDF or image. Your balance must cover at least 1
-            credit (402 otherwise), and each step then charges its own credits. 400 when the
+            <InlineCode>filename</InlineCode>; PDF or image. 400 when the
             pipeline is inactive or its graph cannot run (with{" "}
             <InlineCode>validation_errors</InlineCode>).
           </p>
@@ -679,9 +669,7 @@ export default function ApiIntegrationContent() {
           <Endpoint method="POST" path="/signals/{signal_id}/run" />
           <p>
             Multipart <InlineCode>file</InlineCode> or base64. Audio up to 150 MB and 8 hours, with
-            at most 2 hours of detected speech. Billing is 1 credit per minute of detected speech
-            (minimum 1); silence is not billed. <InlineCode>estimated_max_credits</InlineCode> is
-            the upper bound from the raw duration. Your balance must cover at least 1 credit (402).
+            at most 2 hours of detected speech.
           </p>
           <CodeBlock lang="Request" code={SIGNAL_RUN_REQUEST} />
           <p>
@@ -721,15 +709,13 @@ export default function ApiIntegrationContent() {
           <p>
             Without a body, the Catch picks up where the last one ended. Send{" "}
             <InlineCode>window_start</InlineCode> and/or <InlineCode>window_end</InlineCode> (ISO
-            timestamps) to backfill a range instead. Credits are charged when the Catch completes,
-            and nothing is charged for a failed or cancelled Catch. 402 when credits are short, 409
-            when the Net is inactive or a Catch that continues from the last one is already in
+            timestamps) to backfill a range instead. 409 when the Net is inactive or a Catch that continues from the last one is already in
             progress.
           </p>
           <CodeBlock lang="Request" code={NET_CATCH_REQUEST} />
           <p>
-            Poll <InlineCode>{"GET /catches/{catch_id}"}</InlineCode>: status, stage, counts, credits
-            and, once completed, <InlineCode>output</InlineCode> with columns and rows. Cancel with{" "}
+            Poll <InlineCode>{"GET /catches/{catch_id}"}</InlineCode>: status, stage, counts and,
+            once completed, <InlineCode>output</InlineCode> with columns and rows. Cancel with{" "}
             <InlineCode>{"POST /catches/{catch_id}/cancel"}</InlineCode>. See{" "}
             <DocLink href="/docs/nets">Nets</DocLink>.
           </p>
@@ -1023,11 +1009,6 @@ export default function ApiIntegrationContent() {
             href: "/docs/webhooks",
             label: "Receive results with webhooks",
             description: "The payload Tavnit posts when a run completes, and how to build a receiver.",
-          },
-          {
-            href: "/docs/credits",
-            label: "How credits are charged",
-            description: "What each kind of work costs and what happens when the balance runs out.",
           },
           {
             href: "/docs/mcp-connector",

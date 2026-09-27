@@ -292,10 +292,8 @@ export default function Page() {
             <strong>Breakdown</strong> where relevant, and <strong>Sample rows</strong> so you can
             check the data behind it. Past questions stay in <strong>History</strong>.
           </p>
-          <InfoBox color="blue" icon={<Info size={20} />} title="Costs">
-            Each question costs 1 credit. Indexing columns costs 1 credit per 500 distinct values
-            (minimum 1). See <DocLink href="/docs/credits">Credits</DocLink>. Setting up Prompting
-            requires edit access to the Bucket.
+          <InfoBox color="blue" icon={<Info size={20} />} title="Access">
+            Setting up Prompting requires edit access to the Bucket.
           </InfoBox>
         </DocCard>
 

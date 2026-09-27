@@ -44,8 +44,8 @@ export default function Page() {
           <DataTable
             head={["Role", "In one line", "Give it to"]}
             rows={[
-              ["Owner", "Full control, including organisation settings, billing and deleting the organisation.", "The people accountable for the account."],
-              ["Admin", "Builds and manages everything and manages the team, except org settings and billing.", "Whoever configures flows, Cleaners, pipelines and Buckets day to day."],
+              ["Owner", "Full control, including organisation settings and deleting the organisation.", "The people accountable for the account."],
+              ["Admin", "Builds and manages everything and manages the team, except org settings.", "Whoever configures flows, Cleaners, pipelines and Buckets day to day."],
               ["Member", "Runs what already exists, works Cases and reads results. Cannot change most configuration.", "People who process documents but should not rewire the pipeline."],
               ["HITL Only", "Can do nothing but review the items they are assigned to.", "Approvers and auditors who must never touch configuration or data."],
             ]}
@@ -70,7 +70,6 @@ export default function Page() {
               "Everything an Admin can do (below)",
               "Invite people with any role, and change the role of, or remove, any other member, including Admins and other Owners",
               'Edit the organisation in Settings → "Organization": name, timezone, run failure notifications and the "Failed runs" auto-retry setting',
-              'View and manage "Billing & Usage"',
               "Delete the organisation",
               "Make a Bucket private, and set Admins' access to any Bucket",
             ]}
@@ -80,7 +79,7 @@ export default function Page() {
         <DocCard icon={<UserCog size={24} />} title="Admin">
           <InfoBox color="blue" icon={<Info size={20} />} title="Trusted power users">
             Admins run day-to-day operations. They can build and change anything in the workspace
-            and manage Members, but cannot touch organisation settings, billing, or other Admins.
+            and manage Members, but cannot touch organisation settings or other Admins.
           </InfoBox>
           <p>Admins can:</p>
           <BulletList
@@ -98,7 +97,7 @@ export default function Page() {
           <p>Admins cannot:</p>
           <BulletList
             items={[
-              "Edit organisation settings or see billing",
+              "Edit organisation settings",
               "Delete the organisation",
               "Make a Bucket private",
               "Change another Admin's or an Owner's role, access or membership",
@@ -132,7 +131,7 @@ export default function Page() {
               "Edit or delete configuration they didn't create, or toggle flow features (webhook, email trigger, email output, data cleaning, Bucket Export)",
               "Invite, remove or change the role of anyone",
               "See private Buckets unless explicitly granted access, or open a Bucket's Access page",
-              "See organisation settings, billing or the Audit Log",
+              "See organisation settings or the Audit Log",
             ]}
           />
           <InfoBox color="yellow" icon={<Info size={20} />} title="Creators keep edit rights">
@@ -165,7 +164,7 @@ export default function Page() {
               "See the dashboard, Runs, or any feature's configuration",
               "Read or write Bucket data outside a review",
               "Call the processing API: those endpoints refuse the role outright",
-              "Invite anyone, or see billing and organisation settings",
+              "Invite anyone, or see organisation settings",
             ]}
           />
           <InfoBox color="yellow" icon={<Info size={20} />} title="Assignment is still separate">
@@ -256,7 +255,6 @@ export default function Page() {
 
               <PermissionGroupHeader label="Organisation" />
               <PermissionRow label="Edit org settings" owner={true} admin={false} member={false} note="Name, timezone, notifications, failed-run auto-retry" />
-              <PermissionRow label="View & manage billing" owner={true} admin={false} member={false} />
               <PermissionRow label="Delete organisation" owner={true} admin={false} member={false} />
             </div>
           </div>

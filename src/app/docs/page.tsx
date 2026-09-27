@@ -3,7 +3,6 @@ import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   Clock,
-  Coins,
   Compass,
   FilePlus,
   FlaskConical,
@@ -384,34 +383,13 @@ export default function Page() {
           </p>
           <Screenshot
             src="/assets/tour2-runs.jpg"
-            alt="The Tavnit Runs page listing processed documents, each with its flow, who triggered it, its source and its status, above summary tiles for completed runs, running runs, credits used and total runs."
+            alt="The Tavnit Runs page listing processed documents, each with its flow, who triggered it, its source and its status, above summary tiles for completed runs, running runs and total runs."
             caption="Every document becomes a run. The Runs page shows what was processed, how it arrived, and how it ended."
           />
           <p>
             Open any run to see the extracted fields beside the source document, plus the log of what
             happened during processing. That log is the first place to look when a result is not what
             you expected.
-          </p>
-        </DocCard>
-
-        <DocCard icon={<Coins size={24} />} title="What things cost">
-          <Lead>
-            Tavnit bills in credits from one balance per organization. Extraction is charged per
-            page, so a ten-page PDF costs ten credits whether it produces one row or two hundred.
-            Every other feature has its own rate.
-          </Lead>
-          <BulletList
-            items={[
-              "Extraction: 1 credit per page. A spreadsheet is charged by its page equivalent.",
-              "Routing, splitting, cleaning, agents, matching and the other features each have their own rate, listed on the Credits page.",
-              "Steps stack: a document that is split, routed and then extracted pays for all three, so sending a document straight to its flow is the cheaper habit when you know its type.",
-              "Drafting a flow with AI suggestion and running Diagnose on a flow are free.",
-              "A run needs a positive credit balance to start. Credits already used are not refunded when a run is cancelled or fails.",
-            ]}
-          />
-          <p>
-            See <DocLink href="/docs/credits">Credits &amp; Billing</DocLink> for the full price
-            list. To add credits to your organization, contact the Tavnit team.
           </p>
         </DocCard>
 
@@ -490,11 +468,6 @@ export default function Page() {
               label: "Build a flow's data schema in depth",
               description:
                 "Field kinds, data types, extraction hints, composite fields, runs and everything you can attach to a flow.",
-            },
-            {
-              href: "/docs/credits",
-              label: "See what each feature costs",
-              description: "Credit rates for every step, and when you are charged.",
             },
             {
               href: "/docs/api-integration",

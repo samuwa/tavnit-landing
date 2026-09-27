@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   ArrowLeftRight,
   BarChart3,
-  Coins,
   Download,
   FilePlus,
   FileSpreadsheet,
@@ -217,8 +216,8 @@ export default function Page() {
             ]}
           />
           <p>
-            Suggestions are free: analysing the sample does not run a split and does not use
-            credits. Nothing is saved until you create the Splitter.
+            Analysing the sample does not run a split. Nothing is saved until you create the
+            Splitter.
           </p>
         </DocCard>
 
@@ -259,7 +258,7 @@ export default function Page() {
             Collection picker, any Collection that routes back to this Splitter is disabled and
             labelled <strong>routes to this splitter</strong>, and at run time a segment is never
             sent into a Collection that would return it to the same Splitter, so a mis-set pair
-            cannot spin documents in a circle and burn credits.
+            cannot spin documents in a circle.
           </InfoBox>
           <p>
             Runs created from a segment carry their origin with them. The webhook payload for such a
@@ -288,7 +287,7 @@ export default function Page() {
               "Hidden and empty sheets are ignored. A workbook with no visible, non-empty sheet is rejected.",
               "Each sheet is sent onward as a single-sheet spreadsheet, so the flow that receives it gets real spreadsheet input.",
               "In the split result, the page range of a sheet reads as its position in the workbook.",
-              "Very large sheets are rejected with an error before any credits are charged.",
+              "Very large sheets are rejected with an error.",
             ]}
           />
         </DocCard>
@@ -305,9 +304,7 @@ export default function Page() {
                 "Upload in the app",
                 <Fragment key="f11">
                   Click <strong>Split</strong>, pick the Splitter in <strong>Split Document</strong>{" "}
-                  and drop one or more PDFs or spreadsheets. Each file starts its own split. If
-                  credits run out partway, the files that did not start stay in the dialog so you
-                  can retry them.
+                  and drop one or more PDFs or spreadsheets. Each file starts its own split.
                 </Fragment>,
               ],
               [
@@ -336,41 +333,6 @@ export default function Page() {
           </p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="What splitting costs">
-          <Lead>
-            A split is charged by the length of the source file: one credit per page of the bundle,
-            regardless of how many documents come out of it. Each segment then pays its own cost
-            where it goes next.
-          </Lead>
-          <DataTable
-            head={["Charge", "When"]}
-            rows={[
-              ["1 credit per page of the bundle", "When the split runs."],
-              [
-                "1 credit per page-equivalent of a workbook",
-                "When a spreadsheet split runs: the total pages all its sheets would print to.",
-              ],
-              ["The flow's own extraction charge", "Per segment, once it reaches a flow."],
-              [
-                "1 routing credit per segment",
-                <Fragment key="f14">
-                  Only when the segment is sent to a{" "}
-                  <DocLink href="/docs/collections">Collection</DocLink> rather than straight to a
-                  flow.
-                </Fragment>,
-              ],
-              ["Nothing", "AI suggestions for document types, and segments set to None or Send by email."],
-            ]}
-          />
-          <p>
-            Sending segments straight to a flow is therefore cheaper than routing them through a
-            Collection. Use the Collection destination when the document type genuinely could go to
-            more than one flow; otherwise map the type directly. Each split&apos;s charge is shown
-            in Split History. See <DocLink href="/docs/credits">Credits</DocLink> for balances and
-            top-ups.
-          </p>
-        </DocCard>
-
         <DocCard icon={<BarChart3 size={24} />} title="Reading a split result">
           <Lead>
             Open a split from <strong>Split History</strong> to see what the Splitter decided. The
@@ -379,7 +341,7 @@ export default function Page() {
           </Lead>
           <BulletList
             items={[
-              "Pages, Docs Found and Credits for the whole file",
+              "Pages and Docs Found for the whole file",
               "Where the file came from, and the sender when it arrived by email",
               "Detected Documents: each segment that matched a type, with its page range, its destination and its delivery status",
               "Other Documents: segments that matched nothing, the first place to look when a split goes wrong",
@@ -422,11 +384,6 @@ export default function Page() {
               label: "Give a Splitter its own inbox",
               description:
                 "Address shapes, accepted attachment types, and why an attachment might be skipped.",
-            },
-            {
-              href: "/docs/credits",
-              label: "How credits are charged",
-              description: "Pages, routing and extraction charges across every feature.",
             },
             {
               href: "/docs/pipeline-map",

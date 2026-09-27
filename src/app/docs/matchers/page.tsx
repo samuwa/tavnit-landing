@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   ClipboardCheck,
   Code,
-  Coins,
   FilePlus,
   FlaskConical,
   Info,
@@ -61,7 +60,7 @@ export default function Page() {
             may still change.
           </InfoBox>
           <InfoBox color="blue" icon={<Info size={20} />} title="Try it without an account">
-            The free <DocLink href="/tools/po-vs-invoice-check">PO vs invoice check</DocLink> and{" "}
+            The <DocLink href="/tools/po-vs-invoice-check">PO vs invoice check</DocLink> and{" "}
             <DocLink href="/tools/compare-supplier-quotes">Compare supplier quotes</DocLink> tools on
             Tavnit Lite run on Matchers.
           </InfoBox>
@@ -282,8 +281,7 @@ export default function Page() {
           <BulletList
             items={[
               <Fragment key="t1">
-                <strong>Rows</strong>, <strong>Credits</strong> and <strong>Cells</strong>: the size
-                of the result and what it cost.
+                <strong>Rows</strong> and <strong>Cells</strong>: the size of the result.
               </Fragment>,
               <Fragment key="t2">
                 <strong>Warnings</strong>: for example a run excluded because its identifier field
@@ -337,9 +335,9 @@ export default function Page() {
             rows={[
               [
                 "Approve",
-                "The comparison table and Champion column are rebuilt from your corrected links, credits are charged, and outputs are sent.",
+                "The comparison table and Champion column are rebuilt from your corrected links, and outputs are sent.",
               ],
-              ["Reject", "The match is cancelled with your reason. No credits are charged and no outputs are sent."],
+              ["Reject", "The match is cancelled with your reason. No outputs are sent."],
             ]}
           />
           <p>
@@ -370,25 +368,6 @@ export default function Page() {
           <p>With human review on, outputs are sent only after approval.</p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Cost">
-          <p>
-            A match is billed by <strong>cells</strong>: the non-empty values in the identifier,
-            match, comparison and context fields of the runs it compares. Every 200 cells cost 1
-            credit, rounded up, with a minimum of 1 credit per match.
-          </p>
-          <BulletList
-            items={[
-              "Benchmark: each run's cells are counted once.",
-              "Multilateral: every run is compared with every other, so the cells are counted once per pairing, which is the total multiplied by the number of runs minus one. Three runs cost twice as much as the same three runs in Benchmark mode.",
-              "Credits are checked before the match is queued and charged when it completes (or when a reviewer approves it). Failed and rejected matches are not charged.",
-              "Extracting the documents is charged separately by the flow, as usual, including the runs created by the email trigger.",
-            ]}
-          />
-          <p>
-            See <DocLink href="/docs/credits">Credits</DocLink> for balances and how to add more.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code size={24} />} title="API">
           <p>
             Start a match from your own system with your API key. Copy the ID from{" "}
@@ -412,10 +391,10 @@ export default function Page() {
                 be one of <InlineCode>run_ids</InlineCode>. Leave it out for Multilateral.
               </Fragment>,
               <Fragment key="a3">
-                The response is <InlineCode>202</InlineCode> with <InlineCode>match_id</InlineCode>,{" "}
-                <InlineCode>status</InlineCode> (<InlineCode>queued</InlineCode>),{" "}
-                <InlineCode>cells_count</InlineCode> and <InlineCode>credits_required</InlineCode>.
-                A <InlineCode>402</InlineCode> means the balance is too low; a{" "}
+                The response is <InlineCode>202</InlineCode> with <InlineCode>match_id</InlineCode>{" "}
+                and <InlineCode>status</InlineCode> (<InlineCode>queued</InlineCode>). A{" "}
+                <InlineCode>402</InlineCode> means your organization can&apos;t start new work right
+                now; contact the Tavnit team. A{" "}
                 <InlineCode>400</InlineCode> explains what is wrong with the request.
               </Fragment>,
               "Configure a Webhook on the matcher to receive the comparison table when the match completes.",
@@ -494,11 +473,6 @@ export default function Page() {
               href: "/docs/human-in-the-loop",
               label: "Review queues",
               description: "Where paused runs, matches and inspections wait for a reviewer.",
-            },
-            {
-              href: "/docs/credits",
-              label: "How credits are charged",
-              description: "Per-cell pricing for matches alongside every other step.",
             },
           ]}
         />

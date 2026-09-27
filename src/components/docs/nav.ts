@@ -28,7 +28,6 @@ export type DocSlug =
   | "webhooks"
   | "mcp-connector"
   | "user-roles"
-  | "credits"
   | "subjects"
   | "matchers"
   | "inspectors"
@@ -120,17 +119,6 @@ export const DOC_SECTIONS: DocSection[] = [
     footerColumn: "documentation",
   },
   {
-    slug: "credits",
-    group: "start",
-    label: "Credits & Billing",
-    heading: "Credits & Billing",
-    href: "/docs/credits",
-    title: "Credits — What Each Tavnit Feature Costs and How Billing Works",
-    description:
-      "How Tavnit credits work: the price of each step (extraction, routing, splits, sweeps, agents, matchers and more), when you are charged and how to top up.",
-    footerColumn: "documentation",
-  },
-  {
     slug: "pipelines",
     group: "orchestration",
     label: "Pipelines",
@@ -215,7 +203,7 @@ export const DOC_SECTIONS: DocSection[] = [
     href: "/docs/agents",
     title: "AI Browser Agents — Act on Your Extracted Document Data",
     description:
-      "Give an agent a plain-language mission and a starting URL. Capture types, chaining agents to flows, file downloads, runtime limits and credit costs.",
+      "Give an agent a plain-language mission and a starting URL. Capture types, secrets, schedules, delivery, chaining agents to flows and runtime limits.",
     footerColumn: "documentation",
   },
   {
@@ -374,17 +362,6 @@ export const DOC_SECTIONS_ES: DocSection[] = [
     title: "Documentación de Tavnit: primeros pasos con la extracción",
     description:
       "Crea tu primer Flow en Tavnit: define los campos que quieres, sube un documento y recibe los datos estructurados. Sin plantillas y sin programar.",
-    footerColumn: "documentation",
-  },
-  {
-    slug: "credits",
-    group: "start",
-    label: "Créditos y facturación",
-    heading: "Créditos y facturación",
-    href: "/es/documentacion/creditos",
-    title: "Créditos: cuánto cuesta cada función de Tavnit",
-    description:
-      "Cómo funcionan los créditos de Tavnit: el precio de cada paso (extracción, enrutamiento, Splitters, limpiezas, Agentes y más), cuándo se cobra y cómo recargar.",
     footerColumn: "documentation",
   },
   {

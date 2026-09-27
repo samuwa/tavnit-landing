@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   ArrowLeftRight,
   BarChart3,
-  Coins,
   Download,
   FilePlus,
   FileSpreadsheet,
@@ -220,8 +219,8 @@ export default function Page() {
             ]}
           />
           <p>
-            Las sugerencias son gratis: analizar el ejemplo no ejecuta una división ni consume
-            créditos. No se guarda nada hasta que creas el Splitter.
+            Analizar el ejemplo no ejecuta una división. No se guarda nada hasta que creas el
+            Splitter.
           </p>
         </DocCard>
 
@@ -264,8 +263,7 @@ export default function Page() {
             En el selector de Colecciones, cualquier Colección que enrute de vuelta a este Splitter
             aparece deshabilitada con la etiqueta <strong>enruta a este Splitter</strong>, y al
             ejecutarse un segmento nunca se envía a una Colección que lo devolvería al mismo Splitter.
-            Así, una configuración errónea no puede hacer girar documentos en círculo ni consumir
-            créditos.
+            Así, una configuración errónea no puede hacer girar documentos en círculo.
           </InfoBox>
           <p>
             Los Runs creados a partir de un segmento conservan su origen. El payload del webhook de
@@ -296,7 +294,7 @@ export default function Page() {
               "Las hojas ocultas y vacías se ignoran. Un libro sin ninguna hoja visible y no vacía se rechaza.",
               "Cada hoja se envía a su destino como una hoja de cálculo de una sola hoja, así el Flow que la recibe obtiene una hoja de cálculo real.",
               "En el resultado de la división, el rango de páginas de una hoja indica su posición en el libro.",
-              "Las hojas muy grandes se rechazan con un error antes de cobrar créditos.",
+              "Las hojas muy grandes se rechazan con un error.",
             ]}
           />
         </DocCard>
@@ -314,8 +312,7 @@ export default function Page() {
                 <Fragment key="f11">
                   Haz clic en <strong>Dividir</strong>, elige el Splitter en{" "}
                   <strong>Dividir Documento</strong> y suelta uno o más PDFs u hojas de cálculo. Cada
-                  archivo inicia su propia división. Si los créditos se acaban a mitad de camino,
-                  los archivos que no se iniciaron quedan en el diálogo para que los reintentes.
+                  archivo inicia su propia división.
                 </Fragment>,
               ],
               [
@@ -346,44 +343,6 @@ export default function Page() {
           </p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Cuánto cuesta dividir">
-          <Lead>
-            Una división se cobra según la longitud del archivo de origen: un crédito por página del
-            paquete, sin importar cuántos documentos salgan de él. Luego cada segmento paga su propio
-            costo en su siguiente destino.
-          </Lead>
-          <DataTable
-            head={["Cobro", "Cuándo"]}
-            rows={[
-              ["1 crédito por página del paquete", "Cuando se ejecuta la división."],
-              [
-                "1 crédito por equivalente de página de un libro",
-                "Cuando se ejecuta la división de una hoja de cálculo: el total de páginas que ocuparían todas sus hojas impresas.",
-              ],
-              ["El cobro de extracción del propio Flow", "Por segmento, cuando llega a un Flow."],
-              [
-                "1 crédito de enrutamiento por segmento",
-                <Fragment key="f14">
-                  Solo cuando el segmento se envía a una{" "}
-                  <DocLink href="/es/documentacion/colecciones">Colección</DocLink> en lugar de ir
-                  directo a un Flow.
-                </Fragment>,
-              ],
-              [
-                "Nada",
-                "Las sugerencias de tipos de documento con IA, y los segmentos configurados como Ninguno o Enviar por email.",
-              ],
-            ]}
-          />
-          <p>
-            Por eso enviar los segmentos directo a un Flow es más barato que enrutarlos a través de
-            una Colección. Usa el destino Colección cuando el tipo de documento realmente puede ir a
-            más de un Flow; si no, asígnalo directamente. El cobro de cada división aparece en el
-            Historial de Divisiones. Consulta{" "}
-            <DocLink href="/es/documentacion/creditos">Créditos</DocLink> para saldos y recargas.
-          </p>
-        </DocCard>
-
         <DocCard icon={<BarChart3 size={24} />} title="Cómo leer el resultado de una división">
           <Lead>
             Abre una división desde el <strong>Historial de Divisiones</strong> para ver qué decidió
@@ -392,7 +351,7 @@ export default function Page() {
           </Lead>
           <BulletList
             items={[
-              "Páginas, Docs Encontrados y Créditos del archivo completo",
+              "Páginas y Docs Encontrados del archivo completo",
               "De dónde vino el archivo y, si llegó por correo, el remitente",
               "Documentos Detectados: cada segmento que coincidió con un tipo, con su rango de páginas, su destino y el estado de su envío",
               "Otros Documentos: los segmentos sin coincidencia, lo primero que debes revisar cuando una división sale mal",
@@ -436,11 +395,6 @@ export default function Page() {
               label: "Dale a un Splitter su propia bandeja de entrada",
               description:
                 "Formas de las direcciones, tipos de adjunto aceptados y por qué se puede omitir un adjunto.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Cómo se cobran los créditos",
-              description: "Cobros por página, enrutamiento y extracción en todas las funciones.",
             },
             {
               href: "/es/documentacion/mapa-del-pipeline",

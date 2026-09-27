@@ -7,7 +7,6 @@ import {
   Ban,
   CalendarClock,
   Code2,
-  Coins,
   FilePlus,
   FlaskConical,
   HelpCircle,
@@ -131,8 +130,8 @@ export default function Page() {
           <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="Sin búsqueda por palabras clave">
             Instagram no tiene búsqueda por palabras clave, así que una Net siempre parte de cuentas,
             hashtags, lugares o enlaces de publicaciones. Pon tus palabras clave en la regla de
-            relevancia. Las publicaciones que no la cumplen se descartan antes de que comentarios,
-            medios o columnas cuesten algo.
+            relevancia. Las publicaciones que no la cumplen se descartan antes de que se procesen
+            comentarios, medios o columnas.
           </InfoBox>
           <DataTable
             head={["Límite", "Valor por defecto", "Rango"]}
@@ -163,13 +162,13 @@ export default function Page() {
           <Lead>
             <strong>&ldquo;Ejecutar prueba&rdquo;</strong> recolecta una muestra pequeña de tu alcance,
             muestra qué se conserva, se descarta o se excluye, y previsualiza la tabla, antes de
-            cualquier Catch. Las pruebas son gratis.
+            cualquier Catch.
           </Lead>
           <BulletList
             items={[
               "La prueba siempre usa tus cambios actuales, incluso los que no guardaste. Guárdalos cuando los resultados se vean bien.",
               "Pestañas: Conservadas, Descartadas, Excluidas y Vista previa de tabla (las primeras publicaciones conservadas con sus comentarios, estructuradas con tus columnas).",
-              "“Por Catch (estimado)” proyecta publicaciones por día, publicaciones por Catch, filas por Catch y créditos por Catch. “Como mínimo” significa que la muestra llegó a su tope.",
+              "“Por Catch (estimado)” proyecta publicaciones por día, publicaciones por Catch, y filas por Catch. “Como mínimo” significa que la muestra llegó a su tope.",
               "“Ajusta el alcance” sugiere hashtags o cuentas para agregar o excluir y una regla revisada; un clic actualiza el borrador, y luego pruebas de nuevo para comparar.",
               "Si solo cambiaste la regla o las columnas, “Probar de nuevo” reutiliza la última muestra: no recolecta de nuevo, solo vuelven a correr tu regla y tus columnas.",
             ]}
@@ -193,7 +192,7 @@ export default function Page() {
               <Fragment key="r3">
                 Haz clic en <strong>&ldquo;Iniciar Catch&rdquo;</strong>. El Catch aparece en{" "}
                 <strong>&ldquo;Catches&rdquo;</strong> con su ventana, publicaciones conservadas,
-                filas, créditos, estado y origen (Manual, Programado o API).
+                filas, estado y origen (Manual, Programado o API).
               </Fragment>,
             ]}
           />
@@ -208,12 +207,12 @@ export default function Page() {
             Mientras corre, un Catch muestra su etapa: Recolectando publicaciones, Revisando
             relevancia, Recolectando comentarios, Leyendo imágenes y audio, Llenando tus columnas y
             Entregando. Termina como Completado, Fallido o Cancelado.{" "}
-            <strong>&ldquo;Cancelar Catch&rdquo;</strong> lo detiene; no se cobra ni se entrega nada, y
+            <strong>&ldquo;Cancelar Catch&rdquo;</strong> lo detiene; no se entrega nada, y
             las publicaciones podrán recolectarse de nuevo.
           </p>
           <p>
             Un Catch completado muestra publicaciones nuevas, conservadas, comentarios, filas,
-            imágenes leídas, audio transcrito y créditos. Su tabla se puede filtrar por publicaciones
+            imágenes leídas y audio transcrito. Su tabla se puede filtrar por publicaciones
             o comentarios, buscar y descargar como CSV o JSON; cada fila enlaza a la publicación
             (&ldquo;Abrir publicación&rdquo;) y cada valor indica de dónde salió (el texto del
             elemento, la publicación original, el audio del Reel, los metadatos o una imagen).
@@ -270,26 +269,6 @@ export default function Page() {
           />
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Costo">
-          <p>Un Catch se cobra al completarse, sumando cuatro partes:</p>
-          <DataTable
-            head={["Parte", "Tarifa"]}
-            rows={[
-              ["Publicaciones recolectadas (revisión de relevancia)", "1 crédito por cada 50 publicaciones"],
-              ["Filas estructuradas (publicaciones y comentarios conservados)", "1 crédito por cada 10 filas"],
-              ["Imágenes leídas", "1 crédito por cada 5 imágenes"],
-              ["Audio de Reels transcrito", "1 crédito por cada 60 segundos"],
-            ]}
-          />
-          <p>
-            Cada parte se redondea hacia arriba, y un Catch que recolectó algo cuesta al menos 1
-            crédito. Un Catch sin nada nuevo en su ventana, uno fallido y uno cancelado no cuestan
-            nada, y las pruebas son gratis. Necesitas al menos 1 crédito para iniciar un Catch. El
-            estimado de la pestaña Prueba muestra cuánto costará probablemente un Catch de tu Net.
-            Consulta <DocLink href="/es/documentacion/creditos">Créditos</DocLink>.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code2 size={24} />} title="API">
           <p>
             Copia el ID desde <strong>&ldquo;ID de la Net&rdquo;</strong> y encola un Catch. Un cuerpo
@@ -310,7 +289,7 @@ export default function Page() {
           <CodeBlock lang="bash — estado y resultado del Catch" code={STATUS_CURL} />
           <p>
             <InlineCode>POST /api/catches/CATCH_ID/cancel</InlineCode> cancela un Catch en cola o en
-            ejecución. Errores: 400 por una ventana inválida, 402 por créditos insuficientes, 403 si
+            ejecución. Errores: 400 por una ventana inválida, 402 si tu organización no puede iniciar trabajo nuevo en este momento (contacta al equipo de Tavnit), 403 si
             las Nets no están activadas para tu organización, 409 por una Net inactiva o un Catch
             &ldquo;desde el último Catch&rdquo; ya en curso. Consulta la página de la{" "}
             <DocLink href="/es/documentacion/api">API REST</DocLink> para la autenticación.
@@ -367,11 +346,6 @@ export default function Page() {
               href: "/es/documentacion/signals",
               label: "Estructura conversaciones grabadas con Signals",
               description: "La misma idea para audio: miembros, reglas y campos por turno.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Cómo se cobran los créditos",
-              description: "Costos por función, incluidos los Catches.",
             },
             {
               href: "/es/documentacion/api",

@@ -153,9 +153,8 @@ export default function Page() {
             guide, and it is <strong>Active</strong> from the start — use the switch in the top bar
             to deactivate it. An inactive flow cannot be run.
           </p>
-          <InfoBox color="green" icon={<Info size={20} />} title="AI suggestion is free">
-            Drafting a flow from a sample document does not create a run and costs no credits. Treat
-            the draft as a starting point — delete what you will not use, because every extra field
+          <InfoBox color="green" icon={<Info size={20} />} title="AI suggestion does not create a run">
+            Drafting a flow from a sample document does not create a run. Treat the draft as a starting point — delete what you will not use, because every extra field
             is more to review and more that can go wrong.
           </InfoBox>
         </DocCard>
@@ -438,12 +437,12 @@ export default function Page() {
               [
                 "Spreadsheet",
                 "XLSX, XLS, CSV",
-                "The first visible sheet is read. Other and hidden sheets are ignored, so put the data you want on the first sheet. Credits are charged by the sheet's page equivalent.",
+                "The first visible sheet is read. Other and hidden sheets are ignored, so put the data you want on the first sheet.",
               ],
             ]}
           />
           <p>
-            Very large sheets are rejected with a clear error before any credits are charged. To
+            Very large sheets are rejected with a clear error. To
             process each sheet of a workbook as its own document, send it through a{" "}
             <DocLink href="/docs/splitters">Splitter</DocLink> instead.
           </p>
@@ -453,7 +452,7 @@ export default function Page() {
             tool. For those, open <strong>Bad Scan</strong> in the flow&apos;s settings and turn it
             on: every file in the flow is then read with OCR first, and extraction works from the
             recovered text. If OCR is unavailable or fails, the run falls back to the standard
-            pipeline automatically. Bad Scan costs no extra credits.
+            pipeline automatically.
           </InfoBox>
         </DocCard>
 
@@ -575,8 +574,8 @@ export default function Page() {
             ]}
           />
           <p>
-            If everything looks fine you will see <em>“Extraction looks healthy”</em>. Diagnose is
-            free and only runs when you click it. Re-run a real document after applying fixes to
+            If everything looks fine you will see <em>“Extraction looks healthy”</em>. Diagnose only
+            runs when you click it. Re-run a real document after applying fixes to
             confirm they helped.
           </p>
         </DocCard>
@@ -591,7 +590,7 @@ export default function Page() {
             <NumberedList
               items={[
                 "The document is stored and the run is queued.",
-                "Extraction reads it and produces metadata values and table rows, charged at one credit per page.",
+                "Extraction reads it and produces metadata values and table rows.",
                 "If a Cleaner is attached, it sweeps those rows — conversions, computed columns, lookups.",
                 "Conditional rules fire: rows can be dropped, notifications sent, review requested.",
                 "If review is required, the run pauses and nothing is delivered until a reviewer approves.",
@@ -652,7 +651,7 @@ export default function Page() {
               [
                 "Cancel Run",
                 "Run actions menu",
-                "Only for runs still queued or running. Credits already used are not refunded.",
+                "Only for runs still queued or running.",
               ],
             ]}
           />
@@ -665,8 +664,8 @@ export default function Page() {
 
         <DocCard icon={<RotateCcw size={24} />} title="Failed runs and automatic retries">
           <Lead>
-            Most failures are the document&apos;s fault — an unreadable file, an unsupported type,
-            not enough credits — and retrying would not help. A few are not: a processing worker
+            Most failures are the document&apos;s fault — an unreadable file or an
+            unsupported type — and retrying would not help. A few are not: a processing worker
             restarts mid-run, or an AI provider has a temporary outage. For those, an organization
             can have Tavnit retry on its own.
           </Lead>
@@ -687,9 +686,8 @@ export default function Page() {
           <BulletList
             items={[
               "A retried run keeps the same run ID, so API polling, webhooks and links keep working.",
-              "Credits are charged once per run, however many attempts it takes.",
               "Outputs only fire when a run completes, so a retry never delivers a document twice.",
-              "Never retried: invalid files, unsupported types, missing credits, cancelled runs, runs paused for review, and runs created more than a day ago.",
+              "Never retried: invalid files, unsupported types, cancelled runs, runs paused for review, and runs created more than a day ago.",
               "A run lost to a worker restart is detected automatically. With auto-retry on it is queued again; with it off, it is marked Failed.",
               "The run page lists Previous attempts, each marked Lost worker or Failed with its error, and the Runs list shows a retry badge.",
             ]}
@@ -803,11 +801,6 @@ export default function Page() {
               label: "See the payload a flow produces",
               description:
                 "How metadata fields and table fields appear in the JSON your endpoint receives.",
-            },
-            {
-              href: "/docs/credits",
-              label: "Understand what runs cost",
-              description: "Per-page extraction credits and the rates for every other feature.",
             },
           ]}
         />

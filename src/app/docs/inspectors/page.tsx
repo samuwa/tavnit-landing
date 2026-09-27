@@ -5,7 +5,6 @@ import {
   CalendarClock,
   ClipboardCheck,
   Code,
-  Coins,
   FileStack,
   FileText,
   FlaskConical,
@@ -286,7 +285,7 @@ export default function Page() {
           </p>
           <p>
             Uncheck what you don&apos;t need, edit any check with the pencil, and click{" "}
-            <strong>Add checks</strong>. Everything stays editable. Suggestions are free.
+            <strong>Add checks</strong>. Everything stays editable.
           </p>
         </DocCard>
 
@@ -295,7 +294,7 @@ export default function Page() {
             The <strong>Dry run</strong> panel tests the checklist against completed runs: pick a
             sample run for each document, or <strong>No document (absent)</strong>, and the verdict
             re-evaluates instantly as you edit. It uses the same rule engine as real inspections.
-            Nothing is saved or charged, and AI conditions are assumed to pass because the model only
+            Nothing is saved, and AI conditions are assumed to pass because the model only
             runs during real inspections.
           </p>
         </DocCard>
@@ -434,24 +433,6 @@ export default function Page() {
           <p>With human review, outputs are sent after approval.</p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Cost">
-          <DataTable
-            head={["Step", "Credits"]}
-            rows={[
-              ["Routing each uploaded file into a slot", "1 credit per file, whatever the outcome"],
-              ["Extracting each routed document", "The flow's usual extraction charge"],
-              ["Evaluating the checklist", "Free"],
-              ["Each AI match or AI check condition that is reached", "1 credit per condition, per inspection"],
-              ["Suggest checks and Dry run", "Free"],
-            ]}
-          />
-          <p>
-            Inspections run from a Subject case reuse existing runs, so only AI conditions are
-            charged. See <DocLink href="/docs/credits">Credits</DocLink> for balances and how to add
-            more.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code size={24} />} title="API">
           <p>
             Send documents to an inspector with your API key. Copy the ID from{" "}
@@ -475,7 +456,7 @@ curl -X POST https://run.tavnit.io/api/inspectors/<inspector_id>/process \\
               <Fragment key="a1">
                 The response is <InlineCode>202</InlineCode> with <InlineCode>inspection_id</InlineCode>{" "}
                 and <InlineCode>inspection_file_id</InlineCode>. A <InlineCode>402</InlineCode> means
-                there isn&apos;t enough balance for the routing credit.
+                your organization can&apos;t start new work right now; contact the Tavnit team.
               </Fragment>,
               <Fragment key="a2">
                 With the Manual policy, finish with{" "}

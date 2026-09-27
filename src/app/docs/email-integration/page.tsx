@@ -122,7 +122,7 @@ export default function Page() {
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="One run per attachment">
             An email with three invoices attached produces three separate runs, each with its own
-            result, its own credit charge and its own row in the Runs list. It does not produce one
+            result and its own row in the Runs list. It does not produce one
             run containing three documents.
           </InfoBox>
           <WarningBox>
@@ -305,7 +305,7 @@ export default function Page() {
             rows={[
               [
                 "A flow",
-                "Extracts from the first visible sheet. The run is charged in page-equivalents, based on how many pages the sheet would print to.",
+                "Extracts from the first visible sheet.",
               ],
               [
                 "A Collection",
@@ -318,7 +318,7 @@ export default function Page() {
             ]}
           />
           <p>
-            Very large sheets are rejected with an error before any credits are charged. To load a
+            Very large sheets are rejected with an error. To load a
             spreadsheet as structured rows instead, use a{" "}
             <DocLink href="/docs/cleaners">Cleaner</DocLink> sweep.
           </p>
@@ -328,7 +328,7 @@ export default function Page() {
           <Lead>
             Mail servers sometimes deliver the same message more than once, for example after a
             timeout. Tavnit recognises a redelivered message to the same address and does not
-            process it again, so a retry never creates duplicate runs or charges.
+            process it again, so a retry never creates duplicate runs.
           </Lead>
           <BulletList
             items={[

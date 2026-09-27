@@ -4,7 +4,6 @@ import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   AlertTriangle,
-  Coins,
   Info,
   KeyRound,
   LifeBuoy,
@@ -214,23 +213,11 @@ export default function Page() {
           </p>
           <InfoBox color="blue" icon={<Info size={20} />} title="Tus datos, tu organización">
             El conector solo llega a la organización en la que se generó. Para trabajar con otra
-            organización, cámbiate a ella en Tavnit y genera una URL ahí.
+            organización, cámbiate a ella en Tavnit y genera una URL ahí. Lo que el asistente inicia
+            sigue tu configuración como cualquier otro Run: si un Flow pide{" "}
+            <DocLink href="/es/documentacion/revision-humana">Revisión Humana</DocLink>, el Run la sigue
+            esperando.
           </InfoBox>
-        </DocCard>
-
-        <DocCard icon={<Coins size={24} />} title="Créditos">
-          <Lead>
-            El trabajo que se hace a través del conector se cobra igual que el mismo trabajo hecho
-            de cualquier otra forma: consume los créditos de tu organización con normalidad.
-          </Lead>
-          <p>
-            Cualquier run iniciado a través del conector es un run normal: cuesta lo mismo que desde
-            la app o la API, y si su Flow tiene la{" "}
-            <DocLink href="/es/documentacion/revision-humana">revisión humana</DocLink> activada,
-            igual se pausa para un revisor. Consulta{" "}
-            <DocLink href="/es/documentacion/creditos">Créditos</DocLink> para ver cuánto cuesta cada
-            tipo de trabajo.
-          </p>
         </DocCard>
 
         <DocCard icon={<RefreshCw size={24} />} title="Vencimiento y actualización">
@@ -318,8 +305,8 @@ export default function Page() {
               ],
               [
                 "El asistente no puede realizar una acción",
-                "Tu rol o tus créditos no lo permiten.",
-                "Revisa tu rol y tu saldo de créditos antes de suponer que falla el conector.",
+                "Tu rol no lo permite.",
+                "Revisa tu rol antes de suponer que falla el conector.",
               ],
             ]}
           />
@@ -361,12 +348,6 @@ export default function Page() {
               label: "Roles de usuario y permisos",
               description:
                 "Lo que pueden hacer Propietario, Administrador, Miembro y Solo HITL.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Cómo se cobran los créditos",
-              description:
-                "El trabajo del conector consume créditos como cualquier otro run.",
             },
           ]}
         />

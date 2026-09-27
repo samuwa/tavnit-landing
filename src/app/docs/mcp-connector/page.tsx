@@ -4,7 +4,6 @@ import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   AlertTriangle,
-  Coins,
   Info,
   KeyRound,
   LifeBuoy,
@@ -210,22 +209,10 @@ export default function Page() {
           </p>
           <InfoBox color="blue" icon={<Info size={20} />} title="Your data, your organization">
             The connector only reaches the organization it was generated in. To work with another
-            organization, switch to it in Tavnit and generate a URL there.
+            organization, switch to it in Tavnit and generate a URL there. Work started from the
+            assistant follows your setup like any other run: if a flow asks for{" "}
+            <DocLink href="/docs/human-in-the-loop">human review</DocLink>, the run still waits for it.
           </InfoBox>
-        </DocCard>
-
-        <DocCard icon={<Coins size={24} />} title="Credits">
-          <Lead>
-            Work done through the connector is billed like the same work done any other way: it
-            consumes your organization&apos;s credits normally.
-          </Lead>
-          <p>
-            Any run started through the connector is an ordinary run: it costs what the same run
-            costs from the app or the API, and if its flow has{" "}
-            <DocLink href="/docs/human-in-the-loop">human review</DocLink> enabled, it still pauses
-            for a reviewer. See <DocLink href="/docs/credits">Credits</DocLink> for what each
-            kind of work costs.
-          </p>
         </DocCard>
 
         <DocCard icon={<RefreshCw size={24} />} title="Expiry and refreshing">
@@ -311,8 +298,8 @@ export default function Page() {
               ],
               [
                 "The assistant cannot perform an action",
-                "Your role or your credits do not allow it.",
-                "Check your role and your credit balance before assuming a connector fault.",
+                "Your role does not allow it.",
+                "Check your role before assuming a connector fault.",
               ],
             ]}
           />
@@ -354,12 +341,6 @@ export default function Page() {
               label: "User roles and permissions",
               description:
                 "What Owner, Admin, Member and HITL Only can each do.",
-            },
-            {
-              href: "/docs/credits",
-              label: "How credits are charged",
-              description:
-                "Connector work consumes credits like any other run.",
             },
           ]}
         />

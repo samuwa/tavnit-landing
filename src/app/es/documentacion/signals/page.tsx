@@ -4,7 +4,6 @@ import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   AudioLines,
   Code2,
-  Coins,
   FilePlus,
   FlaskConical,
   HelpCircle,
@@ -41,7 +40,6 @@ const RUN_RESPONSE = `{
   "signal_id": "…",
   "status": "queued",
   "audio_seconds": 754,
-  "estimated_max_credits": 13,
   "message": "Wave queued for processing."
 }`;
 
@@ -161,7 +159,7 @@ export default function Page() {
             ]}
           />
           <p>
-            Los silencios largos se recortan antes de cualquier procesamiento y nunca se cobran, así
+            Los silencios largos se recortan antes de cualquier procesamiento, así
             que una grabación de un turno completo con largos ratos en silencio no es problema. El
             idioma hablado se detecta automáticamente. Un Signal desactivado no puede ejecutar Waves
             hasta que lo actives de nuevo.
@@ -177,7 +175,7 @@ export default function Page() {
         <DocCard icon={<Table2 size={24} />} title="Leer un Wave">
           <Lead>
             Un Wave completado muestra la duración (y cuánto fue voz), el número de interacciones (y
-            cuántas se excluyeron), los turnos y los créditos cobrados.
+            cuántas se excluyeron) y los turnos.
           </Lead>
           <BulletList
             items={[
@@ -266,17 +264,6 @@ export default function Page() {
           />
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Costo">
-          <p>
-            Un Wave cuesta <strong>1 crédito por cada minuto iniciado de voz detectada</strong>, con un
-            mínimo de 1. El silencio recortado no se cuenta. Necesitas al menos 1 crédito para iniciar
-            un Wave; después del análisis de silencios, un Wave cuyo costo real supera tu saldo falla
-            antes de cualquier procesamiento con IA, y los créditos solo se descuentan cuando el Wave
-            se completa. La página del Wave muestra los créditos cobrados. Consulta{" "}
-            <DocLink href="/es/documentacion/creditos">Créditos</DocLink>.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code2 size={24} />} title="API">
           <p>
             Copia el ID desde <strong>&ldquo;ID del Signal&rdquo;</strong> en la página del Signal y
@@ -286,9 +273,9 @@ export default function Page() {
           <CodeBlock lang="bash — encolar un Wave" code={RUN_CURL} />
           <CodeBlock lang="JSON — respuesta 202" code={RUN_RESPONSE} />
           <p>
-            <InlineCode>estimated_max_credits</InlineCode> es un tope calculado con la duración bruta;
-            la cifra real se basa en la voz detectada. Errores: 400 si el archivo falta, está vacío,
-            no es compatible o es demasiado largo; 402 si el saldo es menor a 1 crédito; 403/404 si el
+            Errores: 400 si el archivo falta, está vacío, no es compatible o es demasiado largo; 402
+            si tu organización no puede iniciar trabajo nuevo en este momento (contacta al equipo de
+            Tavnit); 403/404 si el
             Signal no está en tu organización. Sigue el Wave en la app. Consulta la página de la{" "}
             <DocLink href="/es/documentacion/api">API REST</DocLink> para la autenticación.
           </p>
@@ -316,7 +303,7 @@ export default function Page() {
               ["“Ejecutar Wave” está deshabilitado", "El Signal está inactivo. Actívalo primero."],
               ["Los hablantes quedan con el tipo de miembro equivocado", "Agrega descripciones a tus tipos de miembro que expliquen cómo distinguirlos (su rol, lo que suelen decir)."],
               ["Las conversaciones caen en Other", "Describe cada tipo de interacción de forma más concreta, o deja los tipos de interacción vacíos para capturarlo todo."],
-              ["El Wave falló después de quedar en cola", "Compara tu saldo de créditos con la duración de la voz, y verifica que la grabación tenga como máximo 2 horas de voz."],
+              ["El Wave falló después de quedar en cola", "Verifica que la grabación tenga como máximo 2 horas de voz."],
             ]}
           />
         </DocCard>
@@ -332,11 +319,6 @@ export default function Page() {
               href: "/es/documentacion/webhooks",
               label: "Recibe resultados por webhook",
               description: "Cómo Tavnit envía los resultados a tu endpoint.",
-            },
-            {
-              href: "/es/documentacion/creditos",
-              label: "Cómo se cobran los créditos",
-              description: "Costos por función, incluidos los minutos de audio.",
             },
             {
               href: "/es/documentacion/nets",

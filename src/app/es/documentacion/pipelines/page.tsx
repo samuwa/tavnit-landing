@@ -4,7 +4,6 @@ import DocsPageSchema from "@/components/docs/DocsPageSchema";
 import {
   AlertTriangle,
   Code2,
-  Coins,
   FlaskConical,
   GitBranch,
   HelpCircle,
@@ -267,7 +266,7 @@ export default function Page() {
               </Fragment>,
             ]}
           />
-          <p>Diseñar con IA es gratis: no ejecuta nada ni usa créditos.</p>
+          <p>Diseñar con IA no ejecuta nada.</p>
         </DocCard>
 
         <DocCard icon={<Upload size={24} />} title="Fuentes: cómo entran los documentos">
@@ -417,20 +416,6 @@ export default function Page() {
           </p>
         </DocCard>
 
-        <DocCard icon={<Coins size={24} />} title="Costo">
-          <p>
-            Un Pipeline no tiene precio propio. Cada paso paga exactamente lo que cuesta la función
-            cuando la usas directamente: un run de un Flow paga por página, un Agente por su tiempo de
-            ejecución, un Inspector por sus comparaciones con IA, y así. Las Escrituras a bucket y las
-            Salidas son gratis. Para iniciar una ejecución solo necesitas un saldo de créditos
-            positivo.
-          </p>
-          <p>
-            Consulta <DocLink href="/es/documentacion/creditos">Créditos</DocLink> para ver cuánto
-            cuesta cada función.
-          </p>
-        </DocCard>
-
         <DocCard icon={<Code2 size={24} />} title="API">
           <span id="api" />
           <p>
@@ -443,7 +428,7 @@ export default function Page() {
           <CodeBlock lang="JSON — respuesta 202" code={EXECUTE_RESPONSE} />
           <p>
             Una definición que no se puede ejecutar devuelve 400 con{" "}
-            <InlineCode>validation_errors</InlineCode>; un saldo vacío devuelve 402; un Pipeline
+            <InlineCode>validation_errors</InlineCode>; un 402 significa que tu organización no puede iniciar trabajo nuevo en este momento (contacta al equipo de Tavnit); un Pipeline
             inactivo devuelve 400. Sigue el progreso en la pestaña Ejecuciones. Para detener una
             ejecución:
           </p>
