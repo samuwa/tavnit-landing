@@ -93,17 +93,52 @@ export async function quotaSnapshot(sessionId: string, ipHash: string): Promise<
     countSince(`&ip_hash=eq.${encodeURIComponent(ipHash)}${DOCS}`),
     countSince(DOCS),
   ]);
-  // LITE_RUNS_PER_DAY overrides the per-visitor limit (raise it to test).
-  return { session, ip, global, ...quotaLimits() };
+  return { session, ip, global, ...(await quotaLimits()) };
 }
 
-/** Per-visitor and global limits, env overrides applied. */
-export function quotaLimits(): { limitPerDay: number; globalCap: number } {
+/**
+ * Limit overrides the team edits from the admin panel (Free tools page), in
+ * the one-row lite_settings table. Read at most every 15 s per instance, so
+ * a change applies within seconds without a redeploy. Null = no override.
+ */
+let settingsCache: { at: number; runsPerDay: number | null; dailyCap: number | null } | null = null;
+const SETTINGS_TTL_MS = 15_000;
+
+async function liteSettings(): Promise<{ runsPerDay: number | null; dailyCap: number | null }> {
+  if (settingsCache && Date.now() - settingsCache.at < SETTINGS_TTL_MS) return settingsCache;
+  const h = headers();
+  const b = base();
+  let runsPerDay: number | null = null;
+  let dailyCap: number | null = null;
+  if (h && b) {
+    try {
+      const res = await fetch(`${b}/rest/v1/lite_settings?select=runs_per_day,daily_cap&id=eq.true`, {
+        headers: h,
+        cache: "no-store",
+      });
+      if (res.ok) {
+        const [row] = (await res.json()) as { runs_per_day: number | null; daily_cap: number | null }[];
+        runsPerDay = row?.runs_per_day ?? null;
+        dailyCap = row?.daily_cap ?? null;
+      }
+    } catch {
+      // Unreadable settings never block the tools: fall through to env/defaults.
+    }
+  }
+  settingsCache = { at: Date.now(), runsPerDay, dailyCap };
+  return settingsCache;
+}
+
+/** Per-visitor and global limits: admin override (lite_settings), then env
+ *  (LITE_RUNS_PER_DAY / LITE_DAILY_CAP), then the code default. */
+export async function quotaLimits(): Promise<{ limitPerDay: number; globalCap: number }> {
+  const settings = await liteSettings();
   const cap = Number(process.env.LITE_DAILY_CAP);
   const perDay = Number(process.env.LITE_RUNS_PER_DAY);
   return {
-    limitPerDay: Number.isFinite(perDay) && perDay > 0 ? perDay : LITE_LIMITS.runsPerDay,
-    globalCap: Number.isFinite(cap) && cap > 0 ? cap : LITE_LIMITS.dailyCapDefault,
+    limitPerDay:
+      settings.runsPerDay ?? (Number.isFinite(perDay) && perDay > 0 ? perDay : LITE_LIMITS.runsPerDay),
+    globalCap: settings.dailyCap ?? (Number.isFinite(cap) && cap > 0 ? cap : LITE_LIMITS.dailyCapDefault),
   };
 }
 
@@ -142,7 +177,7 @@ export async function reserve(row: {
   pages: number | null;
   is_sample: boolean;
 }): Promise<Reservation> {
-  const { limitPerDay, globalCap } = quotaLimits();
+  const { limitPerDay, globalCap } = await quotaLimits();
   const result = await rpc<string>("lite_reserve", {
     p_session: row.session_id,
     p_ip_hash: row.ip_hash,
