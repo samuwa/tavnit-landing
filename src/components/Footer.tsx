@@ -33,6 +33,9 @@ import type { Locale } from "@/lib/locale";
  *    the list into a mobile-only "Quick Links" block and desktop-only columns,
  *    which meant mobile users never saw Connect, and the two lists drifted.
  *
+ * Enterprise services (/enterprise, /es/empresas) are linked from Resources
+ * only: findable, but not presented as the main offer.
+ *
  * The Spanish footer links Spanish routes, the Spanish docs included
  * (/es/documentacion); /pricing is the one English page it still points to.
  */
@@ -107,6 +110,7 @@ const COLUMNS: Record<Locale, FooterColumn[]> = {
         { label: "Integrations", href: "/integrations" },
         { label: "MCP connector", href: "/integrations/mcp" },
         { label: "Guides", href: "/guides" },
+        { label: "Enterprise", href: "/enterprise" },
         { label: "Book a demo", href: "/schedule" },
       ],
     },
@@ -132,6 +136,7 @@ const COLUMNS: Record<Locale, FooterColumn[]> = {
       links: [
         { label: "Documentación", href: "/es/documentacion" },
         { label: "Guías", href: "/es/guias" },
+        { label: "Enterprise y asesoría", href: "/es/empresas" },
         { label: "Agendar una demostración", href: "/es/agendar" },
       ],
     },

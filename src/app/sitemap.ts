@@ -269,6 +269,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: section.href === "/es/documentacion" ? 0.8 : 0.7,
     })),
+    // Enterprise services: indexable so the Business Advisory section can be
+    // found, but not a page we push — below the commercial pages.
+    {
+      url: `${SITE_URL}/enterprise`,
+      lastModified: lastCommitDate("src/app/enterprise/page.tsx", "src/components/EnterpriseServices.tsx"),
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
+    {
+      url: `${SITE_URL}/es/empresas`,
+      lastModified: lastCommitDate("src/app/es/empresas/page.tsx", "src/components/EnterpriseServices.tsx"),
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
     // Legal pages are indexable — they are a trust/E-E-A-T signal — but rank
     // for nothing, so they sit at the bottom of the priority range.
     {
