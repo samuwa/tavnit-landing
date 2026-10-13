@@ -69,7 +69,7 @@ three areas have no `es.ts` here.
 
 - Every URL: `slug`, `href`, `path`, `links[].href`, `pipeline[].href`. Links
   are written as English site paths; components localize them with
-  `localizedPath()` (the docs and `/pricing` stay English for now).
+  `localizedPath()` (`/pricing` and untranslated docs stay English).
 - Dates and numbers that are data: `published`, `updated`, `readingMinutes`.
 - `own` on integration cards; `ids` in `home/*.ts` — keep
   `how-it-works`, `use-cases`, `integrations`, `faq` (the header and footer
@@ -136,6 +136,7 @@ run long, and the header nav and buttons have little room.
    static paths in `NEW_LOCALE_STATIC_PATHS`, dynamic ones from the data the
    route's `generateStaticParams` reads. That is what gives it hreflang on
    every twin, sitemap entries and switcher links.
-3. Docs: when `src/app/[lang]/docs` exists, add the docs paths there (see the
-   comment in `routes.ts`) and widen the docs' engine-only `Locale`
-   (`components/docs/nav.ts`).
+3. Docs: six docs pages are localized through their own registry
+   (`src/content/docs`, routes under `src/app/[lang]/docs`), which
+   `routes.ts` already reads. To translate them into a language, follow
+   `src/content/docs/README.md` (German is done).

@@ -10,8 +10,9 @@ import {
   SUPPORT_EMAIL,
 } from "./site";
 import type { Faq } from "./faqs";
-import { DOCS_HOME, docSection, docSections, type DocSlug } from "@/components/docs/nav";
-import { hreflangOf } from "@/lib/locales";
+import type { DocSlug } from "@/components/docs/nav";
+import { docsHome as docsHomePath, docsNames, localeDocSection, localeDocSections } from "@/components/docs/i18n";
+import { hreflangOf, localeHome, type Locale } from "@/lib/locales";
 
 /**
  * schema.org `inLanguage` is the page's hreflang tag (lib/locales.ts), so the
@@ -578,15 +579,16 @@ export function legalSchema(name: string, path: string, description: string) {
  * The ItemList enumerates every documentation route so crawlers see the full
  * set as a related collection rather than 13 unconnected pages.
  */
-export function docsRootSchema(locale: "en" | "es" = "en") {
-  const sections = docSections(locale);
+export function docsRootSchema(locale: Locale = "en") {
+  // In the new languages: only the translated pages (their docs list).
+  const sections = localeDocSections(locale);
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "ItemList",
-        "@id": `${SITE_URL}${DOCS_HOME[locale]}#index`,
-        name: locale === "es" ? "Documentación de Tavnit" : "Tavnit Documentation",
+        "@id": `${SITE_URL}${docsHomePath(locale)}#index`,
+        name: docsNames(locale).list,
         inLanguage: hreflangOf(locale),
         itemListOrder: "https://schema.org/ItemListOrderAscending",
         numberOfItems: sections.length,
@@ -627,16 +629,18 @@ export function docsPageSchema(
   options: {
     howTo?: DocsHowTo;
     primaryImage?: { url: string; caption: string; width: number; height: number };
-    locale?: "en" | "es";
+    locale?: Locale;
   } = {},
 ) {
   const locale = options.locale ?? "en";
-  const section = docSection(slug, locale);
+  const section = localeDocSection(slug, locale);
+  if (!section) throw new Error(`Docs page ${slug} does not exist in ${locale}`);
   const url = `${SITE_URL}${section.href}`;
-  const docsHome = `${SITE_URL}${DOCS_HOME[locale]}`;
-  const isRoot = section.href === DOCS_HOME[locale];
-  const home = locale === "es" ? { name: "Inicio", url: `${SITE_URL}/es` } : { name: "Home", url: SITE_URL };
-  const docsName = locale === "es" ? "Documentación" : "Docs";
+  const docsHome = `${SITE_URL}${docsHomePath(locale)}`;
+  const isRoot = section.href === docsHomePath(locale);
+  const names = docsNames(locale);
+  const home = { name: names.home, url: locale === "en" ? SITE_URL : `${SITE_URL}${localeHome(locale)}` };
+  const docsName = names.docs;
 
   const trail = isRoot
     ? [home, { name: docsName, url }]

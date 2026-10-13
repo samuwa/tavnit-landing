@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import DocsShell from "@/components/docs/DocsShell";
 import { docsRootSchema } from "@/lib/schema";
 import { DOCS_EMBED_SCRIPT } from "@/components/docs/embed";
+import { docsShellData } from "@/components/docs/i18n";
 
 /**
  * Docs shell layout.
@@ -24,7 +25,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(docsRootSchema()) }}
       />
-      <DocsShell>{children}</DocsShell>
+      <DocsShell data={docsShellData("en")}>{children}</DocsShell>
     </>
   );
 }

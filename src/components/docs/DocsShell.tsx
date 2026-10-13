@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,6 +19,7 @@ import {
   Database,
   FolderInput,
   Home,
+  Languages,
   Layers,
   Mail,
   Menu,
@@ -31,8 +32,9 @@ import {
   Workflow,
   X,
 } from "lucide-react";
-import { DOC_GROUP_LABELS, docSections, type DocSlug } from "./nav";
-import { useDocsLocale } from "./ui";
+import type { DocSlug } from "./nav";
+import type { DocsShellData, DocsShellLanguage } from "./i18n";
+import { DocsLocaleProvider } from "./ui";
 import ThemeToggle from "@/components/ThemeToggle";
 import { docsDisplay } from "./fonts";
 
@@ -49,15 +51,16 @@ import { docsDisplay } from "./fonts";
  *    no URL and no crawlable link pointing at them. They are now real anchors.
  *  - Active state comes from usePathname() rather than local component state.
  *
- * One shell for both languages: the locale follows the URL (/es/documentacion
- * is Spanish), which picks the sidebar list, the chrome strings and the
- * EN/ES switch that links each page to its twin.
+ * One shell for every language. The server layout passes `data`
+ * (components/docs/i18n.ts → docsShellData): the sidebar entries and labels,
+ * the chrome strings, and each page's language menu. In the new languages,
+ * pages that are not translated link to their English URL with an "EN" badge.
+ * The data also feeds DocsLocaleProvider, which localizes DocLink / Related
+ * hrefs and the Copy / Keep reading strings of ui.tsx.
  */
 
-const T = {
-  en: { home: "/", back: "Back to home", toggle: "Toggle menu", goHome: "Go home", contents: "Contents", close: "Close menu", nav: "Documentation", switchLabel: "Español", switchShort: "ES", switchAria: "Leer esta página en español" },
-  es: { home: "/es", back: "Volver al inicio", toggle: "Abrir o cerrar el menú", goHome: "Ir al inicio", contents: "Contenido", close: "Cerrar el menú", nav: "Documentación", switchLabel: "English", switchShort: "EN", switchAria: "Read this page in English" },
-} as const;
+/** Docs URLs (every language): links to them stay inside the embedded frame. */
+const DOCS_PATH = /^\/(?:docs|es\/documentacion|[a-z]{2}(?:-[a-z]+)?\/docs)(?:\/|$)/;
 
 const ICONS: Record<DocSlug, React.ReactNode> = {
   "getting-started": <Layers size={20} />,
@@ -83,15 +86,13 @@ const ICONS: Record<DocSlug, React.ReactNode> = {
   nets: <Radar size={20} />,
 };
 
-export default function DocsShell({ children }: { children: React.ReactNode }) {
+export default function DocsShell({ data, children }: { data: DocsShellData; children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
-  const locale = useDocsLocale();
-  const t = T[locale];
-  const sections = docSections(locale);
-  const other = locale === "es" ? "en" : "es";
-  const current = sections.find((s) => s.href === pathname);
-  const twin = (current ? docSections(other).find((s) => s.slug === current.slug) : undefined) ?? docSections(other)[0];
+  const t = { ...data.chrome, home: data.home };
+  const sections = data.items;
+  const current = sections.find((s) => !s.english && s.href === pathname);
+  const languages = (current && data.languages[current.slug]) || data.languages["getting-started"] || [];
 
   // Embedded in the app: links that leave the docs open outside the frame
   // (the app itself in the top window, everything else in a new tab), so the
@@ -103,9 +104,7 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
       const a = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
       if (!a) return;
       const url = new URL(a.href, window.location.href);
-      const inDocs =
-        url.origin === window.location.origin &&
-        (url.pathname === "/docs" || url.pathname.startsWith("/docs/") || url.pathname === "/es/documentacion" || url.pathname.startsWith("/es/documentacion/"));
+      const inDocs = url.origin === window.location.origin && DOCS_PATH.test(url.pathname);
       if (inDocs) return;
       e.preventDefault();
       if (url.hostname === "app.tavnit.io") window.open(url.href, "_top");
@@ -137,7 +136,8 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
   }, [sidebarOpen]);
 
   return (
-    <div className={`docs-shell min-h-screen text-fg ${docsDisplay.variable}`} lang={locale}>
+    <DocsLocaleProvider value={{ locale: data.locale, chrome: data.chrome, links: data.links }}>
+    <div className={`docs-shell min-h-screen text-fg ${docsDisplay.variable}`} lang={data.lang}>
       {/* Quiet, static canvas (globals.css .docs-canvas): paper with a faint
           ledger grid, as on Tavnit Lite. The animated squares of the old
           docs cost CPU on every page and fought the text. */}
@@ -180,15 +180,7 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
 
           {/* Right section: fills remaining space */}
           <div className="flex-1 flex items-center justify-end gap-2 px-4 md:px-6">
-            <Link
-              href={twin.href}
-              hrefLang={other}
-              aria-label={t.switchAria}
-              className="px-2.5 py-1.5 rounded-lg text-sm font-medium text-fg-4 hover:text-fg hover:bg-tint/10 transition-colors"
-            >
-              <span className="hidden sm:inline">{t.switchLabel}</span>
-              <span className="sm:hidden">{t.switchShort}</span>
-            </Link>
+            <LanguageMenu current={data.locale} languages={languages} label={t.languages} />
             <ThemeToggle />
             {/* Home icon (mobile only) */}
             <Link
@@ -242,7 +234,7 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
                 <div key={item.slug}>
                   {firstOfGroup && (
                     <p className={`${i === 0 ? "" : "mt-5"} mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-wider text-fg-5`}>
-                      {DOC_GROUP_LABELS[locale][item.group]}
+                      {data.groupLabels[item.group]}
                     </p>
                   )}
                   <Link
@@ -259,7 +251,16 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
                     }`}
                   >
                     {ICONS[item.slug]}
-                    {item.label}
+                    <span className="flex-1">{item.label}</span>
+                    {item.english && (
+                      <span
+                        lang="en"
+                        title={t.englishOnly}
+                        className="rounded border border-tint/15 px-1.5 py-px text-[10px] font-semibold tracking-wide text-fg-5"
+                      >
+                        EN<span className="sr-only"> — {t.englishOnly}</span>
+                      </span>
+                    )}
                   </Link>
                 </div>
               );
@@ -283,6 +284,73 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
       <main className="docs-main relative z-10 pt-16 lg:pl-[280px]">
         <div className="max-w-[900px] mx-auto px-4 md:px-8 py-8 md:py-12">{children}</div>
       </main>
+    </div>
+    </DocsLocaleProvider>
+  );
+}
+
+/**
+ * The languages this page exists in (hreflang twins only — a language whose
+ * docs lack this page is not offered). A small disclosure menu: the button
+ * shows the current language's short code.
+ */
+function LanguageMenu({ current, languages, label }: { current: string; languages: DocsShellLanguage[]; label: string }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  if (languages.length < 2) return null;
+  const here = languages.find((l) => l.locale === current);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-label={label}
+        aria-expanded={open}
+        aria-haspopup="true"
+        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-sm font-medium text-fg-4 hover:text-fg hover:bg-tint/10 transition-colors"
+      >
+        <Languages size={16} />
+        <span>{here?.short ?? current.toUpperCase()}</span>
+      </button>
+      {open && (
+        <ul className="absolute right-0 top-full mt-2 min-w-[11rem] rounded-xl border border-tint/10 bg-bg/95 backdrop-blur-xl p-1.5 shadow-lg z-50">
+          {languages.map((l) => (
+            <li key={l.locale}>
+              <Link
+                href={l.href}
+                hrefLang={l.hreflang}
+                lang={l.hreflang}
+                onClick={() => setOpen(false)}
+                aria-current={l.locale === current ? "page" : undefined}
+                className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+                  l.locale === current ? "bg-accent/10 text-fg font-semibold" : "text-fg-3 hover:bg-tint/5 hover:text-fg"
+                }`}
+              >
+                <span>{l.name}</span>
+                <span className="text-[11px] text-fg-5">{l.short}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

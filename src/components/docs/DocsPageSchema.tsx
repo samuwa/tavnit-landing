@@ -1,5 +1,6 @@
 import { docsPageSchema, type DocsHowTo } from "@/lib/schema";
 import type { DocSlug } from "./nav";
+import type { Locale } from "@/lib/locales";
 
 /**
  * Per-page docs JSON-LD. Server component by design.
@@ -18,7 +19,7 @@ export default function DocsPageSchema({
   locale = "en",
 }: {
   slug: DocSlug;
-  locale?: "en" | "es";
+  locale?: Locale;
   /** Only pass when the page renders these steps visibly. */
   howTo?: DocsHowTo;
   primaryImage?: { url: string; caption: string; width: number; height: number };

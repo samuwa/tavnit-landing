@@ -9,19 +9,63 @@
  * byte-identical to before the route split.
  */
 
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { AlertTriangle, ArrowUpRight, Check, CheckCircle, Copy, XCircle } from "lucide-react";
+import type { Locale } from "@/lib/locales";
+import type { DocsChrome } from "@/content/docs/types";
+
+/* ─── Docs language context ─── */
+
+/**
+ * The page's docs language, provided by DocsShell from the server layout's
+ * data (components/docs/i18n.ts): the interface strings below (Copy, Keep
+ * reading) and `links`, the English docs paths that exist in this language.
+ * DocLink and Related send an English `/docs/...` href to its translated twin
+ * when there is one, so localized page modules write English paths and
+ * untranslated targets stay English.
+ */
+export interface DocsLocaleContext {
+  locale: Locale;
+  chrome: Pick<DocsChrome, "copy" | "copied" | "related" | "keepReading">;
+  links: Record<string, string>;
+}
+
+const DEFAULT_CONTEXT: DocsLocaleContext = {
+  locale: "en",
+  chrome: { copy: "Copy", copied: "Copied!", related: "Related documentation", keepReading: "Keep reading" },
+  links: {},
+};
+
+const DocsContext = createContext<DocsLocaleContext>(DEFAULT_CONTEXT);
+
+export function DocsLocaleProvider({ value, children }: { value: DocsLocaleContext; children: React.ReactNode }) {
+  return <DocsContext.Provider value={value}>{children}</DocsContext.Provider>;
+}
+
+export function useDocsContext(): DocsLocaleContext {
+  return useContext(DocsContext);
+}
+
+/** The docs language of the current page. */
+export function useDocsLocale(): Locale {
+  return useContext(DocsContext).locale;
+}
+
+/** An English docs href (with an optional #hash) → this page's language, when that page is translated. */
+function localizeHref(href: string, links: Record<string, string>): string {
+  const i = href.search(/[?#]/);
+  const path = i === -1 ? href : href.slice(0, i);
+  const twin = links[path];
+  return twin === undefined ? href : `${twin}${i === -1 ? "" : href.slice(i)}`;
+}
+
+export function useDocHref(href: string): string {
+  return localizeHref(href, useContext(DocsContext).links);
+}
 
 /* ─── Reusable sub-components ─── */
-
-/** Spanish docs live under /es/documentacion; the chrome strings follow the URL. */
-export function useDocsLocale(): "en" | "es" {
-  const pathname = usePathname() ?? "";
-  return pathname === "/es" || pathname.startsWith("/es/") ? "es" : "en";
-}
 
 export function InfoBox({
   color,
@@ -115,7 +159,7 @@ export function BulletList({ items }: { items: React.ReactNode[] }) {
 
 export function CodeBlock({ lang, code }: { lang: string; code: string }) {
   const [copied, setCopied] = useState(false);
-  const es = useDocsLocale() === "es";
+  const { chrome } = useDocsContext();
 
   const copy = async () => {
     await navigator.clipboard.writeText(code);
@@ -132,7 +176,7 @@ export function CodeBlock({ lang, code }: { lang: string; code: string }) {
           className="flex items-center gap-1.5 text-xs text-fg-4 hover:text-fg transition-colors px-2.5 py-1 rounded hover:bg-tint/10"
         >
           {copied ? <Check size={14} className="text-ok" /> : <Copy size={14} />}
-          {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Copiar" : "Copy"}
+          {copied ? chrome.copied : chrome.copy}
         </button>
       </div>
       <pre className="p-4 overflow-x-auto bg-well/40 text-[13px] leading-relaxed">
@@ -212,9 +256,10 @@ export function Lead({ children }: { children: React.ReactNode }) {
  * matches the sidebar's active state rather than introducing a link colour.
  */
 export function DocLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const localized = useDocHref(href);
   return (
     <Link
-      href={href}
+      href={localized}
       className="text-accent-2 underline decoration-accent-2/30 underline-offset-2 transition-colors hover:text-fg hover:decoration-tint/50"
     >
       {children}
@@ -332,20 +377,20 @@ export function Related({
 }: {
   links: { href: string; label: string; description: string }[];
 }) {
-  const es = useDocsLocale() === "es";
+  const { chrome, links: twins } = useDocsContext();
   return (
     <nav
-      aria-label={es ? "Documentación relacionada" : "Related documentation"}
+      aria-label={chrome.related}
       className="docs-sheet mt-10 rounded-2xl border border-tint/[0.08] bg-panel p-6"
     >
       <span className="text-xs font-semibold uppercase tracking-wider text-fg-5">
-        {es ? "Sigue leyendo" : "Keep reading"}
+        {chrome.keepReading}
       </span>
       <ul className="mt-4 space-y-3">
         {links.map((link) => (
           <li key={link.href}>
             <Link
-              href={link.href}
+              href={localizeHref(link.href, twins)}
               className="group flex items-start gap-2 text-[15px] text-accent-2 transition-colors hover:text-fg"
             >
               <ArrowUpRight

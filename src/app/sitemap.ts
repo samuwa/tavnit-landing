@@ -93,7 +93,11 @@ function withAlternates(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
 function newLocaleEntries(english: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
   const byEnPath = new Map(english.map((e) => [e.url.slice(SITE_URL.length) || "/", e]));
   return NEW_LOCALES.flatMap((locale) => {
-    const lastModified = lastCommitDate(":(literal)src/app/[lang]", `:(glob)src/content/*/${locale}.ts`);
+    const lastModified = lastCommitDate(
+      ":(literal)src/app/[lang]",
+      `:(glob)src/content/*/${locale}.ts`,
+      `:(glob)src/content/docs/${locale}/*`,
+    );
     return [...NEW_LOCALE_PATHS[locale]].map((enPath) => {
       const en = byEnPath.get(enPath);
       return {

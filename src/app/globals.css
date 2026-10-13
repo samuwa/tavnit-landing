@@ -1647,6 +1647,12 @@ html:has(#hero) section[id] {
   -webkit-text-fill-color: currentColor;
   color: var(--fg);
 }
+/* Docs in Chinese, Japanese or Korean (DocsShell sets `lang`): Fraunces has
+   no CJK glyphs, so the titles name each language's system font (the
+   --font-cjk stacks above) instead of falling back to a random serif. */
+:is([lang|="zh"], [lang="ja"], [lang="ko"]) :is(.docs-display, .docs-main h1) {
+  font-family: var(--font-display), Georgia, var(--font-cjk), sans-serif;
+}
 .docs-canvas {
   background-color: var(--bg);
   background-image:

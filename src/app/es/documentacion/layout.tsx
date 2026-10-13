@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import DocsShell from "@/components/docs/DocsShell";
 import { docsRootSchema } from "@/lib/schema";
 import { DOCS_EMBED_SCRIPT } from "@/components/docs/embed";
+import { docsShellData } from "@/components/docs/i18n";
 
 /**
  * Spanish docs layout. The twin of src/app/docs/layout.tsx: same shell (it
@@ -23,7 +24,7 @@ export default function DocsLayoutEs({ children }: { children: React.ReactNode }
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(docsRootSchema("es")) }}
       />
-      <DocsShell>{children}</DocsShell>
+      <DocsShell data={docsShellData("es")}>{children}</DocsShell>
     </>
   );
 }

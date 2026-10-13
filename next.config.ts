@@ -49,6 +49,9 @@ const nextConfig: NextConfig = {
       { source: "/docs/:path*", headers: docsFrame },
       { source: "/es/documentacion", headers: docsFrame },
       { source: "/es/documentacion/:path*", headers: docsFrame },
+      // The new languages' translated docs (src/app/[lang]/docs).
+      { source: "/:lang/docs", headers: docsFrame },
+      { source: "/:lang/docs/:path*", headers: docsFrame },
       {
         // The Vercel preview/production alias (tavnit-landing.vercel.app)
         // serves the whole site with a 200 and is crawlable. Every page

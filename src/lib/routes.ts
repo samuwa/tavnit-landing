@@ -11,10 +11,11 @@ import {
 } from "@/lib/locales";
 import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
 import { GUIDES_ES, esGuidePath } from "@/lib/guides.es";
-import { DOC_SECTIONS, DOC_BY_SLUG_ES } from "@/components/docs/nav";
+import { DOC_SECTIONS, DOC_BY_SLUG, DOC_BY_SLUG_ES } from "@/components/docs/nav";
 import { LITE_TOOLS, LITE_TOOL_IDS } from "@/lib/lite/tools";
 import { USE_CASE_CONTENT } from "@/content/use-cases";
 import { GUIDE_CONTENT } from "@/content/guides";
+import { translatedDocSlugs } from "@/content/docs";
 
 /**
  * Which page exists in which language, and the one way to link to it.
@@ -65,8 +66,9 @@ const ES_TWINS = new Map(ES_ROUTE_PAIRS.map((p) => [p.en, p.es]));
  * the same data their generateStaticParams does, so a page cannot exist
  * without being linked and annotated, nor be annotated without existing.
  *
- * Docs (/docs/...) are not localised yet: when src/app/[lang]/docs exists,
- * add `DOC_SECTIONS.map((d) => d.href)` (or the translated subset) here.
+ * Docs: only the pages translated into a language (the src/content/docs
+ * registry, read by src/app/[lang]/docs) are registered; every other docs
+ * page stays English-only and has no twin in that language.
  */
 export const NEW_LOCALE_STATIC_PATHS = [
   "/",
@@ -87,6 +89,7 @@ export const NEW_LOCALE_PATHS: Record<NewLocale, ReadonlySet<string>> = Object.f
       ...USE_CASE_CONTENT[locale].items.map((uc) => `/use-cases/${uc.slug}`),
       ...GUIDE_CONTENT[locale].items.map((g) => `/guides/${g.slug}`),
       ...LITE_TOOL_IDS.map((id) => LITE_TOOLS[id].paths.en),
+      ...translatedDocSlugs(locale).map((slug) => DOC_BY_SLUG[slug].href),
     ]),
   ]),
 ) as Record<NewLocale, ReadonlySet<string>>;
@@ -111,8 +114,8 @@ export function twinPath(enPath: string, locale: Locale): string | undefined {
 /**
  * Link to an English path from a page in `locale`: the twin when it exists,
  * else the English page itself. Paths that are not English site paths
- * (external URLs, a Spanish path from Spanish data, docs for now) come back
- * unchanged.
+ * (external URLs, a Spanish path from Spanish data) come back unchanged, and
+ * so does an English page with no twin in that language (untranslated docs).
  */
 export function localizedPath(enPath: string, locale: Locale): string {
   return twinPath(enPath, locale) ?? enPath;

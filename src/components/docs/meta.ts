@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { docSection, type DocSlug } from "./nav";
-import { ogLocale, type EngineLocale as Locale } from "@/lib/locales";
-import { alternatesFor } from "@/lib/routes";
+import { ogLocale, type EngineLocale as Locale, type NewLocale } from "@/lib/locales";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
+import { localeDocSection } from "./i18n";
 
 /**
  * Per-route docs metadata.
@@ -37,6 +38,31 @@ export function docMetadata(slug: DocSlug, locale: Locale = "en"): Metadata {
       locale: ogLocale(locale),
       // Restated because a child segment's `openGraph` replaces the parent's
       // wholesale, which would otherwise drop the generated OG image.
+      images: ["/opengraph-image"],
+    },
+  };
+}
+
+/**
+ * Metadata of a translated docs page in a new language (/<segment>/docs/…):
+ * the localized strings, the self-canonical, and the same hreflang block as
+ * every twin of the page (English, Spanish and the other translations).
+ */
+export function localizedDocMetadata(slug: DocSlug, locale: NewLocale): Metadata {
+  const section = localeDocSection(slug, locale);
+  if (!section) return {};
+  const enPath = docSection(slug, "en").href;
+  return {
+    title: { absolute: section.title },
+    description: section.description,
+    alternates: { canonical: section.href, languages: alternatesFor(enPath) },
+    openGraph: {
+      type: "article",
+      url: section.href,
+      title: section.title,
+      description: section.description,
+      siteName: "Tavnit",
+      ...pageOgLocales(enPath, locale),
       images: ["/opengraph-image"],
     },
   };

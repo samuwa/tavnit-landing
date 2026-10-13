@@ -11,8 +11,10 @@
  * have, so it keeps it instead of redirecting it away.
  */
 
-// The docs exist in English and Spanish only (for now): their locale is the
-// engine pair. src/app/[lang]/docs will widen this when it exists.
+// This file holds the English and Spanish docs (their locale is the engine
+// pair). The new languages translate a subset under src/app/[lang]/docs, with
+// their strings in src/content/docs; components/docs/i18n.ts resolves any
+// language.
 import type { EngineLocale as Locale } from "@/lib/locales";
 
 export type DocSlug =
