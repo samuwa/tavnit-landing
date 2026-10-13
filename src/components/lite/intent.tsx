@@ -53,6 +53,11 @@ function send(body: Record<string, unknown>, keepalive = false) {
   });
 }
 
+/** The same tool inside the app (the ids are shared), or the app root. */
+function toolAppUrl(tool: string | undefined): string {
+  return tool && tool !== "site" ? `${APP_URL}/tools/${tool}` : APP_URL;
+}
+
 /** Records, once per result, that the visitor used this tool. */
 export function useMarkUsed(done: boolean, key: string | null, extra?: Payload) {
   const ctx = useLiteIntent();
@@ -86,7 +91,7 @@ export function TavnitLink({
     async (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
       e.preventDefault();
-      let url = APP_URL;
+      let url = toolAppUrl(ctx?.tool);
       try {
         const res = await send({
           tool: ctx?.tool ?? "site",
@@ -106,7 +111,7 @@ export function TavnitLink({
     [ctx, feature],
   );
   return (
-    <a href={APP_URL} onClick={onClick} className={className} role={role}>
+    <a href={toolAppUrl(ctx?.tool)} onClick={onClick} className={className} role={role}>
       {children}
     </a>
   );

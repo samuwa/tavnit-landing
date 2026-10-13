@@ -14,7 +14,9 @@ import { authConfigured, currentUser } from "@/lib/supabase/server";
  *              payload?, handoff? }
  *  - `feature` is what they reached for ("flow", "webhook", "cleaner", …).
  *  - `handoff: true` (the "Try it in Tavnit" links) also mints a one-time
- *    token and answers { url } — the app URL carrying it.
+ *    token and answers { url } — the app URL carrying it. A tool's links
+ *    open that same tool inside the app (app.tavnit.io/tools/<tool id>, the
+ *    ids are shared), where it runs on the user's own org.
  * Never blocks the visitor: on any failure the answer still carries the plain
  * app URL for a handoff.
  */
@@ -48,8 +50,13 @@ function cleanPayload(raw: unknown): Record<string, unknown> {
   return out;
 }
 
+/** Where a link from this tool lands in the app: the same tool, or the app root. */
+function appUrlFor(tool: string | null): URL {
+  return new URL(tool && tool !== "site" ? `/tools/${tool}` : "/", APP_URL);
+}
+
 export async function POST(request: Request) {
-  const fallback = { url: APP_URL };
+  let fallback = { url: APP_URL };
   if (!sameOrigin(request)) return NextResponse.json({ error: "forbidden" }, { status: 403 });
   let body: Record<string, unknown>;
   try {
@@ -63,6 +70,7 @@ export async function POST(request: Request) {
   const tool = typeof body.tool === "string" && (isLiteToolId(body.tool) || body.tool === "site") ? body.tool : null;
   const kind = KINDS.includes(body.kind as IntentKind) ? (body.kind as IntentKind) : null;
   if (!tool || !kind) return NextResponse.json({ error: "bad_request" }, { status: 400 });
+  fallback = { url: appUrlFor(tool).toString() };
   const feature = typeof body.feature === "string" && FEATURE_RE.test(body.feature) ? body.feature : null;
   const locale = body.locale === "en" ? "en" : "es";
 
@@ -74,7 +82,7 @@ export async function POST(request: Request) {
     if (!wantsHandoff) return NextResponse.json({ ok: true });
     const token = randomBytes(24).toString("hex");
     await createHandoff(sessionId, token);
-    const url = new URL(APP_URL);
+    const url = appUrlFor(tool);
     url.searchParams.set("lite", token);
     return NextResponse.json({ url: url.toString() });
   } catch {
