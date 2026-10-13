@@ -1,14 +1,81 @@
-// TODO(i18n): translate from en
 import type { HomeCopy } from "@/content/types";
-import en from "./en";
 
 /**
- * Home (components/LocalizedHome.tsx) — 한국어 (ko).
- *
- * STUB: serves the English source until translated. To translate, replace
- * `en` with a full copy of ./en.ts in 한국어, keeping every key and the
- * values listed as "stays English" in src/content/README.md.
+ * Home (components/LocalizedHome.tsx) — 한국어 (ko). Translated from ./en.ts.
  */
-const ko: HomeCopy = en;
+const ko: HomeCopy = {
+  title: "Tavnit — AI로 문서에서 데이터를 추출하고, 검토하고, 실행하세요",
+  description:
+    "인보이스, 포장 명세서, 계약서, 각종 양식을 공급업체별 템플릿 없이 구조화된 데이터로 바꿉니다. 무엇이든 기록되기 전에 팀이 검토하고 승인합니다. API, 이메일, MCP 지원.",
+  schemaName: "Tavnit",
+  breadcrumbHome: "홈",
+  readInEnglish: null,
+  eyebrow: "AI 문서 업무 자동화",
+  h1: "AI로 문서에서 데이터를 추출하고, 팀과 함께 검토하고, 바로 실행하세요",
+  lede:
+    "Tavnit은 인보이스, 포장 명세서, 계약서, 각종 양식을 공급업체별 템플릿 없이 구조화된 데이터로 바꿉니다. 무엇이든 기록되기 전에 팀이 검토하고 승인하며, 승인된 데이터는 API, 웹훅, 이메일로 귀사 시스템에 전달됩니다.",
+  ctaDemo: "데모 예약하기",
+  ctaTry: "무료로 체험하기",
+  ids: { howItWorks: "how-it-works", useCases: "use-cases", integrations: "integrations", faq: "faq" },
+  problemHeading: "문제",
+  problems: [
+    "매달 백 가지 다른 양식에서 같은 필드를 다시 입력합니다. 공급업체마다 인보이스 양식이 다르고, 팀의 누군가가 이를 손으로 스프레드시트나 시스템에 옮겨 적습니다.",
+    "템플릿 기반 OCR 도구는 공급업체가 양식을 바꾸기 전까지만 작동하고, 바꾸면 조용히 실패합니다. 'PDF와 대화하기' 도구는 숫자를 지어내며, 검토도, 감사 추적도, 귀사 시스템으로 내보낼 방법도 없습니다.",
+    "틀린 합계는 맞는 합계와 똑같아 보입니다. 진짜 비용은 데이터 입력에 드는 시간이 아닙니다. 아무도 보지 못한 채 장부나 통관 신고서에 들어가는 오류입니다.",
+  ],
+  stepsHeading: "작동 방식: 추출, 검토, 실행",
+  steps: [
+    {
+      title: "추출",
+      body: "인보이스 번호, 공급업체, 수량과 가격이 담긴 품목 등 필요한 필드를 한 번만 정의하면, Tavnit이 양식과 상관없이 어떤 PDF, 스캔본, 사진에서든 추출합니다. 공급업체별 템플릿은 필요 없습니다.",
+    },
+    {
+      title: "검토",
+      body: "Cleaner가 날짜 형식, 통화, 품목 계산, 마스터 데이터 조회까지 정리하고 검증합니다. 맞지 않는 것은 멈추고 지정된 검토자에게 갑니다. 모든 것이 추가 전용 감사 추적에 기록됩니다.",
+    },
+    {
+      title: "실행",
+      body: "승인된 데이터는 API나 웹훅으로 ERP나 회계 시스템에 전달되거나, 조회 가능한 Bucket에 저장되거나, PDF 양식을 채우거나, 웹 포털에서 대신 일하는 Agent에 전달됩니다.",
+    },
+  ],
+  useCasesHeading: "사용 사례",
+  useCasesIntro:
+    "각 페이지는 해당 문서 유형에서 어떤 필드가 중요한지, 무엇이 흔히 잘못되는지 다룹니다. 어떤 문서 유형을 다른 것보다 어렵게 만드는 바로 그 부분입니다.",
+  useCasesAll: "사용 사례 {count}개 모두 보기",
+  integrationsHeading: "이미 쓰고 있는 도구와 함께 작동합니다",
+  integrations: [
+    "이메일: PDF를 Tavnit 주소로 전달하면 데이터가 돌아옵니다. 연동 작업이 전혀 필요 없습니다.",
+    "REST API와 웹훅: 귀사 시스템에서 문서를 보내고, 처리가 끝나는 즉시 결과를 받으세요. Zapier, Make, n8n, Power Automate용 레시피도 있습니다.",
+    "MCP 커넥터: Tavnit을 claude.ai나 Cursor에 연결하고, 어시스턴트에게 문서 처리나 추출된 데이터 조회를 요청하세요.",
+    "Bucket: 아무것도 내보내지 않고 자연어로 조회하고 차트로 볼 수 있는 내장 구조화 저장소입니다.",
+  ],
+  integrationsAll: "모든 연동 보기",
+  faqHeading: "자주 묻는 질문",
+  faqs: [
+    {
+      q: "공급업체마다 템플릿을 만들어야 하나요?",
+      a: "아니요. Flow에서 필드를 한 번만 정의하면 Tavnit이 어떤 양식에서든 찾아냅니다. 공급업체가 인보이스 양식을 바꿔도 아무것도 할 필요가 없습니다.",
+    },
+    {
+      q: "틀린 값이 시스템에 들어가지 않게 하려면 어떻게 하나요?",
+      a: "사람 검토로 막습니다. 모든 문서에 승인을 요구할 수도 있고, Cleaner 규칙이 무언가를 발견했을 때만 요구할 수도 있습니다. 예를 들어 수량 × 단가가 품목 합계와 맞지 않을 때입니다. 검토자는 문서와 추출된 데이터를 보고 수정하거나 승인하며, 모든 작업은 감사 추적에 기록됩니다.",
+    },
+    {
+      q: "문서는 어떻게 보내나요?",
+      a: "원하는 방식으로 보내시면 됩니다. PDF가 첨부된 이메일을 Tavnit 주소로 전달하거나, 앱에서 업로드하거나, API로 보내세요. 결과는 웹훅, API, 이메일로 전달되거나, 조회하고 차트로 볼 수 있는 Bucket에 저장됩니다.",
+    },
+    {
+      q: "한국어 문서도 되나요?",
+      a: "네. Tavnit은 어떤 언어로 작성된 문서든 추출하며, 귀사 시스템에서 쓰는 필드명으로 데이터를 반환할 수 있습니다. 앱 자체도 여러 언어로 제공됩니다.",
+    },
+    {
+      q: "비용은 얼마인가요?",
+      a: "요금은 크레딧 기반입니다. 1크레딧은 처리된 1페이지입니다. 데모를 예약하시면 귀사의 물량과 실제 문서를 함께 살펴보겠습니다.",
+    },
+  ],
+  finalHeading: "귀사의 문서 하나로 직접 확인해 보세요",
+  finalBody:
+    "실제 인보이스나 포장 명세서를 가져오세요. 데모에서 첫 번째 Flow를 함께 만들고, 데이터가 실시간으로 추출되는 모습을 보여 드립니다.",
+};
 
 export default ko;
