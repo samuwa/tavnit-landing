@@ -4,8 +4,8 @@ import MarketingPage from "@/components/MarketingPage";
 import UseCaseArticle from "@/components/UseCaseArticle";
 import { buildUseCasePageSchema } from "@/lib/schema";
 import { USE_CASES, USE_CASE_BY_SLUG } from "@/lib/use-cases";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
 import { USE_CASE_ES_BY_SLUG, esUseCasePath } from "@/lib/use-cases.es";
-import { languageAlternates } from "@/lib/locale";
 import { isStripeEnabled } from "@/lib/platform";
 
 /**
@@ -31,15 +31,14 @@ export async function generateMetadata({
   const uc = USE_CASE_BY_SLUG[slug];
   if (!uc) return {};
   const path = `/use-cases/${uc.slug}`;
-  const es = USE_CASE_ES_BY_SLUG[uc.slug];
   return {
     title: uc.title,
     description: uc.description,
     alternates: {
       canonical: path,
-      // The pair must be reciprocal — the Spanish page declares the same
-      // URLs via the same helper — or Google drops it.
-      ...(es ? { languages: languageAlternates(path, esUseCasePath(es)) } : {}),
+      // Must be reciprocal — every twin declares the same set via the same
+      // helper — or Google drops it.
+      languages: alternatesFor(path),
     },
     openGraph: {
       type: "article",
@@ -47,8 +46,7 @@ export async function generateMetadata({
       title: uc.title,
       description: uc.description,
       siteName: "Tavnit",
-      locale: "en_US",
-      ...(es ? { alternateLocale: ["es_PA"] } : {}),
+      ...pageOgLocales(path, "en"),
       images: ["/opengraph-image"],
     },
   };
@@ -74,7 +72,7 @@ export default async function UseCasePage({
     .map((o) => ({ label: o.label, badge: o.badge, href: `/use-cases/${o.slug}` }));
 
   return (
-    <MarketingPage alternatePath={es ? esUseCasePath(es) : undefined}>
+    <MarketingPage enPath={`/use-cases/${uc.slug}`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

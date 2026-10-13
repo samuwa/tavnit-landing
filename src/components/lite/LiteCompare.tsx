@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Download, GitCompareArrows, Loader2, RotateCcw, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { LiteToolId } from "@/lib/lite/tools";
-import type { Locale } from "@/lib/locale";
+import { engineLocale, intlTag, type Locale } from "@/lib/locales";
 import type { CompareResult, PoStatus } from "@/lib/lite/compare";
 import AuthModal from "@/components/lite/AuthModal";
 import { useMarkUsed } from "@/components/lite/intent";
@@ -60,6 +60,22 @@ type Phase =
   | { kind: "done"; files: string[]; matchId: string; result: CompareResult }
   | { kind: "error"; code: string; files: string[] };
 
+/** The third slot's tag. */
+const OPTIONAL: Record<Locale, string> = {
+  en: "optional",
+  es: "opcional",
+  "pt-BR": "opcional",
+  fr: "facultatif",
+  de: "optional",
+  it: "facoltativo",
+  nl: "optioneel",
+  pl: "opcjonalnie",
+  tr: "isteğe bağlı",
+  "zh-Hans": "可选",
+  ja: "任意",
+  ko: "선택",
+};
+
 export default function LiteCompare({
   toolId,
   locale,
@@ -93,8 +109,11 @@ export default function LiteCompare({
   const afterShownFor = useRef<string | null>(null);
   const abort = useRef<AbortController | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  // The Lite org's resources (Flow, Matcher, sample, column names) run in
+  // the ENGINE language; the page, the sign-up and the formats in `locale`.
+  const engine = engineLocale(locale);
   const turnstile = useTurnstile(turnstileSiteKey, locale);
-  const nf = new Intl.NumberFormat(locale === "es" ? "es-PA" : "en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const nf = new Intl.NumberFormat(intlTag(locale), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const money = (v: number | null) => (v === null ? "" : nf.format(v));
   const qty = (v: number | null) => (v === null ? "" : Number.isInteger(v) ? String(v) : nf.format(v));
 
@@ -151,7 +170,7 @@ export default function LiteCompare({
         // The sample set always compares the same way: play the progress over
         // the recorded result instead of spending runs and a Matcher on it.
         const f = await playSample<{ result: CompareResult }>(
-          `/api/lite/sample/${toolId}?locale=${locale}`,
+          `/api/lite/sample/${toolId}?locale=${engine}`,
           cmp.stages.length,
           (stage) => setPhase((p) => (p.kind === "reading" || p.kind === "matching" ? { ...p, stage } : p)),
           ctrl.signal,
@@ -171,7 +190,7 @@ export default function LiteCompare({
       for (let i = 0; i < names.length; i++) {
         const form = new FormData();
         form.set("tool", toolId);
-        form.set("locale", locale);
+        form.set("locale", engine);
         form.set("slot", String(i));
         if (sample) form.set("sample", String(i));
         else form.set("file", chosen[i]!, chosen[i]!.name);
@@ -251,7 +270,7 @@ export default function LiteCompare({
       setPhase({ kind: "matching", files: names, matchId, stage: 2 });
       await pollMatch(matchId, names, ctrl);
     },
-    [files, sampleNames, toolId, locale, turnstile, pollMatch, cmp.stages.length],
+    [files, sampleNames, toolId, engine, turnstile, pollMatch, cmp.stages.length],
   );
 
   // Back from a sign-in round trip (or a reload): pick the comparison up.
@@ -270,7 +289,7 @@ export default function LiteCompare({
     if (stash.matchId === SAMPLE) {
       const ctrlS = new AbortController();
       abort.current = ctrlS;
-      fetch(`/api/lite/sample/${toolId}?locale=${locale}`, { signal: ctrlS.signal })
+      fetch(`/api/lite/sample/${toolId}?locale=${engine}`, { signal: ctrlS.signal })
         .then((r) => (r.ok ? (r.json() as Promise<{ result: CompareResult }>) : null))
         .then((f) => {
           if (f) setPhase({ kind: "done", files: stash.files, matchId: SAMPLE, result: f.result });
@@ -283,7 +302,7 @@ export default function LiteCompare({
     setPhase({ kind: "matching", files: stash.files, matchId: stash.matchId, stage: 2 });
     void pollMatch(stash.matchId, stash.files, ctrl);
     return () => ctrl.abort();
-  }, [toolId, pollMatch, locale]);
+  }, [toolId, pollMatch, locale, engine]);
 
   // ---- download ---------------------------------------------------------------
   const download = useCallback(async () => {
@@ -293,7 +312,7 @@ export default function LiteCompare({
     try {
       const res = await fetch(
         phase.matchId === SAMPLE
-          ? `/api/lite/sample/${toolId}/download?locale=${locale}`
+          ? `/api/lite/sample/${toolId}/download?locale=${engine}`
           : `/api/lite/compare/${encodeURIComponent(phase.matchId)}/download`,
         { cache: "no-store" },
       );
@@ -313,7 +332,7 @@ export default function LiteCompare({
     } finally {
       setDownloading(false);
     }
-  }, [phase, copy.errors, toolId, locale]);
+  }, [phase, copy.errors, toolId, engine]);
 
   useEffect(() => {
     if (phase.kind === "done" && autoDownload.current) {
@@ -380,7 +399,7 @@ export default function LiteCompare({
                     )}
                     {slot.optional && !files[i] && (
                       <span className="pointer-events-none absolute right-3 top-3 rounded-md bg-white px-1.5 py-0.5 text-[10px] font-semibold text-[var(--lite-muted)] shadow-sm">
-                        {locale === "es" ? "opcional" : "optional"}
+                        {OPTIONAL[locale]}
                       </span>
                     )}
                   </div>

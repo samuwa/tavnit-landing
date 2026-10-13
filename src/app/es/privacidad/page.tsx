@@ -3,7 +3,8 @@ import Link from "next/link";
 import LegalDocument, { LegalSection } from "@/components/LegalDocument";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL, SUPPORT_EMAIL } from "@/lib/site";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
+import { hreflangOf } from "@/lib/locales";
 
 /**
  * Spanish translation of /privacy. Same sections, same facts, same date;
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: "/es/privacidad",
-    languages: languageAlternates("/privacy", "/es/privacidad"),
+    languages: alternatesFor("/privacy"),
   },
   openGraph: {
     type: "website",
@@ -27,8 +28,7 @@ export const metadata: Metadata = {
     title: "Política de privacidad | Tavnit",
     description: DESCRIPTION,
     siteName: "Tavnit",
-    locale: ES_LOCALE_OG,
-    alternateLocale: [EN_LOCALE_OG],
+    ...pageOgLocales("/privacy", "es"),
     images: ["/opengraph-image"],
   },
 };
@@ -51,7 +51,7 @@ export default function SpanishPrivacyPage() {
               name: "Política de privacidad",
               headline: "Política de privacidad",
               description: DESCRIPTION,
-              inLanguage: "es-PA",
+              inLanguage: hreflangOf("es"),
               breadcrumb: [
                 { name: "Inicio", url: `${SITE_URL}/es` },
                 { name: "Política de privacidad", url: `${SITE_URL}/es/privacidad` },
@@ -62,7 +62,7 @@ export default function SpanishPrivacyPage() {
       />
       <LegalDocument
         locale="es"
-        alternatePath="/privacy"
+        enPath="/privacy"
         title="Política de privacidad"
         lastUpdated="2026-08-26"
         intro={

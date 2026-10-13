@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Check, FileSpreadsheet, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
-import type { Locale } from "@/lib/locale";
+import type { Locale } from "@/lib/locales";
 import WhatNext from "@/components/lite/WhatNext";
 
 /**

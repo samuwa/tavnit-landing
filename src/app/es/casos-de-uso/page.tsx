@@ -5,7 +5,8 @@ import MarketingPage from "@/components/MarketingPage";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
 import { SITE_URL } from "@/lib/site";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
+import { hreflangOf } from "@/lib/locales";
 
 const TITLE = "Casos de uso — Facturas, aduanas, órdenes de compra y más";
 const DESCRIPTION =
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: "/es/casos-de-uso",
-    languages: languageAlternates("/use-cases", "/es/casos-de-uso"),
+    languages: alternatesFor("/use-cases"),
   },
   openGraph: {
     type: "website",
@@ -24,15 +25,14 @@ export const metadata: Metadata = {
     title: "Casos de uso de Tavnit",
     description: DESCRIPTION,
     siteName: "Tavnit",
-    locale: ES_LOCALE_OG,
-    alternateLocale: [EN_LOCALE_OG],
+    ...pageOgLocales("/use-cases", "es"),
     images: ["/opengraph-image"],
   },
 };
 
 export default function SpanishUseCasesHub() {
   return (
-    <MarketingPage locale="es" alternatePath="/use-cases">
+    <MarketingPage locale="es" enPath="/use-cases">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -42,7 +42,7 @@ export default function SpanishUseCasesHub() {
               name: "Casos de uso de Tavnit",
               headline: TITLE,
               description: DESCRIPTION,
-              inLanguage: "es-PA",
+              inLanguage: hreflangOf("es"),
               breadcrumb: [
                 { name: "Inicio", url: `${SITE_URL}/es` },
                 { name: "Casos de uso", url: `${SITE_URL}/es/casos-de-uso` },

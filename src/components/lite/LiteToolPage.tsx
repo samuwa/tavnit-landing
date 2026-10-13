@@ -19,31 +19,21 @@ const HOW_ICONS: Record<LiteToolKind, LucideIcon[]> = {
 };
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/lib/locale";
+import { engineLocale, hreflangOf, localeHome, type Locale } from "@/lib/locales";
+import { localizedPath, pageAlternates, pageOgLocales } from "@/lib/routes";
 import { LITE_HUB_PATHS, LITE_TOOLS, type LiteToolId } from "@/lib/lite/tools";
-import { HUB_COPY, TOOL_COPY } from "@/lib/lite/copy";
+import { HUB_COPY, RELATED_COPY, TOOL_COPY } from "@/lib/lite/copy";
 import { pagesForTool } from "@/lib/lite/related";
 
-/** Strings for the block that sends the visitor on to the product pages. */
-const RELATED_COPY: Record<Locale, { heading: string; lead: string; useCase: string; guide: string }> = {
-  es: {
-    heading: "Cuando sean todos tus documentos",
-    lead: "Esta herramienta procesa uno a la vez. El mismo motor puede recibirlos por correo o API, revisarlos con tu equipo y entregarlos a tu sistema.",
-    useCase: "Cómo se automatiza:",
-    guide: "Guía:",
-  },
-  en: {
-    heading: "When it is every document, not one",
-    lead: "This tool runs one document at a time. The same engine can take them in by email or API, route them through your team\u2019s review and deliver them to your systems.",
-    useCase: "How it is automated:",
-    guide: "Guide:",
-  },
-};
-
 /**
- * One free-tool page, either language. The two routes per tool are thin
- * wrappers so the hreflang pair is guaranteed to match: both sides call
- * languageAlternates() with the same two paths from the registry.
+ * One free-tool page, any language. The routes per tool are thin wrappers
+ * (/tools/<slug>, /es/herramientas/<slug-es>, /<lang>/tools/<slug>) so the
+ * hreflang set is guaranteed to match: every twin calls alternatesFor()
+ * with the tool's English path.
+ *
+ * Two locales meet here: the PAGE locale (copy, links, sign-up language)
+ * and the ENGINE locale, engineLocale(locale) — the Flow, Matcher, sample
+ * and column names the tool runs, Spanish or English.
  *
  * Layout: one centred column. The tool is the page; what follows (how it
  * works, questions) is short and quiet. The "and then what?" diagram is
@@ -53,22 +43,18 @@ const RELATED_COPY: Record<Locale, { heading: string; lead: string; useCase: str
 export function liteToolMetadata(toolId: LiteToolId, locale: Locale): Metadata {
   const tool = LITE_TOOLS[toolId];
   const copy = TOOL_COPY[toolId][locale];
-  const path = tool.paths[locale];
+  const path = localizedPath(tool.paths.en, locale);
   return {
     title: copy.title,
     description: copy.description,
-    alternates: {
-      canonical: path,
-      languages: languageAlternates(tool.paths.en, tool.paths.es),
-    },
+    alternates: pageAlternates(tool.paths.en, locale),
     openGraph: {
       type: "website",
       url: path,
       title: copy.title,
       description: copy.description,
       siteName: "Tavnit",
-      locale: locale === "es" ? ES_LOCALE_OG : EN_LOCALE_OG,
-      alternateLocale: [locale === "es" ? EN_LOCALE_OG : ES_LOCALE_OG],
+      ...pageOgLocales(tool.paths.en, locale),
       // No `images` here: each tool route ships its own opengraph-image.tsx.
     },
   };
@@ -78,17 +64,17 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
   const tool = LITE_TOOLS[toolId];
   const copy = TOOL_COPY[toolId][locale];
   const hub = HUB_COPY[locale];
-  const path = tool.paths[locale];
-  const alternatePath = tool.paths[locale === "es" ? "en" : "es"];
-  const hubPath = LITE_HUB_PATHS[locale];
-  const homePath = locale === "es" ? "/es" : "/";
+  const engine = engineLocale(locale);
+  const path = localizedPath(tool.paths.en, locale);
+  const hubPath = localizedPath(LITE_HUB_PATHS.en, locale);
+  const homePath = localeHome(locale);
 
   const schema = buildLocalizedPageSchema({
     path,
     name: copy.label,
     headline: copy.h1,
     description: copy.description,
-    inLanguage: locale === "es" ? "es-PA" : "en-US",
+    inLanguage: hreflangOf(locale),
     breadcrumb: [
       { name: hub.breadcrumbHome, url: `${SITE_URL}${homePath}` },
       { name: hub.breadcrumbHub, url: `${SITE_URL}${hubPath}` },
@@ -103,7 +89,7 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
     url: `${SITE_URL}${path}`,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
-    inLanguage: locale === "es" ? "es-PA" : "en-US",
+    inLanguage: hreflangOf(locale),
     isAccessibleForFree: true,
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     publisher: { "@id": `${SITE_URL}/#organization` },
@@ -114,7 +100,7 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
   const relatedCopy = RELATED_COPY[locale];
 
   return (
-    <LiteShell locale={locale} alternatePath={alternatePath}>
+    <LiteShell locale={locale} enPath={tool.paths.en}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       <div className="mx-auto max-w-[960px] px-4 sm:px-6">
@@ -136,8 +122,8 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
             minDocs={tool.compare.minDocs}
             maxDocs={tool.compare.maxDocs}
             sampleNames={(tool.samplePaths ?? []).map((p) => p.split("/").pop() ?? p)}
-            columns={tool.columnOrder[locale]}
-            lineFields={tool.lineFields[locale]}
+            columns={tool.columnOrder[engine]}
+            lineFields={tool.lineFields[engine]}
           />
         ) : tool.kind === "clean" && tool.clean ? (
           <LiteClean

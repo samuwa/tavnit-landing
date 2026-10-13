@@ -3,7 +3,8 @@ import MarketingPage from "@/components/MarketingPage";
 import UseCaseArticle from "@/components/UseCaseArticle";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
+import { hreflangOf } from "@/lib/locales";
 import { USE_CASES_ES, esUseCasePath, type UseCaseEs } from "@/lib/use-cases.es";
 import { isStripeEnabled } from "@/lib/platform";
 
@@ -13,8 +14,8 @@ import { isStripeEnabled } from "@/lib/platform";
  * Two routes render these pages — /es/casos-de-uso/[slug] and /es/aduanas,
  * which kept its original URL — so the shared parts live here and each route
  * is a thin wrapper. Keeping them in one place is also what guarantees the
- * hreflang pair matches: both sides call languageAlternates() with the same
- * two paths.
+ * hreflang set matches: every twin calls alternatesFor() with the same
+ * English path.
  */
 
 export function esUseCaseMetadata(uc: UseCaseEs): Metadata {
@@ -25,7 +26,7 @@ export function esUseCaseMetadata(uc: UseCaseEs): Metadata {
     description: uc.description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(enPath, path),
+      languages: alternatesFor(enPath),
     },
     openGraph: {
       type: "article",
@@ -33,8 +34,7 @@ export function esUseCaseMetadata(uc: UseCaseEs): Metadata {
       title: uc.title,
       description: uc.description,
       siteName: "Tavnit",
-      locale: ES_LOCALE_OG,
-      alternateLocale: [EN_LOCALE_OG],
+      ...pageOgLocales(enPath, "es"),
       images: ["/opengraph-image"],
     },
   };
@@ -49,7 +49,7 @@ export default async function EsUseCasePage({ uc }: { uc: UseCaseEs }) {
     .map((o) => ({ label: o.label, badge: o.badge, href: esUseCasePath(o) }));
 
   return (
-    <MarketingPage locale="es" alternatePath={enPath}>
+    <MarketingPage locale="es" enPath={enPath}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -59,7 +59,7 @@ export default async function EsUseCasePage({ uc }: { uc: UseCaseEs }) {
               name: uc.label,
               headline: uc.title,
               description: uc.description,
-              inLanguage: "es-PA",
+              inLanguage: hreflangOf("es"),
               breadcrumb: [
                 { name: "Inicio", url: `${SITE_URL}/es` },
                 { name: "Casos de uso", url: `${SITE_URL}/es/casos-de-uso` },

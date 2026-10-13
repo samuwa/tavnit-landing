@@ -11,6 +11,15 @@ import {
 } from "./site";
 import type { Faq } from "./faqs";
 import { DOCS_HOME, docSection, docSections, type DocSlug } from "@/components/docs/nav";
+import { hreflangOf } from "@/lib/locales";
+
+/**
+ * schema.org `inLanguage` is the page's hreflang tag (lib/locales.ts), so the
+ * structured data, the hreflang annotations and the visible `lang` always
+ * agree — disagreement between the three is what makes Google ignore a
+ * localisation. Localised builders take it from `hreflangOf(locale)`.
+ */
+const EN = hreflangOf("en");
 
 /**
  * JSON-LD builders.
@@ -59,7 +68,7 @@ function website() {
     description:
       "AI document pipeline: extract, review, act. From PDF to clean structured data, with human review and AI agents.",
     publisher: { "@id": ORG_ID },
-    inLanguage: "en-US",
+    inLanguage: EN,
   };
 }
 
@@ -158,7 +167,7 @@ export function homeSchema(faqs: Faq[]) {
         primaryImageOfPage: `${SITE_URL}/opengraph-image`,
         description:
           "Extract structured data from PDFs with AI, review it with your team, and let AI browser agents act on it.",
-        inLanguage: "en-US",
+        inLanguage: EN,
         datePublished: "2024-01-01",
         dateModified: BUILD_DATE,
       },
@@ -183,7 +192,7 @@ export function pricingSchema(faqs: { q: string; a: string }[]) {
         about: { "@id": SOFTWARE_ID },
         description:
           "Credit-based pricing for AI document extraction. 1 credit = 1 page, with unlimited flows and team members on every plan.",
-        inLanguage: "en-US",
+        inLanguage: EN,
         dateModified: BUILD_DATE,
       },
       {
@@ -239,7 +248,7 @@ export function integrationsHubSchema(items: { label: string; href: string }[]) 
         about: { "@id": SOFTWARE_ID },
         description:
           "Every way to get documents into Tavnit and extracted data back out: MCP connector, REST API, email, webhooks, no-code platforms and Buckets.",
-        inLanguage: "en-US",
+        inLanguage: EN,
         dateModified: BUILD_DATE,
       },
       {
@@ -291,7 +300,7 @@ export function integrationPageSchema(opts: {
         isPartOf: { "@id": WEBSITE_ID },
         about: { "@id": SOFTWARE_ID },
         description: opts.description,
-        inLanguage: "en-US",
+        inLanguage: EN,
         dateModified: BUILD_DATE,
         publisher: { "@id": ORG_ID },
       },
@@ -338,7 +347,7 @@ export function buildUseCasesHubSchema(items: { label: string; slug: string }[])
         about: { "@id": SOFTWARE_ID },
         description:
           "How teams use Tavnit by document type — invoices, contracts, resumes, receipts, purchase orders and customs paperwork.",
-        inLanguage: "en-US",
+        inLanguage: EN,
         dateModified: BUILD_DATE,
       },
       {
@@ -384,7 +393,7 @@ export function buildUseCasePageSchema(opts: {
         isPartOf: { "@id": WEBSITE_ID },
         about: { "@id": SOFTWARE_ID },
         description: opts.description,
-        inLanguage: "en-US",
+        inLanguage: EN,
         dateModified: BUILD_DATE,
         publisher: { "@id": ORG_ID },
       },
@@ -412,8 +421,7 @@ export function buildUseCasePageSchema(opts: {
 /**
  * Graph for a standalone marketing page in a language other than English.
  *
- * The other builders hardcode inLanguage "en-US" because every page was
- * English. The Spanish pages declare their own language so the WebPage node
+ * The other builders describe English pages (EN). The Spanish pages declare their own language so the WebPage node
  * agrees with the visible content and the hreflang annotations; disagreement
  * between the three is what makes Google ignore the localisation.
  */
@@ -504,7 +512,7 @@ export function buildGuideSchema(opts: {
       mainEntityOfPage: url,
       headline: opts.headline,
       description: opts.description,
-      inLanguage: opts.inLanguage ?? "en-US",
+      inLanguage: opts.inLanguage ?? EN,
       datePublished: opts.datePublished,
       dateModified: opts.dateModified,
       author: { "@id": ORG_ID },
@@ -550,7 +558,7 @@ export function legalSchema(name: string, path: string, description: string) {
         isPartOf: { "@id": WEBSITE_ID },
         publisher: { "@id": ORG_ID },
         description,
-        inLanguage: "en-US",
+        inLanguage: EN,
         dateModified: BUILD_DATE,
       },
       breadcrumbs(
@@ -579,7 +587,7 @@ export function docsRootSchema(locale: "en" | "es" = "en") {
         "@type": "ItemList",
         "@id": `${SITE_URL}${DOCS_HOME[locale]}#index`,
         name: locale === "es" ? "Documentación de Tavnit" : "Tavnit Documentation",
-        inLanguage: locale === "es" ? "es-PA" : "en-US",
+        inLanguage: hreflangOf(locale),
         itemListOrder: "https://schema.org/ItemListOrderAscending",
         numberOfItems: sections.length,
         itemListElement: sections.map((section, i) => ({
@@ -677,7 +685,7 @@ export function docsPageSchema(
         isPartOf: { "@id": WEBSITE_ID },
         about: { "@id": SOFTWARE_ID },
         description: section.description,
-        inLanguage: locale === "es" ? "es-PA" : "en-US",
+        inLanguage: hreflangOf(locale),
         datePublished: "2024-01-01",
         dateModified: BUILD_DATE,
         author: { "@id": ORG_ID },

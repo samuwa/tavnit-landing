@@ -1,4 +1,4 @@
-import type { Locale } from "@/lib/locale";
+import type { EngineLocale } from "@/lib/locales";
 import type { CleanMode } from "@/lib/lite/clean";
 import invoiceToExcel from "@/lib/lite/defs/invoice-to-excel";
 import invoiceLineItems from "@/lib/lite/defs/invoice-line-items";
@@ -55,11 +55,15 @@ export type LiteToolId =
  */
 export type LiteToolKind = "extract" | "compare" | "split" | "clean";
 
-/** An id per language: the value in code, and the env var that overrides it. */
+/**
+ * An id per ENGINE language (see engineLocale() in lib/locales.ts: Spanish
+ * pages run the Spanish resources, every other language the English ones):
+ * the value in code, and the env var that overrides it.
+ */
 export interface LocalizedId {
-  env: Record<Locale, string>;
+  env: Record<EngineLocale, string>;
   /** Filled in once the resource exists in the Lite org; null until then. */
-  value: Record<Locale, string | null>;
+  value: Record<EngineLocale, string | null>;
 }
 
 /** Field names of a compare tool's flow, as the Matcher needs them. */
@@ -78,7 +82,10 @@ export interface CompareFields {
 export interface LiteTool {
   id: LiteToolId;
   kind: LiteToolKind;
-  paths: Record<Locale, string>;
+  /** The English page and its Spanish twin. The new languages serve the
+   *  English path under their segment (/de/tools/…); link with
+   *  localizedPath(paths.en, locale) from lib/routes.ts. */
+  paths: Record<EngineLocale, string>;
   /** The commercial pages this tool feeds, by English slug; the Spanish
    *  twins resolve through the data files (see ./related.ts). A tool page
    *  links to them and they link back with "try it free", so a visitor who
@@ -92,10 +99,10 @@ export interface LiteTool {
    *  first, then line items. The backend returns rows with keys sorted
    *  alphabetically when the flow stamps no order. Unknown columns (a
    *  renamed field) still show, after these. */
-  columnOrder: Record<Locale, string[]>;
+  columnOrder: Record<EngineLocale, string[]>;
   /** The flow's table fields (one value per line); the rest of the columns
    *  are metadata fields, repeated on every row. */
-  lineFields: Record<Locale, string[]>;
+  lineFields: Record<EngineLocale, string[]>;
   /** Bundled sample document(s) under /public so visitors can try without a
    *  file. Compare tools list one per slot, in slot order. */
   samplePaths?: string[];
@@ -111,7 +118,7 @@ export interface LiteTool {
     /** benchmark: slot 0 is the reference (the PO); multilateral: all against all. */
     mode: "benchmark" | "multilateral";
     /** The flow's field names the Matcher is configured with, per language. */
-    fields: Record<Locale, CompareFields>;
+    fields: Record<EngineLocale, CompareFields>;
   };
   /** split tools only */
   split?: {
@@ -148,8 +155,8 @@ export function isLiteToolId(v: unknown): v is LiteToolId {
   return typeof v === "string" && v in LITE_TOOLS;
 }
 
-/** Hub pages. */
-export const LITE_HUB_PATHS: Record<Locale, string> = {
+/** Hub pages (new languages: localizedPath(LITE_HUB_PATHS.en, locale)). */
+export const LITE_HUB_PATHS: Record<EngineLocale, string> = {
   en: "/tools",
   es: "/es/herramientas",
 };
@@ -179,3 +186,13 @@ export const LITE_LIMITS = {
 export const LITE_ACCEPT = "application/pdf,image/png,image/jpeg";
 /** The spreadsheet tools: CSV and .xlsx (legacy .xls is refused with its own message). */
 export const LITE_ACCEPT_SHEET = ".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel";
+
+/** Last segment of a tool's English path (/tools/<slug>): the [lang] route's param. */
+export function liteToolSlug(id: LiteToolId): string {
+  return LITE_TOOLS[id].paths.en.split("/").pop() as string;
+}
+
+/** The tool served at /<lang>/tools/<slug>, by its English slug. */
+export function liteToolByEnSlug(slug: string): LiteToolId | null {
+  return LITE_TOOL_IDS.find((id) => liteToolSlug(id) === slug) ?? null;
+}

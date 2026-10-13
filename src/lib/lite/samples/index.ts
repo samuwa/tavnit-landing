@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { Locale } from "@/lib/locale";
+import type { EngineLocale } from "@/lib/locales";
 import type { LiteToolId } from "@/lib/lite/tools";
 import type { Cell } from "@/lib/lite/rows";
 import type { CompareResult } from "@/lib/lite/compare";
@@ -37,7 +37,7 @@ export type SampleFixture =
   | { kind: "compare"; seconds: number; result: CompareResult }
   | { kind: "split"; seconds: number; segments: SegmentView[]; pages: number };
 
-const FIXTURES: Partial<Record<LiteToolId, Record<Locale, SampleFixture>>> = {
+const FIXTURES: Partial<Record<LiteToolId, Record<EngineLocale, SampleFixture>>> = {
   "invoice-to-excel": { es: invoiceToExcelES as SampleFixture, en: invoiceToExcelEN as SampleFixture },
   "invoice-line-items": { es: invoiceToExcelES as SampleFixture, en: invoiceToExcelEN as SampleFixture },
   "packing-list-to-excel": { es: packingListToExcelES as SampleFixture, en: packingListToExcelEN as SampleFixture },
@@ -50,7 +50,7 @@ const FIXTURES: Partial<Record<LiteToolId, Record<Locale, SampleFixture>>> = {
 };
 
 /** The recording for a tool's sample, with the real run ids it was made from blanked. */
-export function sampleFixture(tool: LiteToolId, locale: Locale): SampleFixture | null {
+export function sampleFixture(tool: LiteToolId, locale: EngineLocale): SampleFixture | null {
   const f = FIXTURES[tool]?.[locale];
   if (!f) return null;
   if (f.kind !== "compare") return f;

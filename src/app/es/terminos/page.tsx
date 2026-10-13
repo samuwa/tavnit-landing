@@ -10,7 +10,8 @@ import {
   SITE_URL,
   SUPPORT_EMAIL,
 } from "@/lib/site";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
+import { hreflangOf } from "@/lib/locales";
 import { isStripeEnabled } from "@/lib/platform";
 
 /**
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: "/es/terminos",
-    languages: languageAlternates("/terms", "/es/terminos"),
+    languages: alternatesFor("/terms"),
   },
   openGraph: {
     type: "website",
@@ -35,8 +36,7 @@ export const metadata: Metadata = {
     title: "Términos de servicio | Tavnit",
     description: DESCRIPTION,
     siteName: "Tavnit",
-    locale: ES_LOCALE_OG,
-    alternateLocale: [EN_LOCALE_OG],
+    ...pageOgLocales("/terms", "es"),
     images: ["/opengraph-image"],
   },
 };
@@ -65,7 +65,7 @@ export default async function SpanishTermsPage() {
               name: "Términos de servicio",
               headline: "Términos de servicio",
               description: DESCRIPTION,
-              inLanguage: "es-PA",
+              inLanguage: hreflangOf("es"),
               breadcrumb: [
                 { name: "Inicio", url: `${SITE_URL}/es` },
                 { name: "Términos de servicio", url: `${SITE_URL}/es/terminos` },
@@ -76,7 +76,7 @@ export default async function SpanishTermsPage() {
       />
       <LegalDocument
         locale="es"
-        alternatePath="/terms"
+        enPath="/terms"
         title="Términos de servicio"
         lastUpdated="2026-08-03"
         intro={

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Loader2, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
-import type { Locale } from "@/lib/locale";
+import type { Locale } from "@/lib/locales";
 import { APP_URL } from "@/lib/site";
 
 /**
@@ -155,6 +155,8 @@ export default function AuthModal({
           emailRedirectTo: returnTo(),
           data: {
             ...(name.trim() ? { full_name: name.trim() } : {}),
+            // The page's language code (one of the twelve in lib/locales.ts):
+            // the app starts the new account in it.
             lang: locale,
           },
         },

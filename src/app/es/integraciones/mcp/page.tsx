@@ -4,7 +4,8 @@ import { ArrowRight, Check, LayoutGrid, Lock, Plug, Repeat, ShieldCheck, Sparkle
 import MarketingPage from "@/components/MarketingPage";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { APP_URL, MCP_URL, SITE_URL } from "@/lib/site";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
+import { hreflangOf } from "@/lib/locales";
 import { isStripeEnabled } from "@/lib/platform";
 
 /**
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: "/es/integraciones/mcp",
-    languages: languageAlternates("/integrations/mcp", "/es/integraciones/mcp"),
+    languages: alternatesFor("/integrations/mcp"),
   },
   openGraph: {
     type: "website",
@@ -32,8 +33,7 @@ export const metadata: Metadata = {
     title: "Servidor MCP para extracción de documentos | Tavnit",
     description: DESCRIPTION,
     siteName: "Tavnit",
-    locale: ES_LOCALE_OG,
-    alternateLocale: [EN_LOCALE_OG],
+    ...pageOgLocales("/integrations/mcp", "es"),
     images: ["/opengraph-image"],
   },
 };
@@ -95,7 +95,7 @@ const capabilities = [
 export default async function SpanishMcpIntegrationPage() {
   const stripeOn = await isStripeEnabled();
   return (
-    <MarketingPage locale="es" alternatePath="/integrations/mcp">
+    <MarketingPage locale="es" enPath="/integrations/mcp">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -105,7 +105,7 @@ export default async function SpanishMcpIntegrationPage() {
               name: "Conector MCP",
               headline: "Servidor MCP para extracción de documentos — Claude y Cursor",
               description: DESCRIPTION,
-              inLanguage: "es-PA",
+              inLanguage: hreflangOf("es"),
               breadcrumb: [
                 { name: "Inicio", url: `${SITE_URL}/es` },
                 { name: "Integraciones", url: `${SITE_URL}/es/integraciones` },

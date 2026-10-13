@@ -3,13 +3,14 @@ import Link from "next/link";
 import LiteShell from "@/components/lite/LiteShell";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { APP_URL, SITE_URL } from "@/lib/site";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/lib/locale";
+import { hreflangOf, localeHome, type Locale } from "@/lib/locales";
+import { localizedPath, pageAlternates, pageOgLocales } from "@/lib/routes";
 import { LITE_HUB_PATHS, LITE_TOOLS, LITE_TOOL_IDS, type LiteToolKind } from "@/lib/lite/tools";
 import { KIND_ICON, KIND_ORDER, TOOL_ICONS } from "@/components/lite/tool-icons";
 import { HUB_COPY, TOOL_COPY } from "@/lib/lite/copy";
 
 /**
- * Hub for the free tools (/tools and /es/herramientas): a grid of small
+ * Hub for the free tools (/tools, /es/herramientas, /<lang>/tools): a grid of small
  * "apps", the way iLovePDF lays its tools out, grouped by what they do.
  * One card per tool from the registry; adding a tool adds a card and a
  * sitemap entry without touching this file (only the icon table below
@@ -25,22 +26,18 @@ const TILE: Record<LiteToolKind, string> = {
 
 export function liteHubMetadata(locale: Locale): Metadata {
   const copy = HUB_COPY[locale];
-  const path = LITE_HUB_PATHS[locale];
+  const path = localizedPath(LITE_HUB_PATHS.en, locale);
   return {
     title: copy.title,
     description: copy.description,
-    alternates: {
-      canonical: path,
-      languages: languageAlternates(LITE_HUB_PATHS.en, LITE_HUB_PATHS.es),
-    },
+    alternates: pageAlternates(LITE_HUB_PATHS.en, locale),
     openGraph: {
       type: "website",
       url: path,
       title: copy.title,
       description: copy.description,
       siteName: "Tavnit",
-      locale: locale === "es" ? ES_LOCALE_OG : EN_LOCALE_OG,
-      alternateLocale: [locale === "es" ? EN_LOCALE_OG : ES_LOCALE_OG],
+      ...pageOgLocales(LITE_HUB_PATHS.en, locale),
       images: ["/opengraph-image"],
     },
   };
@@ -48,12 +45,12 @@ export function liteHubMetadata(locale: Locale): Metadata {
 
 export default function LiteHubPage({ locale }: { locale: Locale }) {
   const copy = HUB_COPY[locale];
-  const path = LITE_HUB_PATHS[locale];
-  const homePath = locale === "es" ? "/es" : "/";
+  const path = localizedPath(LITE_HUB_PATHS.en, locale);
+  const homePath = localeHome(locale);
   const items = LITE_TOOL_IDS.map((id) => ({
     id,
     kind: LITE_TOOLS[id].kind,
-    href: LITE_TOOLS[id].paths[locale],
+    href: localizedPath(LITE_TOOLS[id].paths.en, locale),
     label: TOOL_COPY[id][locale].label,
     h1: TOOL_COPY[id][locale].h1,
     description: TOOL_COPY[id][locale].description,
@@ -62,7 +59,7 @@ export default function LiteHubPage({ locale }: { locale: Locale }) {
   const groups = KIND_ORDER.map((kind) => ({ kind, title: copy.groups[kind], items: items.filter((i) => i.kind === kind) })).filter((g) => g.items.length);
 
   return (
-    <LiteShell locale={locale} alternatePath={LITE_HUB_PATHS[locale === "es" ? "en" : "es"]}>
+    <LiteShell locale={locale} enPath={LITE_HUB_PATHS.en}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -72,7 +69,7 @@ export default function LiteHubPage({ locale }: { locale: Locale }) {
               name: copy.h1,
               headline: copy.h1,
               description: copy.description,
-              inLanguage: locale === "es" ? "es-PA" : "en-US",
+              inLanguage: hreflangOf(locale),
               breadcrumb: [
                 { name: copy.breadcrumbHome, url: `${SITE_URL}${homePath}` },
                 { name: copy.breadcrumbHub, url: `${SITE_URL}${path}` },

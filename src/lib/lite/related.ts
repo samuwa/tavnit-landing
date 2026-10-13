@@ -1,10 +1,11 @@
-import type { Locale } from "@/lib/locale";
-import { GUIDES } from "@/lib/guides";
+import type { Locale } from "@/lib/locales";
 import { GUIDE_ES_BY_SLUG, esGuidePath } from "@/lib/guides.es";
-import { USE_CASES } from "@/lib/use-cases";
 import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
 import { LITE_TOOLS, LITE_TOOL_IDS, type LiteToolId } from "@/lib/lite/tools";
 import { TOOL_COPY } from "@/lib/lite/copy";
+import { localizedPath } from "@/lib/routes";
+import { USE_CASE_CONTENT } from "@/content/use-cases";
+import { GUIDE_CONTENT } from "@/content/guides";
 
 /**
  * Links between the free tools and the pages that sell the product.
@@ -32,8 +33,8 @@ export function pagesForTool(id: LiteToolId, locale: Locale): { useCase?: Relate
       const es = USE_CASES_ES.find((u) => u.slug === rel.useCase);
       if (es) out.useCase = { href: esUseCasePath(es), label: es.label };
     } else {
-      const en = USE_CASES.find((u) => u.slug === rel.useCase);
-      if (en) out.useCase = { href: `/use-cases/${en.slug}`, label: en.label };
+      const uc = USE_CASE_CONTENT[locale].items.find((u) => u.slug === rel.useCase);
+      if (uc) out.useCase = { href: localizedPath(`/use-cases/${uc.slug}`, locale), label: uc.label };
     }
   }
   if (rel.guide) {
@@ -41,15 +42,15 @@ export function pagesForTool(id: LiteToolId, locale: Locale): { useCase?: Relate
       const es = GUIDE_ES_BY_SLUG[rel.guide];
       if (es) out.guide = { href: esGuidePath(es), label: es.h1 };
     } else {
-      const en = GUIDES.find((g) => g.slug === rel.guide);
-      if (en) out.guide = { href: `/guides/${en.slug}`, label: en.h1 };
+      const g = GUIDE_CONTENT[locale].items.find((x) => x.slug === rel.guide);
+      if (g) out.guide = { href: localizedPath(`/guides/${g.slug}`, locale), label: g.h1 };
     }
   }
   return out;
 }
 
 function toolLink(id: LiteToolId, locale: Locale): RelatedLink {
-  return { href: LITE_TOOLS[id].paths[locale], label: TOOL_COPY[id][locale].label };
+  return { href: localizedPath(LITE_TOOLS[id].paths.en, locale), label: TOOL_COPY[id][locale].label };
 }
 
 /** Free tools to offer on a use-case page (English slug). */

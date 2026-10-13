@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Check, ChevronDown, Download, FileSpreadsheet, FileText, Loader2, RotateCcw } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import { LITE_ACCEPT_SHEET, type LiteToolId } from "@/lib/lite/tools";
-import type { Locale } from "@/lib/locale";
+import { engineLocale, type Locale } from "@/lib/locales";
 import { CLEAN_SLOTS, POPULAR_OUTPUTS, SOURCE_CURRENCIES, type CleanMode } from "@/lib/lite/clean";
 import AuthModal from "@/components/lite/AuthModal";
 import { useMarkUsed } from "@/components/lite/intent";
@@ -105,9 +105,16 @@ export default function LiteClean({
   const pending = useRef<"xlsx" | "csv">("xlsx");
   const abort = useRef<AbortController | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  // The Lite org's resources (Flow, Matcher, sample, column names) run in
+  // the ENGINE language; the page, the sign-up and the formats in `locale`.
+  const engine = engineLocale(locale);
   const turnstile = useTurnstile(turnstileSiteKey, locale);
+  // Translation defaults: Spanish pages into English, English into Spanish,
+  // any other language into itself when the tool offers it.
+  const ownLanguage = locale.split("-")[0];
+  const defaultTarget = locale === "es" ? "en" : locale !== "en" && outputs.includes(ownLanguage) ? ownLanguage : "es";
   const defaultOutput =
-    mode === "number" ? "plain" : mode === "date" ? (locale === "es" ? "dmy" : "iso") : mode === "currency" ? "USD" : locale === "es" ? "en" : "es";
+    mode === "number" ? "plain" : mode === "date" ? (locale === "es" ? "dmy" : "iso") : mode === "currency" ? "USD" : defaultTarget;
 
   /* ---- step 1: read the file -------------------------------------------- */
   const read = useCallback(
@@ -116,7 +123,7 @@ export default function LiteClean({
       setPhase({ kind: "reading", file: name });
       const form = new FormData();
       form.set("tool", toolId);
-      form.set("locale", locale);
+      form.set("locale", engine);
       if (source === "sample") form.set("sample", "1");
       else form.set("file", source, source.name);
       try {
@@ -142,7 +149,7 @@ export default function LiteClean({
         setPhase({ kind: "error", code: "backend" });
       }
     },
-    [toolId, locale, mode, outputs, defaultOutput, cc.setup.preview],
+    [toolId, engine, mode, outputs, defaultOutput, cc.setup.preview],
   );
 
   /* ---- step 3: wait for the Cleaner --------------------------------------- */
@@ -205,7 +212,7 @@ export default function LiteClean({
 
     const form = new FormData();
     form.set("tool", toolId);
-    form.set("locale", locale);
+    form.set("locale", engine);
     form.set("columns", JSON.stringify(selected));
     if (input) form.set("input", input);
     if (mode === "currency") form.set("source", currency);
@@ -235,7 +242,7 @@ export default function LiteClean({
     setPhase({ kind: "processing", file: preview.file, stage: 1 });
     await new Promise((r) => setTimeout(r, POLL_MS));
     await poll(sweepId, preview.file, ctrl);
-  }, [phase, toolId, locale, mode, turnstile, poll]);
+  }, [phase, toolId, engine, mode, turnstile, poll]);
 
   /* ---- back from a sign-in round trip (or a reload) ------------------------ */
   const autoDownload = useRef(false);

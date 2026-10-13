@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
-import type { Locale } from "@/lib/locale";
+// Only the docs use it, and the docs exist in English and Spanish.
+import type { EngineLocale as Locale } from "@/lib/locales";
 import { applyTheme, hasSavedTheme, readTheme } from "@/lib/theme";
 
 const LABEL: Record<Locale, string> = {

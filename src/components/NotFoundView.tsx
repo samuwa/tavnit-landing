@@ -3,7 +3,8 @@ import { ArrowRight, BookOpen, CalendarDays, FileSearch, Home, Mail } from "luci
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SUPPORT_EMAIL } from "@/lib/site";
-import type { Locale } from "@/lib/locale";
+import type { EngineLocale } from "@/lib/locales";
+import { languageLinksFor } from "@/lib/routes";
 
 /**
  * Body of the 404 page, rendered by src/app/not-found.tsx (English) and
@@ -11,7 +12,8 @@ import type { Locale } from "@/lib/locale";
  * rather than read from the URL at runtime: the 404 is prerendered, so a
  * client-side path check would ship English HTML and swap it after
  * hydration. A catch-all under /es routes every unknown Spanish URL to the
- * Spanish version.
+ * Spanish version. The new languages (src/app/[lang]) share the English
+ * 404: not-found.tsx gets no params, and the page cannot know the segment.
  *
  * Every link points at a real hub, so the page is also the best possible
  * recovery for a crawler that followed a stale link: one hop back into the
@@ -32,8 +34,6 @@ const COPY = {
     contact: "Followed a link from our site or an email?",
     contactCta: "Tell us where it was",
     mailSubject: "Broken link on tavnit.io",
-    switchLabel: "Ver en español",
-    switchHref: "/es",
   },
   es: {
     eyebrow: "404",
@@ -48,17 +48,15 @@ const COPY = {
     contact: "¿Llegaste desde un enlace de nuestro sitio o de un correo?",
     contactCta: "Cuéntanos dónde estaba",
     mailSubject: "Enlace roto en tavnit.io",
-    switchLabel: "View in English",
-    switchHref: "/",
   },
 } as const;
 
-export default function NotFoundView({ locale, stripeOn }: { locale: Locale; stripeOn: boolean }) {
+export default function NotFoundView({ locale, stripeOn }: { locale: EngineLocale; stripeOn: boolean }) {
   const t = COPY[locale];
 
   return (
     <div lang={locale}>
-      <Header locale={locale} showPricing={stripeOn} alternateHref={t.switchHref} />
+      <Header locale={locale} showPricing={stripeOn} languages={{ ...languageLinksFor("/"), available: [locale] }} />
       <main role="main" className="relative z-10 flex min-h-svh flex-col justify-center px-4 pb-16 pt-28 sm:px-6">
         <div className="mx-auto w-full max-w-[860px]">
           <p

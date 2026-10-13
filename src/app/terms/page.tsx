@@ -9,7 +9,7 @@ import {
   PRICING,
   SUPPORT_EMAIL,
 } from "@/lib/site";
-import { languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
 
 const DESCRIPTION =
   "The terms governing use of Tavnit: account and credential responsibilities, acceptable use, credit-based billing, data ownership, and AI output limits.";
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: "/terms",
-    languages: languageAlternates("/terms", "/es/terminos"),
+    languages: alternatesFor("/terms"),
   },
   openGraph: {
     type: "website",
@@ -27,8 +27,7 @@ export const metadata: Metadata = {
     title: "Terms of Service | Tavnit",
     description: DESCRIPTION,
     siteName: "Tavnit",
-    locale: "en_US",
-    alternateLocale: ["es_PA"],
+    ...pageOgLocales("/terms", "en"),
     images: ["/opengraph-image"],
   },
 };
@@ -46,7 +45,7 @@ export default function TermsPage() {
         }}
       />
       <LegalDocument
-        alternatePath="/es/terminos"
+        enPath="/terms"
         title="Terms of Service"
         lastUpdated="2026-08-03"
         intro={

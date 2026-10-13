@@ -1,14 +1,15 @@
 import { execFileSync } from "node:child_process";
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
-import { DOC_SECTIONS, DOC_SECTIONS_ES, DOC_BY_SLUG_ES } from "@/components/docs/nav";
+import { DOC_SECTIONS, DOC_SECTIONS_ES } from "@/components/docs/nav";
 import { OWNED_INTEGRATIONS } from "@/lib/integrations";
 import { isStripeEnabled } from "@/lib/platform";
 import { USE_CASES } from "@/lib/use-cases";
 import { GUIDES } from "@/lib/guides";
 import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
 import { GUIDES_ES, esGuidePath } from "@/lib/guides.es";
-import { STATIC_ROUTE_PAIRS, languageAlternates } from "@/lib/locale";
+import { NEW_LOCALES, prefixedPath } from "@/lib/locales";
+import { ES_ROUTE_PAIRS, NEW_LOCALE_PATHS, alternatesFor, localesFor, twinPath } from "@/lib/routes";
 import { LITE_HUB_PATHS, LITE_TOOLS, LITE_TOOL_IDS } from "@/lib/lite/tools";
 
 /**
@@ -55,38 +56,53 @@ function lastCommitDate(...paths: string[]): Date | undefined {
 }
 
 /**
- * Every EN↔ES pair the site declares, keyed by both paths, so each sitemap
- * entry can carry the same hreflang block its <head> emits. Static pairs come
- * from locale.ts; use cases and guides derive from their data, exactly as the
- * pages themselves do. Listing the alternates here as well as in the HTML
- * gives Google a second, crawl-independent source for the pairing — with 40+
- * Spanish URLs that share nothing but a hreflang tag with their English twin,
- * that is the signal that keeps "/es/aduanas" from being judged a duplicate of
- * "/use-cases/customs-trade".
+ * Every language twin carries the same hreflang block its <head> emits
+ * (alternatesFor(), src/lib/routes.ts). Listing the alternates here as well
+ * as in the HTML gives Google a second, crawl-independent source for the
+ * pairing — with dozens of translated URLs that share nothing but a hreflang
+ * tag with their English twin, that is the signal that keeps "/es/aduanas"
+ * from being judged a duplicate of "/use-cases/customs-trade".
  */
-const ROUTE_PAIRS: { en: string; es: string }[] = [
-  ...STATIC_ROUTE_PAIRS,
-  ...USE_CASES_ES.map((uc) => ({ en: `/use-cases/${uc.slug}`, es: esUseCasePath(uc) })),
-  ...GUIDES_ES.map((g) => ({ en: `/guides/${g.slug}`, es: esGuidePath(g) })),
-  ...DOC_SECTIONS.map((d) => ({ en: d.href, es: DOC_BY_SLUG_ES[d.slug].href })),
-];
+function alternatesByPath(enPaths: string[]): Map<string, Record<string, string>> {
+  const out = new Map<string, Record<string, string>>();
+  for (const enPath of enPaths) {
+    const locales = localesFor(enPath);
+    if (locales.length < 2) continue;
+    const languages = alternatesFor(enPath);
+    for (const l of locales) out.set(twinPath(enPath, l) as string, languages);
+  }
+  return out;
+}
 
-const ALTERNATES_BY_PATH = new Map(
-  ROUTE_PAIRS.flatMap((pair) => {
-    const languages = languageAlternates(pair.en, pair.es);
-    return [
-      [pair.en, languages],
-      [pair.es, languages],
-    ] as const;
-  }),
-);
-
-/** Attach `alternates.languages` to every entry that belongs to a pair. */
+/** Attach `alternates.languages` to every entry that has a twin. */
 function withAlternates(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  const enPaths = [...new Set([...entries.map((e) => e.url.slice(SITE_URL.length) || "/"), ...ES_ROUTE_PAIRS.map((p) => p.en)])];
+  const byPath = alternatesByPath(enPaths);
   return entries.map((entry) => {
     const path = entry.url.slice(SITE_URL.length) || "/";
-    const languages = ALTERNATES_BY_PATH.get(path);
+    const languages = byPath.get(path);
     return languages ? { ...entry, alternates: { languages } } : entry;
+  });
+}
+
+/**
+ * The new languages (src/app/[lang]): one entry per registered page, with
+ * the change frequency and priority of its English twin and the last commit
+ * of the [lang] tree or that language's content.
+ */
+function newLocaleEntries(english: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  const byEnPath = new Map(english.map((e) => [e.url.slice(SITE_URL.length) || "/", e]));
+  return NEW_LOCALES.flatMap((locale) => {
+    const lastModified = lastCommitDate(":(literal)src/app/[lang]", `:(glob)src/content/*/${locale}.ts`);
+    return [...NEW_LOCALE_PATHS[locale]].map((enPath) => {
+      const en = byEnPath.get(enPath);
+      return {
+        url: `${SITE_URL}${prefixedPath(locale, enPath)}`,
+        lastModified,
+        changeFrequency: en?.changeFrequency ?? ("monthly" as const),
+        priority: en?.priority ?? 0.7,
+      };
+    });
   });
 }
 
@@ -310,7 +326,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.3,
     },
   ];
-  return withAlternates(
-    stripeOn ? entries : entries.filter((e) => e.url !== `${SITE_URL}/pricing`),
-  );
+  const shown = stripeOn ? entries : entries.filter((e) => e.url !== `${SITE_URL}/pricing`);
+  return withAlternates([...shown, ...newLocaleEntries(shown)]);
 }

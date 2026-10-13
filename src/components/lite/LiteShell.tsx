@@ -1,11 +1,23 @@
 import Link from "next/link";
 import { Fraunces } from "next/font/google";
-import type { Locale } from "@/lib/locale";
-import { SHELL_COPY, TOOL_COPY } from "@/lib/lite/copy";
-import { BASE_EN, BASE_ES } from "@/lib/lite/copy-base";
+import { hreflangOf, type Locale } from "@/lib/locales";
+import { BASE_COPY, SHELL_COPY, TOOL_COPY } from "@/lib/lite/copy";
 import { LITE_HUB_PATHS, LITE_TOOLS, LITE_TOOL_IDS } from "@/lib/lite/tools";
+import { languageLinksFor, localizedPath } from "@/lib/routes";
 import { SUPPORT_EMAIL } from "@/lib/site";
-import LiteHeader from "@/components/lite/LiteHeader";
+import LiteHeader, { type ShellLinks } from "@/components/lite/LiteHeader";
+
+/** Main-site links from the Lite header: Spanish routes, the new languages'
+ *  own pages where the [lang] tree has them, English otherwise. */
+function shellLinks(locale: Locale): ShellLinks {
+  if (locale === "es") return { product: "/es#como-funciona", useCases: "/es/casos-de-uso", docs: "/es/documentacion", demo: "/es/agendar" };
+  return {
+    product: locale === "en" ? "/#features" : localizedPath("/#how-it-works", locale),
+    useCases: localizedPath("/use-cases", locale),
+    docs: "/docs",
+    demo: localizedPath("/schedule", locale),
+  };
+}
 
 /**
  * Light chrome for the free tools.
@@ -20,7 +32,7 @@ import LiteHeader from "@/components/lite/LiteHeader";
  */
 
 const display = Fraunces({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   weight: ["500"],
   style: ["normal", "italic"],
   variable: "--font-display",
@@ -30,22 +42,24 @@ const display = Fraunces({
 export default function LiteShell({
   children,
   locale,
-  alternatePath,
+  enPath,
 }: {
   children: React.ReactNode;
   locale: Locale;
-  alternatePath: string;
+  /** English path of this page (the route registry key, src/lib/routes.ts). */
+  enPath: string;
 }) {
   const t = SHELL_COPY[locale];
   return (
-    <div lang={locale} className={`lite ${display.variable} flex min-h-svh flex-col font-body antialiased`}>
+    <div lang={hreflangOf(locale)} className={`lite ${display.variable} flex min-h-svh flex-col font-body antialiased`}>
       <LiteHeader
         locale={locale}
-        alternatePath={alternatePath}
-        hubPath={LITE_HUB_PATHS[locale]}
-        tools={LITE_TOOL_IDS.map((id) => ({ id, kind: LITE_TOOLS[id].kind, href: LITE_TOOLS[id].paths[locale], label: TOOL_COPY[id][locale].label }))}
+        languages={languageLinksFor(enPath)}
+        links={shellLinks(locale)}
+        hubPath={localizedPath(LITE_HUB_PATHS.en, locale)}
+        tools={LITE_TOOL_IDS.map((id) => ({ id, kind: LITE_TOOLS[id].kind, href: localizedPath(LITE_TOOLS[id].paths.en, locale), label: TOOL_COPY[id][locale].label }))}
         t={t}
-        authCopy={(locale === "es" ? BASE_ES : BASE_EN).auth}
+        authCopy={BASE_COPY[locale].auth}
       />
 
       <main role="main" className="flex-1 pb-24 pt-12 sm:pt-16">
@@ -58,8 +72,8 @@ export default function LiteShell({
             © {new Date().getFullYear()} {t.rights}
           </p>
           <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label="Legal">
-            <Link href={t.privacyHref} className="hover:text-[var(--lite-ink)]">{t.privacy}</Link>
-            <Link href={t.termsHref} className="hover:text-[var(--lite-ink)]">{t.terms}</Link>
+            <Link href={localizedPath("/privacy", locale)} className="hover:text-[var(--lite-ink)]">{t.privacy}</Link>
+            <Link href={localizedPath("/terms", locale)} className="hover:text-[var(--lite-ink)]">{t.terms}</Link>
             <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-[var(--lite-ink)]">{t.contact}</a>
           </nav>
         </div>

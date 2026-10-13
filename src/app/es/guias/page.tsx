@@ -6,7 +6,8 @@ import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
 import { GUIDES } from "@/lib/guides";
 import { GUIDES_ES, GUIDE_ES_BY_SLUG, esGuidePath } from "@/lib/guides.es";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
+import { hreflangOf } from "@/lib/locales";
 
 const TITLE = "Guías — Clasificación arancelaria, conciliación de facturas y más";
 const DESCRIPTION =
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: "/es/guias",
-    languages: languageAlternates("/guides", "/es/guias"),
+    languages: alternatesFor("/guides"),
   },
   openGraph: {
     type: "website",
@@ -25,8 +26,7 @@ export const metadata: Metadata = {
     title: "Guías de Tavnit",
     description: DESCRIPTION,
     siteName: "Tavnit",
-    locale: ES_LOCALE_OG,
-    alternateLocale: [EN_LOCALE_OG],
+    ...pageOgLocales("/guides", "es"),
     images: ["/opengraph-image"],
   },
 };
@@ -37,7 +37,7 @@ export default function SpanishGuidesHub() {
   const englishOnly = GUIDES.filter((g) => !GUIDE_ES_BY_SLUG[g.slug]);
 
   return (
-    <MarketingPage locale="es" alternatePath="/guides">
+    <MarketingPage locale="es" enPath="/guides">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -47,7 +47,7 @@ export default function SpanishGuidesHub() {
               name: "Guías",
               headline: "Guías de automatización documental",
               description: DESCRIPTION,
-              inLanguage: "es-PA",
+              inLanguage: hreflangOf("es"),
               breadcrumb: [
                 { name: "Inicio", url: `${SITE_URL}/es` },
                 { name: "Guías", url: `${SITE_URL}/es/guias` },

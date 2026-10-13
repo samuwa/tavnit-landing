@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { APP_URL } from "@/lib/site";
-import type { Locale } from "@/lib/locale";
+import type { Locale } from "@/lib/locales";
 
 /**
  * What the visitor tried, sent to /api/lite/intent so the product can start
@@ -92,7 +92,9 @@ export function TavnitLink({
           tool: ctx?.tool ?? "site",
           kind: "cta",
           feature: feature ?? null,
-          locale: ctx?.locale ?? (document.documentElement.lang === "en" ? "en" : "es"),
+          // Outside a tool (the header), the page language is on the
+          // Lite shell's wrapper (<html lang> is always "en").
+          locale: ctx?.locale ?? e.currentTarget.closest("[lang]")?.getAttribute("lang") ?? "en",
           payload: ctx?.getPayload() ?? {},
           handoff: true,
         });

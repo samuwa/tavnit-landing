@@ -188,6 +188,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*
+ * Chinese, Japanese and Korean pages (lang set by MarketingPage / LiteShell):
+ * no CJK web font is loaded, so after the Latin faces the stack names each
+ * language's system font — Han characters are drawn differently in each,
+ * so one shared list would show Japanese text in Chinese glyphs or vice
+ * versa. Unlayered on purpose: it must beat the .font-body utility.
+ */
+[lang|="zh"] {
+  --font-cjk: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC";
+}
+[lang="ja"] {
+  --font-cjk: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, "Noto Sans CJK JP", "Noto Sans JP";
+}
+[lang="ko"] {
+  --font-cjk: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans CJK KR", "Noto Sans KR";
+}
+[lang|="zh"],
+[lang="ja"],
+[lang="ko"] {
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, var(--font-cjk), sans-serif;
+}
+:is([lang|="zh"], [lang="ja"], [lang="ko"]) :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-heading), -apple-system, BlinkMacSystemFont, var(--font-cjk), sans-serif;
+}
+
+/*
  * The hero's primary call to action: the brand gradient, flat, in a pill of
  * the same height as the secondary one, with a soft coloured shadow. It
  * stands out by being the only solid colour there, not by its size. On

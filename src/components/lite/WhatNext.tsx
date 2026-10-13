@@ -18,7 +18,7 @@ import {
   UserCheck,
 } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
-import type { Locale } from "@/lib/locale";
+import { prefixedPath, type Locale } from "@/lib/locales";
 import { useLiteSession } from "@/components/lite/session";
 import { TavnitLink } from "@/components/lite/intent";
 import Scene from "@/components/lite/Scene";
@@ -93,7 +93,7 @@ export default function WhatNext({
   /** Incremented by the page to open the Flow scene from elsewhere. */
   flowSignal?: number;
 }) {
-  const demoHref = locale === "es" ? "/es/agendar" : "/schedule";
+  const demoHref = locale === "en" ? "/schedule" : locale === "es" ? "/es/agendar" : prefixedPath(locale, "/schedule");
   const shortName = fileName.length > 22 ? `${fileName.slice(0, 20)}…` : fileName;
   const { email } = useLiteSession();
   const [active, setActive] = useState<number | null>(null);

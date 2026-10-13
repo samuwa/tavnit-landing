@@ -18,6 +18,7 @@ import Footer from "@/components/Footer";
 import { homeSchema } from "@/lib/schema";
 import { isStripeEnabled } from "@/lib/platform";
 import { faqsFor } from "@/lib/faqs";
+import { languageLinksFor } from "@/lib/routes";
 
 export default async function Home() {
   // Pricing (section + nav/footer links) only shows while Stripe self-serve
@@ -36,7 +37,7 @@ export default async function Home() {
 
       <SquaresBackground />
 
-      <Header showPricing={stripeOn} />
+      <Header showPricing={stripeOn} languages={languageLinksFor("/")} />
       <main role="main">
         <Hero />
         <Problem />

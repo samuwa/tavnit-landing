@@ -5,7 +5,8 @@ import MarketingPage from "@/components/MarketingPage";
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { INTEGRATIONS_ES } from "@/lib/integrations.es";
 import { SITE_URL } from "@/lib/site";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
+import { hreflangOf } from "@/lib/locales";
 
 const TITLE = "Integraciones — API, correo, webhooks y MCP";
 const DESCRIPTION =
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: "/es/integraciones",
-    languages: languageAlternates("/integrations", "/es/integraciones"),
+    languages: alternatesFor("/integrations"),
   },
   openGraph: {
     type: "website",
@@ -24,15 +25,14 @@ export const metadata: Metadata = {
     title: "Integraciones de Tavnit",
     description: DESCRIPTION,
     siteName: "Tavnit",
-    locale: ES_LOCALE_OG,
-    alternateLocale: [EN_LOCALE_OG],
+    ...pageOgLocales("/integrations", "es"),
     images: ["/opengraph-image"],
   },
 };
 
 export default function SpanishIntegrationsPage() {
   return (
-    <MarketingPage locale="es" alternatePath="/integrations">
+    <MarketingPage locale="es" enPath="/integrations">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -42,7 +42,7 @@ export default function SpanishIntegrationsPage() {
               name: "Integraciones de Tavnit",
               headline: TITLE,
               description: DESCRIPTION,
-              inLanguage: "es-PA",
+              inLanguage: hreflangOf("es"),
               breadcrumb: [
                 { name: "Inicio", url: `${SITE_URL}/es` },
                 { name: "Integraciones", url: `${SITE_URL}/es/integraciones` },

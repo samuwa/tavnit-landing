@@ -3,7 +3,7 @@ import Link from "next/link";
 import LegalDocument, { LegalSection } from "@/components/LegalDocument";
 import { legalSchema } from "@/lib/schema";
 import { SUPPORT_EMAIL } from "@/lib/site";
-import { languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
 
 const DESCRIPTION =
   "How Tavnit handles the documents and data you send through the platform: what we collect, how access is controlled, and the choices you have.";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: "/privacy",
-    languages: languageAlternates("/privacy", "/es/privacidad"),
+    languages: alternatesFor("/privacy"),
   },
   openGraph: {
     type: "website",
@@ -21,8 +21,7 @@ export const metadata: Metadata = {
     title: "Privacy Policy | Tavnit",
     description: DESCRIPTION,
     siteName: "Tavnit",
-    locale: "en_US",
-    alternateLocale: ["es_PA"],
+    ...pageOgLocales("/privacy", "en"),
     images: ["/opengraph-image"],
   },
 };
@@ -37,7 +36,7 @@ export default function PrivacyPage() {
         }}
       />
       <LegalDocument
-        alternatePath="/es/privacidad"
+        enPath="/privacy"
         title="Privacy Policy"
         lastUpdated="2026-08-26"
         intro={

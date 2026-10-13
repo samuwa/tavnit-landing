@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, FileText, Sparkles } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import { LITE_ACCEPT } from "@/lib/lite/tools";
-import type { Locale } from "@/lib/locale";
+import type { Locale } from "@/lib/locales";
 
 /**
  * Pieces the tool pages share: button styles, string helpers, the Turnstile
@@ -155,7 +155,8 @@ export function useTurnstile(siteKey: string | null, locale: Locale) {
         sitekey: siteKey,
         size: "normal",
         theme: "light",
-        language: locale,
+        // Turnstile's own codes: pt-br, zh-cn, else the language.
+        language: locale === "pt-BR" ? "pt-br" : locale === "zh-Hans" ? "zh-cn" : locale,
         // Managed mode still draws a "Verifying… Success" box on every
         // visit. interaction-only keeps it hidden and only shows it when
         // Cloudflare actually needs the visitor to click.

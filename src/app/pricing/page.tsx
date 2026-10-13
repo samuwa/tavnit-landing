@@ -64,7 +64,7 @@ export default async function PricingPage() {
   // send visitors to the homepage (book-a-demo motion) instead.
   if (!(await isStripeEnabled())) redirect("/");
   return (
-    <MarketingPage>
+    <MarketingPage enPath="/pricing">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema(faqs)) }}

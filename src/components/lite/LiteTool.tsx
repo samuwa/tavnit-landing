@@ -5,7 +5,7 @@ import { Check, Download, ExternalLink, FileText, Loader2, Plus, RotateCcw, Spar
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { LiteToolId } from "@/lib/lite/tools";
 import { LITE_ACCEPT, LITE_TOOLS } from "@/lib/lite/tools";
-import type { Locale } from "@/lib/locale";
+import { engineLocale, intlTag, type Locale } from "@/lib/locales";
 import AuthModal from "@/components/lite/AuthModal";
 import { useMarkUsed, useLiteIntent } from "@/components/lite/intent";
 import CleanerIdeas from "@/components/lite/CleanerIdeas";
@@ -162,13 +162,16 @@ export default function LiteTool({
   const [flowSignal, setFlowSignal] = useState(0);
   /** Columns the visitor removed from the table; the Excel leaves them out too. */
   const [hidden, setHidden] = useState<string[]>([]);
-  const lineFields = LITE_TOOLS[toolId].lineFields[locale];
+  // The Lite org's resources (Flow, Matcher, sample, column names) run in
+  // the ENGINE language; the page, the sign-up and the formats in `locale`.
+  const engine = engineLocale(locale);
+  const lineFields = LITE_TOOLS[toolId].lineFields[engine];
   const inputRef = useRef<HTMLInputElement>(null);
   const abort = useRef<AbortController | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
   const nf = useMemo(() => {
-    const tag = locale === "es" ? "es-PA" : "en-US";
+    const tag = intlTag(locale);
     return {
       int: new Intl.NumberFormat(tag, { maximumFractionDigits: 0 }),
       dec: new Intl.NumberFormat(tag, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
@@ -252,7 +255,7 @@ export default function LiteTool({
   const start = useCallback(
     async (file: File | null, sample: boolean) => {
       const displayName = sample
-        ? locale === "es" ? "factura-de-ejemplo.pdf" : "sample-invoice.pdf"
+        ? engine === "es" ? "factura-de-ejemplo.pdf" : "sample-invoice.pdf"
         : file?.name || "document";
       abort.current?.abort();
       const ctrl = new AbortController();
@@ -267,7 +270,7 @@ export default function LiteTool({
         // Nothing to run: the sample's result is recorded (lib/lite/samples).
         // Play the progress, then show it, as a real run would.
         const f = await playSample<ExtractFixture>(
-          `/api/lite/sample/${toolId}?locale=${locale}`,
+          `/api/lite/sample/${toolId}?locale=${engine}`,
           copy.stages.length,
           (stage) => setPhase((p) => (p.kind === "processing" ? { ...p, stage } : p)),
           ctrl.signal,
@@ -284,7 +287,7 @@ export default function LiteTool({
 
       const form = new FormData();
       form.set("tool", toolId);
-      form.set("locale", locale);
+      form.set("locale", engine);
       if (sample) form.set("sample", "1");
       else if (file) form.set("file", file, file.name);
       const token = turnstileToken();
@@ -312,7 +315,7 @@ export default function LiteTool({
       await new Promise((r) => setTimeout(r, POLL_MS));
       await poll(runId, displayName, startedAt, ctrl);
     },
-    [toolId, locale, poll, turnstileSiteKey], // eslint-disable-line react-hooks/exhaustive-deps
+    [toolId, locale, engine, poll, turnstileSiteKey], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   // Coming back from a sign-in round trip (or a reload): pick the run up
@@ -332,7 +335,7 @@ export default function LiteTool({
     if (stash.runId === SAMPLE) {
       const ctrlS = new AbortController();
       abort.current = ctrlS;
-      fetch(`/api/lite/sample/${toolId}?locale=${locale}`, { signal: ctrlS.signal })
+      fetch(`/api/lite/sample/${toolId}?locale=${engine}`, { signal: ctrlS.signal })
         .then((r) => (r.ok ? (r.json() as Promise<ExtractFixture>) : null))
         .then((f) => {
           if (f) setPhase({ kind: "done", file: stash.file, runId: SAMPLE, columns: f.columns, rows: f.rows, total: f.total, truncated: f.truncated, pages: f.pages, seconds: 0, mime: f.mime });
@@ -348,7 +351,7 @@ export default function LiteTool({
     setPhase({ kind: "processing", file: stash.file, stage: 1, runId: stash.runId, startedAt });
     void poll(stash.runId, stash.file, startedAt, ctrl, true);
     return () => ctrl.abort();
-  }, [toolId, poll, locale]);
+  }, [toolId, poll, locale, engine]);
 
   useEffect(() => () => abort.current?.abort(), []);
 
@@ -392,7 +395,7 @@ export default function LiteTool({
       const hide = hidden.length ? `?hide=${encodeURIComponent(hidden.join(","))}` : "";
       const res = await fetch(
         phase.runId === SAMPLE
-          ? `/api/lite/sample/${toolId}/download?locale=${locale}${hidden.length ? `&hide=${encodeURIComponent(hidden.join(","))}` : ""}`
+          ? `/api/lite/sample/${toolId}/download?locale=${engine}${hidden.length ? `&hide=${encodeURIComponent(hidden.join(","))}` : ""}`
           : `/api/lite/runs/${encodeURIComponent(phase.runId)}/download${hide}`,
         {
         cache: "no-store",
@@ -429,7 +432,7 @@ export default function LiteTool({
     } finally {
       setDownloading(false);
     }
-  }, [phase, copy.errors, hidden, toolId, locale]);
+  }, [phase, copy.errors, hidden, toolId, engine]);
 
   // After a sign-in from the dialog, retry the download once.
   const onAuthed = useCallback(() => {

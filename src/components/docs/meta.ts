@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { docSection, type DocSlug } from "./nav";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/lib/locale";
+import { ogLocale, type EngineLocale as Locale } from "@/lib/locales";
+import { alternatesFor } from "@/lib/routes";
 
 /**
  * Per-route docs metadata.
@@ -13,8 +14,8 @@ import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/l
 export function docMetadata(slug: DocSlug, locale: Locale = "en"): Metadata {
   const section = docSection(slug, locale);
   // Every docs page has a twin in the other language. Both sides must emit
-  // the same hreflang block or Google ignores the pair (see locale.ts).
-  const pair = languageAlternates(docSection(slug, "en").href, docSection(slug, "es").href);
+  // the same hreflang block or Google ignores the pair (see lib/routes.ts).
+  const pair = alternatesFor(docSection(slug, "en").href);
   return {
     // `absolute` on purpose. The root layout defines a `%s | Tavnit` template,
     // but a layout title only templates its *immediate* children — so /docs
@@ -33,7 +34,7 @@ export function docMetadata(slug: DocSlug, locale: Locale = "en"): Metadata {
       title: section.title,
       description: section.description,
       siteName: "Tavnit",
-      locale: locale === "es" ? ES_LOCALE_OG : EN_LOCALE_OG,
+      locale: ogLocale(locale),
       // Restated because a child segment's `openGraph` replaces the parent's
       // wholesale, which would otherwise drop the generated OG image.
       images: ["/opengraph-image"],

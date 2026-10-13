@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import type { Locale } from "@/lib/locale";
+import type { Locale } from "@/lib/locales";
 
 /**
  * Social card for a free-tool page: the sheet, drawn. Shared by the

@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { Locale } from "@/lib/locale";
+import type { EngineLocale } from "@/lib/locales";
 import type { LocalizedId } from "@/lib/lite/tools";
 
 /**
@@ -27,9 +27,9 @@ export function liteApiConfigured(): boolean {
 }
 
 /** An id from the tool definition, unless the environment overrides it. */
-export function resolveId(id: LocalizedId | undefined, locale: Locale): string | null {
+export function resolveId(id: LocalizedId | undefined, locale: EngineLocale): string | null {
   if (!id) return null;
-  const pick = (l: Locale) => {
+  const pick = (l: EngineLocale) => {
     const env = process.env[id.env[l]];
     if (env && env.trim()) return env.trim();
     return id.value[l];

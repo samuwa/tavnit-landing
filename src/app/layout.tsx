@@ -3,17 +3,20 @@ import { Plus_Jakarta_Sans, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { APP_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL, TWITTER_HANDLE } from "@/lib/site";
 import { siteSchema } from "@/lib/schema";
+import { alternatesFor } from "@/lib/routes";
 import Analytics, { CONSENT_DEFAULT_SCRIPT } from "@/components/Analytics";
 import { THEME_INIT_SCRIPT } from "@/lib/theme-script";
 
+// latin-ext: Polish and Turkish (ł, ę, ş, ğ, İ …). CJK has no web font: see
+// the [lang] fallbacks in globals.css.
 const heading = Plus_Jakarta_Sans({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   weight: ["500", "600", "700", "800"],
   variable: "--font-heading",
 });
 
 const body = DM_Sans({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body",
 });
@@ -73,12 +76,8 @@ export const metadata: Metadata = {
     canonical: "/",
     // Only the homepage inherits this block: every other route defines its
     // own `alternates`, and Next replaces the object rather than merging it.
-    // /es is the Spanish equivalent of "/"; x-default stays English.
-    languages: {
-      en: `${SITE_URL}/`,
-      es: `${SITE_URL}/es`,
-      "x-default": `${SITE_URL}/`,
-    },
+    // Every home ("/es", "/de" …) declares the same set; x-default is English.
+    languages: alternatesFor("/"),
   },
   category: "technology",
   other: {

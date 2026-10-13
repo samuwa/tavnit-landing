@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Download, FileText, Loader2, RotateCcw } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { LiteToolId } from "@/lib/lite/tools";
-import type { Locale } from "@/lib/locale";
+import { engineLocale, type Locale } from "@/lib/locales";
 import type { SegmentView } from "@/lib/lite/split-view";
 import AuthModal from "@/components/lite/AuthModal";
 import { useMarkUsed } from "@/components/lite/intent";
@@ -78,6 +78,9 @@ export default function LiteSplit({
   const pending = useRef<number | "all" | null>(null);
   const abort = useRef<AbortController | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  // The Lite org's resources (Flow, Matcher, sample, column names) run in
+  // the ENGINE language; the page, the sign-up and the formats in `locale`.
+  const engine = engineLocale(locale);
   const turnstile = useTurnstile(turnstileSiteKey, locale);
 
   const poll = useCallback(
@@ -127,7 +130,7 @@ export default function LiteSplit({
       setPhase({ kind: "processing", file: name, splitId: null, stage: 0 });
       if (sample) {
         const f = await playSample<{ segments: SegmentView[]; pages: number }>(
-          `/api/lite/sample/${toolId}?locale=${locale}`,
+          `/api/lite/sample/${toolId}?locale=${engine}`,
           sc.stages.length,
           (stage) => setPhase((p) => (p.kind === "processing" ? { ...p, stage } : p)),
           ctrl.signal,
@@ -143,7 +146,7 @@ export default function LiteSplit({
       }
       const form = new FormData();
       form.set("tool", toolId);
-      form.set("locale", locale);
+      form.set("locale", engine);
       if (sample) form.set("sample", "1");
       else if (file) form.set("file", file, file.name);
       const token = turnstile.token();
@@ -169,7 +172,7 @@ export default function LiteSplit({
       await new Promise((r) => setTimeout(r, POLL_MS));
       await poll(splitId, name, ctrl);
     },
-    [toolId, locale, sampleName, turnstile, poll, sc.stages.length],
+    [toolId, engine, sampleName, turnstile, poll, sc.stages.length],
   );
 
   // Back from a sign-in round trip (or a reload).
@@ -188,7 +191,7 @@ export default function LiteSplit({
     if (stash.splitId === SAMPLE) {
       const ctrlS = new AbortController();
       abort.current = ctrlS;
-      fetch(`/api/lite/sample/${toolId}?locale=${locale}`, { signal: ctrlS.signal })
+      fetch(`/api/lite/sample/${toolId}?locale=${engine}`, { signal: ctrlS.signal })
         .then((r) => (r.ok ? (r.json() as Promise<{ segments: SegmentView[]; pages: number }>) : null))
         .then((f) => {
           if (f) setPhase({ kind: "done", file: stash.file, splitId: SAMPLE, segments: f.segments, pages: f.pages });
@@ -201,7 +204,7 @@ export default function LiteSplit({
     setPhase({ kind: "processing", file: stash.file, splitId: stash.splitId, stage: 1 });
     void poll(stash.splitId, stash.file, ctrl);
     return () => ctrl.abort();
-  }, [toolId, poll, locale]);
+  }, [toolId, poll, locale, engine]);
 
   const download = useCallback(
     async (which: number | "all") => {
@@ -211,7 +214,7 @@ export default function LiteSplit({
       pending.current = which;
       try {
         const base = phase.splitId === SAMPLE ? `/api/lite/sample/${toolId}` : `/api/lite/split/${encodeURIComponent(phase.splitId)}`;
-        const q = phase.splitId === SAMPLE ? `?locale=${locale}` : "";
+        const q = phase.splitId === SAMPLE ? `?locale=${engine}` : "";
         const url = which === "all" ? `${base}/download${q}` : `${base}/segment/${which}${q}`;
         const res = await fetch(url, { cache: "no-store" });
         const ok = await saveResponse(res, which === "all" ? "tavnit-documents.zip" : "tavnit-document.pdf");
@@ -227,7 +230,7 @@ export default function LiteSplit({
         setDownloading(null);
       }
     },
-    [phase, copy.errors, toolId, locale],
+    [phase, copy.errors, toolId, engine],
   );
 
   useEffect(() => {

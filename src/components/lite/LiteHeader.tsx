@@ -3,8 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, ChevronDown, LogOut, Menu, X } from "lucide-react";
-import type { Locale } from "@/lib/locale";
+import { ArrowRight, ArrowUpRight, Check, ChevronDown, Globe, LogOut, Menu, X } from "lucide-react";
+import { LOCALES, hreflangOf, writeLangCookie, type Locale } from "@/lib/locales";
+import type { LanguageLinks } from "@/lib/routes";
+import LanguageSuggestion from "@/components/LanguageSuggestion";
 import type { ShellCopy } from "@/lib/lite/copy";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { LiteToolId, LiteToolKind } from "@/lib/lite/tools";
@@ -23,6 +25,30 @@ import { KIND_ICON, KIND_ORDER, KIND_TILE, TOOL_ICONS } from "@/components/lite/
  * Tavnit" (the full platform, as opposed to these Lite tools) and an
  * avatar menu with the email and sign out.
  */
+
+/** aria-label of the language menu. */
+const LANGUAGE_LABEL: Record<Locale, string> = {
+  en: "Language",
+  es: "Idioma",
+  "pt-BR": "Idioma",
+  fr: "Langue",
+  de: "Sprache",
+  it: "Lingua",
+  nl: "Taal",
+  pl: "Język",
+  tr: "Dil",
+  "zh-Hans": "语言",
+  ja: "言語",
+  ko: "언어",
+};
+
+/** Links from the Lite header to the main site, per language (LiteShell). */
+export interface ShellLinks {
+  product: string;
+  useCases: string;
+  docs: string;
+  demo: string;
+}
 
 export interface HeaderTool {
   id: LiteToolId;
@@ -94,23 +120,76 @@ function ToolItem({ t, onPick }: { t: HeaderTool; onPick: () => void }) {
   );
 }
 
+/**
+ * The twelve languages as crawlable links (to this page's twin, or that
+ * language's home), in a small menu. A click records the explicit choice.
+ */
+function LanguageMenu({ locale, languages }: { locale: Locale; languages: LanguageLinks }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const close = useCallback(() => setOpen(false), []);
+  useDismiss(open, close, ref);
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-label={LANGUAGE_LABEL[locale]}
+        title={LANGUAGE_LABEL[locale]}
+        className={`${LINK} inline-flex cursor-pointer items-center gap-1 text-xs font-semibold uppercase tracking-wide`}
+      >
+        <Globe size={14} aria-hidden />
+        {locale}
+      </button>
+      {/* In the DOM while closed so the links stay crawlable. */}
+      <ul
+        hidden={!open}
+        className="lite-pop absolute right-0 top-[calc(100%+6px)] z-50 grid w-64 grid-cols-2 gap-0.5 rounded-xl border border-[var(--lite-line)] bg-white p-2 shadow-xl shadow-[#1c2321]/10"
+      >
+        {LOCALES.map(({ code, nativeName }) => (
+          <li key={code}>
+            <Link
+              href={languages.links[code]}
+              hrefLang={hreflangOf(code)}
+              lang={hreflangOf(code)}
+              aria-current={code === locale ? "true" : undefined}
+              onClick={() => {
+                writeLangCookie(code);
+                setOpen(false);
+              }}
+              className={`flex items-center justify-between gap-1 rounded-lg px-2.5 py-1.5 text-[13px] transition-colors hover:bg-[#f3f6fa] ${
+                code === locale ? "font-semibold text-[var(--lite-ink)]" : "text-[var(--lite-muted)] hover:text-[var(--lite-ink)]"
+              }`}
+            >
+              <span className="truncate">{nativeName}</span>
+              {code === locale && <Check size={14} className="shrink-0" aria-hidden />}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function LiteHeader({
   locale,
-  alternatePath,
+  languages,
+  links,
   hubPath,
   tools,
   t,
   authCopy,
 }: {
   locale: Locale;
-  alternatePath: string;
+  languages: LanguageLinks;
+  links: ShellLinks;
   hubPath: string;
   tools: HeaderTool[];
   t: ShellCopy;
   /** The base auth strings; the header overrides title, body and buttons. */
   authCopy: ToolCopy["auth"];
 }) {
-  const other: Locale = locale === "es" ? "en" : "es";
   const { ready, email } = useLiteSession();
   const [toolsOpen, setToolsOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
@@ -267,17 +346,15 @@ export default function LiteHeader({
                 </div>
               )}
             </div>
-            <Link href={t.nav.productHref} className={LINK}>{t.nav.product}</Link>
-            <Link href={t.nav.useCasesHref} className={LINK}>{t.nav.useCases}</Link>
-            <Link href={locale === "es" ? "/es/documentacion" : "/docs"} className={LINK}>{t.nav.docs}</Link>
+            <Link href={links.product} className={LINK}>{t.nav.product}</Link>
+            <Link href={links.useCases} className={LINK}>{t.nav.useCases}</Link>
+            <Link href={links.docs} className={LINK}>{t.nav.docs}</Link>
           </nav>
         </div>
 
         <div className="flex items-center gap-2">
-          <Link href={alternatePath} hrefLang={other} lang={other} className={`${LINK} text-xs font-semibold uppercase tracking-wide`}>
-            {other}
-          </Link>
-          <Link href={t.demoHref} className={`${LINK} hidden xl:inline`}>{t.demo}</Link>
+          <LanguageMenu locale={locale} languages={languages} />
+          <Link href={links.demo} className={`${LINK} hidden xl:inline`}>{t.demo}</Link>
           <div className="hidden items-center gap-2 sm:flex">{accountArea}</div>
           <button
             type="button"
@@ -308,10 +385,10 @@ export default function LiteHeader({
               </div>
             ))}
             <div className="mt-2 flex flex-col border-t border-[var(--lite-line)] pt-3">
-              <Link href={t.nav.productHref} className={`${LINK} py-2.5`}>{t.nav.product}</Link>
-              <Link href={t.nav.useCasesHref} className={`${LINK} py-2.5`}>{t.nav.useCases}</Link>
-              <Link href={locale === "es" ? "/es/documentacion" : "/docs"} className={`${LINK} py-2.5`}>{t.nav.docs}</Link>
-              <Link href={t.demoHref} className={`${LINK} py-2.5`}>{t.demo}</Link>
+              <Link href={links.product} className={`${LINK} py-2.5`}>{t.nav.product}</Link>
+              <Link href={links.useCases} className={`${LINK} py-2.5`}>{t.nav.useCases}</Link>
+              <Link href={links.docs} className={`${LINK} py-2.5`}>{t.nav.docs}</Link>
+              <Link href={links.demo} className={`${LINK} py-2.5`}>{t.demo}</Link>
             </div>
             <div className="mt-4 flex flex-col gap-2 border-t border-[var(--lite-line)] pt-4">
               {email ? (
@@ -346,6 +423,7 @@ export default function LiteHeader({
         copy={{ ...authCopy, ...t.auth }}
         locale={locale}
       />
+      <LanguageSuggestion locale={locale} languages={languages} tone="lite" className="top-[4.75rem]" />
     </header>
   );
 }

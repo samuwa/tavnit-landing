@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, BadgeDollarSign, CalendarCheck, CalendarClock, Check, Mail, Sigma, TriangleAlert, Type, UserCheck, Wand2 } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
-import type { Locale } from "@/lib/locale";
+import { intlTag, type Locale } from "@/lib/locales";
 import { useLiteSession } from "@/components/lite/session";
 import { TavnitLink } from "@/components/lite/intent";
 
@@ -55,7 +55,7 @@ export default function CleanerIdeas({
   rows: Record<string, Cell>[];
 }) {
   const { email } = useLiteSession();
-  const tag = locale === "es" ? "es-PA" : "en-US";
+  const tag = intlTag(locale);
   const money = new Intl.NumberFormat(tag, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const first = rows[0] ?? {};
 

@@ -5,7 +5,8 @@ import GuideArticle from "@/components/GuideArticle";
 import { buildGuideSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
 import { GUIDES_ES, GUIDE_ES_BY_SLUG_ES, esGuidePath } from "@/lib/guides.es";
-import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
+import { hreflangOf } from "@/lib/locales";
 
 export function generateStaticParams() {
   return GUIDES_ES.map((g) => ({ slug: g.slugEs }));
@@ -25,7 +26,7 @@ export async function generateMetadata({
     description: g.description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(`/guides/${g.slug}`, path),
+      languages: alternatesFor(`/guides/${g.slug}`),
     },
     openGraph: {
       type: "article",
@@ -33,8 +34,7 @@ export async function generateMetadata({
       title: g.title,
       description: g.description,
       siteName: "Tavnit",
-      locale: ES_LOCALE_OG,
-      alternateLocale: [EN_LOCALE_OG],
+      ...pageOgLocales(`/guides/${g.slug}`, "es"),
       publishedTime: g.published,
       modifiedTime: g.updated,
       images: ["/opengraph-image"],
@@ -60,7 +60,7 @@ export default async function SpanishGuidePage({
   }));
 
   return (
-    <MarketingPage locale="es" alternatePath={enPath}>
+    <MarketingPage locale="es" enPath={enPath}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -68,7 +68,7 @@ export default async function SpanishGuidePage({
             buildGuideSchema({
               slug: g.slug,
               path,
-              inLanguage: "es-PA",
+              inLanguage: hreflangOf("es"),
               headline: g.h1,
               description: g.description,
               datePublished: g.published,

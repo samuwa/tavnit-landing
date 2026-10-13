@@ -11,7 +11,9 @@
  * have, so it keeps it instead of redirecting it away.
  */
 
-import type { Locale } from "@/lib/locale";
+// The docs exist in English and Spanish only (for now): their locale is the
+// engine pair. src/app/[lang]/docs will widen this when it exists.
+import type { EngineLocale as Locale } from "@/lib/locales";
 
 export type DocSlug =
   | "getting-started"
@@ -346,7 +348,7 @@ export const DOC_BY_SLUG = Object.fromEntries(
 
 /**
  * The Spanish docs, under /es/documentacion with Spanish slugs like the rest
- * of the Spanish site (see src/lib/locale.ts). Same slugs, same order, same
+ * of the Spanish site (see src/lib/routes.ts). Same slugs, same order, same
  * footer columns: only the words and the URLs change. Product names stay in
  * English (Flow, Collection, Cleaner, Splitter, Bucket, Agent, Run) because
  * that is what the app shows; "Human in the Loop" is "Revisión humana", as on

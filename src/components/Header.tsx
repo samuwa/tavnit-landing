@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Menu, X } from "lucide-react";
-import type { Locale } from "@/lib/locale";
+import { LOCALE_CODES, localeHome, prefixedPath, type Locale } from "@/lib/locales";
+import type { LanguageLinks } from "@/lib/routes";
 import SiteSettings from "@/components/SiteSettings";
+import LanguageSuggestion from "@/components/LanguageSuggestion";
 import Logo from "@/components/Logo";
 
 // Root-relative so the header works from every route. Bare "#features" resolves
@@ -18,31 +20,43 @@ import Logo from "@/components/Logo";
 // try it now, how to integrate. Agents, integrations and guides stay one
 // scroll away in the footer on every page; Pricing appears here only while
 // Stripe self-serve is on; the demo is a button next to the CTA, not a link
-// among links.
-const NAV: Record<Locale, { href: string; label: string }[]> = {
-  en: [
-    { href: "/#features", label: "Product" },
-    { href: "/use-cases", label: "Use Cases" },
-    { href: "/tools", label: "Free Tools" },
-    { href: "/docs", label: "Docs" },
-    { href: "/pricing", label: "Pricing" },
-  ],
-  // Spanish routes where they exist; /pricing stays English.
-  es: [
-    { href: "/es#como-funciona", label: "Producto" },
-    { href: "/es/casos-de-uso", label: "Casos de uso" },
-    { href: "/es/herramientas", label: "Herramientas gratis" },
-    { href: "/es/documentacion", label: "Docs" },
-    { href: "/pricing", label: "Precios" },
-  ],
+// among links. Labels and routes per language below.
+type NavKey = "product" | "useCases" | "tools" | "docs" | "pricing";
+
+const LABELS: Record<Locale, Record<NavKey | "cta" | "demo" | "menu", string>> = {
+  en: { product: "Product", useCases: "Use Cases", tools: "Free Tools", docs: "Docs", pricing: "Pricing", cta: "Get Started", demo: "Book a demo", menu: "Toggle navigation" },
+  es: { product: "Producto", useCases: "Casos de uso", tools: "Herramientas gratis", docs: "Docs", pricing: "Precios", cta: "Empezar", demo: "Agendar demo", menu: "Abrir o cerrar el menú" },
+  "pt-BR": { product: "Produto", useCases: "Casos de uso", tools: "Ferramentas grátis", docs: "Docs", pricing: "Preços", cta: "Começar", demo: "Agendar demo", menu: "Abrir ou fechar o menu" },
+  fr: { product: "Produit", useCases: "Cas d’usage", tools: "Outils gratuits", docs: "Docs", pricing: "Tarifs", cta: "Commencer", demo: "Réserver une démo", menu: "Ouvrir ou fermer le menu" },
+  de: { product: "Produkt", useCases: "Anwendungsfälle", tools: "Kostenlose Tools", docs: "Doku", pricing: "Preise", cta: "Loslegen", demo: "Demo buchen", menu: "Menü öffnen oder schließen" },
+  it: { product: "Prodotto", useCases: "Casi d’uso", tools: "Strumenti gratuiti", docs: "Docs", pricing: "Prezzi", cta: "Inizia", demo: "Prenota una demo", menu: "Apri o chiudi il menu" },
+  nl: { product: "Product", useCases: "Toepassingen", tools: "Gratis tools", docs: "Docs", pricing: "Prijzen", cta: "Aan de slag", demo: "Demo plannen", menu: "Menu openen of sluiten" },
+  pl: { product: "Produkt", useCases: "Zastosowania", tools: "Darmowe narzędzia", docs: "Dokumentacja", pricing: "Cennik", cta: "Zacznij", demo: "Umów demo", menu: "Otwórz lub zamknij menu" },
+  tr: { product: "Ürün", useCases: "Kullanım alanları", tools: "Ücretsiz araçlar", docs: "Dokümanlar", pricing: "Fiyatlar", cta: "Başlayın", demo: "Demo planlayın", menu: "Menüyü aç veya kapat" },
+  "zh-Hans": { product: "产品", useCases: "应用场景", tools: "免费工具", docs: "文档", pricing: "价格", cta: "开始使用", demo: "预约演示", menu: "打开或关闭菜单" },
+  ja: { product: "製品", useCases: "活用事例", tools: "無料ツール", docs: "ドキュメント", pricing: "料金", cta: "始める", demo: "デモを予約", menu: "メニューを開閉" },
+  ko: { product: "제품", useCases: "활용 사례", tools: "무료 도구", docs: "문서", pricing: "요금", cta: "시작하기", demo: "데모 예약", menu: "메뉴 열기/닫기" },
 };
 
-const CTA: Record<Locale, string> = { en: "Get Started", es: "Empezar" };
-const DEMO: Record<Locale, { href: string; label: string }> = {
-  en: { href: "/schedule", label: "Book a demo" },
-  es: { href: "/es/agendar", label: "Agendar demo" },
-};
-const HOME: Record<Locale, string> = { en: "/", es: "/es" };
+/**
+ * Where each nav item goes per language. Spanish has its own routes; the new
+ * languages prefix the English path (their [lang] tree serves these hubs);
+ * the docs and /pricing are not localised there yet and stay English.
+ */
+function hrefs(locale: Locale): Record<NavKey | "demo", string> {
+  if (locale === "en") return { product: "/#features", useCases: "/use-cases", tools: "/tools", docs: "/docs", pricing: "/pricing", demo: "/schedule" };
+  if (locale === "es") return { product: "/es#como-funciona", useCases: "/es/casos-de-uso", tools: "/es/herramientas", docs: "/es/documentacion", pricing: "/pricing", demo: "/es/agendar" };
+  return {
+    product: prefixedPath(locale, "/#how-it-works"),
+    useCases: prefixedPath(locale, "/use-cases"),
+    tools: prefixedPath(locale, "/tools"),
+    docs: "/docs",
+    pricing: "/pricing",
+    demo: prefixedPath(locale, "/schedule"),
+  };
+}
+
+const NAV_KEYS: NavKey[] = ["product", "useCases", "tools", "docs", "pricing"];
 
 /**
  * Back to the top, animated by hand.
@@ -98,21 +112,25 @@ function scrollToTop() {
 export default function Header({
   showPricing = true,
   locale = "en",
-  alternateHref,
+  languages,
 }: {
   /** False while Stripe self-serve is off platform-wide (platform_config). */
   showPricing?: boolean;
   locale?: Locale;
-  /** URL of this page in the other language; defaults to the other homepage. */
-  alternateHref?: string;
+  /** This page in every language (languageLinksFor() on the server);
+   *  defaults to each language's home. */
+  languages?: LanguageLinks;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const navLinks = NAV[locale];
-  const links = showPricing
-    ? navLinks
-    : navLinks.filter((l) => l.href !== "/pricing");
-  const alternate = alternateHref ?? HOME[locale === "en" ? "es" : "en"];
+  const t = LABELS[locale];
+  const to = hrefs(locale);
+  const home = localeHome(locale);
+  const links = NAV_KEYS.filter((k) => showPricing || k !== "pricing").map((k) => ({ href: to[k], label: t[k] }));
+  const langs: LanguageLinks = languages ?? {
+    links: Object.fromEntries(LOCALE_CODES.map((l) => [l, localeHome(l)])) as Record<Locale, string>,
+    available: [locale],
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -133,15 +151,15 @@ export default function Header({
           the logo and the buttons measure. */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 h-16 flex items-center justify-between gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-8">
         <Link
-          href={HOME[locale]}
+          href={home}
           onClick={(e) => {
             // Already on the homepage: Next does nothing for a same-route
             // link, so glide back up to the hero instead.
-            if (window.location.pathname === HOME[locale] || window.location.pathname === `${HOME[locale]}/`) {
+            if (window.location.pathname === home || window.location.pathname === `${home}/`) {
               e.preventDefault();
               setMobileOpen(false);
               scrollToTop();
-              window.history.replaceState(null, "", HOME[locale]);
+              window.history.replaceState(null, "", home);
             }
           }}
           aria-label="Tavnit"
@@ -164,31 +182,31 @@ export default function Header({
         </nav>
 
         <div className="hidden lg:flex items-center gap-2 justify-self-end">
-          <SiteSettings locale={locale} alternateHref={alternate} />
+          <SiteSettings locale={locale} languages={langs} />
           {/* Header scale of the hero's pair: a quiet link for the demo, the
               brand gradient pill for the product; same height, no jump. */}
           <Link
-            href={DEMO[locale].href}
+            href={to.demo}
             className="inline-flex h-9 items-center rounded-full px-4 text-sm font-medium text-fg-3 transition-colors hover:bg-tint/[0.06] hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50"
           >
-            {DEMO[locale].label}
+            {t.demo}
           </Link>
           <Link
             href="https://app.tavnit.io"
             className="group inline-flex h-9 items-center gap-1.5 rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] pl-4 pr-3.5 text-sm font-semibold tracking-[-0.01em] text-white shadow-[0_6px_18px_-8px_rgba(76,99,246,0.7)] transition-[filter,box-shadow] hover:shadow-[0_8px_22px_-8px_rgba(76,99,246,0.85)] hover:brightness-[1.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
-            {CTA[locale]}
+            {t.cta}
             <ArrowRight size={14} strokeWidth={2.25} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </Link>
         </div>
 
         {/* Mobile Toggle */}
         <div className="lg:hidden flex items-center gap-2">
-          <SiteSettings locale={locale} alternateHref={alternate} />
+          <SiteSettings locale={locale} languages={langs} />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-2 rounded-lg hover:bg-tint/10 transition-colors text-fg-3"
-            aria-label="Toggle navigation"
+            aria-label={t.menu}
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -213,19 +231,20 @@ export default function Header({
               href="https://app.tavnit.io"
               className="mt-5 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-[15px] font-semibold text-white shadow-[0_8px_24px_-10px_rgba(76,99,246,0.7)]"
             >
-              {CTA[locale]}
+              {t.cta}
               <ArrowRight size={16} strokeWidth={2.25} />
             </Link>
             <Link
-              href={DEMO[locale].href}
+              href={to.demo}
               onClick={() => setMobileOpen(false)}
               className="mt-2 inline-flex h-12 items-center justify-center rounded-full border border-tint/10 text-[15px] font-semibold text-fg-2 hover:text-fg"
             >
-              {DEMO[locale].label}
+              {t.demo}
             </Link>
           </nav>
         </div>
       )}
+      <LanguageSuggestion locale={locale} languages={langs} />
     </header>
   );
 }

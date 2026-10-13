@@ -2,6 +2,7 @@ import { randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 import { APP_URL } from "@/lib/site";
 import { isLiteToolId } from "@/lib/lite/tools";
+import { normalizeLanguage } from "@/lib/locales";
 import { getOrCreateSessionId } from "@/lib/lite/session";
 import { createHandoff, insertIntent, linkSessionIntents, storeConfigured, type IntentKind } from "@/lib/lite/store";
 import { authConfigured, currentUser } from "@/lib/supabase/server";
@@ -12,6 +13,8 @@ import { authConfigured, currentUser } from "@/lib/supabase/server";
  *
  * JSON body: { tool, kind: "used" | "cta" | "download", feature?, locale?,
  *              payload?, handoff? }
+ *  - `locale` is the PAGE language (one of the 12 codes, lib/locales.ts);
+ *    column names in `payload` belong to the engine, engineLocale(locale).
  *  - `feature` is what they reached for ("flow", "webhook", "cleaner", …).
  *  - `handoff: true` (the "Try it in Tavnit" links) also mints a one-time
  *    token and answers { url } — the app URL carrying it.
@@ -64,7 +67,9 @@ export async function POST(request: Request) {
   const kind = KINDS.includes(body.kind as IntentKind) ? (body.kind as IntentKind) : null;
   if (!tool || !kind) return NextResponse.json({ error: "bad_request" }, { status: 400 });
   const feature = typeof body.feature === "string" && FEATURE_RE.test(body.feature) ? body.feature : null;
-  const locale = body.locale === "en" ? "en" : "es";
+  // Any casing or regional tag ("pt-br", "de-DE") maps to a site language;
+  // unknown values keep the table's historical default.
+  const locale = (typeof body.locale === "string" && normalizeLanguage(body.locale)) || "es";
 
   try {
     const sessionId = await getOrCreateSessionId();

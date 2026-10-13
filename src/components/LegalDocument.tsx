@@ -1,6 +1,7 @@
 import Link from "next/link";
 import MarketingPage from "@/components/MarketingPage";
-import type { Locale } from "@/lib/locale";
+import type { EngineLocale } from "@/lib/locales";
+import { twinPath } from "@/lib/routes";
 
 /**
  * Shared shell for /privacy, /terms and their Spanish twins.
@@ -15,7 +16,8 @@ import type { Locale } from "@/lib/locale";
  * The Spanish versions are translations offered for convenience and say so:
  * the English text governs if the two ever disagree, which is the standard
  * arrangement for a translated legal page and avoids maintaining two
- * authoritative texts.
+ * authoritative texts. The legal pages exist in English and Spanish only;
+ * the other languages link the English text.
  */
 
 const COPY = {
@@ -29,19 +31,21 @@ export default function LegalDocument({
   intro,
   children,
   locale = "en",
-  alternatePath,
+  enPath,
 }: {
   title: string;
   lastUpdated: string;
   intro: React.ReactNode;
   children: React.ReactNode;
-  locale?: Locale;
-  /** This document in the other language. */
-  alternatePath?: string;
+  locale?: EngineLocale;
+  /** English path of this document (its Spanish twin comes from the registry). */
+  enPath: string;
 }) {
   const t = COPY[locale];
+  const other: EngineLocale = locale === "en" ? "es" : "en";
+  const alternatePath = twinPath(enPath, other);
   return (
-    <MarketingPage locale={locale} alternatePath={alternatePath}>
+    <MarketingPage locale={locale} enPath={enPath}>
       <article className="max-w-[760px] mx-auto px-4 sm:px-6">
         <nav aria-label={t.breadcrumb} className="mb-6 text-sm text-fg-5 flex flex-wrap items-center gap-x-2">
           <Link href={t.homeHref} className="hover:text-fg-3 transition-colors">
@@ -53,8 +57,8 @@ export default function LegalDocument({
             <span className="ml-auto">
               <Link
                 href={alternatePath}
-                hrefLang={locale === "en" ? "es" : "en"}
-                lang={locale === "en" ? "es" : "en"}
+                hrefLang={other}
+                lang={other}
                 className="hover:text-fg-3 transition-colors"
               >
                 {t.readOther}

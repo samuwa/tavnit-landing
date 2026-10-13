@@ -5,7 +5,7 @@ import GuideArticle from "@/components/GuideArticle";
 import { buildGuideSchema } from "@/lib/schema";
 import { GUIDES, GUIDE_BY_SLUG } from "@/lib/guides";
 import { GUIDE_ES_BY_SLUG, esGuidePath } from "@/lib/guides.es";
-import { languageAlternates } from "@/lib/locale";
+import { alternatesFor, pageOgLocales } from "@/lib/routes";
 
 export function generateStaticParams() {
   return GUIDES.map((g) => ({ slug: g.slug }));
@@ -20,13 +20,12 @@ export async function generateMetadata({
   const g = GUIDE_BY_SLUG[slug];
   if (!g) return {};
   const path = `/guides/${g.slug}`;
-  const es = GUIDE_ES_BY_SLUG[g.slug];
   return {
     title: g.title,
     description: g.description,
     alternates: {
       canonical: path,
-      ...(es ? { languages: languageAlternates(path, esGuidePath(es)) } : {}),
+      languages: alternatesFor(path),
     },
     openGraph: {
       type: "article",
@@ -34,8 +33,7 @@ export async function generateMetadata({
       title: g.title,
       description: g.description,
       siteName: "Tavnit",
-      locale: "en_US",
-      ...(es ? { alternateLocale: ["es_PA"] } : {}),
+      ...pageOgLocales(path, "en"),
       publishedTime: g.published,
       modifiedTime: g.updated,
       images: ["/opengraph-image"],
@@ -60,7 +58,7 @@ export default async function GuidePage({
   }));
 
   return (
-    <MarketingPage alternatePath={es ? esGuidePath(es) : undefined}>
+    <MarketingPage enPath={`/guides/${g.slug}`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
