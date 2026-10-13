@@ -185,8 +185,7 @@ export default function ApiIntegrationJa() {
         <DocCard icon={<Info size={24} />} title="API のしくみ">
           <p>
             Tavnit REST API を使うと、アプリで行う操作を自分のコードから実行できます。Flow、Collection、
-            Splitter、Pipeline へのドキュメント送信、Cleaner、Matcher、Inspector、Filler、Signal、Agent の
-            実行、Bucket の読み書き、Subject のケース管理、人によるレビューの承認や却下が行えます。
+            Splitter、Pipeline へのドキュメント送信、Cleaner、Matcher、Inspector、Filler、Signal、Agent の実行、Bucket の読み書き、Subject のケース管理、人によるレビューの承認や却下が行えます。
           </p>
           <BulletList
             items={[
@@ -199,28 +198,23 @@ export default function ApiIntegrationJa() {
               </Fragment>,
               <Fragment key="b2">
                 処理は非同期です。処理を開始するエンドポイントは、すぐに ID とともに{" "}
-                <strong>202 Accepted</strong> を返し、処理はバックグラウンドで実行されます。結果はポーリング
-                （Run、Agent の Run、Catch、ケース）で取得するか、機能に設定した{" "}
+                <strong>202 Accepted</strong> を返し、処理はバックグラウンドで実行されます。結果はポーリング（Run、Agent の Run、Catch、ケース）で取得するか、機能に設定した{" "}
                 <DocLink href="/docs/webhooks">webhook</DocLink> で受け取ります。
               </Fragment>,
             ]}
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="ベータ版の機能">
-            Pipelines、Subjects、Matchers、Inspectors、Fillers、Signals、Nets はベータ版です。
-            エンドポイントは現在も利用できますが、細部は今後変更される可能性があります。
+            Pipelines、Subjects、Matchers、Inspectors、Fillers、Signals、Nets はベータ版です。エンドポイントは現在も利用できますが、細部は今後変更される可能性があります。
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<Lock size={24} />} title="認証と ID">
           <h3 className="text-base font-semibold text-fg-2 mt-2 mb-1">API キー</h3>
           <p>
-            アプリのサイドバーで<strong>連携</strong>を開きます。<strong>API キー</strong>カードに
-            キーが表示されます（そこで表示とコピーができます）。キーは組織ごとにメンバー一人ひとりに
-            発行され、リクエストはその組織のそのメンバーとして実行されます。
+            アプリのサイドバーで<strong>連携</strong>を開きます。<strong>API キー</strong>カードにキーが表示されます（そこで表示とコピーができます）。キーは組織ごとにメンバー一人ひとりに発行され、リクエストはその組織のそのメンバーとして実行されます。
           </p>
           <WarningBox>
-            API キーは秘密にしてください。同じカードの<strong>再生成</strong>を使うと現在のキーはすぐに
-            無効になり、まだそのキーを使っているものはすべて動作しなくなります。
+            API キーは秘密にしてください。同じカードの<strong>再生成</strong>を使うと現在のキーはすぐに無効になり、まだそのキーを使っているものはすべて動作しなくなります。
           </WarningBox>
           <p>有効なキーのないリクエストには、次のレスポンスが返ります。</p>
           <CodeBlock
@@ -234,26 +228,21 @@ export default function ApiIntegrationJa() {
 
           <h3 className={H3}>ロール</h3>
           <p>
-            キーにはあなたのロールが反映されます。<strong>HITL のみ</strong>ロールのメンバーが使えるのは、
-            人によるレビューの承認・却下エンドポイントと API キーのエンドポイントだけです。処理やデータの
-            エンドポイントはすべて、<strong>403</strong> と{" "}
-            <InlineCode>Your role only permits HITL reviews</InlineCode> で拒否します。
-            <DocLink href="/docs/user-roles">ユーザーロール</DocLink>をご覧ください。
+            キーにはあなたのロールが反映されます。<strong>HITL のみ</strong>ロールのメンバーが使えるのは、人によるレビューの承認・却下エンドポイントと API キーのエンドポイントだけです。処理やデータのエンドポイントはすべて、<strong>403</strong> と{" "}
+            <InlineCode>Your role only permits HITL reviews</InlineCode> で拒否します。<DocLink href="/docs/user-roles">ユーザーロール</DocLink>をご覧ください。
           </p>
 
           <h3 className={H3}>ID</h3>
           <p>
             Flow、Collection、Splitter、Cleaner、Bucket、Agent、Matcher、Inspector、Filler、Pipeline の
-            ID は、それぞれの詳細ページにコピーボタンとともに表示されます。リソースはキーの組織に属している
-            必要があり、ほかの組織の ID には 403 または 404 が返ります。
+            ID は、それぞれの詳細ページにコピーボタンとともに表示されます。リソースはキーの組織に属している必要があり、ほかの組織の ID には 403 または 404 が返ります。
           </p>
         </DocCard>
 
         <DocCard icon={<Download size={24} />} title="ファイルの送信">
           <p>ドキュメントを受け取るエンドポイントは、次の 2 つの方法のどちらかで受け付けます。</p>
           <InfoBox color="purple" icon={<Paperclip size={20} />} title="マルチパートでのファイルアップロード">
-            ファイルを multipart/form-data として file という名前のフィールドで送り、ほかのフィールドは
-            フォームフィールドとして送ります。すべてのファイル用エンドポイントで使えます。
+            ファイルを multipart/form-data として file という名前のフィールドで送り、ほかのフィールドはフォームフィールドとして送ります。すべてのファイル用エンドポイントで使えます。
           </InfoBox>
           <InfoBox color="violet" icon={<Code2 size={20} />} title="JSON 本文での Base64">
             file_base64（ファイルの内容）と filename（拡張子付き）、そしてほかのフィールドを含む JSON
@@ -354,8 +343,7 @@ export default function ApiIntegrationJa() {
           )}
           <CodeBlock lang="202 レスポンス" code={RUN_PROCESS_RESPONSE} />
           <p>
-            エラー：400（ファイルがない、flow_id がない、ファイルがサポートされていないか無効）、403（ほかの
-            組織の Flow）、404（Flow が見つからない）。拒否されたリクエストでも、可能な場合は失敗した Run
+            エラー：400（ファイルがない、flow_id がない、ファイルがサポートされていないか無効）、403（ほかの組織の Flow）、404（Flow が見つからない）。拒否されたリクエストでも、可能な場合は失敗した Run
             が作成され、その <InlineCode>run_id</InlineCode> が返されるので、<strong>Runs</strong>{" "}
             で見つけられます。
           </p>
@@ -363,15 +351,7 @@ export default function ApiIntegrationJa() {
           <h3 className={H3}>Run とそのデータを取得する</h3>
           <Endpoint method="GET" path="/runs/{run_id}" />
           <p>
-            <InlineCode>status</InlineCode> が終了状態になるまでポーリングします。ステータス：
-            <InlineCode>queued</InlineCode>、<InlineCode>running</InlineCode>、
-            <InlineCode>awaiting_approval</InlineCode>（
-            <DocLink href="/docs/human-in-the-loop">人によるレビュー</DocLink>のため一時停止中）、
-            <InlineCode>completed</InlineCode>、<InlineCode>failed</InlineCode>、
-            <InlineCode>cancelled</InlineCode>。<InlineCode>data</InlineCode> には抽出された行が入り、
-            承認待ちの間も含めて、Run が完了するまでは <InlineCode>null</InlineCode> のままです。
-            <InlineCode>columns</InlineCode> が設定されている場合は、列の順序にそれを使ってください。
-            <InlineCode>attempt</InlineCode> と <InlineCode>previous_attempts</InlineCode>{" "}
+            <InlineCode>status</InlineCode> が終了状態になるまでポーリングします。ステータス：<InlineCode>queued</InlineCode>、<InlineCode>running</InlineCode>、<InlineCode>awaiting_approval</InlineCode>（<DocLink href="/docs/human-in-the-loop">人によるレビュー</DocLink>のため一時停止中）、<InlineCode>completed</InlineCode>、<InlineCode>failed</InlineCode>、<InlineCode>cancelled</InlineCode>。<InlineCode>data</InlineCode> には抽出された行が入り、承認待ちの間も含めて、Run が完了するまでは <InlineCode>null</InlineCode> のままです。<InlineCode>columns</InlineCode> が設定されている場合は、列の順序にそれを使ってください。<InlineCode>attempt</InlineCode> と <InlineCode>previous_attempts</InlineCode>{" "}
             は自動再試行を示します。<InlineCode>?include_document=true</InlineCode>{" "}
             を付けると、元のファイルへの署名付きリンクも取得できます。これは Collection、Splitter、
             Pipeline、メールで作成された Run を含め、すべての Run で使えます。
@@ -386,10 +366,7 @@ export default function ApiIntegrationJa() {
           <h3 className={H3}>元のドキュメントを取得する</h3>
           <Endpoint method="GET" path="/runs/{run_id}/source-file" />
           <p>
-            Run のステータスにかかわらず、アップロードされたままのファイルへの署名付き URL を返します。
-            省略可能な <InlineCode>expires_in</InlineCode> でリンクの有効期間を秒単位で指定できます（60〜604800、
-            既定は 7 日）。<InlineCode>?download=true</InlineCode> を付けると、レスポンスはファイルそのものに
-            なります。
+            Run のステータスにかかわらず、アップロードされたままのファイルへの署名付き URL を返します。省略可能な <InlineCode>expires_in</InlineCode> でリンクの有効期間を秒単位で指定できます（60〜604800、既定は 7 日）。<InlineCode>?download=true</InlineCode> を付けると、レスポンスはファイルそのものになります。
           </p>
           <CodeBlock lang="200 レスポンス" code={SOURCE_FILE_RESPONSE} />
         </DocCard>
@@ -403,9 +380,7 @@ export default function ApiIntegrationJa() {
           <Endpoint method="POST" path="/collections/process" />
           <p>
             本文は <InlineCode>/runs/process</InlineCode> と同じで、<InlineCode>flow_id</InlineCode>{" "}
-            の代わりに <InlineCode>collection_id</InlineCode> を使います（ID をパスに入れることもできます：
-            <InlineCode>{"/collections/{collection_id}/process"}</InlineCode>）。Collection が有効で、
-            有効な Flow または Splitter が少なくとも 1 つ含まれている必要があります。そうでない場合は 400
+            の代わりに <InlineCode>collection_id</InlineCode> を使います（ID をパスに入れることもできます：<InlineCode>{"/collections/{collection_id}/process"}</InlineCode>）。Collection が有効で、有効な Flow または Splitter が少なくとも 1 つ含まれている必要があります。そうでない場合は 400
             が返ります。
           </p>
           <LangToggle lang={lang} setLang={setLang} />
@@ -417,24 +392,20 @@ export default function ApiIntegrationJa() {
           <CodeBlock lang="202 レスポンス" code={COLLECTION_PROCESS_RESPONSE} />
           <p>
             選ばれた Flow が通常の Run を作成し、その webhook のペイロードには{" "}
-            <InlineCode>collection_run_id</InlineCode> が含まれるため、結果をリクエストと照合できます。
-            元のファイルは{" "}
+            <InlineCode>collection_run_id</InlineCode> が含まれるため、結果をリクエストと照合できます。元のファイルは{" "}
             <InlineCode>{"GET /collection-runs/{collection_run_id}/source-file"}</InlineCode>{" "}
-            ですぐに取得できます（Run の元ファイルと同じオプション）。
-            <DocLink href="/docs/collections">Collections</DocLink> をご覧ください。
+            ですぐに取得できます（Run の元ファイルと同じオプション）。<DocLink href="/docs/collections">Collections</DocLink> をご覧ください。
           </p>
         </DocCard>
 
         {/* ── Splitters ── */}
         <DocCard icon={<Split size={24} />} title="Splitters：複数ドキュメントを含むファイルを分割する">
           <p>
-            複数のドキュメントを含むファイルを送ります。Splitter は各ドキュメントの始まりと終わりを見つけて
-            分類し、ドキュメントタイプの設定に従って各部分を送ります。
+            複数のドキュメントを含むファイルを送ります。Splitter は各ドキュメントの始まりと終わりを見つけて分類し、ドキュメントタイプの設定に従って各部分を送ります。
           </p>
           <Endpoint method="POST" path="/splits/run" />
           <p>
-            本文は <InlineCode>/runs/process</InlineCode> と同じで、
-            <InlineCode>splitter_id</InlineCode> を使います。
+            本文は <InlineCode>/runs/process</InlineCode> と同じで、<InlineCode>splitter_id</InlineCode> を使います。
           </p>
           <LangToggle lang={lang} setLang={setLang} />
           {lang === "python" ? (
@@ -446,16 +417,14 @@ export default function ApiIntegrationJa() {
           <p>
             Flow に送られた部分はそれぞれ独自の Run になり、その webhook には{" "}
             <InlineCode>split_id</InlineCode> が含まれます。元のまとめファイルは{" "}
-            <InlineCode>{"GET /splits/{split_id}/source-file"}</InlineCode> で取得できます。
-            <DocLink href="/docs/splitters">Splitters</DocLink> をご覧ください。
+            <InlineCode>{"GET /splits/{split_id}/source-file"}</InlineCode> で取得できます。<DocLink href="/docs/splitters">Splitters</DocLink> をご覧ください。
           </p>
         </DocCard>
 
         {/* ── Cleaners ── */}
         <DocCard icon={<Wand2 size={24} />} title="Cleaners：Sweep を実行する">
           <p>
-            Sweep は、データの行に Cleaner を適用して値の正規化、分類、照合、補完を行います。行は
-            スプレッドシートまたは JSON で送ります。
+            Sweep は、データの行に Cleaner を適用して値の正規化、分類、照合、補完を行います。行はスプレッドシートまたは JSON で送ります。
           </p>
           <Endpoint method="POST" path="/sweeps/run" />
           <DataTable
@@ -480,8 +449,7 @@ export default function ApiIntegrationJa() {
           )}
           <CodeBlock lang="202 レスポンス" code={SWEEP_RUN_RESPONSE} />
           <p>
-            設定が無効な Cleaner は、<InlineCode>validation_errors</InlineCode> とともに 400 を返します。
-            <DocLink href="/docs/cleaners">Cleaners</DocLink> をご覧ください。
+            設定が無効な Cleaner は、<InlineCode>validation_errors</InlineCode> とともに 400 を返します。<DocLink href="/docs/cleaners">Cleaners</DocLink> をご覧ください。
           </p>
         </DocCard>
 
@@ -489,8 +457,7 @@ export default function ApiIntegrationJa() {
         <DocCard icon={<Database size={24} />} title="Buckets：行を書き込む・読み取る">
           <p>
             自社のシステムから Bucket に行を送り込んだり、Flow が保存した内容を読み取ったりできます。Bucket
-            の ID と名前は、Bucket のページで情報アイコンをタップすると確認できます。名前は安全確認のための
-            ものです。ID と一致しない場合、呼び出しは <strong>409</strong> を返します。
+            の ID と名前は、Bucket のページで情報アイコンをタップすると確認できます。名前は安全確認のためのものです。ID と一致しない場合、呼び出しは <strong>409</strong> を返します。
           </p>
           <Endpoint method="POST" path="/buckets/write" />
           <DataTable
@@ -520,12 +487,9 @@ export default function ApiIntegrationJa() {
           <Endpoint method="GET" path="/buckets/read" />
           <p>
             クエリパラメーター：<InlineCode>bucket_id</InlineCode> と{" "}
-            <InlineCode>bucket_name</InlineCode>（必須）、<InlineCode>limit</InlineCode>（1〜1000、
-            既定は 100）、<InlineCode>offset</InlineCode>（既定は 0）。<InlineCode>has_more</InlineCode>{" "}
-            が true の間は <InlineCode>offset</InlineCode> を使ってページを送ります。
-            <InlineCode>total_count</InlineCode> はすべての行数です。行の <InlineCode>data</InlineCode>{" "}
-            のキーは列名です。表示名には <InlineCode>columns</InlineCode> を使ってください。保存された
-            ファイルのリンクは、新しく発行された署名付き URL として返されます。
+            <InlineCode>bucket_name</InlineCode>（必須）、<InlineCode>limit</InlineCode>（1〜1000、既定は 100）、<InlineCode>offset</InlineCode>（既定は 0）。<InlineCode>has_more</InlineCode>{" "}
+            が true の間は <InlineCode>offset</InlineCode> を使ってページを送ります。<InlineCode>total_count</InlineCode> はすべての行数です。行の <InlineCode>data</InlineCode>{" "}
+            のキーは列名です。表示名には <InlineCode>columns</InlineCode> を使ってください。保存されたファイルのリンクは、新しく発行された署名付き URL として返されます。
           </p>
           <CodeBlock lang="リクエスト" code={BUCKET_READ_REQUEST} />
           <CodeBlock lang="200 レスポンス" code={BUCKET_READ_RESPONSE} />
@@ -537,23 +501,19 @@ export default function ApiIntegrationJa() {
         {/* ── Agents ── */}
         <DocCard icon={<Bot size={24} />} title="Agents：Run を開始してポーリングする">
           <p>
-            コードから Agent を開始し、取得した内容を回収します。Agents はリクエストに応じて組織ごとに有効化
-            されます。有効にするにはサポートにお問い合わせください。
+            コードから Agent を開始し、取得した内容を回収します。Agents はリクエストに応じて組織ごとに有効化されます。有効にするにはサポートにお問い合わせください。
           </p>
           <Endpoint method="POST" path="/bots/{agent_id}/runs" />
           <p>
             省略可能な JSON <InlineCode>{'{"inputs": {...}}'}</InlineCode> で、この Run に限り Agent
-            の入力変数を上書きできます。使われるのは Agent が宣言している変数だけで、シークレットの値は
-            受け付けられません。<InlineCode>bot_id</InlineCode> を本文に入れて{" "}
+            の入力変数を上書きできます。使われるのは Agent が宣言している変数だけで、シークレットの値は受け付けられません。<InlineCode>bot_id</InlineCode> を本文に入れて{" "}
             <InlineCode>POST /bots/runs</InlineCode> を呼び出すこともできます。呼び出すたびに新しい Run
             が開始されます。
           </p>
           <CodeBlock lang="リクエスト" code={AGENT_TRIGGER_REQUEST} />
           <p>
             <InlineCode>status</InlineCode> は <InlineCode>queued</InlineCode> です。Agent が一度に 1 つの
-            Run しか実行しない設定で実行中の場合は <InlineCode>waiting</InlineCode> になります（順番が
-            来ると自動的に開始します）。Agent がアーカイブされている場合は 409、待機中の Run が多すぎる
-            場合は 429 が返ります。
+            Run しか実行しない設定で実行中の場合は <InlineCode>waiting</InlineCode> になります（順番が来ると自動的に開始します）。Agent がアーカイブされている場合は 409、待機中の Run が多すぎる場合は 429 が返ります。
           </p>
 
           <h3 className={H3}>ポーリング、一覧表示、キャンセル</h3>
@@ -584,16 +544,14 @@ export default function ApiIntegrationJa() {
           />
           <CodeBlock lang="リクエスト" code={MATCHER_RUN_REQUEST} />
           <p>
-            マッチの結果を読み取る API エンドポイントはありません。結果は Matcher の webhook やメール出力、
-            またはアプリで確認してください。<DocLink href="/docs/matchers">Matchers</DocLink> をご覧ください。
+            マッチの結果を読み取る API エンドポイントはありません。結果は Matcher の webhook やメール出力、またはアプリで確認してください。<DocLink href="/docs/matchers">Matchers</DocLink> をご覧ください。
           </p>
         </DocCard>
 
         {/* ── Inspectors ── */}
         <DocCard icon={<ShieldCheck size={24} />} title="Inspectors：一連のドキュメントをチェックする">
           <p>
-            検査はドキュメントを集め、それぞれを Inspector のスロットに振り分けて抽出し、チェックリストを
-            評価します。
+            検査はドキュメントを集め、それぞれを Inspector のスロットに振り分けて抽出し、チェックリストを評価します。
           </p>
           <Endpoint method="POST" path="/inspectors/{inspector_id}/process" />
           <p>
@@ -611,8 +569,7 @@ export default function ApiIntegrationJa() {
             ]}
           />
           <p>
-            結果は Inspector の webhook またはメール出力に届きます。
-            <DocLink href="/docs/inspectors">Inspectors</DocLink> をご覧ください。
+            結果は Inspector の webhook またはメール出力に届きます。<DocLink href="/docs/inspectors">Inspectors</DocLink> をご覧ください。
           </p>
         </DocCard>
 
@@ -635,8 +592,7 @@ export default function ApiIntegrationJa() {
           />
           <CodeBlock lang="リクエスト" code={FILLER_REQUEST} />
           <p>
-            入力済みの PDF は Filler の webhook またはメール出力に届きます。
-            <DocLink href="/docs/fillers">Fillers</DocLink> をご覧ください。
+            入力済みの PDF は Filler の webhook またはメール出力に届きます。<DocLink href="/docs/fillers">Fillers</DocLink> をご覧ください。
           </p>
         </DocCard>
 
@@ -646,14 +602,12 @@ export default function ApiIntegrationJa() {
           <Endpoint method="POST" path="/pipelines/{pipeline_id}/execute" />
           <p>
             マルチパートの <InlineCode>file</InlineCode>、または <InlineCode>file_base64</InlineCode> +{" "}
-            <InlineCode>filename</InlineCode>。PDF または画像です。Pipeline が無効な場合や、グラフを実行
-            できない場合は 400 が返ります（<InlineCode>validation_errors</InlineCode> 付き）。
+            <InlineCode>filename</InlineCode>。PDF または画像です。Pipeline が無効な場合や、グラフを実行できない場合は 400 が返ります（<InlineCode>validation_errors</InlineCode> 付き）。
           </p>
           <CodeBlock lang="リクエスト" code={PIPELINE_EXECUTE_REQUEST} />
           <p>
             <InlineCode>{"POST /pipelines/executions/{execution_id}/cancel"}</InlineCode>{" "}
-            でキャンセルできます（実行中でない場合は 409）。結果は Pipeline の出力ノードから送られます。
-            <DocLink href="/docs/pipelines">Pipelines</DocLink> をご覧ください。
+            でキャンセルできます（実行中でない場合は 409）。結果は Pipeline の出力ノードから送られます。<DocLink href="/docs/pipelines">Pipelines</DocLink> をご覧ください。
           </p>
         </DocCard>
 
@@ -662,13 +616,11 @@ export default function ApiIntegrationJa() {
           <p>録音を送ると、Signal がそれを構造化データ（Wave）に変換します。</p>
           <Endpoint method="POST" path="/signals/{signal_id}/run" />
           <p>
-            マルチパートの <InlineCode>file</InlineCode> または Base64。音声は最大 150 MB・8 時間で、
-            検出される発話は最大 2 時間です。
+            マルチパートの <InlineCode>file</InlineCode> または Base64。音声は最大 150 MB・8 時間で、検出される発話は最大 2 時間です。
           </p>
           <CodeBlock lang="リクエスト" code={SIGNAL_RUN_REQUEST} />
           <p>
-            結果は Signal の webhook またはアプリで確認できます。
-            <DocLink href="/docs/signals">Signals</DocLink> をご覧ください。
+            結果は Signal の webhook またはアプリで確認できます。<DocLink href="/docs/signals">Signals</DocLink> をご覧ください。
           </p>
         </DocCard>
 
@@ -701,27 +653,20 @@ export default function ApiIntegrationJa() {
           <p>Nets は組織ごとに有効化されます。アクセス権がない場合、これらのエンドポイントは 403 を返します。</p>
           <Endpoint method="POST" path="/nets/{net_id}/catch" />
           <p>
-            本文なしで呼び出すと、Catch は前回の Catch が終わったところから再開します。代わりに期間を
-            さかのぼって取得するには、<InlineCode>window_start</InlineCode> と
-            <InlineCode>window_end</InlineCode> の一方または両方（ISO 形式のタイムスタンプ）を送ります。Net
+            本文なしで呼び出すと、Catch は前回の Catch が終わったところから再開します。代わりに期間をさかのぼって取得するには、<InlineCode>window_start</InlineCode> と<InlineCode>window_end</InlineCode> の一方または両方（ISO 形式のタイムスタンプ）を送ります。Net
             が無効な場合や、前回から続く Catch がすでに進行中の場合は 409 が返ります。
           </p>
           <CodeBlock lang="リクエスト" code={NET_CATCH_REQUEST} />
           <p>
-            <InlineCode>{"GET /catches/{catch_id}"}</InlineCode> をポーリングします。ステータス、段階、件数、
-            そして完了後は列と行を含む <InlineCode>output</InlineCode> が返ります。
-            <InlineCode>{"POST /catches/{catch_id}/cancel"}</InlineCode> でキャンセルできます。
-            <DocLink href="/docs/nets">Nets</DocLink> をご覧ください。
+            <InlineCode>{"GET /catches/{catch_id}"}</InlineCode> をポーリングします。ステータス、段階、件数、そして完了後は列と行を含む <InlineCode>output</InlineCode> が返ります。<InlineCode>{"POST /catches/{catch_id}/cancel"}</InlineCode> でキャンセルできます。<DocLink href="/docs/nets">Nets</DocLink> をご覧ください。
           </p>
         </DocCard>
 
         {/* ── HITL ── */}
         <DocCard icon={<UserCheck size={24} />} title="人によるレビュー：承認または却下する">
           <p>
-            レビューのために一時停止している項目は、自社のツールから承認または却下できます。操作できるのは、
-            その Flow、Matcher、Inspector、Filler に設定されたレビュアーだけで（それ以外は 403）、項目が{" "}
-            <InlineCode>awaiting_approval</InlineCode> である必要があります（それ以外は 409）。これらの
-            エンドポイントは HITL のみロールでも使えます。
+            レビューのために一時停止している項目は、自社のツールから承認または却下できます。操作できるのは、その Flow、Matcher、Inspector、Filler に設定されたレビュアーだけで（それ以外は 403）、項目が{" "}
+            <InlineCode>awaiting_approval</InlineCode> である必要があります（それ以外は 409）。これらのエンドポイントは HITL のみロールでも使えます。
           </p>
           <DataTable
             head={["エンドポイント", "本文"]}
@@ -735,8 +680,7 @@ export default function ApiIntegrationJa() {
           />
           <CodeBlock lang="リクエスト" code={HITL_RUN_APPROVE_REQUEST} />
           <p>
-            承認すると配信（webhook、メール、Bucket）が再開されます。Run を却下するとキャンセルされます。
-            <DocLink href="/docs/human-in-the-loop">人によるレビュー</DocLink>をご覧ください。
+            承認すると配信（webhook、メール、Bucket）が再開されます。Run を却下するとキャンセルされます。<DocLink href="/docs/human-in-the-loop">人によるレビュー</DocLink>をご覧ください。
           </p>
         </DocCard>
 
@@ -757,9 +701,7 @@ export default function ApiIntegrationJa() {
       <div role="tabpanel" aria-label="ノーコード" className={apiTab === "no-code" ? undefined : "hidden"}>
         <DocCard icon={<Star size={24} />} title="自動化ツールの概要">
           <p>
-            Tavnit をワークフローにつなぐのに、コードを書く必要はありません。HTTP リクエストを送れる自動化
-            プラットフォームなら Tavnit で処理を開始でき、webhook を受け取れるプラットフォームなら結果を
-            受け取れます。
+            Tavnit をワークフローにつなぐのに、コードを書く必要はありません。HTTP リクエストを送れる自動化プラットフォームなら Tavnit で処理を開始でき、webhook を受け取れるプラットフォームなら結果を受け取れます。
           </p>
           <InfoBox color="purple" icon={<CircleDot size={20} />} title="Make">
             ビジュアルなシナリオ：HTTP モジュールが Tavnit を呼び出し、Custom webhook が結果を受け取ります。
@@ -795,8 +737,7 @@ export default function ApiIntegrationJa() {
 
         <DocCard icon={<CircleDot size={24} />} title="Make との連携">
           <p>
-            Make（旧 Integromat）は、コードを書かずにアプリをつないでワークフローを自動化できるビジュアルな
-            自動化プラットフォームです。
+            Make（旧 Integromat）は、コードを書かずにアプリをつないでワークフローを自動化できるビジュアルな自動化プラットフォームです。
           </p>
           <a
             href="https://www.make.com/"
@@ -818,16 +759,13 @@ export default function ApiIntegrationJa() {
             ]}
           />
           <InfoBox color="blue" icon={<Info size={20} />} title="シナリオとは">
-            シナリオは Make における自動化されたワークフローです。互いにつながったモジュール（アプリ）で構成
-            されます。あるモジュールが起動したりデータを受け取ったりすると、そのデータを次のモジュールに
-            渡します。
+            シナリオは Make における自動化されたワークフローです。互いにつながったモジュール（アプリ）で構成されます。あるモジュールが起動したりデータを受け取ったりすると、そのデータを次のモジュールに渡します。
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<Settings2 size={24} />} title="HTTP モジュールを設定する">
           <p>
-            HTTP モジュールを追加したら、Tavnit にドキュメントを送るように設定します。次の 2 つの方法の
-            どちらかを使えます。
+            HTTP モジュールを追加したら、Tavnit にドキュメントを送るように設定します。次の 2 つの方法のどちらかを使えます。
           </p>
 
           <h3 className="text-base font-semibold text-accent mt-6 mb-3">
@@ -898,8 +836,7 @@ export default function ApiIntegrationJa() {
           <p>
             呼び出しはすぐに <InlineCode>run_id</InlineCode> を返します。抽出データは後で Flow の webhook
             に届きます。または、2 つ目の HTTP モジュールで{" "}
-            <InlineCode>{"GET https://run.tavnit.io/api/runs/{run_id}"}</InlineCode> を呼び出して取得する
-            こともできます。
+            <InlineCode>{"GET https://run.tavnit.io/api/runs/{run_id}"}</InlineCode> を呼び出して取得することもできます。
           </p>
         </DocCard>
 
@@ -913,8 +850,7 @@ export default function ApiIntegrationJa() {
           </InfoBox>
           <p>
             どちらの方法も同じエンドポイントを呼び出し、同じ抽出結果になります。Google Drive、OneDrive、
-            Dropbox に置かれたファイルを処理するには、「フォルダー内の新しいファイル」をトリガーにして、
-            同じようにファイルを POST します。
+            Dropbox に置かれたファイルを処理するには、「フォルダー内の新しいファイル」をトリガーにして、同じようにファイルを POST します。
           </p>
         </DocCard>
 
@@ -958,8 +894,7 @@ export default function ApiIntegrationJa() {
 
         <DocCard icon={<Wand2 size={24} />} title="Cleaners API を使う">
           <p>
-            自動化からデータの行をクリーニングするには、行を JSON で Cleaner に送ります。スプレッドシートの
-            ファイルの場合は、代わりに <InlineCode>cleaner_id</InlineCode> を付けたマルチパートで{" "}
+            自動化からデータの行をクリーニングするには、行を JSON で Cleaner に送ります。スプレッドシートのファイルの場合は、代わりに <InlineCode>cleaner_id</InlineCode> を付けたマルチパートで{" "}
             <InlineCode>https://run.tavnit.io/api/sweeps/run</InlineCode> に送ります（このエンドポイントは
             Base64 を受け付けません）。
           </p>
@@ -992,9 +927,7 @@ export default function ApiIntegrationJa() {
 
         <DocCard icon={<ClipboardCheck size={24} />} title="そのほかの機能">
           <p>
-            Agent、Matcher、Inspector、Filler、Signal、Subject、Net も同じ方法で開始します。
-            <InlineCode>X-API-Key</InlineCode> ヘッダーを付けた HTTP リクエストです。各エンドポイントの
-            フィールドは<strong>コード</strong>タブで確認してください。
+            Agent、Matcher、Inspector、Filler、Signal、Subject、Net も同じ方法で開始します。<InlineCode>X-API-Key</InlineCode> ヘッダーを付けた HTTP リクエストです。各エンドポイントのフィールドは<strong>コード</strong>タブで確認してください。
           </p>
         </DocCard>
       </div>

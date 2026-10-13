@@ -70,14 +70,10 @@ export default function EmailIntegrationJa() {
 
       <DocCard icon={<Mail size={24} />} title="メール処理のしくみ">
         <Lead>
-          Tavnit の Flow は、それぞれ専用の受信箱アドレスを持てます。メールトリガーを有効にしてそのアドレスに
-          ドキュメントを送ると、Tavnit はサポートされている添付ファイルごとに個別の抽出 Run を作成し、アプリで
-          アップロードした場合とまったく同じように処理します。
+          Tavnit の Flow は、それぞれ専用の受信箱アドレスを持てます。メールトリガーを有効にしてそのアドレスにドキュメントを送ると、Tavnit はサポートされている添付ファイルごとに個別の抽出 Run を作成し、アプリでアップロードした場合とまったく同じように処理します。
         </Lead>
         <p>
-          インストールするものはなく、メールボックスを定期的に確認する仕組みもありません。アドレスにメールを
-          転送すれば、Tavnit が反応します。そのため、「請求書がメールで届く」状態から「請求書が構造化された
-          行として届く」状態への最短ルートであり、コードは一切必要ありません。Collections、Splitters、
+          インストールするものはなく、メールボックスを定期的に確認する仕組みもありません。アドレスにメールを転送すれば、Tavnit が反応します。そのため、「請求書がメールで届く」状態から「請求書が構造化された行として届く」状態への最短ルートであり、コードは一切必要ありません。Collections、Splitters、
           Pipelines、Matchers、Subjects にもそれぞれ専用のアドレスがあります。
         </p>
         <BulletList
@@ -92,8 +88,7 @@ export default function EmailIntegrationJa() {
 
       <DocCard icon={<ExternalLink size={24} />} title="メールトリガーをオンにする">
         <Lead>
-          トリガーは初期状態ではオフです。Flow の詳細ページでオンにし、表示されたアドレスをコピーして、
-          転送ルールを向ける前にドキュメントを 1 つ送ってテストしてください。
+          トリガーは初期状態ではオフです。Flow の詳細ページでオンにし、表示されたアドレスをコピーして、転送ルールを向ける前にドキュメントを 1 つ送ってテストしてください。
         </Lead>
         <NumberedList
           items={[
@@ -101,12 +96,10 @@ export default function EmailIntegrationJa() {
               <strong>Flows</strong> を開き、ドキュメントを受け取らせたい Flow を開きます。
             </Fragment>,
             <Fragment key="f1">
-              <strong>メールトリガー</strong>のパネルを開き、オンにします。Flow の
-              <strong>受信箱のアドレス</strong>が表示されます。
+              <strong>メールトリガー</strong>のパネルを開き、オンにします。Flow の<strong>受信箱のアドレス</strong>が表示されます。
             </Fragment>,
             <Fragment key="f2">
-              アドレスの横にある<strong>コピー</strong>をクリックします。同じパネルで
-              <strong>許可された送信者</strong>を追加したり、<strong>メール本文を処理</strong>
+              アドレスの横にある<strong>コピー</strong>をクリックします。同じパネルで<strong>許可された送信者</strong>を追加したり、<strong>メール本文を処理</strong>
               をオンにしたりできます（どちらも後述）。
             </Fragment>,
             <Fragment key="f3">
@@ -121,17 +114,13 @@ export default function EmailIntegrationJa() {
           Runs の一覧にもそれぞれ 1 行ずつ表示されます。3 つのドキュメントを含む 1 つの Run にはなりません。
         </InfoBox>
         <WarningBox>
-          トリガーがオフになっているアドレス（または無効な Collection）に送られたメールは、受け付けられたうえで
-          破棄されます。送信者にはバウンスもエラーも届きません。ドキュメントが消えたように見える場合は、まず
-          トグルを確認してください。
+          トリガーがオフになっているアドレス（または無効な Collection）に送られたメールは、受け付けられたうえで破棄されます。送信者にはバウンスもエラーも届きません。ドキュメントが消えたように見える場合は、まずトグルを確認してください。
         </WarningBox>
       </DocCard>
 
       <DocCard icon={<ShieldCheck size={24} />} title="許可された送信者">
         <Lead>
-          初期状態では、どの送信者もアドレスにメールを送るだけで Run を開始できます。メールトリガーのパネルで
-          <strong>許可された送信者</strong>にアドレスを追加すると、その送信者だけが受け付けられ、それ以外からの
-          メールは通知なしに破棄されます。
+          初期状態では、どの送信者もアドレスにメールを送るだけで Run を開始できます。メールトリガーのパネルで<strong>許可された送信者</strong>にアドレスを追加すると、その送信者だけが受け付けられ、それ以外からのメールは通知なしに破棄されます。
         </Lead>
         <BulletList
           items={[
@@ -139,8 +128,7 @@ export default function EmailIntegrationJa() {
             "一覧を空のままにすると、どの送信者からのメールも受け付けます。",
             "この一覧は、Flow、Collections、Splitters、Pipelines、Matchers、Subjects のメールトリガーで使えます。",
             <Fragment key="f4">
-              共有メールボックス経由で転送する場合、Tavnit から見える送信者は通常、転送している
-              メールボックスです。許可するのはそのアドレスです。
+              共有メールボックス経由で転送する場合、Tavnit から見える送信者は通常、転送しているメールボックスです。許可するのはそのアドレスです。
             </Fragment>,
           ]}
         />
@@ -148,8 +136,7 @@ export default function EmailIntegrationJa() {
 
       <DocCard icon={<Mail size={24} />} title="メール本文を処理する">
         <Lead>
-          添付ファイルとして届かないデータもあります。注文確認、予約の通知、メッセージ本文に数量を書いてくる
-          サプライヤーなどです。<strong>メール本文を処理</strong>をオンにすると、Tavnit はメッセージ本文を PDF
+          添付ファイルとして届かないデータもあります。注文確認、予約の通知、メッセージ本文に数量を書いてくるサプライヤーなどです。<strong>メール本文を処理</strong>をオンにすると、Tavnit はメッセージ本文を PDF
           に変換し、ほかのドキュメントと同じように処理します。Flow と Collections で使えます。
         </Lead>
         <DataTable
@@ -192,8 +179,7 @@ export default function EmailIntegrationJa() {
               "Collection",
               <Fragment key="f8"><InlineCode>name-&lt;id&gt;-collection@mg.tavnit.io</InlineCode></Fragment>,
               <Fragment key="f9">
-                各添付ファイルを分類し、適切な Flow または Splitter に振り分けます。
-                <DocLink href="/docs/collections">Collections によるドキュメントの振り分け</DocLink>
+                各添付ファイルを分類し、適切な Flow または Splitter に振り分けます。<DocLink href="/docs/collections">Collections によるドキュメントの振り分け</DocLink>
                 をご覧ください。
               </Fragment>,
             ],
@@ -201,8 +187,7 @@ export default function EmailIntegrationJa() {
               "Splitter",
               <Fragment key="f10"><InlineCode>&lt;id&gt;-splitter@mg.tavnit.io</InlineCode></Fragment>,
               <Fragment key="f11">
-                各添付ファイルを、まず個別のドキュメントに分割します。
-                <DocLink href="/docs/splitters">複数ドキュメントを含むファイルの分割</DocLink>
+                各添付ファイルを、まず個別のドキュメントに分割します。<DocLink href="/docs/splitters">複数ドキュメントを含むファイルの分割</DocLink>
                 をご覧ください。
               </Fragment>,
             ],
@@ -210,25 +195,21 @@ export default function EmailIntegrationJa() {
               "Pipeline",
               <Fragment key="f12"><InlineCode>&lt;id&gt;-pipeline@mg.tavnit.io</InlineCode></Fragment>,
               <Fragment key="f13">
-                PDF または画像の添付ファイル 1 つにつき、1 回の実行が始まります。
-                <DocLink href="/docs/pipelines">Pipelines</DocLink> をご覧ください。
+                PDF または画像の添付ファイル 1 つにつき、1 回の実行が始まります。<DocLink href="/docs/pipelines">Pipelines</DocLink> をご覧ください。
               </Fragment>,
             ],
             [
               "Matcher",
               <Fragment key="f14"><InlineCode>&lt;id&gt;-matcher@mg.tavnit.io</InlineCode></Fragment>,
               <Fragment key="f15">
-                1 通のメールに添付された PDF や画像はすべて、1 回のマッチでまとめて比較され（常に
-                マルチラテラルモード）、結果は同じスレッドに返信されます。
-                <DocLink href="/docs/matchers">Matchers</DocLink> をご覧ください。
+                1 通のメールに添付された PDF や画像はすべて、1 回のマッチでまとめて比較され（常にマルチラテラルモード）、結果は同じスレッドに返信されます。<DocLink href="/docs/matchers">Matchers</DocLink> をご覧ください。
               </Fragment>,
             ],
             [
               "Subject",
               <Fragment key="f16"><InlineCode>&lt;id&gt;-subject@mg.tavnit.io</InlineCode></Fragment>,
               <Fragment key="f17">
-                各添付ファイルは、件名、本文、ファイル名に含まれる参照番号、またはケース専用のプラスアドレスに
-                よって、適切なケースに登録されます。<DocLink href="/docs/subjects">Subjects</DocLink>
+                各添付ファイルは、件名、本文、ファイル名に含まれる参照番号、またはケース専用のプラスアドレスによって、適切なケースに登録されます。<DocLink href="/docs/subjects">Subjects</DocLink>
                 をご覧ください。
               </Fragment>,
             ],
@@ -236,8 +217,7 @@ export default function EmailIntegrationJa() {
           caption="正確なアドレスは各機能のメールトリガーのパネルからコピーしてください。上記の形式は見分けるための目安です。"
         />
         <InfoBox color="violet" icon={<Workflow size={20} />} title="サプライヤーにはどのアドレスを使ってもらうべきか">
-          送信者が常に 1 種類のドキュメントだけを送るなら、Flow のアドレスを渡します。請求書、発注書、納品書など
-          複数の種類を送るなら、Collection のアドレスを渡して Tavnit に仕分けさせます。複数のドキュメントを含む
+          送信者が常に 1 種類のドキュメントだけを送るなら、Flow のアドレスを渡します。請求書、発注書、納品書など複数の種類を送るなら、Collection のアドレスを渡して Tavnit に仕分けさせます。複数のドキュメントを含む
           PDF を 1 つ送ってくるなら、Splitter のアドレスを渡します。
         </InfoBox>
       </DocCard>
@@ -245,9 +225,7 @@ export default function EmailIntegrationJa() {
       <DocCard icon={<Paperclip size={24} />} title="Tavnit が受け付けるファイル">
         <Lead>
           Flows、Collections、Splitters、Subjects は、PDF、一般的な画像、スプレッドシートを読み取ります。
-          Pipelines と Matchers が読み取るのは PDF と画像だけです。メッセージ内のそれ以外のものは、ほかの処理を
-          失敗させずにスキップされます。サポートされていないファイルが 1 つあっても、ほかの添付ファイルの処理は
-          止まりません。
+          Pipelines と Matchers が読み取るのは PDF と画像だけです。メッセージ内のそれ以外のものは、ほかの処理を失敗させずにスキップされます。サポートされていないファイルが 1 つあっても、ほかの添付ファイルの処理は止まりません。
         </Lead>
         <DataTable
           head={["受け付ける形式", "拡張子"]}
@@ -279,21 +257,16 @@ export default function EmailIntegrationJa() {
           ]}
         />
         <InfoBox color="yellow" icon={<AlertTriangle size={20} />} title="署名の画像も添付ファイルとして扱われる">
-          メールの署名にあるロゴは画像の添付ファイルとして届くことが多く、Flow はほかの画像と同じように処理します。
-          不要な Run が作成される場合は、ドキュメントだけを転送するか、許可された送信者とインライン画像を
-          取り除く転送ルールを組み合わせてください。
+          メールの署名にあるロゴは画像の添付ファイルとして届くことが多く、Flow はほかの画像と同じように処理します。不要な Run が作成される場合は、ドキュメントだけを転送するか、許可された送信者とインライン画像を取り除く転送ルールを組み合わせてください。
         </InfoBox>
         <p>
-          添付ファイルのサイズ制限は、Tavnit がメッセージを受け取る前に、お使いのメールプロバイダー側で適用されます。
-          大きなスキャンデータが送信側で戻ってくる場合は、アプリでアップロードするか、
-          <DocLink href="/docs/api-integration">REST API</DocLink> に送信してください。
+          添付ファイルのサイズ制限は、Tavnit がメッセージを受け取る前に、お使いのメールプロバイダー側で適用されます。大きなスキャンデータが送信側で戻ってくる場合は、アプリでアップロードするか、<DocLink href="/docs/api-integration">REST API</DocLink> に送信してください。
         </p>
       </DocCard>
 
       <DocCard icon={<FileSpreadsheet size={24} />} title="スプレッドシートの扱い">
         <Lead>
-          スプレッドシートの添付ファイルは、インポートする表としてではなく、ドキュメントとして扱われます。
-          どう処理されるかは送信先によって異なります。
+          スプレッドシートの添付ファイルは、インポートする表としてではなく、ドキュメントとして扱われます。どう処理されるかは送信先によって異なります。
         </Lead>
         <DataTable
           head={["送信先", "Tavnit の処理"]}
@@ -313,15 +286,13 @@ export default function EmailIntegrationJa() {
           ]}
         />
         <p>
-          非常に大きなシートはエラーで拒否されます。スプレッドシートを構造化された行として読み込みたい場合は、
-          <DocLink href="/docs/cleaners">Cleaner</DocLink> の Sweep を使ってください。
+          非常に大きなシートはエラーで拒否されます。スプレッドシートを構造化された行として読み込みたい場合は、<DocLink href="/docs/cleaners">Cleaner</DocLink> の Sweep を使ってください。
         </p>
       </DocCard>
 
       <DocCard icon={<Copy size={24} />} title="重複の防止">
         <Lead>
-          メールサーバーは、タイムアウトの後などに同じメッセージを複数回配信することがあります。Tavnit は同じ
-          アドレスへの再配信メッセージを認識して再処理しないため、再送によって Run が重複することはありません。
+          メールサーバーは、タイムアウトの後などに同じメッセージを複数回配信することがあります。Tavnit は同じアドレスへの再配信メッセージを認識して再処理しないため、再送によって Run が重複することはありません。
         </Lead>
         <BulletList
           items={[
@@ -335,9 +306,7 @@ export default function EmailIntegrationJa() {
 
       <DocCard icon={<Send size={24} />} title="結果をメールで送り返す">
         <Lead>
-          メール出力は帰り道にあたる機能です。Run が正常に完了すると、Tavnit は設定したアドレスに結果をメールで
-          送ります。メールトリガーとは独立しているため、どちらか一方だけを使うことも、両方を使って「送る→受け取る」
-          の流れを完結させることもできます。
+          メール出力は帰り道にあたる機能です。Run が正常に完了すると、Tavnit は設定したアドレスに結果をメールで送ります。メールトリガーとは独立しているため、どちらか一方だけを使うことも、両方を使って「送る→受け取る」の流れを完結させることもできます。
         </Lead>
         <NumberedList
           items={[
@@ -360,8 +329,7 @@ export default function EmailIntegrationJa() {
             [
               "CSV の抽出結果",
               <Fragment key="f24">
-                行を <InlineCode>rows.csv</InlineCode> の添付ファイルとして送ります。結果をスプレッドシートに
-                取り込むいちばん早い方法です。
+                行を <InlineCode>rows.csv</InlineCode> の添付ファイルとして送ります。結果をスプレッドシートに取り込むいちばん早い方法です。
               </Fragment>,
             ],
             ["フォームの結果", "Flow がフォームテンプレートに入力する場合の、入力済みの PDF。"],
@@ -372,8 +340,7 @@ export default function EmailIntegrationJa() {
           ]}
         />
         <InfoBox color="purple" icon={<Code2 size={20} />} title="ファイルのフィールドはリンクとして届く">
-          ファイルや画像を保持するフィールドは JSON に埋め込まれず、有効期限付きのリンクとして届きます。Tavnit は
-          保存したドキュメントを非公開にしているため、ストレージの生のパスでは受信箱から取得できないからです。
+          ファイルや画像を保持するフィールドは JSON に埋め込まれず、有効期限付きのリンクとして届きます。Tavnit は保存したドキュメントを非公開にしているため、ストレージの生のパスでは受信箱から取得できないからです。
         </InfoBox>
         <BulletList
           items={[
@@ -393,15 +360,12 @@ export default function EmailIntegrationJa() {
 
       <DocCard icon={<Workflow size={24} />} title="実例：買掛金の受信箱">
         <Lead>
-          よくある構成は、すでにサプライヤーの請求書を受け取っている共有メールボックスから Collection に転送し、
-          サプライヤーごとの書式を適切な Flow に振り分け、結果を経理チームにメールで送りつつ Bucket にも
-          送り込むというものです。
+          よくある構成は、すでにサプライヤーの請求書を受け取っている共有メールボックスから Collection に転送し、サプライヤーごとの書式を適切な Flow に振り分け、結果を経理チームにメールで送りつつ Bucket にも送り込むというものです。
         </Lead>
         <NumberedList
           items={[
             <Fragment key="f27">
-              受け取るドキュメントタイプごとに Flow を 1 つずつ作成します。たとえば
-              <em>サプライヤーの請求書</em>と<em>納品書</em>です。それぞれにわかりやすい説明を付けてください。
+              受け取るドキュメントタイプごとに Flow を 1 つずつ作成します。たとえば<em>サプライヤーの請求書</em>と<em>納品書</em>です。それぞれにわかりやすい説明を付けてください。
             </Fragment>,
             <Fragment key="f28">
               両方の Flow を <DocLink href="/docs/collections">Collection</DocLink> に入れ、Collection
@@ -412,28 +376,23 @@ export default function EmailIntegrationJa() {
               Collection のアドレスに転送するようにします。
             </Fragment>,
             <Fragment key="f30">
-              各 Flow で経理チーム向けに CSV 添付付きの<strong>メール出力</strong>をオンにし、データが 1 つの
-              テーブルに蓄積されるよう <DocLink href="/docs/buckets">Bucket へのエクスポート</DocLink>
+              各 Flow で経理チーム向けに CSV 添付付きの<strong>メール出力</strong>をオンにし、データが 1 つのテーブルに蓄積されるよう <DocLink href="/docs/buckets">Bucket へのエクスポート</DocLink>
               を追加します。
             </Fragment>,
             <Fragment key="f31">
-              承認のしきい値を超えるものを配信前に
-              <DocLink href="/docs/human-in-the-loop">人によるレビュー</DocLink>
+              承認のしきい値を超えるものを配信前に<DocLink href="/docs/human-in-the-loop">人によるレビュー</DocLink>
               に回す条件付きアクションを持つ <DocLink href="/docs/cleaners">Cleaner</DocLink> を追加します。
             </Fragment>,
           ]}
         />
         <p>
-          経理チームの誰も Tavnit を開く必要はありません。請求書はこれまでどおりの場所に届き、構造化された
-          データは同じ受信箱に戻ってきます。
+          経理チームの誰も Tavnit を開く必要はありません。請求書はこれまでどおりの場所に届き、構造化されたデータは同じ受信箱に戻ってきます。
         </p>
       </DocCard>
 
       <DocCard icon={<LifeBuoy size={24} />} title="トラブルシューティング">
         <Lead>
-          受信メールは通知なしに受け付けられるため、ドキュメントが現れなくても受信箱にエラーは残りません。
-          次の一覧を上から確認してください。原因はほとんどの場合、トリガーのトグル、許可された送信者、
-          添付ファイルの形式、または添付ファイルを取り除いてしまう転送ルールのいずれかです。
+          受信メールは通知なしに受け付けられるため、ドキュメントが現れなくても受信箱にエラーは残りません。次の一覧を上から確認してください。原因はほとんどの場合、トリガーのトグル、許可された送信者、添付ファイルの形式、または添付ファイルを取り除いてしまう転送ルールのいずれかです。
         </Lead>
         <DataTable
           head={["症状", "考えられる原因", "対処法"]}
