@@ -1,14 +1,1648 @@
-// TODO(i18n): translate from en
 import type { LiteLocaleCopy } from "@/lib/lite/copy-base";
-import en from "./en";
 
 /**
- * Free tools: base tool copy, hub, Lite header/footer, every tool and its social card — Italiano (it).
+ * Free tools copy — Italiano (it).
  *
- * STUB: serves the English source until translated. To translate, replace
- * `en` with a full copy of ./en.ts in Italiano, keeping every key and the
- * values listed as "stays English" in src/content/README.md.
+ * Same shape as ./en.ts: `base` is one complete tool written with document
+ * tokens ({doc}, {a_doc}, {Doc}…, filled from each tool's `vocab`; {limit}
+ * is the daily quota); `tools` supplies each tool's words and only the
+ * strings that differ from the base; `hub`, `shell` and `related` are the
+ * hub page, the Lite header/footer and the "when it is every document" block;
+ * `og` is the subtitle of each tool's social card. Italian articles fuse with
+ * prepositions (di + la = della), so the base never puts a preposition in
+ * front of an article token ({the_doc}, {your_doc}…): it uses them only as
+ * subject or object, or writes the phrase without the token.
  */
-const it: LiteLocaleCopy = en;
 
-export default it;
+const INVOICE_VOCAB = {
+  doc: "fattura",
+  docs: "fatture",
+  a_doc: "una fattura",
+  the_doc: "la fattura",
+  the_docs: "le fatture",
+  your_doc: "la tua fattura",
+  your_docs: "le tue fatture",
+  all_your_docs: "tutte le tue fatture",
+  all_docs: "tutte le fatture",
+  each_doc: "ogni fattura",
+  another_doc: "un'altra fattura",
+  this_doc: "questa fattura",
+};
+
+const SPREADSHEET_VOCAB = {
+  doc: "foglio di calcolo",
+  docs: "fogli di calcolo",
+  a_doc: "un foglio di calcolo",
+  the_doc: "il foglio di calcolo",
+  the_docs: "i fogli di calcolo",
+  your_doc: "il tuo foglio di calcolo",
+  your_docs: "i tuoi fogli di calcolo",
+  all_your_docs: "tutti i tuoi fogli di calcolo",
+  all_docs: "tutti i fogli di calcolo",
+  each_doc: "ogni foglio di calcolo",
+  another_doc: "un altro foglio di calcolo",
+  this_doc: "questo foglio di calcolo",
+};
+
+const copy: LiteLocaleCopy = {
+  base: {
+    title: "{Doc} in Excel gratis: estrai le righe da qualsiasi {doc} con l'IA",
+    description:
+      "Carica {a_doc} in PDF o in foto e ottieni le sue righe in una tabella Excel: descrizione, quantità, prezzo unitario e totale. Gratis, senza modelli e senza registrazione per vedere il risultato.",
+    label: "{Doc} in Excel",
+    h1: "Trasforma {a_doc} in Excel",
+    intro:
+      "Carica il PDF o la foto. Tavnit legge l'intestazione e ogni riga della tabella e te la restituisce come foglio di calcolo. Nessun modello per fornitore: lo stesso strumento funziona con {all_your_docs}.",
+    trust: ["PDF, JPG o PNG · fino a 5 pagine", "{limit} documenti gratis al giorno", "Tutto cancellato dopo 24 h"],
+    drop: {
+      title: "Trascina qui {your_doc}",
+      hint: "oppure scegli un file dal tuo computer",
+      choose: "Scegli file",
+      sample: "Prova con {a_doc} di esempio",
+      formats: "PDF, JPG o PNG · fino a 4 MB e 5 pagine",
+    },
+    stages: [
+      "Caricamento del documento",
+      "Lettura dell'intestazione",
+      "Ricerca della tabella delle righe",
+      "Ordinamento delle colonne",
+      "Quasi fatto",
+    ],
+    result: {
+      heading: "Fatto: {file}",
+      rowWord: ["riga", "righe"],
+      pageWord: ["pagina", "pagine"],
+      summary: "{rows} · {pages}",
+      truncated: "Vedi {shown} righe su {total}. L'Excel contiene le stesse {shown}.",
+      readyIn: "pronto in {s} s",
+      sum: "Somma",
+      viewer: "Il tuo documento",
+      openDocument: "Vedi il documento",
+      closeDocument: "Chiudi",
+      retention: "si cancella da solo dopo 24 h",
+      hideColumn: "Rimuovi colonna",
+      hiddenCols: ["1 colonna rimossa. L'Excel non la include.", "{n} colonne rimosse. L'Excel non le include."],
+      restoreAll: "Ripristina tutte",
+      restoreOne: "Ripristina {col}",
+      ghostColumn: "+ Il tuo campo",
+      ghostHint: "In Tavnit aggiungi i campi che vuoi: numero d'ordine, scadenza, centro di costo…",
+      flowNote: "Queste {fields} colonne sono i campi di un Flow fisso per {docs}. Nel tuo account, i campi li scegli tu.",
+      flowNoteCta: "Scopri come",
+      download: "Scarica Excel",
+      downloading: "Preparazione del file",
+      another: "Elabora {another_doc}",
+      empty: "Non abbiamo trovato una tabella di righe in questo documento. Prova con {a_doc} che riporti quantità e prezzi per riga.",
+    },
+    errors: {
+      empty: "Il file è vuoto.",
+      too_large: "Il file supera i 4 MB. Comprimilo o carica solo le pagine del documento.",
+      unsupported: "Accettiamo solo file PDF, JPG o PNG.",
+      unreadable: "Non siamo riusciti ad aprire questo PDF. Se è protetto da password, rimuovila e riprova.",
+      too_many_pages: "La versione gratuita elabora fino a 5 pagine per documento.",
+      captcha: "Non siamo riusciti a confermare che non sei un bot. Ricarica la pagina e riprova.",
+      quota: "Hai usato i tuoi {limit} documenti gratuiti di oggi. Domani tornano disponibili, oppure crea un account per continuare.",
+      daily_cap: "Lo strumento gratuito ha raggiunto la capacità di oggi. Torna domani, oppure crea un account e continua subito.",
+      unavailable: "Lo strumento non è disponibile in questo momento. Riprova tra qualche minuto.",
+      backend: "Qualcosa è andato storto durante l'elaborazione del documento. Riprova.",
+      failed: "Non siamo riusciti a estrarre questo documento. Prova con {another_doc} o con quello di esempio.",
+      timeout: "Ci sta mettendo più del solito. Aspetta un momento e riprova.",
+      forbidden: "Questa azione non è consentita da qui.",
+      bad_request: "Il file manca o non è stato possibile leggerlo.",
+    },
+    auth: {
+      title: "Crea un account gratuito per scaricare",
+      body: "L'Excel si scarica subito. Con un account puoi anche farlo su {all_your_docs} in un colpo solo.",
+      google: "Continua con Google",
+      or: "oppure con la tua email",
+      signin: "Accedi",
+      signup: "Crea account",
+      name: "Nome",
+      email: "Email",
+      password: "Password",
+      submitSignin: "Accedi e scarica",
+      submitSignup: "Crea account e scarica",
+      switchToSignin: "Ho già un account",
+      switchToSignup: "Non ho ancora un account",
+      checkEmail:
+        "Ti abbiamo inviato un'email per confermare l'account. Aprila e, quando torni, l'Excel è pronto da scaricare.",
+      existing: "Questa email ha già un account. Accedi per scaricare.",
+      forgot: "Ho dimenticato la password",
+      close: "Chiudi",
+      generic: "Non siamo riusciti a completare la registrazione. Controlla email e password e riprova.",
+    },
+    next: {
+      heading: "E poi?",
+      lead: "Hai appena elaborato {a_doc}. Con un account succede lo stesso con {each_doc} che arriva, e le righe non si fermano a un Excel: proseguono da sole.",
+      source: "{Your_doc}",
+      node: "Tavnit",
+      nodeSub: "Flow di estrazione",
+      items: [
+        {
+          short: "Arriva nella tua casella",
+          via: "email",
+          title: "Il risultato arriva nella tua casella",
+          body: "Quando l'estrazione termina, Tavnit invia un'email agli indirizzi impostati sul Flow, con le righe allegate come rows.csv. Con la revisione attiva, l'email attende l'approvazione.",
+          linkLabel: "Output via email",
+          href: "/docs/email-integration",
+          scene: [{ label: "L'estrazione termina" }, { label: "Tavnit compone l'email" }, { label: "Arriva a chi scegli tu", result: "rows.csv allegato" }],
+        },
+        {
+          short: "Arriva nel tuo ERP",
+          via: "webhook",
+          title: "Arriva nel tuo ERP tramite webhook",
+          body: "Quando un'esecuzione si completa, Tavnit invia con un POST le righe e il run_id all'URL che gli indichi. Zapier, Make e n8n lo ricevono con il loro trigger webhook; non serve nessuna integrazione nativa.",
+          linkLabel: "Webhook",
+          href: "/docs/webhooks",
+          scene: [{ label: "Le righe estratte" }, { label: "Un POST con righe e run_id" }, { label: "Compaiono nel tuo sistema", result: "6 righe, senza digitare nulla" }],
+        },
+        {
+          short: "Revisione prima della registrazione",
+          via: "revisione",
+          title: "Una persona approva prima della registrazione",
+          body: "Attiva la revisione sul Flow e ogni esecuzione si mette in pausa. Chi revisiona vede la tabella modificabile accanto al documento originale: corregge celle, esclude righe, aggiunge colonne e approva o rifiuta. Solo dopo l'approvazione partono email, webhook e Bucket; ogni decisione resta registrata. Esiste un ruolo di sola revisione per chi non deve vedere nient'altro.",
+          linkLabel: "Revisione umana",
+          href: "/docs/human-in-the-loop",
+          scene: [{ label: "L'esecuzione si ferma per la revisione" }, { label: "Una persona corregge accanto al documento" }, { label: "Approvato: solo allora viene consegnato", result: "1 cella corretta · registrata" }],
+        },
+        {
+          short: "Confronta preventivi",
+          via: "Matcher",
+          title: "Confronta più preventivi riga per riga",
+          body: "Un Matcher prende più esecuzioni dello stesso Flow, ad esempio tre preventivi di fornitori, abbina le righe per descrizione e segna la più economica di ogni riga in una colonna Champion.",
+          linkLabel: "Preventivi dei fornitori",
+          href: "/use-cases/supplier-quotes",
+          scene: [{ label: "Tre preventivi, un solo Flow" }, { label: "Il Matcher abbina le righe" }, { label: "Colonna Champion: la migliore per riga", result: "Il fornitore B vince 4 su 5" }],
+        },
+        {
+          short: "Regole e controlli",
+          via: "Cleaner",
+          title: "Un Cleaner pulisce e verifica ogni riga",
+          body: "Formato delle date, formato dei numeri, campi calcolati, conversione di valuta ai cambi pubblicati e azioni condizionali: quando una riga non supera un controllo, la mandi in revisione, via email o via webhook.",
+          linkLabel: "Cleaner",
+          href: "/docs/cleaners",
+          scene: [{ label: "I dati così come arrivano" }, { label: "Il Cleaner applica le tue regole" }, { label: "Puliti, con gli errori segnalati", result: "data, numero e somma in ordine" }],
+        },
+        {
+          short: "Un Agent apre il portale",
+          via: "Agent",
+          title: "Un Agent accede al portale del fornitore",
+          body: "Scrivi la missione a parole tue, con un URL di partenza e le credenziali in una cassaforte che il modello non vede mai. Quando l'estrazione termina, l'Agent parte da solo con i campi del documento e ti riporta ciò che hai chiesto, già tipizzato: prezzo, tempi di consegna, file.",
+          linkLabel: "Agent",
+          href: "/docs/agents",
+          scene: [{ label: "L'estrazione termina" }, { label: "L'Agent naviga nel portale" }, { label: "Riporta i dati, tipizzati", result: "prezzo 18,50 · consegna 5 giorni" }],
+        },
+        {
+          short: "Domande sui tuoi dati",
+          via: "Bucket",
+          title: "Interroga {your_docs}",
+          body: "Le righe vengono salvate in un Bucket. Fai la domanda in linguaggio naturale; Tavnit la trasforma in un piano (somma, filtro, mese), lo esegue sul database e risponde con la cifra. Il modello non fa mai i conti.",
+          linkLabel: "Bucket",
+          href: "/docs/buckets",
+          scene: [{ label: "«Quanto abbiamo comprato da Istmo ad agosto?»" }, { label: "Un piano: somma · fornitore · mese" }, { label: "La cifra, calcolata nel database", result: "12.480 $ in 4 {docs}" }],
+        },
+      ],
+      hint: "Tocca un'opzione, o il chip di Tavnit, per vedere cosa succede.",
+      flow: {
+        title: "Il Flow: le colonne le decidi tu",
+        body: "Un Flow è la definizione di un tipo di documento: l'elenco dei campi che vuoi estrarre, ciascuno con un nome, un tipo di dato e l'indicazione se compare una volta per documento o una volta per riga, più un suggerimento su dove cercare quando serve. Lo attivi e ogni documento che arriva viene letto cercando esattamente quei campi; la tabella che ne esce ha una colonna per campo. Questo strumento usa un Flow fisso per {docs} con {fields} campi. Nel tuo account aggiungi, rimuovi e rinomini i campi, e crei Flow per qualsiasi altro documento. Niente modelli, niente coordinate.",
+        linkLabel: "Come si definisce un Flow",
+        href: "/docs/flows",
+        scene: [{ label: "Definisci i campi in due gruppi: documento e tabella" }, { label: "Legge l'intestazione una volta e la tabella riga per riga" }, { label: "Una riga per voce: i valori del documento si ripetono, quelli della tabella cambiano", result: "5 campi → 5 colonne" }],
+        name: "{Doc}",
+        kinds: ["Campi del documento", "Campi della tabella"],
+        add: { name: "purchase_order", type: "Testo", hint: "Accanto a «OdA» · es. PO-2291", save: "Salva", value: "PO-2291" },
+        activate: "Attivo",
+      },
+      inputs: {
+        show: "Come arriva {your_doc}?",
+        hide: "Nascondi gli ingressi",
+        items: [
+          {
+            short: "Via email",
+            via: "un indirizzo per Flow",
+            title: "Inoltra l'email e hai finito",
+            body: "Ogni Flow ha un indirizzo tutto suo, del tipo <nome>-lite-<id>@mg.tavnit.io. Inoltra l'email con il documento allegato e ogni allegato diventa un'esecuzione. Oggetto e corpo non vengono mai letti.",
+            linkLabel: "Ricezione via email",
+            href: "/docs/email-integration",
+            scene: [{ label: "Inoltri l'email con l'allegato" }, { label: "Arriva all'indirizzo del Flow" }, { label: "Ogni allegato è un'esecuzione", result: "1 allegato → 1 esecuzione" }],
+          },
+          {
+            short: "Caricamento manuale",
+            via: "dall'app",
+            title: "Carica il file dall'app",
+            body: "Trascina il PDF o la foto sul Flow e l'esecuzione parte subito. Come hai fatto qui, ma con il tuo account e senza limite giornaliero.",
+            linkLabel: "Flow",
+            href: "/docs/flows",
+            scene: [{ label: "Trascini il file sul Flow" }, { label: "L'esecuzione parte" }, { label: "Righe in pochi secondi", result: "come qui, senza limiti" }],
+          },
+          {
+            short: "API",
+            via: "POST /api/runs/process",
+            title: "Dal tuo sistema, tramite l'API",
+            body: "Un POST a /api/runs/process con il file e il flow_id, usando la tua chiave API. Risponde 202 con il run_id; fai GET su /api/runs/<id> finché non risulta completed e ti restituisce le righe.",
+            linkLabel: "API",
+            href: "/docs/api-integration",
+            scene: [{ label: "POST con il file e il flow_id" }, { label: "202: run_id, in coda" }, { label: "GET fino a completed", result: "status: completed · 6 righe" }],
+          },
+          {
+            short: "Zapier · Make · n8n",
+            via: "una chiamata HTTP",
+            title: "Da Zapier, Make o n8n",
+            body: "Non c'è un'app nativa e non serve: un passaggio HTTP (Custom Request in Zapier, Make a request in Make) invia il file a /api/runs/process. Le righe tornano tramite un webhook al trigger dello stesso strumento.",
+            linkLabel: "Integrazioni",
+            href: "/integrations",
+            scene: [{ label: "Un passaggio HTTP nel tuo scenario" }, { label: "Tavnit lo elabora" }, { label: "Il webhook restituisce le righe", result: "di nuovo in Zapier, Make o n8n" }],
+          },
+          {
+            short: "Più documenti in un PDF",
+            via: "li separa uno Splitter",
+            title: "Più documenti in un solo PDF",
+            body: "Uno Splitter trova dove inizia ogni documento, classifica ogni segmento in base ai tipi che descrivi e invia ciascuno al suo Flow. Una scansione con tre {docs} diventa tre esecuzioni.",
+            linkLabel: "Splitter",
+            href: "/docs/splitters",
+            scene: [{ label: "Un PDF con tre {docs}" }, { label: "Lo Splitter taglia e classifica" }, { label: "Tre esecuzioni, una per documento", result: "3 segmenti · 3 esecuzioni" }],
+          },
+        ],
+      },
+      replay: "Rivedi",
+      tryIt: "Prova in Tavnit",
+      tryItSignedIn: "Fallo nel mio account",
+      primary: "Crea un account gratuito",
+      primarySignedIn: "Vai a Tavnit",
+      sameLogin: "Hai già un account. Accedi a Tavnit con le stesse credenziali ({email}); te le chiederà ancora una volta perché è un sito diverso.",
+      secondary: "Prenota una demo",
+    },
+    cleaners: {
+      heading: "Con un Cleaner potresti…",
+      lead: "Regole semplici che girano da sole su {each_doc} dopo l'estrazione. Quattro idee con i tuoi stessi dati:",
+      tag: "Cleaner",
+      ideas: [
+        { icon: "date", title: "Un solo modo di scrivere la data", from: "{date}", to: "{iso}", note: "{each_doc}, lo stesso formato" },
+        { icon: "sum", title: "Le righe devono sommare al subtotale", from: "righe {sum}", to: "subtotale {subtotal}", note: "se non torna, nessuno paga senza controllare", check: "sum" },
+        { icon: "money", title: "Converti nella tua valuta", from: "{total} {currency}", to: "la tua valuta", note: "al cambio del giorno di emissione" },
+        { icon: "approve", title: "Approvazione sopra un importo", from: "totale {total}", to: "approva prima di pagare", note: "quando supera {threshold}" },
+      ],
+      ok: "Corrisponde",
+      off: "Da rivedere",
+      outro: "I Cleaner si costruiscono in Tavnit con i campi che ti interessano. Questi sono solo esempi.",
+      cta: "Crea un account gratuito e provali",
+      ctaSignedIn: "Apri Tavnit e provali",
+      learn: "Cos'è un Cleaner",
+    },
+    after: {
+      title: "Il tuo Excel è pronto",
+      lead: "È uscito da un Flow fisso con {fields} campi. Nel tuo account scegli tu i campi, ed ecco come funziona quando Tavnit gestisce {each_doc}:",
+      close: "Chiudi",
+      saved: "salvato nei tuoi download",
+    },
+    how: {
+      heading: "Come funziona",
+      steps: [
+        {
+          title: "Carica {the_doc}",
+          body: "PDF, foto o scansione. Qualsiasi fornitore, qualsiasi lingua, qualsiasi layout.",
+        },
+        {
+          title: "Tavnit legge il documento",
+          body: "Trova l'intestazione (fornitore, numero, data, totali) e la tabella delle righe con quantità e prezzi.",
+        },
+        {
+          title: "Controlla e scarica",
+          body: "La tabella appare a schermo. Con un account gratuito te la porti via in Excel.",
+        },
+      ],
+    },
+    faqHeading: "Domande frequenti",
+    faqs: [
+      {
+        q: "Cosa include la versione gratuita?",
+        a: "{limit} documenti al giorno, con il risultato completo a schermo. Per scaricare l'Excel serve un account Tavnit, che non costa nulla.",
+      },
+      {
+        q: "Quali formati accetta?",
+        a: "PDF (di testo o scansionati), JPG e PNG, fino a 4 MB e 5 pagine. Se il documento è più lungo, caricalo in più parti o crea un account.",
+      },
+      {
+        q: "Posso scegliere altre colonne?",
+        a: "Qui no: questo strumento usa un Flow fisso per {docs} con 13 campi. Nel tuo account crei i tuoi Flow, per {docs} o per qualsiasi altro documento, con i campi che ti servono: per documento (numero d'ordine, data di scadenza, centro di costo) o per riga (codice prodotto, sconto). Niente modelli: descrivi il campo e, se serve, gli dai un suggerimento su dove cercare.",
+      },
+      {
+        q: "Devo impostare un modello per ogni fornitore?",
+        a: "No. Tavnit non usa modelli: legge ogni documento così come arriva, anche se domani il fornitore ne cambia il layout.",
+      },
+      {
+        q: "Che fine fa il mio file?",
+        a: "Viene elaborato in un account Tavnit dedicato agli strumenti gratuiti e non viene usato per nient'altro. Dopo 24 ore il file e le righe estratte si cancellano da soli, automaticamente; conserviamo solo il fatto che c'è stata un'esecuzione, senza il documento né il suo contenuto. Se vuoi che venga eliminato prima, scrivi a support@tavnit.io.",
+      },
+      {
+        q: "Perché per scaricare serve un account?",
+        a: "Perché la versione gratuita serve a provare. Con un account puoi eseguire la stessa estrazione su {all_your_docs}, ricevere i documenti via email e inviare il risultato al tuo sistema.",
+      },
+      {
+        q: "Funziona con {docs} di qualsiasi paese?",
+        a: "Sì. Gestisce {docs} in inglese, spagnolo e altre lingue, con o senza imposte dettagliate. È testato su {docs} di Stati Uniti, Panama, Messico e Colombia, tra gli altri.",
+      },
+      {
+        q: "Come lo rendo automatico?",
+        a: "Crea un account, costruisci un Flow con i campi che vuoi e inoltra {the_docs} al suo indirizzo email, oppure collegalo tramite API, webhook, Zapier, Make o n8n. Il risultato arriva nel tuo ERP o in Google Sheets senza che nessuno digiti nulla.",
+      },
+    ],
+  },
+
+  hub: {
+    title: "Strumenti IA gratuiti per documenti: fattura in Excel e altro",
+    description:
+      "Strumenti gratuiti a scopo singolo costruiti sul motore di Tavnit: trasforma una fattura in Excel e molto altro. Senza modelli e senza registrazione per vedere il risultato.",
+    h1: "Strumenti gratuiti",
+    intro:
+      "Ogni strumento fa una cosa su un documento e ti mostra il risultato reale. Girano sullo stesso motore che le aziende usano per automatizzare i propri documenti con Tavnit, uno alla volta.",
+    breadcrumbHome: "Home",
+    breadcrumbHub: "Strumenti",
+    groups: { extract: "Da documento a Excel", compare: "Confronta documenti", split: "Organizza le scansioni", clean: "Pulisci fogli di calcolo" },
+    outro: "Girano tutti sullo stesso motore che le aziende usano per automatizzare i propri documenti con Tavnit. Quando vuoi che succeda da solo, per tutti i tuoi documenti, c'è il tuo account.",
+    outroCta: "Crea un account gratuito",
+  },
+
+  shell: {
+    lite: "Lite",
+    tools: "Strumenti",
+    site: "Scopri Tavnit",
+    cta: "Crea account gratuito",
+    ctaSignedIn: "Vai a Tavnit",
+    nav: { product: "Prodotto", useCases: "Casi d'uso", docs: "Documentazione" },
+    demo: "Prenota una demo",
+    signin: "Accedi",
+    allTools: "Vedi tutti gli strumenti",
+    allToolsHint: "Gratis. Vedi il risultato reale senza registrarti; portalo con te con un account.",
+    groups: { extract: "Da documento a Excel", compare: "Confronta documenti", split: "Organizza le scansioni", clean: "Pulisci fogli di calcolo" },
+    account: {
+      signedInAs: "Accesso effettuato come",
+      open: "Vai a Tavnit",
+      openHint: "La piattaforma completa: Flow, automazioni e tutto il tuo volume",
+      signOut: "Esci",
+      menu: "Il tuo account",
+    },
+    auth: {
+      title: "Crea il tuo account gratuito",
+      body: "Lo stesso account scarica qui i tuoi risultati e automatizza tutti i tuoi documenti in Tavnit.",
+      submitSignin: "Accedi",
+      submitSignup: "Crea account",
+    },
+    menu: "Menu",
+    close: "Chiudi",
+    privacy: "Privacy",
+    terms: "Termini",
+    contact: "Contatti",
+    rights: "Tavnit. Strumenti gratuiti costruiti sul motore stesso del prodotto.",
+  },
+
+  related: {
+    heading: "Quando sono tutti i documenti, non uno solo",
+    lead: "Questo strumento elabora un documento alla volta. Lo stesso motore può riceverli via email o API, farli passare dalla revisione del tuo team e consegnarli ai tuoi sistemi.",
+    useCase: "Come si automatizza:",
+    guide: "Guida:",
+  },
+
+  tools: {
+    "invoice-to-excel": {
+      vocab: INVOICE_VOCAB,
+      overrides: { title: "Convertitore da fattura a Excel gratis: l'IA legge le righe" },
+    },
+    "invoice-line-items": {
+      vocab: INVOICE_VOCAB,
+      overrides: {
+        title: "Estrattore gratuito di righe fattura: righe in Excel",
+        description:
+          "Estrai le righe di una fattura (descrizione, quantità, prezzo unitario e importo) come righe Excel, con fornitore, numero e data su ogni riga. PDF o foto, senza modelli e senza registrazione per vedere il risultato.",
+        label: "Estrattore di righe fattura",
+        h1: "Estrai le righe da una fattura",
+        intro:
+          "Ogni riga della tabella della fattura (descrizione, quantità, unità, prezzo unitario e importo) diventa una riga, e l'intestazione (fornitore, numero, data, totali) si ripete su ciascuna. È così che la contabilità e la contabilità fornitori hanno bisogno delle righe per registrarle, riconciliarle o confrontarle con un ordine d'acquisto. Funziona con PDF, scansioni e foto, senza modelli per fornitore.",
+        drop: {
+          title: "Trascina qui la fattura di cui ti servono le righe",
+          sample: "Prova con una fattura di sei righe",
+        },
+        stages: [
+          "Caricamento della fattura",
+          "Lettura dell'intestazione",
+          "Rilevamento della tabella delle righe",
+          "Separazione di ogni riga",
+          "Quasi fatto",
+        ],
+        result: {
+          flowNote: "Queste {fields} colonne sono i campi di un Flow fisso per fatture: intestazione e righe. Nel tuo account, i campi li scegli tu.",
+        },
+        how: {
+          heading: "Come funziona",
+          steps: [
+            {
+              title: "Carica la fattura",
+              body: "PDF di testo, scansione o foto. Una pagina o più, fino a 5.",
+            },
+            {
+              title: "Tavnit separa le righe",
+              body: "Trova la tabella anche senza bordi, legge ogni riga (descrizione, quantità, unità, prezzo, importo) e vi associa l'intestazione.",
+            },
+            {
+              title: "Controlla e scarica",
+              body: "Una riga per voce a schermo. Con un account gratuito te la porti via in Excel, senza le colonne che non ti servono.",
+            },
+          ],
+        },
+        faqs: [
+          {
+            q: "Cos'è una riga di fattura?",
+            a: "Ogni riga della tabella di dettaglio: un prodotto o servizio con descrizione, quantità, unità, prezzo unitario e importo. I totali in fondo (imponibile, imposte, totale) non sono righe; escono come campi dell'intestazione ripetuti su ogni riga.",
+          },
+          {
+            q: "Perché fornitore e numero compaiono su ogni riga?",
+            a: "Perché ogni riga stia in piedi da sola: puoi filtrare, sommare o incollare le righe di molte fatture in un unico foglio senza perdere da quale fattura provengono. È la forma che si aspettano un ERP, una tabella pivot o una riconciliazione.",
+          },
+          {
+            q: "Funziona quando la tabella occupa più pagine?",
+            a: "Sì. Tavnit segue la tabella da una pagina all'altra e restituisce tutte le righe in sequenza, senza ripetere l'intestazione delle colonne come se fosse una riga. La versione gratuita gestisce fino a 5 pagine.",
+          },
+          {
+            q: "E le descrizioni su più righe o le celle unite?",
+            a: "Una descrizione che continua nella riga successiva viene unita alla sua voce; una cella unita viene applicata alle righe che copre. Non dipendiamo dai bordi della tabella, ma dal capire quale quantità, prezzo e importo appartengono a ogni descrizione.",
+          },
+          {
+            q: "Come vengono gestiti sconti e imposte per riga?",
+            a: "L'importo di ogni riga esce così come è stampato. Uno sconto o un'imposta che la fattura mostra come riga a sé non diventa una voce: viene trattato come totale del documento. Se le tue fatture dettagliano l'imposta per riga, con un account puoi aggiungere quel campo al Flow.",
+          },
+          {
+            q: "Posso confrontare le righe con il mio ordine d'acquisto?",
+            a: "Sì, con il controllo gratuito ordine d'acquisto vs fattura (/tools/po-vs-invoice-check): carichi entrambi i documenti e segnala le righe con prezzo o quantità diversi, quelle mancanti e quelle aggiunte.",
+          },
+          {
+            q: "Mi serve un modello per ogni fornitore?",
+            a: "No. Tavnit legge ogni fattura così come arriva; se domani il fornitore la ridisegna, funziona lo stesso. È anche per questo che gestisce allo stesso modo fatture di paesi e lingue diversi.",
+          },
+          {
+            q: "Come lo faccio per centinaia di fatture?",
+            a: "Con un account crei un Flow con questi stessi campi (o i tuoi) e inoltri le fatture al suo indirizzo email, oppure le invii tramite API. Ogni fattura esce come righe nel tuo ERP, in Google Sheets o in un Bucket, senza che nessuno digiti nulla.",
+          },
+        ],
+      },
+    },
+    "po-invoice-check": {
+      vocab: INVOICE_VOCAB,
+      overrides: {
+        title: "Controllo gratuito ordine d'acquisto vs fattura, riga per riga",
+        description:
+          "Carica l'ordine d'acquisto e la fattura e Tavnit li confronta riga per riga: differenze di prezzo, differenze di quantità, righe mancanti in fattura e righe non presenti nell'ordine. Gratis, senza modelli e senza registrazione per vedere il risultato.",
+        label: "Controllo ordine vs fattura",
+        h1: "Controlla una fattura rispetto al suo ordine d'acquisto",
+        intro:
+          "Carica l'ordine d'acquisto e la fattura, in PDF o in foto. Tavnit li legge entrambi, abbina ogni riga dell'ordine alla riga della fattura che indica la stessa cosa anche quando il testo è diverso, e segnala dove è cambiato il prezzo, dove è cambiata la quantità, cosa manca in fattura e cosa non era mai stato ordinato.",
+        trust: ["Un ordine e una fattura · PDF o foto", "{limit} documenti gratis al giorno", "Tutto cancellato dopo 24 h"],
+        drop: {
+          title: "Trascina qui il documento",
+          sample: "Prova con un ordine e una fattura di esempio",
+          formats: "PDF, JPG o PNG · fino a 4 MB e 5 pagine per documento",
+        },
+        stages: ["Caricamento dei documenti", "Lettura dell'ordine d'acquisto", "Lettura della fattura", "Abbinamento delle righe", "Quasi fatto"],
+        result: {
+          another: "Confronta altri documenti",
+          download: "Scarica il confronto in Excel",
+          flowNote: "Queste {fields} colonne sono i campi di un Flow fisso per documenti d'acquisto. Nel tuo account, i campi li scegli tu.",
+          ghostHint: "In Tavnit aggiungi i campi che vuoi: centro di costo, numero di ricevimento, progetto…",
+        },
+        errors: {
+          no_lines: "In uno dei due documenti non abbiamo trovato righe con quantità e prezzi. Verifica che siano un ordine d'acquisto e una fattura con una tabella degli articoli.",
+          not_ready: "Stiamo ancora leggendo i documenti. Aspetta un momento e riprova.",
+          failed: "Non siamo riusciti a leggere uno dei documenti. Prova con altri file o con quelli di esempio.",
+          too_large: "Uno dei file supera i 4 MB. Comprimilo o carica solo le pagine del documento.",
+        },
+        next: {
+          lead: "Hai confrontato un ordine e una fattura. Con un account, ogni fattura che arriva viene controllata da sola rispetto al suo ordine d'acquisto, e il risultato non si ferma a un Excel: prosegue.",
+          source: "Il tuo ordine e la tua fattura",
+          flow: {
+            name: "Documento d'acquisto",
+            add: { name: "receipt_number", type: "Testo", hint: "Accanto a «Ricevimento» · es. REC-1187", save: "Salva", value: "REC-1187" },
+          },
+          inputs: { show: "Come arrivano i tuoi documenti?" },
+        },
+        cleaners: {
+          heading: "Con un Cleaner potresti…",
+          lead: "Regole semplici che girano da sole su ogni controllo. Quattro idee:",
+          ideas: [
+            { icon: "alert", title: "Blocca la fattura se un prezzo sale più del 2 %", from: "prezzo ordine 22,40", to: "fattura 23,90", note: "la differenza viene segnalata prima che qualcuno la paghi" },
+            { icon: "approve", title: "Approvazione quando la quantità è diversa", from: "ordine 300 unità", to: "fattura 280", note: "gli acquisti confermano una consegna parziale o un errore" },
+            { icon: "mail", title: "Email agli acquisti con le differenze", from: "controllo completato", to: "email ad acquisti@", note: "solo quando c'è qualcosa da rivedere" },
+            { icon: "sum", title: "Totale fattura contro totale ordine", from: "ordine 5.189,07", to: "fattura 4.960,63", note: "se non torna, si ferma prima della registrazione" },
+          ],
+          outro: "I Cleaner si costruiscono in Tavnit con i campi che ti interessano. Questi sono solo esempi.",
+        },
+        after: {
+          lead: "È uscito da un Flow fisso con {fields} campi e un Matcher. Nel tuo account scegli tu i campi, ed ecco come funziona quando Tavnit controlla ogni fattura che arriva:",
+        },
+        how: {
+          heading: "Come funziona",
+          steps: [
+            { title: "Carica entrambi i documenti", body: "L'ordine d'acquisto e la fattura, in PDF o in foto. Qualsiasi fornitore, qualsiasi lingua, qualsiasi layout." },
+            { title: "Tavnit li legge con un solo Flow", body: "Intestazione (numero, data, fornitore, totali) e ogni riga con quantità e prezzo, in entrambi." },
+            { title: "Il Matcher abbina le righe", body: "Ogni riga dell'ordine viene unita alla riga della fattura che indica la stessa cosa, e prezzo e quantità vengono confrontati. Con il tuo account ti porti via il confronto in Excel." },
+          ],
+        },
+        faqs: [
+          {
+            q: "Cosa include la versione gratuita?",
+            a: "{limit} documenti al giorno (un controllo ne usa due), con il risultato completo a schermo. Per scaricare il confronto in Excel serve un account Tavnit, che non costa nulla.",
+          },
+          {
+            q: "Come abbina le righe quando il testo non è identico?",
+            a: "Un Matcher di Tavnit confronta le descrizioni per significato, non lettera per lettera: «Riso a grana lunga 20 lb» e «RISO G/LUNGA PREMIUM 20LB» sono la stessa riga. Quando due descrizioni sono vicine ma non chiare, un secondo passaggio decide se si tratta dello stesso articolo.",
+          },
+          {
+            q: "Che tolleranza usa per i prezzi?",
+            a: "Un prezzo viene segnalato come diverso quando si sposta di più dello 0,5 % o di più di un centesimo. Le quantità si confrontano in modo esatto. Con il tuo account imposti la tua tolleranza con un Cleaner.",
+          },
+          {
+            q: "Cosa significano «Manca in fattura» e «Non nell'ordine»?",
+            a: "«Manca in fattura» è una riga dell'ordine d'acquisto che il fornitore non ha fatturato (consegna parziale o in sospeso). «Non nell'ordine» è una riga fatturata che nessuno ha ordinato in quell'ordine.",
+          },
+          {
+            q: "Posso fare un three-way match con il documento di ricevimento merce?",
+            a: "Qui no: la versione gratuita confronta due documenti. Con il tuo account aggiungi il ricevimento merce come terzo documento dello stesso Flow e il Matcher verifica tutti e tre, oppure costruisci regole Cleaner perché la fattura non venga registrata finché il ricevimento non corrisponde.",
+          },
+          {
+            q: "Quali formati accetta?",
+            a: "PDF (di testo o scansionati), JPG e PNG, fino a 4 MB e 5 pagine per documento. Funziona con ordini d'acquisto generati da un ERP e fatture di qualsiasi fornitore.",
+          },
+          {
+            q: "Che fine fanno i miei file?",
+            a: "Vengono elaborati in un account Tavnit dedicato agli strumenti gratuiti e non vengono usati per nient'altro. Dopo 24 ore i file e il confronto si cancellano da soli; conserviamo solo il fatto che c'è stata un'esecuzione, senza i documenti né il loro contenuto.",
+          },
+          {
+            q: "Come lo rendo automatico?",
+            a: "Crea un account, costruisci un Flow per i tuoi documenti d'acquisto e un Matcher sopra di esso. Le fatture arrivano via email o API, vengono abbinate al loro ordine e le differenze partono via email, webhook o verso il tuo ERP senza che nessuno digiti nulla.",
+          },
+        ],
+        compare: {
+          slots: [
+            { title: "Ordine d'acquisto", hint: "PDF o foto dell'ordine", sample: "Ordine di esempio" },
+            { title: "Fattura", hint: "PDF o foto della fattura", sample: "Fattura di esempio" },
+          ],
+          run: "Confronta",
+          sampleAll: "Prova con un ordine e una fattura di esempio",
+          stages: ["Lettura dell'ordine d'acquisto e della fattura", "Ordinamento delle righe", "Il Matcher abbina le righe", "Quasi fatto"],
+          heading: "Confronto pronto",
+          summary: "{n} · {ref} vs {doc}",
+          labels: {
+            description: "Descrizione",
+            quantity: "Qtà",
+            price: "Prezzo",
+            total: "Totale",
+            status: "Stato",
+            ref: "Ordine",
+            doc: "Fattura",
+            supplier: "Fornitore",
+            champion: "Champion",
+            wins: "{n} righe vinte",
+            lines: ["riga", "righe"],
+          },
+          status: {
+            ok: "Corrisponde",
+            price: "Prezzo diverso",
+            qty: "Quantità diversa",
+            both: "Prezzo e quantità diversi",
+            missing: "Manca in fattura",
+            extra: "Non nell'ordine",
+          },
+          empty: "Non siamo riusciti ad abbinare nessuna riga. Verifica che entrambi i documenti abbiano una tabella degli articoli con quantità e prezzi.",
+          another: "Confronta altri documenti",
+          download: "Scarica il confronto in Excel",
+        },
+      },
+    },
+    "split-scanned-pdf": {
+      vocab: {
+        doc: "PDF scansionato",
+        docs: "PDF scansionati",
+        a_doc: "un PDF scansionato",
+        the_doc: "il PDF",
+        the_docs: "i PDF",
+        your_doc: "il tuo PDF",
+        your_docs: "i tuoi PDF",
+        all_your_docs: "tutti i tuoi PDF",
+        all_docs: "tutti i PDF",
+        each_doc: "ogni PDF",
+        another_doc: "un altro PDF",
+        this_doc: "questo PDF",
+      },
+      overrides: {
+        title: "Dividi un PDF scansionato in documenti, gratis (IA)",
+        description:
+          "Carica un PDF con più documenti scansionati insieme (fatture, ordini d'acquisto, ricevute, contratti) e riavrai ogni documento separato, classificato per tipo. Gratis, senza segnare le pagine.",
+        label: "Dividi un PDF scansionato",
+        h1: "Dividi un PDF scansionato nei suoi documenti",
+        intro:
+          "Hai passato dieci fogli nello scanner e ne è uscito un solo PDF. Caricalo: Tavnit legge ogni pagina, trova dove inizia ogni documento e te li restituisce uno per uno, ciascuno con il suo tipo (fattura, ordine d'acquisto, ricevuta, packing list, polizza di carico, contratto…). Nessuna divisione per numero di pagine, niente da segnare a mano.",
+        trust: ["Un PDF · fino a 12 pagine", "{limit} documenti gratis al giorno", "Tutto cancellato dopo 24 h"],
+        drop: {
+          title: "Trascina qui il tuo PDF scansionato",
+          hint: "un PDF con più documenti dentro",
+          choose: "Scegli file",
+          sample: "Prova con una scansione di esempio",
+          formats: "PDF · fino a 4 MB e 12 pagine",
+        },
+        stages: ["Caricamento del PDF", "Lettura di ogni pagina", "Ricerca dell'inizio di ogni documento", "Classificazione", "Quasi fatto"],
+        result: {
+          retention: "si cancella da solo dopo 24 h",
+          downloading: "Preparazione del file",
+          another: "Dividi un altro PDF",
+          empty: "Non abbiamo trovato più di un documento in questo PDF.",
+          flowNote: "Questi tipi appartengono allo Splitter fisso di questo strumento. Nel tuo account, i tipi li definisci tu.",
+        },
+        errors: {
+          too_large: "Il file supera i 4 MB. Comprimilo o dividi la scansione in due.",
+          too_many_pages: "La versione gratuita divide fino a 12 pagine per PDF. Con un account non c'è limite.",
+          unsupported: "Accettiamo solo PDF, JPG o PNG. Per dividere i documenti, carica il PDF dello scanner.",
+          failed: "Non siamo riusciti a dividere questo PDF. Prova con un'altra scansione o con quella di esempio.",
+          empty: "Il file è vuoto.",
+        },
+        next: {
+          lead: "Hai diviso un PDF. Con un account, ogni documento tagliato dallo Splitter va al proprio Flow: la fattura all'estrazione delle fatture, l'ordine d'acquisto alla sua, la ricevuta alla nota spese. Nessuno separa o classifica più a mano.",
+          source: "Il tuo PDF",
+          flow: {
+            title: "Dallo Splitter al Flow: ogni documento alla sua estrazione",
+            body: "Uno Splitter trova dove inizia ogni documento e lo classifica in base ai tipi che descrivi a parole. Questo strumento usa uno Splitter fisso con otto tipi e nessuna uscita: ti restituisce solo i documenti. Nel tuo account definisci i tuoi tipi e, per ciascuno, dove va: a un Flow che ne estrae i campi (come qui sotto, con {fields} campi), a un'email o a una Collection. Niente modelli, niente coordinate.",
+            linkLabel: "Come funziona uno Splitter",
+            href: "/docs/splitters",
+          },
+          inputs: {
+            show: "Come arriva il tuo PDF?",
+          },
+        },
+        cleaners: {
+          heading: "Dopo la divisione, in Tavnit…",
+          lead: "Ogni tipo di documento può avere la sua destinazione, senza che nessuno smisti a mano. Quattro esempi:",
+          ideas: [
+            { icon: "text", title: "Ogni fattura al suo Flow e poi all'ERP", from: "fattura (pp. 1–2)", to: "Flow fatture → ERP", note: "estratta e registrata senza toccarla" },
+            { icon: "mail", title: "Le ricevute alla nota spese", from: "ricevuta (p. 5)", to: "spese@tuaazienda", note: "ogni ricevuta arriva a chi la riconcilia" },
+            { icon: "calendar", title: "I contratti all'archivio legale con le loro date", from: "contratto (pp. 6–7)", to: "Flow contratti", note: "scadenza e rinnovo, in un'unica tabella" },
+            { icon: "alert", title: "Un avviso quando qualcosa non viene riconosciuto", from: "pagina non classificata", to: "revisione umana", note: "niente va perso o archiviato male" },
+          ],
+          outro: "Le destinazioni si impostano in Tavnit per tipo di documento. Questi sono solo esempi.",
+          cta: "Crea un account gratuito e configuralo",
+          ctaSignedIn: "Apri Tavnit e configuralo",
+          learn: "Cos'è uno Splitter",
+        },
+        after: {
+          title: "I tuoi documenti sono pronti",
+          lead: "Sono usciti da uno Splitter fisso con otto tipi. Nel tuo account definisci tu i tipi, e ogni documento prosegue da solo verso il suo Flow:",
+          close: "Chiudi",
+        },
+        how: {
+          heading: "Come funziona",
+          steps: [
+            { title: "Carica la scansione", body: "Un PDF con più documenti dentro, esattamente come è uscito dallo scanner. Qualsiasi ordine, qualsiasi numero di pagine per documento." },
+            { title: "Tavnit lo divide e lo classifica", body: "Legge ogni pagina, rileva dove inizia ogni documento e gli assegna un tipo: fattura, ordine d'acquisto, ricevuta, packing list, polizza di carico, contratto, nota di credito o altro." },
+            { title: "Scarica ogni documento", body: "Vedi l'elenco con intervalli di pagine e tipi. Con un account gratuito scarichi ogni PDF separatamente, oppure tutti in uno zip." },
+          ],
+        },
+        faqs: [
+          {
+            q: "Come capisce dove finisce un documento e inizia il successivo?",
+            a: "L'IA guarda tutte le pagine insieme, come farebbe una persona: cambi di intestazione, di azienda, di numerazione delle pagine, di layout. Non conta le pagine né cerca segni, ed è per questo che funziona quando una fattura occupa due pagine e la ricevuta una sola.",
+          },
+          {
+            q: "Quali tipi di documento riconosce?",
+            a: "Qui, otto: fattura, ordine d'acquisto, ricevuta, packing list, polizza di carico, contratto, nota di credito e altro. Con un account definisci i tuoi tipi descrivendoli a parole, e per ciascuno decidi dove va: a un Flow che ne estrae i dati, a un'email o a una Collection.",
+          },
+          {
+            q: "Cosa include la versione gratuita?",
+            a: "{limit} documenti al giorno, con il risultato completo a schermo. Per scaricare i PDF separati serve un account Tavnit, che non costa nulla.",
+          },
+          {
+            q: "Quante pagine posso caricare?",
+            a: "Fino a 12 pagine per PDF nella versione gratuita, fino a 4 MB. Con un account non c'è limite di pagine e puoi inviare le scansioni via email direttamente allo Splitter.",
+          },
+          {
+            q: "Funziona con scansioni di scarsa qualità o lingue miste?",
+            a: "Sì. Gestisce scansioni storte, in scala di grigi e con timbri, e documenti in inglese, spagnolo o altre lingue mescolati nello stesso PDF. Se una pagina non si riesce a leggere viene segnata come non classificata invece di ricevere un tipo inventato.",
+          },
+          {
+            q: "Che fine fa il mio file?",
+            a: "Viene elaborato in un account Tavnit dedicato agli strumenti gratuiti e non viene usato per nient'altro. Dopo 24 ore il PDF e i documenti separati si cancellano da soli, automaticamente; conserviamo solo il fatto che c'è stata un'esecuzione, senza il file né il suo contenuto. Se vuoi che venga eliminato prima, scrivi a support@tavnit.io.",
+          },
+          {
+            q: "Perché per scaricare serve un account?",
+            a: "Perché la versione gratuita serve a provare. Con un account puoi dividere ogni scansione, inviare ogni documento al suo Flow e ricevere i dati estratti nel tuo ERP o via email.",
+          },
+          {
+            q: "Come lo rendo automatico?",
+            a: "Crea un account, costruisci uno Splitter con i tuoi tipi di documento e inoltra le scansioni al suo indirizzo email, oppure collegalo tramite API. Ogni documento che taglia va da solo al suo Flow, e da lì al tuo ERP, a Google Sheets o in una casella di posta.",
+          },
+        ],
+        split: {
+          heading: "Fatto: {file}",
+          summary: "{n} in {pages}",
+          segmentWord: ["documento", "documenti"],
+          pageWord: ["pagina", "pagine"],
+          pages: "pp. {from}–{to}",
+          pageOne: "p. {from}",
+          unmatched: "Non classificato",
+          type: "Tipo",
+          reason: "Perché",
+          download: "Scarica",
+          downloadAll: "Scarica tutto (zip)",
+          stages: ["Caricamento del PDF", "Lettura di ogni pagina", "Ricerca dell'inizio di ogni documento", "Classificazione", "Quasi fatto"],
+          empty: "Non abbiamo trovato più di un documento in questo PDF.",
+          another: "Dividi un altro PDF",
+        },
+      },
+    },
+    "packing-list-to-excel": {
+      vocab: {
+        doc: "packing list",
+        docs: "packing list",
+        a_doc: "una packing list",
+        the_doc: "la packing list",
+        the_docs: "le packing list",
+        your_doc: "la tua packing list",
+        your_docs: "le tue packing list",
+        all_your_docs: "tutte le tue packing list",
+        all_docs: "tutte le packing list",
+        each_doc: "ogni packing list",
+        another_doc: "un'altra packing list",
+        this_doc: "questa packing list",
+      },
+      overrides: {
+        title: "Packing list in Excel gratis: l'IA estrae ogni riga",
+        description:
+          "Carica una packing list (distinta di imballaggio) in PDF o in foto e ottieni ogni riga in una tabella Excel: descrizione, quantità, colli, peso netto e lordo, dimensioni, con mittente, destinatario e porti. Gratis, senza modelli e senza registrazione per vedere il risultato.",
+        label: "Packing list in Excel",
+        h1: "Trasforma una packing list in Excel",
+        intro:
+          "Carica il PDF o la foto. Tavnit legge l'intestazione della spedizione (mittente, destinatario, porti, totali) e ogni riga di merce con colli, pesi e dimensioni, e te la restituisce come foglio di calcolo. Nessun modello per fornitore: lo stesso strumento funziona con le packing list di tutte le tue spedizioni.",
+        drop: {
+          title: "Trascina qui la tua packing list",
+          sample: "Prova con una packing list di esempio",
+        },
+        stages: ["Caricamento del documento", "Lettura dell'intestazione della spedizione", "Ricerca delle righe di merce", "Ordinamento delle colonne", "Quasi fatto"],
+        result: {
+          empty: "Non abbiamo trovato righe di merce in questo documento. Prova con una packing list che riporti colli, pesi o quantità per riga.",
+          flowNote: "Queste {fields} colonne sono i campi di un Flow fisso per packing list. Nel tuo account, i campi li scegli tu.",
+          ghostHint: "In Tavnit aggiungi i campi che vuoi: container, marche, codice HS, numero di B/L…",
+        },
+        next: {
+          lead: "Hai elaborato una packing list. Con un account succede lo stesso con ogni packing list che arriva, e le righe non si fermano a un Excel: proseguono da sole.",
+          source: "La tua packing list",
+          flow: {
+            name: "Packing list",
+            add: { name: "container", type: "Testo", hint: "Accanto a «Container» · es. MSKU-4417", save: "Salva", value: "MSKU-4417" },
+          },
+          inputs: { show: "Come arriva la tua packing list?" },
+        },
+        cleaners: {
+          lead: "Regole semplici che girano da sole su ogni packing list dopo l'estrazione. Quattro idee con i tuoi stessi dati:",
+          ideas: [
+            { icon: "date", title: "Un solo modo di scrivere la data", from: "{date}", to: "{iso}", note: "ogni packing list, lo stesso formato" },
+            { icon: "alert", title: "Il peso lordo deve superare il netto", from: "netto > lordo", to: "da rivedere", note: "una riga invertita non viene mai dichiarata senza controllo" },
+            { icon: "calendar", title: "Avviso prima dell'imbarco", from: "data di spedizione", to: "promemoria 2 giorni prima", note: "al tuo spedizioniere doganale e alla logistica" },
+            { icon: "mail", title: "Copia allo spedizioniere doganale", from: "packing list estratta", to: "email con l'Excel", note: "insieme alla fattura collegata" },
+          ],
+        },
+        after: {
+          lead: "È uscito da un Flow fisso con {fields} campi. Nel tuo account scegli tu i campi, ed ecco come funziona quando Tavnit gestisce ogni packing list:",
+        },
+        how: {
+          steps: [
+            { title: "Carica la packing list", body: "PDF, foto o scansione. Qualsiasi mittente, qualsiasi lingua, qualsiasi layout." },
+            {
+              title: "Tavnit la legge",
+              body: "Trova l'intestazione (mittente, destinatario, porti, totali) e la tabella della merce con colli, peso netto, peso lordo e dimensioni per riga.",
+            },
+            { title: "Controlla e scarica", body: "La tabella appare a schermo. Con un account gratuito te la porti via in Excel." },
+          ],
+        },
+        faqs: [
+          {
+            q: "Cosa include la versione gratuita?",
+            a: "{limit} documenti al giorno, con il risultato completo a schermo. Per scaricare l'Excel serve un account Tavnit, che non costa nulla.",
+          },
+          {
+            q: "Quali formati accetta?",
+            a: "PDF (di testo o scansionati), JPG e PNG, fino a 4 MB e 5 pagine. Se la tua packing list è più lunga, caricala in più parti o crea un account.",
+          },
+          {
+            q: "Quali colonne estrae da una packing list?",
+            a: "Per documento: mittente, destinatario, numero, data, fattura collegata, porto di carico, porto di scarico e i totali di colli e pesi. Per riga: descrizione, quantità, unità, colli, peso netto, peso lordo e dimensioni. I valori del documento si ripetono su ogni riga, così la tabella si filtra da sola.",
+          },
+          {
+            q: "Posso scegliere altre colonne?",
+            a: "Qui no: questo strumento usa un Flow fisso per packing list con 17 campi. Nel tuo account crei i tuoi Flow, per packing list o per qualsiasi altro documento, con i campi che ti servono: per documento (container, sigillo, numero di B/L, incoterm) o per riga (marche, codice HS, volume). Niente modelli: descrivi il campo e, se serve, gli dai un suggerimento su dove cercare.",
+          },
+          {
+            q: "Funziona con packing list di qualsiasi paese?",
+            a: "Sì. Gestisce packing list in inglese, spagnolo e altre lingue, con pesi in kg o lb e misure in cm o pollici, esattamente come sono stampati. È testato su spedizioni da Panama, Colombia, Messico, Cina e Stati Uniti, tra gli altri.",
+          },
+          {
+            q: "Devo impostare un modello per ogni fornitore?",
+            a: "No. Tavnit non usa modelli: legge ogni documento così come arriva, anche se domani il mittente cambia il layout della sua packing list.",
+          },
+          {
+            q: "Che fine fa il mio file?",
+            a: "Viene elaborato in un account Tavnit dedicato agli strumenti gratuiti e non viene usato per nient'altro. Dopo 24 ore il file e le righe estratte si cancellano da soli, automaticamente; conserviamo solo il fatto che c'è stata un'esecuzione, senza il documento né il suo contenuto. Se vuoi che venga eliminato prima, scrivi a support@tavnit.io.",
+          },
+          {
+            q: "Come lo rendo automatico?",
+            a: "Crea un account, costruisci un Flow con i campi che vuoi e inoltra le packing list al suo indirizzo email, oppure collegalo tramite API, webhook, Zapier, Make o n8n. Ogni spedizione arriva nel tuo sistema doganale, nel tuo ERP o in Google Sheets senza che nessuno digiti nulla.",
+          },
+        ],
+      },
+    },
+    "bill-of-lading-to-excel": {
+      vocab: {
+        doc: "polizza di carico",
+        docs: "polizze di carico",
+        a_doc: "una polizza di carico",
+        the_doc: "la polizza di carico",
+        the_docs: "le polizze di carico",
+        your_doc: "la tua polizza di carico",
+        your_docs: "le tue polizze di carico",
+        all_your_docs: "tutte le tue polizze di carico",
+        all_docs: "tutte le polizze di carico",
+        each_doc: "ogni polizza di carico",
+        another_doc: "un'altra polizza di carico",
+        this_doc: "questa polizza di carico",
+      },
+      overrides: {
+        title: "Polizza di carico in Excel gratis: estrai i dati del B/L",
+        description:
+          "Carica una polizza di carico (B/L) in PDF o in foto e ottieni i suoi dati in una tabella Excel: numero di B/L, vettore, caricatore, destinatario, nave, porti e una riga per container con sigillo, merce, colli, peso e volume. Gratis, senza modelli e senza registrazione per vedere il risultato.",
+        label: "Polizza di carico in Excel",
+        h1: "Trasforma una polizza di carico in Excel",
+        intro:
+          "Carica il PDF o la foto del B/L. Tavnit legge l'intestazione (numero di B/L, vettore, caricatore, destinatario, nave, viaggio, porti, data di imbarco) e ogni riga di carico con container, sigillo, colli, peso lordo e volume, e te la restituisce come foglio di calcolo. Nessun modello per compagnia: lo stesso Flow legge MSC, Maersk, Hapag-Lloyd o qualsiasi NVOCC.",
+        drop: {
+          title: "Trascina qui la tua polizza di carico",
+          sample: "Prova con un B/L di esempio",
+        },
+        stages: ["Caricamento del documento", "Lettura dell'intestazione del B/L", "Ricerca delle righe di carico", "Ordinamento delle colonne", "Quasi fatto"],
+        result: {
+          empty: "Non abbiamo trovato righe di carico in questo documento. Prova con una polizza di carico che abbia la tabella di container e merce.",
+          flowNote: "Queste {fields} colonne sono i campi di un Flow fisso per polizze di carico. Nel tuo account, i campi li scegli tu.",
+          ghostHint: "In Tavnit aggiungi i campi che vuoi: incoterm, luogo di consegna, numero di booking, ETA…",
+          another: "Elabora un'altra polizza di carico",
+        },
+        errors: {
+          too_large: "Il file supera i 4 MB. Comprimilo o carica solo le pagine del B/L.",
+        },
+        next: {
+          lead: "Hai elaborato una polizza di carico. Con un account succede lo stesso con ogni B/L che arriva da ogni compagnia e agente, e i dati non si fermano a un Excel: proseguono da soli verso il tuo sistema doganale o di spedizione.",
+          source: "Il tuo B/L",
+          flow: {
+            name: "Polizza di carico",
+            add: { name: "incoterm", type: "Testo", hint: "Accanto a «Incoterm» · es. CIF Manzanillo", save: "Salva", value: "CIF" },
+          },
+          inputs: { show: "Come arriva il tuo B/L?" },
+        },
+        cleaners: {
+          lead: "Regole semplici che girano da sole su ogni polizza di carico dopo l'estrazione. Quattro idee con i tuoi stessi dati:",
+          ideas: [
+            { icon: "date", title: "Un solo modo di scrivere la data di imbarco", from: "{date}", to: "{iso}", note: "ogni B/L, lo stesso formato" },
+            { icon: "alert", title: "Peso lordo fuori intervallo", from: "peso lordo per container", to: "segnala oltre 26.000 kg", note: "così nessuno prenota un camion che non può portarlo" },
+            { icon: "calendar", title: "Avviso prima dell'arrivo", from: "data di imbarco + transit time", to: "promemoria 5 giorni prima", note: "così la dichiarazione è presentata prima che la nave attracchi" },
+            { icon: "mail", title: "Dritto allo spedizioniere doganale", from: "B/L estratto", to: "email con la tabella allegata", note: "all'agenzia doganale, senza che nessuno inoltri nulla" },
+          ],
+        },
+        after: {
+          lead: "È uscito da un Flow fisso con {fields} campi. Nel tuo account scegli tu i campi, ed ecco come funziona quando Tavnit gestisce ogni polizza di carico:",
+        },
+        how: {
+          steps: [
+            { title: "Carica il B/L", body: "PDF, foto o scansione. Qualsiasi compagnia, qualsiasi agente, qualsiasi layout del modulo." },
+            { title: "Tavnit lo legge", body: "Trova l'intestazione (numero di B/L, parti, nave, viaggio, porti, data di imbarco, condizioni di nolo) e la tabella del carico: una riga per container con sigillo, merce, colli, peso e volume." },
+            { title: "Controlla e scarica", body: "La tabella appare a schermo. Con un account gratuito te la porti via in Excel." },
+          ],
+        },
+        faqs: [
+          {
+            q: "Cosa include la versione gratuita?",
+            a: "{limit} documenti al giorno, con il risultato completo a schermo. Per scaricare l'Excel serve un account Tavnit, che non costa nulla.",
+          },
+          {
+            q: "Cosa estrae da una polizza di carico?",
+            a: "Dall'intestazione: numero di B/L, vettore, caricatore, destinatario, notify party, nave, viaggio, porto di carico, porto di scarico, data di imbarco, condizioni di nolo e l'elenco dei container. Dalla tabella del carico, una riga per voce: container, sigillo, descrizione della merce, numero e tipo di colli, peso lordo e volume. I valori dell'intestazione si ripetono su ogni riga, così il foglio si filtra e si somma senza problemi.",
+          },
+          {
+            q: "Posso scegliere altre colonne?",
+            a: "Qui no: questo strumento usa un Flow fisso per polizze di carico con 19 campi. Nel tuo account crei i tuoi Flow, per B/L o per qualsiasi altro documento, con i campi che ti servono: per documento (incoterm, luogo di consegna, numero di booking, ETA) o per riga (codice HS, marche, temperatura reefer). Niente modelli: descrivi il campo e, se serve, gli dai un suggerimento su dove cercare.",
+          },
+          {
+            q: "Quali formati accetta?",
+            a: "PDF (di testo o scansionati), JPG e PNG, fino a 4 MB e 5 pagine. Se il tuo B/L è più lungo, o ci sono più B/L in una sola scansione, caricali in più parti o crea un account.",
+          },
+          {
+            q: "Funziona con il B/L di qualsiasi compagnia?",
+            a: "Sì. Non usa modelli: legge ogni B/L così come arriva, che sia un master B/L della compagnia, un house B/L dello spedizioniere o un sea waybill, in inglese o in spagnolo. È testato su layout di MSC, Maersk, Hapag-Lloyd, CMA CGM, Evergreen e NVOCC.",
+          },
+          {
+            q: "Che fine fa il mio file?",
+            a: "Viene elaborato in un account Tavnit dedicato agli strumenti gratuiti e non viene usato per nient'altro. Dopo 24 ore il file e le righe estratte si cancellano da soli, automaticamente; conserviamo solo il fatto che c'è stata un'esecuzione, senza il documento né il suo contenuto. Se vuoi che venga eliminato prima, scrivi a support@tavnit.io.",
+          },
+          {
+            q: "Perché per scaricare serve un account?",
+            a: "Perché la versione gratuita serve a provare. Con un account puoi eseguire la stessa estrazione su tutte le tue polizze di carico, ricevere il risultato via email e inviarlo al tuo sistema doganale o di spedizione.",
+          },
+          {
+            q: "Come lo rendo automatico?",
+            a: "Crea un account, costruisci un Flow con i campi che vuoi e inoltra i B/L al suo indirizzo email (quello a cui li invia la compagnia o lo spedizioniere), oppure collegalo tramite API, webhook, Zapier, Make o n8n. I dati arrivano nel tuo sistema doganale, nel tuo ERP o in Google Sheets senza che nessuno digiti nulla.",
+          },
+        ],
+      },
+    },
+    "quote-comparison": {
+      vocab: {
+        doc: "preventivo",
+        docs: "preventivi",
+        a_doc: "un preventivo",
+        the_doc: "il preventivo",
+        the_docs: "i preventivi",
+        your_doc: "il tuo preventivo",
+        your_docs: "i tuoi preventivi",
+        all_your_docs: "tutti i tuoi preventivi",
+        all_docs: "tutti i preventivi",
+        each_doc: "ogni preventivo",
+        another_doc: "un altro preventivo",
+        this_doc: "questo preventivo",
+      },
+      overrides: {
+        title: "Confronta preventivi dei fornitori gratis: tabella riga per riga",
+        description:
+          "Carica due o tre preventivi in PDF o in foto e ottieni un'unica tabella di confronto: ogni riga con il prezzo di ciascun fornitore e il più economico evidenziato. Gratis, senza modelli e senza registrazione per vedere il risultato.",
+        label: "Confronta preventivi",
+        h1: "Confronta i preventivi dei fornitori",
+        intro:
+          "Carica due o tre preventivi per la stessa richiesta. Tavnit legge ciascuno, abbina le righe anche quando ogni fornitore le scrive in modo diverso e costruisce un'unica tabella con ogni prezzo e l'opzione più economica per riga. Niente modelli, nessun foglio di calcolo fatto a mano.",
+        trust: ["2 o 3 preventivi · PDF o foto", "{limit} documenti gratis al giorno", "Tutto cancellato dopo 24 h"],
+        drop: {
+          title: "Trascina qui un preventivo",
+          hint: "PDF o foto",
+          sample: "Prova con tre preventivi di esempio",
+          formats: "PDF, JPG o PNG · fino a 4 MB e 5 pagine per preventivo",
+        },
+        stages: ["Lettura dei preventivi", "Ordinamento delle righe", "Il Matcher abbina le righe", "Quasi fatto"],
+        result: {
+          flowNote: "Ogni preventivo passa per un Flow fisso con {fields} campi e il Matcher li incrocia. Nel tuo account, i campi li scegli tu.",
+          ghostHint: "In Tavnit aggiungi i campi che vuoi: marca, garanzia, tempi di consegna per riga…",
+          download: "Scarica il confronto in Excel",
+          another: "Confronta altri preventivi",
+          empty: "Non abbiamo trovato righe con prezzo in questo preventivo. Prova con uno che abbia articoli, quantità e prezzi per riga.",
+        },
+        errors: {
+          too_large: "Uno dei preventivi supera i 4 MB. Comprimilo o carica solo le pagine con le righe.",
+          failed: "Non siamo riusciti a leggere uno dei preventivi. Prova con un altro o con quelli di esempio.",
+          no_lines: "Uno dei preventivi non ha righe con prezzo, quindi non c'è niente da confrontare. Verifica che ognuno abbia articoli con un prezzo unitario.",
+          not_ready: "Stiamo ancora leggendo i preventivi. Aspetta un momento e riprova.",
+        },
+        auth: {
+          title: "Crea il tuo account gratuito per scaricare la tabella",
+          body: "L'Excel si scarica subito. Con un account puoi anche confrontare più di tre preventivi, e farlo per ogni gara che arriva.",
+        },
+        next: {
+          lead: "Hai confrontato tre preventivi a mano. Con un account, ogni preventivo che arriva via email entra nel suo Flow, il Matcher li incrocia da solo e la tabella prosegue: agli acquisti, all'ERP o a chi approva.",
+          source: "I tuoi preventivi",
+          flow: {
+            name: "Preventivo",
+            add: { name: "brand", type: "Testo", hint: "Accanto a «Marca» o nella descrizione", save: "Salva", value: "Argos" },
+          },
+          inputs: { show: "Come arrivano i tuoi preventivi?" },
+        },
+        cleaners: {
+          lead: "Regole semplici che girano da sole su ogni preventivo dopo la lettura. Quattro idee:",
+          ideas: [
+            { icon: "date", title: "Un solo modo di scrivere la data", from: "{date}", to: "{iso}", note: "ogni preventivo, lo stesso formato" },
+            { icon: "alert", title: "Avviso quando un fornitore aumenta più del 5%", from: "prezzo di oggi", to: "vs. l'ultimo preventivo", note: "per riga, prima dell'aggiudicazione" },
+            { icon: "approve", title: "Approva l'aggiudicazione", from: "tabella di confronto", to: "chi decide", note: "solo dopo l'approvazione parte l'ordine d'acquisto" },
+            { icon: "calendar", title: "Ricorda la validità del preventivo", from: "valido fino al {date}", to: "promemoria 5 giorni prima", note: "così il prezzo non va perso" },
+          ],
+        },
+        after: {
+          title: "La tua tabella di confronto è pronta",
+          lead: "È uscita da un Flow fisso con {fields} campi e un Matcher. Nel tuo account scegli tu i campi, ed ecco come funziona quando Tavnit incrocia ogni preventivo:",
+        },
+        how: {
+          steps: [
+            { title: "Carica due o tre preventivi", body: "PDF o foto, per la stessa richiesta. Qualsiasi fornitore, qualsiasi layout, qualsiasi modo di descrivere ogni articolo." },
+            { title: "Tavnit li legge e li incrocia", body: "Estrae le righe di ciascuno e il Matcher abbina gli articoli anche quando sono scritti in modo diverso. Il più economico per riga viene segnato come Champion." },
+            { title: "Controlla e scarica", body: "La tabella appare a schermo. Con un account gratuito te la porti via in Excel." },
+          ],
+        },
+        faqs: [
+          {
+            q: "Cosa include la versione gratuita?",
+            a: "{limit} documenti al giorno (un confronto di tre preventivi conta come tre), con la tabella completa a schermo. Per scaricare l'Excel serve un account Tavnit, che non costa nulla.",
+          },
+          {
+            q: "Come abbina le righe quando ogni fornitore le scrive in modo diverso?",
+            a: "Con un Matcher di Tavnit. Confronta il significato di ogni descrizione, non il testo esatto: «cemento grigio 42,5 kg» e «cemento Portland tipo I grigio, sacco da 42,5 kg» finiscono sulla stessa riga. Nel dubbio, un secondo passaggio decide se si tratta dello stesso articolo.",
+          },
+          {
+            q: "Cosa significa Champion?",
+            a: "Il fornitore con il prezzo unitario più basso su quella riga. In caso di parità compaiono entrambi. Anche le righe quotate da un solo fornitore, senza concorrenza, vengono mostrate.",
+          },
+          {
+            q: "Posso confrontare più di tre preventivi?",
+            a: "Qui no: la versione gratuita ne accetta fino a tre. Nel tuo account il Matcher confronta fino a dieci esecuzioni dello stesso Flow, e puoi inviare la tabella via email o al tuo ERP.",
+          },
+          {
+            q: "Posso scegliere altre colonne?",
+            a: "Qui no: questo strumento usa un Flow fisso per preventivi. Nel tuo account crei il tuo Flow con i campi che ti servono (marca, garanzia, tempi di consegna per riga) e imposti il Matcher per confrontare il campo che vuoi: prezzo, tempi di consegna o qualsiasi numero.",
+          },
+          {
+            q: "Quali formati accetta?",
+            a: "PDF (di testo o scansionati), JPG e PNG, fino a 4 MB e 5 pagine per preventivo.",
+          },
+          {
+            q: "Che fine fanno i miei file?",
+            a: "Vengono elaborati in un account Tavnit dedicato agli strumenti gratuiti e non vengono usati per nient'altro. Dopo 24 ore i file, le righe estratte e la tabella si cancellano da soli; conserviamo solo il fatto che c'è stata un'esecuzione.",
+          },
+          {
+            q: "Come lo rendo automatico?",
+            a: "Crea un account, costruisci un Flow per preventivi con i tuoi campi e un Matcher sopra di esso. Inoltra i preventivi all'indirizzo email del Matcher e, quando sono arrivati tutti, la tabella di confronto esce da sola: via email, via webhook o nel tuo ERP.",
+          },
+        ],
+        compare: {
+          slots: [
+            { title: "Preventivo A", hint: "PDF o foto", sample: "Preventivo A di esempio" },
+            { title: "Preventivo B", hint: "PDF o foto", sample: "Preventivo B di esempio" },
+            { title: "Preventivo C", hint: "PDF o foto", sample: "Preventivo C di esempio", optional: true },
+          ],
+          run: "Confronta",
+          sampleAll: "Prova con tre preventivi di esempio",
+          stages: ["Lettura dei preventivi", "Ordinamento delle righe", "Il Matcher abbina le righe", "Quasi fatto"],
+          heading: "Tabella di confronto pronta",
+          summary: "{n} · {ref}",
+          labels: {
+            description: "Descrizione",
+            quantity: "Quantità",
+            price: "Prezzo unitario",
+            total: "Totale",
+            status: "Stato",
+            ref: "A",
+            doc: "B",
+            supplier: "Fornitore",
+            champion: "Champion",
+            wins: "{n} righe vinte",
+            lines: ["riga", "righe"],
+          },
+          status: { ok: "Corrisponde", price: "Prezzo diverso", qty: "Quantità diversa", both: "Prezzo e quantità diversi", missing: "Non quotato", extra: "Solo in questo preventivo" },
+          empty: "Il Matcher non ha trovato righe confrontabili tra i preventivi. Verifica che siano per la stessa richiesta e abbiano articoli con un prezzo unitario.",
+          another: "Confronta altri preventivi",
+          download: "Scarica il confronto in Excel",
+        },
+      },
+    },
+    "contract-dates": {
+      vocab: {
+        doc: "contratto",
+        docs: "contratti",
+        a_doc: "un contratto",
+        the_doc: "il contratto",
+        the_docs: "i contratti",
+        your_doc: "il tuo contratto",
+        your_docs: "i tuoi contratti",
+        all_your_docs: "tutti i tuoi contratti",
+        all_docs: "tutti i contratti",
+        each_doc: "ogni contratto",
+        another_doc: "un altro contratto",
+        this_doc: "questo contratto",
+      },
+      overrides: {
+        title: "Estrattore gratuito delle date di rinnovo dei contratti (IA)",
+        description:
+          "Carica un contratto in PDF e ottieni le sue date chiave in una riga Excel: parti, inizio, fine, rinnovo automatico, preavviso e termine per la disdetta. Gratis, senza modelli e senza registrazione per vedere il risultato.",
+        label: "Date dei contratti",
+        h1: "Estrai le date chiave da un contratto",
+        intro:
+          "Carica il PDF. Tavnit legge il contratto e ti restituisce una riga con le parti, la data di firma, inizio e fine della durata, se si rinnova automaticamente, il periodo di preavviso e l'ultimo giorno utile per comunicare che non rinnovi. Funziona con contratti di servizio, locazione, fornitura e licenza, in qualunque formato arrivino.",
+        drop: {
+          title: "Trascina qui il tuo contratto",
+          sample: "Prova con un contratto di esempio",
+        },
+        stages: ["Caricamento del documento", "Lettura delle parti", "Ricerca di durata e rinnovo", "Calcolo del termine di disdetta", "Quasi fatto"],
+        result: {
+          empty: "Non abbiamo trovato parti o date in questo documento. Prova con un contratto firmato che abbia una clausola sulla durata.",
+          flowNote: "Queste {fields} colonne sono i campi di un Flow fisso per contratti. Nel tuo account, i campi li scegli tu.",
+          ghostHint: "In Tavnit aggiungi i campi che vuoi: referente interno, centro di costo, clausola penale…",
+          another: "Elabora un altro contratto",
+        },
+        next: {
+          lead: "Hai elaborato un contratto. Con un account succede lo stesso con ogni contratto che arriva, e le date non si fermano a un Excel: fanno scattare l'allarme prima della scadenza.",
+          source: "Il tuo contratto",
+          inputs: { show: "Come arriva il tuo contratto?" },
+          flow: {
+            name: "Contratto",
+            add: { name: "owner", type: "Testo", hint: "Chi lo firma da parte nostra", save: "Salva", value: "M. Rossi" },
+          },
+        },
+        cleaners: {
+          lead: "Regole semplici che girano da sole su ogni contratto dopo la lettura. Quattro idee con i tuoi stessi dati:",
+          ideas: [
+            { icon: "date", title: "Un solo modo di scrivere la data", from: "{date}", to: "{iso}", note: "ogni contratto, lo stesso formato" },
+            { icon: "calendar", title: "Promemoria 60 giorni prima della fine", from: "end_date", to: "promemoria in tempo", note: "prima che scada il termine di disdetta" },
+            { icon: "alert", title: "Rinnovo automatico: prima si rivede", from: "auto_renewal = Yes", to: "da rivedere", note: "così nessun contratto si rinnova senza che qualcuno lo guardi" },
+            { icon: "mail", title: "Email al referente", from: "contratto letto", to: "email con la riga", note: "chi l'ha firmato riceve le date" },
+          ],
+        },
+        after: {
+          lead: "È uscito da un Flow fisso con {fields} campi. Nel tuo account scegli tu i campi, ed ecco come funziona quando Tavnit legge ogni contratto:",
+        },
+        how: {
+          steps: [
+            { title: "Carica il contratto", body: "PDF, di testo o scansionato. Qualsiasi tipo di contratto, chiunque l'abbia redatto." },
+            { title: "Tavnit lo legge", body: "Trova le parti, la firma, la durata, la clausola di rinnovo e il periodo di preavviso, e calcola il termine per la disdetta." },
+            { title: "Controlla e scarica", body: "La riga appare a schermo. Con un account gratuito te la porti via in Excel." },
+          ],
+        },
+        faqs: [
+          {
+            q: "Cosa include la versione gratuita?",
+            a: "{limit} contratti al giorno, con il risultato completo a schermo. Per scaricare l'Excel serve un account Tavnit, che non costa nulla.",
+          },
+          {
+            q: "Quali date e dettagli estrae?",
+            a: "Le parti, la data di firma, inizio e fine della durata, la durata stessa, se si rinnova automaticamente, il periodo di preavviso, il termine per inviare la disdetta, il valore con la sua valuta e la legge applicabile. Quello che il contratto non dice resta vuoto: nessuna data viene mai inventata.",
+          },
+          {
+            q: "Perché il risultato è una sola riga?",
+            a: "Perché un contratto ha una durata, una data di firma e un insieme di parti. Con un account puoi elaborare un'intera cartella di contratti e ottenere una tabella con una riga per contratto, pronta da ordinare per data di scadenza.",
+          },
+          {
+            q: "Quali formati accetta?",
+            a: "PDF (di testo o scansionati), JPG e PNG, fino a 4 MB e 5 pagine. Se il tuo contratto è più lungo, carica le pagine con le clausole su durata e rinnovo, oppure crea un account.",
+          },
+          {
+            q: "Posso scegliere altre colonne?",
+            a: "Qui no: questo strumento usa un Flow fisso per contratti con 14 campi. Nel tuo account crei i tuoi Flow, per contratti o per qualsiasi altro documento, con i campi che ti servono: referente interno, clausola penale, garanzia. Niente modelli: descrivi il campo e, se serve, gli dai un suggerimento su dove cercare.",
+          },
+          {
+            q: "Che fine fa il mio file?",
+            a: "Viene elaborato in un account Tavnit dedicato agli strumenti gratuiti e non viene usato per nient'altro. Dopo 24 ore il file e la riga estratta si cancellano da soli, automaticamente; conserviamo solo il fatto che c'è stata un'esecuzione, senza il documento né il suo contenuto. Se vuoi che venga eliminato prima, scrivi a support@tavnit.io.",
+          },
+          {
+            q: "Funziona con contratti di qualsiasi paese?",
+            a: "Sì. Gestisce contratti in inglese, spagnolo e altre lingue, con qualsiasi formato di data. È testato su contratti di Stati Uniti, Panama, Messico e Colombia, tra gli altri.",
+          },
+          {
+            q: "Come ricevo un avviso prima della scadenza?",
+            a: "Crea un account, costruisci un Flow con i campi che vuoi e inoltra i contratti al suo indirizzo email, oppure collegalo tramite API, webhook, Zapier, Make o n8n. Un Cleaner confronta il termine di disdetta con la data di oggi e invia l'email o il webhook a chi deve decidere.",
+          },
+        ],
+      },
+    },
+    "receipt-to-excel": {
+      vocab: {
+        doc: "scontrino",
+        docs: "scontrini",
+        a_doc: "uno scontrino",
+        the_doc: "lo scontrino",
+        the_docs: "gli scontrini",
+        your_doc: "il tuo scontrino",
+        your_docs: "i tuoi scontrini",
+        all_your_docs: "tutti i tuoi scontrini",
+        all_docs: "tutti gli scontrini",
+        each_doc: "ogni scontrino",
+        another_doc: "un altro scontrino",
+        this_doc: "questo scontrino",
+      },
+      overrides: {
+        title: "Scontrino in Excel gratis: dalla foto al foglio di calcolo",
+        description:
+          "Carica la foto o il PDF di uno scontrino o di una ricevuta e ottieni le sue righe in Excel: esercente, data, articoli, quantità, imposte, mancia e totale. Gratis, senza modelli e senza registrazione per vedere il risultato. OCR degli scontrini in un foglio di calcolo in pochi secondi.",
+        label: "Scontrino in Excel",
+        h1: "Trasforma uno scontrino in Excel",
+        intro:
+          "Scatta una foto dello scontrino o carica il PDF. Tavnit legge l'esercente, la data, ogni articolo con il suo prezzo e i totali, e te li restituisce come foglio di calcolo. Funziona anche con scontrini termici sbiaditi, storti o stropicciati: non c'è nessun modello da configurare.",
+        drop: {
+          title: "Trascina qui la foto del tuo scontrino",
+          sample: "Prova con uno scontrino di esempio",
+        },
+        stages: ["Caricamento dello scontrino", "Lettura di esercente e data", "Ricerca degli articoli", "Ordinamento delle colonne", "Quasi fatto"],
+        result: {
+          empty: "Non abbiamo trovato articoli in questo scontrino. Prova con una foto più nitida, con tutto lo scontrino inquadrato e senza ombre.",
+          flowNote: "Queste {fields} colonne sono i campi di un Flow fisso per scontrini. Nel tuo account, i campi li scegli tu.",
+          ghostHint: "In Tavnit aggiungi i campi che vuoi: centro di costo, chi ha speso, progetto, categoria…",
+        },
+        next: {
+          lead: "Hai elaborato uno scontrino. Con un account succede lo stesso con ogni scontrino che arriva, e le righe non si fermano a un Excel: proseguono da sole.",
+          source: "Il tuo scontrino",
+          inputs: { show: "Come arriva il tuo scontrino?" },
+          flow: {
+            name: "Scontrino",
+            add: { name: "cost_center", type: "Testo", hint: "Chi ha speso, o il progetto", save: "Salva", value: "Vendite" },
+          },
+        },
+        cleaners: {
+          lead: "Regole semplici che girano da sole su ogni scontrino dopo la lettura. Quattro idee con i tuoi stessi dati:",
+          ideas: [
+            { icon: "date", title: "Un solo modo di scrivere la data", from: "{date}", to: "{iso}", note: "ogni scontrino, lo stesso formato per la nota spese" },
+            { icon: "sum", title: "Gli articoli devono sommare al subtotale", from: "articoli {sum}", to: "subtotale {subtotal}", note: "se non torna, la foto è stata letta male e qualcuno la controlla", check: "sum" },
+            { icon: "approve", title: "Approvazione sopra un importo", from: "totale {total}", to: "approva prima del rimborso", note: "quando supera {threshold}" },
+            { icon: "money", title: "Converti nella tua valuta", from: "{total} {currency}", to: "la tua valuta", note: "al cambio della data dello scontrino, per i viaggi" },
+          ],
+        },
+        after: {
+          lead: "È uscito da un Flow fisso con {fields} campi. Nel tuo account scegli tu i campi, ed ecco come funziona quando Tavnit gestisce ogni scontrino di un viaggio o di un mese:",
+        },
+        how: {
+          steps: [
+            { title: "Carica lo scontrino", body: "Una foto dal telefono o un PDF. Qualsiasi esercente, qualsiasi lingua, per quanto sbiadito sia lo scontrino." },
+            { title: "Tavnit lo legge", body: "Trova l'esercente, la data, il numero, ogni articolo con il suo prezzo, e subtotale, imposte, mancia e totale." },
+            { title: "Controlla e scarica", body: "La tabella appare a schermo. Con un account gratuito te la porti via in Excel." },
+          ],
+        },
+        faqs: [
+          {
+            q: "Cosa include la versione gratuita?",
+            a: "{limit} scontrini al giorno, con il risultato completo a schermo. Per scaricare l'Excel serve un account Tavnit, che non costa nulla.",
+          },
+          {
+            q: "Funziona con una foto dal telefono?",
+            a: "Sì, è il caso più comune. JPG, PNG e PDF fino a 4 MB. Aiuta avere tutto lo scontrino inquadrato, una luce uniforme e nessun dito sopra; anche una foto storta o un po' sfocata si legge.",
+          },
+          {
+            q: "Quali formati accetta?",
+            a: "JPG, PNG e PDF (di testo o scansionati), fino a 4 MB e 5 pagine. Uno scontrino lungo del supermercato sta in una sola foto.",
+          },
+          {
+            q: "Devo impostare un modello per ogni esercente?",
+            a: "No. Tavnit non usa modelli: legge ogni scontrino così come arriva, che sia di un ristorante, una farmacia, un taxi o un distributore di benzina.",
+          },
+          {
+            q: "Posso scegliere altre colonne?",
+            a: "Qui no: questo strumento usa un Flow fisso per scontrini con 15 campi. Nel tuo account crei i tuoi Flow con i campi che ti servono: per documento (centro di costo, chi ha speso, progetto, categoria) o per riga (codice prodotto). Niente modelli: descrivi il campo e, se serve, gli dai un suggerimento su dove cercare.",
+          },
+          {
+            q: "Che fine fa il mio file?",
+            a: "Viene elaborato in un account Tavnit dedicato agli strumenti gratuiti e non viene usato per nient'altro. Dopo 24 ore la foto e le righe estratte si cancellano da sole, automaticamente; conserviamo solo il fatto che c'è stata un'esecuzione, senza il documento né il suo contenuto. Se vuoi che venga eliminato prima, scrivi a support@tavnit.io.",
+          },
+          {
+            q: "Ho cinquanta scontrini di un viaggio. Uno alla volta?",
+            a: "Qui sì. Con un account li invii tutti insieme: inoltrali via email al Flow, caricali in blocco o collegati tramite API, e ogni scontrino esce come righe nello stesso Excel, in Google Sheets o nel tuo sistema di note spese.",
+          },
+          {
+            q: "Come lo rendo automatico?",
+            a: "Crea un account, costruisci un Flow con i campi che vuoi e inoltra le foto degli scontrini al suo indirizzo email, oppure collegalo tramite API, webhook, Zapier, Make o n8n. La nota spese si compila da sola.",
+          },
+        ],
+      },
+    },
+    "number-format": {
+      vocab: SPREADSHEET_VOCAB,
+      overrides: {
+        title: "Correggi il formato dei numeri in Excel o CSV, gratis",
+        description:
+          "Carica un file Excel o CSV con numeri come 1.234,56 o 1,234.56 e riavrai tutti i numeri in un unico formato, pronti da sommare. Scegli tu le colonne e il formato. Gratis, senza registrazione per vedere il risultato.",
+        label: "Correggi il formato dei numeri",
+        h1: "Correggi il formato dei numeri nel tuo foglio di calcolo",
+        intro:
+          "Carica il file Excel o CSV. Scegli quali colonne contengono numeri e come li vuoi: 1234.56, 1,234.56 o 1.234,56. Tavnit li converte tutti e ti restituisce il file con le stesse colonne nello stesso ordine.",
+        trust: ["CSV o Excel · fino a 500 righe", "{limit} file gratis al giorno", "Tutto viene cancellato dopo 24 h"],
+        drop: {
+          title: "Trascina qui il tuo file Excel o CSV",
+          hint: "oppure scegli un file dal tuo computer",
+          choose: "Scegli file",
+          sample: "Prova con un file di esempio",
+          formats: "CSV o .xlsx · fino a 4 MB e 500 righe",
+        },
+        errors: {
+          unsupported: "Solo file CSV o Excel (.xlsx).",
+          xls: "Questo è un file Excel vecchio (.xls). Aprilo in Excel e salvalo come .xlsx o .csv.",
+          too_many_rows: "La versione gratuita gestisce fino a 500 righe. Carica una parte del file.",
+          too_many_columns: "Scegli fino a 10 colonne alla volta.",
+          no_columns: "Scegli almeno una colonna.",
+          nothing_to_clean: "Non abbiamo trovato numeri da convertire in quelle colonne.",
+          empty: "Il file è vuoto o non ha righe sotto l'intestazione.",
+          unreadable: "Non siamo riusciti a leggere il file. Se è un file Excel, salvalo di nuovo come .xlsx.",
+          failed: "Non siamo riusciti a convertire questo file. Riprova, oppure prova con il file di esempio.",
+        },
+        how: {
+          heading: "Come funziona",
+          steps: [
+            { title: "Carica il file", body: "Un CSV o un file Excel, separato da virgole o punti e virgola." },
+            { title: "Scegli colonne e formato", body: "Selezioniamo noi le colonne che sembrano numeri. Tu indichi se i decimali usano la virgola o il punto, e come li vuoi." },
+            { title: "Controlla e scarica", body: "Le celle modificate sono evidenziate. Con il tuo account gratuito scarichi il file in Excel o CSV." },
+          ],
+        },
+        faqs: [
+          { q: "Perché Excel non somma i miei numeri?", a: "Perché li legge come testo. Succede quando il file arriva da un sistema o da un paese che scrive i decimali in modo diverso dal tuo: 1.234,56 in un Excel impostato per 1,234.56, o il contrario. Mettendoli in un unico formato tornano a essere numeri." },
+          { q: "Come capite se i miei decimali usano la virgola o il punto?", a: "Lo deduciamo dai tuoi valori: se compare 1.234,56, il decimale è la virgola. Quando non si può capire, per esempio con un 1.234 da solo, scegli tu. Questa scelta decide come viene letto ogni numero." },
+          { q: "Quale formato devo scegliere?", a: "1234.56, senza separatore delle migliaia, è quello che ogni sistema, formula e importazione legge senza problemi. 1,234.56 e 1.234,56 servono a mostrare il file alle persone, a seconda del tuo paese." },
+          { q: "Cosa succede alle celle che non sono numeri?", a: "Restano come erano. Una percentuale (15%), un testo (N/A) o una cella vuota non vengono toccati: cambia solo ciò che è chiaramente un numero." },
+          { q: "Quali formati accetta?", a: "CSV separati da virgole, punti e virgola o tabulazioni, ed Excel .xlsx, fino a 4 MB e 500 righe. Se hai un file Excel vecchio (.xls), salvalo come .xlsx." },
+          { q: "Che fine fa il mio file?", a: "Viene usato solo per questa conversione e cancellato dopo 24 ore insieme al risultato. Solo il tuo browser può vedere il risultato." },
+          { q: "Come faccio perché succeda da solo?", a: "In Tavnit la stessa regola è un Cleaner: gira da sola su ogni documento che estrai o su ogni file che arriva via email o API, insieme a date, valute e controlli." },
+        ],
+        clean: {
+          setup: {
+            heading: "Scegli le colonne e il formato",
+            fileSummary: "{rows} · {cols}",
+            columnsLabel: "Colonne con numeri",
+            columnsHint: "Fino a {max}. Abbiamo selezionato quelle che sembrano numeri.",
+            tooMany: "Puoi scegliere fino a {max} colonne alla volta.",
+            inputLabel: "Nel tuo file, i decimali usano",
+            inputOptions: { comma: "la virgola · 1.234,56", dot: "il punto · 1,234.56" },
+            outputLabel: "Voglio i numeri come",
+            outputOptions: { plain: "1234.56 · per formule e sistemi", us: "1,234.56", latam: "1.234,56" },
+            preview: "Prime righe",
+            run: "Converti",
+            change: "Cambia file",
+          },
+          stages: ["Caricamento del file", "Lettura delle colonne", "Conversione dei numeri", "Creazione del tuo file"],
+          heading: "Fatto: {file}",
+          summary: "{cells} modificate in {cols}",
+          cellWord: ["cella", "celle"],
+          columnWord: ["colonna", "colonne"],
+          unchanged: "Nessuna cella andava modificata: erano già in quel formato.",
+          highlight: "Le celle modificate sono in blu.",
+          shown: "Vedi {shown} righe su {total}. Il download le contiene tutte.",
+          download: "Scarica",
+          downloadXlsx: "Excel (.xlsx)",
+          downloadCsv: "CSV (.csv)",
+          another: "Converti un altro file",
+          automate: {
+            heading: "Fallo succedere con ogni file",
+            body: "In Tavnit questa regola è un Cleaner. La configuri una volta e gira da sola su ogni fattura che estrai o su ogni file che arriva via email o API, insieme a date, valute e controlli.",
+            cta: "Crea un account gratuito",
+            docs: "Cos'è un Cleaner",
+          },
+        },
+      },
+    },
+    "date-format": {
+      vocab: SPREADSHEET_VOCAB,
+      overrides: {
+        title: "Correggi il formato delle date in Excel o CSV, gratis",
+        description:
+          "Carica un file Excel o CSV con date miste (03/04/2024, 12 marzo 2024, 2024-03-12) e riavrai tutte le date in un unico formato. Scegli tu le colonne e il formato. Gratis, senza registrazione per vedere il risultato.",
+        label: "Correggi il formato delle date",
+        h1: "Metti tutte le date del tuo foglio di calcolo in un unico formato",
+        intro:
+          "Carica il file Excel o CSV. Scegli quali colonne sono date e come le vuoi: 2024-03-12, 12/03/2024 o 03/12/2024. Tavnit le converte tutte, comprese le date scritte a parole, e ti restituisce il file con le stesse colonne.",
+        trust: ["CSV o Excel · fino a 500 righe", "{limit} file gratis al giorno", "Tutto viene cancellato dopo 24 h"],
+        drop: {
+          title: "Trascina qui il tuo file Excel o CSV",
+          hint: "oppure scegli un file dal tuo computer",
+          choose: "Scegli file",
+          sample: "Prova con un file di esempio",
+          formats: "CSV o .xlsx · fino a 4 MB e 500 righe",
+        },
+        errors: {
+          unsupported: "Solo file CSV o Excel (.xlsx).",
+          xls: "Questo è un file Excel vecchio (.xls). Aprilo in Excel e salvalo come .xlsx o .csv.",
+          too_many_rows: "La versione gratuita gestisce fino a 500 righe. Carica una parte del file.",
+          too_many_columns: "Scegli fino a 10 colonne alla volta.",
+          no_columns: "Scegli almeno una colonna.",
+          nothing_to_clean: "Non abbiamo trovato date da convertire in quelle colonne.",
+          empty: "Il file è vuoto o non ha righe sotto l'intestazione.",
+          unreadable: "Non siamo riusciti a leggere il file. Se è un file Excel, salvalo di nuovo come .xlsx.",
+          failed: "Non siamo riusciti a convertire questo file. Riprova, oppure prova con il file di esempio.",
+        },
+        how: {
+          heading: "Come funziona",
+          steps: [
+            { title: "Carica il file", body: "Un CSV o un file Excel, con le date così come sono: con barre, trattini, punti o a parole." },
+            { title: "Scegli colonne e formato", body: "Selezioniamo noi le colonne che sembrano date. Tu indichi se il tuo file mette prima il giorno o il mese, e come le vuoi." },
+            { title: "Controlla e scarica", body: "Le celle modificate sono evidenziate. Con il tuo account gratuito scarichi il file in Excel o CSV." },
+          ],
+        },
+        faqs: [
+          { q: "Come capite se 03/04/2024 è il 3 aprile o il 4 marzo?", a: "Una data da sola non lo dice. Per questo ti chiediamo se il tuo file mette prima il giorno o il mese, e ti suggeriamo la risposta quando la colonna contiene una data come 15/04/2024, che si legge in un solo modo." },
+          { q: "Capisce le date scritte a parole?", a: "Sì. «5 marzo 2024», «March 5th 2024» o «1 Apr 2024» vengono lette con l'IA, ed è proprio ciò che una formula di Excel non sa fare. Le date numeriche si leggono con regole, senza IA." },
+          { q: "Quale formato devo scegliere?", a: "2024-03-12 (anno, mese, giorno) è quello che ogni sistema legge senza confusione e quello che si ordina correttamente. 03/12/2024 è l'abitudine statunitense; 12/03/2024 è il formato comune in Europa e in America Latina." },
+          { q: "Cosa succede alle celle che non sono date?", a: "Restano come erano, come le celle vuote. Quando una data non si può leggere con sicurezza, la lasciamo com'è invece di tirare a indovinare." },
+          { q: "E se il mio file Excel le memorizza già come date?", a: "Le prendiamo così come sono, senza rileggerle, e cambiamo solo il formato." },
+          { q: "Che fine fa il mio file?", a: "Viene usato solo per questa conversione e cancellato dopo 24 ore insieme al risultato. Solo il tuo browser può vedere il risultato." },
+          { q: "Come faccio perché succeda da solo?", a: "In Tavnit la stessa regola è un Cleaner: gira da sola su ogni documento che estrai o su ogni file che arriva via email o API, insieme a numeri, valute e controlli." },
+        ],
+        clean: {
+          setup: {
+            heading: "Scegli le colonne e il formato",
+            fileSummary: "{rows} · {cols}",
+            columnsLabel: "Colonne con date",
+            columnsHint: "Fino a {max}. Abbiamo selezionato quelle che sembrano date.",
+            tooMany: "Puoi scegliere fino a {max} colonne alla volta.",
+            inputLabel: "Nel tuo file, le date numeriche mettono prima",
+            inputOptions: { dmy: "il giorno · 31/12/2024", mdy: "il mese · 12/31/2024" },
+            outputLabel: "Voglio le date come",
+            outputOptions: { iso: "2024-03-12 · anno, mese, giorno", dmy: "12/03/2024 · giorno, mese, anno", mdy: "03/12/2024 · mese, giorno, anno" },
+            preview: "Prime righe",
+            run: "Converti",
+            change: "Cambia file",
+          },
+          stages: ["Caricamento del file", "Lettura delle colonne", "Conversione delle date", "Lettura delle date scritte a parole", "Creazione del tuo file"],
+          heading: "Fatto: {file}",
+          summary: "{cells} modificate in {cols}",
+          cellWord: ["cella", "celle"],
+          columnWord: ["colonna", "colonne"],
+          unchanged: "Nessuna cella andava modificata: erano già in quel formato.",
+          highlight: "Le celle modificate sono in blu.",
+          shown: "Vedi {shown} righe su {total}. Il download le contiene tutte.",
+          download: "Scarica",
+          downloadXlsx: "Excel (.xlsx)",
+          downloadCsv: "CSV (.csv)",
+          another: "Converti un altro file",
+          automate: {
+            heading: "Fallo succedere con ogni file",
+            body: "In Tavnit questa regola è un Cleaner. La configuri una volta e gira da sola su ogni fattura, contratto o file che arriva, insieme a numeri, valute e controlli.",
+            cta: "Crea un account gratuito",
+            docs: "Cos'è un Cleaner",
+          },
+        },
+      },
+    },
+    "currency-converter": {
+      vocab: SPREADSHEET_VOCAB,
+      overrides: {
+        title: "Converti valute in Excel al cambio di oggi, gratis",
+        description:
+          "Carica un file Excel o CSV con prezzi o importi e ottieni ogni colonna convertita in dollari, euro, sterline o in una qualsiasi di 30 valute al cambio di riferimento del giorno. Gratis, senza registrazione per vedere il risultato.",
+        label: "Converti valute",
+        h1: "Converti gli importi del tuo foglio di calcolo in un'altra valuta",
+        intro:
+          "Carica il file Excel o CSV. Scegli le colonne con gli importi, la valuta in cui sono e quella che vuoi. Tavnit aggiunge la colonna convertita accanto a ciascuna al cambio del giorno e ti restituisce il file completo.",
+        trust: ["CSV o Excel · fino a 500 righe", "{limit} file gratis al giorno", "Tutto viene cancellato dopo 24 h"],
+        drop: {
+          title: "Trascina qui il tuo file Excel o CSV",
+          hint: "oppure scegli un file dal tuo computer",
+          choose: "Scegli file",
+          sample: "Prova con un file di esempio",
+          formats: "CSV o .xlsx · fino a 4 MB e 500 righe",
+        },
+        errors: {
+          unsupported: "Solo file CSV o Excel (.xlsx).",
+          xls: "Questo è un file Excel vecchio (.xls). Aprilo in Excel e salvalo come .xlsx o .csv.",
+          too_many_rows: "La versione gratuita gestisce fino a 500 righe. Carica una parte del file.",
+          too_many_columns: "Scegli fino a 10 colonne alla volta.",
+          no_columns: "Scegli almeno una colonna.",
+          nothing_to_clean: "Non abbiamo trovato importi da convertire in quelle colonne.",
+          empty: "Il file è vuoto o non ha righe sotto l'intestazione.",
+          unreadable: "Non siamo riusciti a leggere il file. Se è un file Excel, salvalo di nuovo come .xlsx.",
+          failed: "Non siamo riusciti a convertire questo file. Riprova, oppure prova con il file di esempio.",
+        },
+        how: {
+          heading: "Come funziona",
+          steps: [
+            { title: "Carica il file", body: "Un CSV o un file Excel con prezzi, totali o qualsiasi colonna di importi." },
+            { title: "Scegli le valute", body: "Selezioniamo noi le colonne che sembrano importi. Tu indichi in che valuta sono, come sono scritti i decimali e in cosa convertirli." },
+            { title: "Controlla e scarica", body: "Ogni colonna convertita sta accanto all'originale. Con il tuo account gratuito scarichi il file in Excel o CSV." },
+          ],
+        },
+        faqs: [
+          { q: "Che tasso di cambio usa?", a: "Il cambio di riferimento del giorno pubblicato dalla Banca Centrale Europea. È lo stesso per tutto il file ed è un riferimento, non il cambio di acquisto o di vendita della tua banca." },
+          { q: "Quali valute posso convertire?", a: "Dollaro statunitense (USD), euro (EUR), sterlina (GBP), peso messicano (MXN), real (BRL), yuan (CNY), dollaro canadese, yen, franco svizzero e le altre valute pubblicate dalla Banca Centrale Europea, 30 in tutto. Puoi convertire da una qualsiasi di esse a una qualsiasi di esse." },
+          { q: "Funziona con pesos colombiani, soles, pesos cileni o balboa?", a: "Non ancora: queste valute non sono nei cambi della Banca Centrale Europea. A Panama, dove il balboa è alla pari con il dollaro, puoi scegliere USD." },
+          { q: "Cosa succede alle mie colonne originali?", a: "Restano come erano. La conversione viene aggiunta come nuova colonna accanto, per esempio «Price (USD)», così puoi confrontare." },
+          { q: "Cosa succede alle celle che non sono importi?", a: "Restano vuote nella colonna convertita. Un testo, una percentuale o una cella vuota non vengono convertiti." },
+          { q: "Che fine fa il mio file?", a: "Viene usato solo per questa conversione e cancellato dopo 24 ore insieme al risultato. Solo il tuo browser può vedere il risultato." },
+          { q: "Come faccio perché succeda da solo?", a: "In Tavnit la conversione di valuta è un Cleaner: gira da sola su ogni fattura che estrai o su ogni file che arriva via email o API, insieme a date, numeri e controlli." },
+        ],
+        clean: {
+          setup: {
+            heading: "Scegli le colonne e le valute",
+            fileSummary: "{rows} · {cols}",
+            columnsLabel: "Colonne con importi",
+            columnsHint: "Fino a {max}. Abbiamo selezionato quelle che sembrano importi.",
+            tooMany: "Puoi scegliere fino a {max} colonne alla volta.",
+            sourceLabel: "Gli importi sono in",
+            sourceHint: "Valute con un cambio della Banca Centrale Europea.",
+            inputLabel: "I decimali usano",
+            inputOptions: { comma: "la virgola · 1.234,56", dot: "il punto · 1,234.56" },
+            outputPopular: "Più usate",
+            outputAll: "Tutte le valute",
+            outputLabel: "Converti in",
+            outputOptions: {},
+            preview: "Prime righe",
+            run: "Converti",
+            change: "Cambia file",
+          },
+          stages: ["Caricamento del file", "Lettura degli importi", "Recupero del cambio del giorno", "Conversione", "Creazione del tuo file"],
+          heading: "Fatto: {file}",
+          summary: "{cells} convertite in {cols}",
+          cellWord: ["cella", "celle"],
+          columnWord: ["colonna", "colonne"],
+          unchanged: "Non abbiamo trovato importi da convertire in quelle colonne.",
+          highlight: "Le colonne convertite sono in blu.",
+          shown: "Vedi {shown} righe su {total}. Il download le contiene tutte.",
+          download: "Scarica",
+          downloadXlsx: "Excel (.xlsx)",
+          downloadCsv: "CSV (.csv)",
+          another: "Converti un altro file",
+          automate: {
+            heading: "Fallo succedere con ogni fattura",
+            body: "In Tavnit la conversione di valuta è un Cleaner. La configuri una volta e ogni fattura o preventivo in un'altra valuta arriva già convertito, insieme a date, numeri e controlli.",
+            cta: "Crea un account gratuito",
+            docs: "Cos'è un Cleaner",
+          },
+        },
+      },
+    },
+    "translate-columns": {
+      vocab: SPREADSHEET_VOCAB,
+      overrides: {
+        title: "Traduci le colonne di Excel, gratis",
+        description:
+          "Carica un file Excel o CSV e traduci le colonne che scegli in più di 40 lingue: inglese, spagnolo, portoghese, cinese e altre. Ogni traduzione viene aggiunta accanto alla sua colonna. Gratis, senza registrazione per vedere il risultato.",
+        label: "Traduci colonne",
+        h1: "Traduci le colonne del tuo foglio di calcolo",
+        intro:
+          "Carica il file Excel o CSV. Scegli quali colonne tradurre e in quale lingua. Tavnit rileva la lingua di partenza e aggiunge la traduzione accanto a ogni colonna, senza toccare il resto del file.",
+        trust: ["CSV o Excel · fino a 200 righe", "{limit} file gratis al giorno", "Tutto viene cancellato dopo 24 h"],
+        drop: {
+          title: "Trascina qui il tuo file Excel o CSV",
+          hint: "oppure scegli un file dal tuo computer",
+          choose: "Scegli file",
+          sample: "Prova con un file di esempio",
+          formats: "CSV o .xlsx · fino a 4 MB e 200 righe",
+        },
+        errors: {
+          unsupported: "Solo file CSV o Excel (.xlsx).",
+          xls: "Questo è un file Excel vecchio (.xls). Aprilo in Excel e salvalo come .xlsx o .csv.",
+          too_many_rows: "La traduzione gratuita gestisce fino a 200 righe. Carica una parte del file.",
+          too_many_columns: "Scegli fino a 10 colonne alla volta.",
+          no_columns: "Scegli almeno una colonna.",
+          nothing_to_clean: "Non abbiamo trovato testo da tradurre in quelle colonne.",
+          empty: "Il file è vuoto o non ha righe sotto l'intestazione.",
+          unreadable: "Non siamo riusciti a leggere il file. Se è un file Excel, salvalo di nuovo come .xlsx.",
+          failed: "Non siamo riusciti a tradurre questo file. Riprova, oppure prova con il file di esempio.",
+        },
+        how: {
+          heading: "Come funziona",
+          steps: [
+            { title: "Carica il file", body: "Un CSV o un file Excel con descrizioni, istruzioni, commenti o qualsiasi colonna di testo." },
+            { title: "Scegli colonne e lingua", body: "Selezioniamo noi le colonne con testo. Tu scegli la lingua; quella di partenza viene rilevata per te." },
+            { title: "Controlla e scarica", body: "Ogni traduzione sta accanto alla sua colonna originale. Con il tuo account gratuito scarichi il file in Excel o CSV." },
+          ],
+        },
+        faqs: [
+          { q: "Quali lingue posso scegliere?", a: "Più di 40: inglese, spagnolo, portoghese, francese, tedesco, cinese, italiano, giapponese, coreano, arabo, russo, hindi, turco, vietnamita e molte altre. La lingua di partenza viene rilevata cella per cella, quindi funziona anche quando il tuo file mescola più lingue." },
+          { q: "Cosa succede a codici, numeri e nomi propri?", a: "Vengono mantenuti. La traduzione rispetta formattazione, unità e codici; una cella già nella lingua di destinazione resta com'è." },
+          { q: "Perché il limite è di 200 righe?", a: "Perché ogni cella viene tradotta con un modello linguistico. La versione gratuita gestisce fino a 200 righe per file; un account non ha questo limite." },
+          { q: "Cosa succede alle mie colonne originali?", a: "Restano come erano. La traduzione viene aggiunta come nuova colonna accanto, per esempio «Description (IT)»." },
+          { q: "Posso usarlo per le descrizioni dei prodotti in dogana?", a: "Sì, è un uso comune: mettere in inglese o in spagnolo le descrizioni di una fattura commerciale o di una packing list prima di classificare la merce." },
+          { q: "Che fine fa il mio file?", a: "Viene usato solo per questa traduzione e cancellato dopo 24 ore insieme al risultato. Solo il tuo browser può vedere il risultato." },
+          { q: "Come faccio perché succeda da solo?", a: "In Tavnit la traduzione è un Cleaner: gira da sola su ogni documento che estrai o su ogni file che arriva via email o API, insieme a date, numeri e valute." },
+        ],
+        clean: {
+          setup: {
+            heading: "Scegli le colonne e la lingua",
+            fileSummary: "{rows} · {cols}",
+            columnsLabel: "Colonne con testo",
+            columnsHint: "Fino a {max}. Abbiamo selezionato quelle con testo.",
+            tooMany: "Puoi scegliere fino a {max} colonne alla volta.",
+            inputLabel: "",
+            inputOptions: {},
+            outputPopular: "Più usate",
+            outputAll: "Tutte le lingue",
+            outputLabel: "Traduci in",
+            outputOptions: {},
+            preview: "Prime righe",
+            run: "Traduci",
+            change: "Cambia file",
+          },
+          stages: ["Caricamento del file", "Lettura delle colonne", "Rilevamento della lingua", "Traduzione", "Creazione del tuo file"],
+          heading: "Fatto: {file}",
+          summary: "{cells} tradotte in {cols}",
+          cellWord: ["cella", "celle"],
+          columnWord: ["colonna", "colonne"],
+          unchanged: "Non abbiamo trovato testo da tradurre in quelle colonne.",
+          highlight: "Le colonne tradotte sono in blu.",
+          shown: "Vedi {shown} righe su {total}. Il download le contiene tutte.",
+          download: "Scarica",
+          downloadXlsx: "Excel (.xlsx)",
+          downloadCsv: "CSV (.csv)",
+          another: "Traduci un altro file",
+          automate: {
+            heading: "Fallo succedere con ogni documento",
+            body: "In Tavnit la traduzione è un Cleaner. La configuri una volta e ogni fattura, packing list o file che arriva ha già le descrizioni tradotte.",
+            cta: "Crea un account gratuito",
+            docs: "Cos'è un Cleaner",
+          },
+        },
+      },
+    },
+  },
+
+  og: {
+    "invoice-to-excel": "Gratis. Senza modelli. Le righe della tua fattura in un foglio di calcolo.",
+    "invoice-line-items": "Gratis. Una riga per voce, intestazione su ogni riga. Senza modelli.",
+    "po-invoice-check": "Gratis. Ogni riga dell'ordine contro la fattura: prezzo, quantità, righe mancanti e in più.",
+    "split-scanned-pdf": "Gratis. Una scansione in ingresso, ogni documento in uscita, ciascuno classificato.",
+    "packing-list-to-excel": "Gratis. Senza modelli. Ogni riga della tua packing list in un foglio di calcolo.",
+    "bill-of-lading-to-excel": "Gratis. Senza modelli. Parti, nave, porti e una riga per container.",
+    "quote-comparison": "Gratis. Due o tre preventivi, una tabella, il più economico per riga evidenziato.",
+    "contract-dates": "Gratis. Parti, durata, rinnovo automatico e termine di disdetta, in una riga.",
+    "receipt-to-excel": "Gratis. Fotografa uno scontrino, ottieni i suoi articoli in un foglio di calcolo.",
+    "number-format": "Gratis. Qualsiasi colonna di numeri, un solo formato: 1234.56, 1,234.56 o 1.234,56.",
+    "date-format": "Gratis. Date miste in ingresso, un solo formato in uscita, anche le date scritte a parole.",
+    "currency-converter": "Gratis. Qualsiasi colonna di prezzi, convertita al cambio di riferimento del giorno.",
+    "translate-columns": "Gratis. Qualsiasi colonna di testo, tradotta in oltre 40 lingue.",
+  },
+};
+
+export default copy;
