@@ -1,14 +1,79 @@
-// TODO(i18n): translate from en
 import type { HomeCopy } from "@/content/types";
-import en from "./en";
 
-/**
- * Home (components/LocalizedHome.tsx) — 日本語 (ja).
- *
- * STUB: serves the English source until translated. To translate, replace
- * `en` with a full copy of ./en.ts in 日本語, keeping every key and the
- * values listed as "stays English" in src/content/README.md.
- */
-const ja: HomeCopy = en;
+/** Home (components/LocalizedHome.tsx) — 日本語 (ja). Translated from ./en.ts. */
+const ja: HomeCopy = {
+  title: "Tavnit — AIで書類からデータを抽出し、確認して、すぐに活用",
+  description:
+    "請求書、パッキングリスト、契約書、各種フォームを構造化データに変換。取引先ごとのテンプレートは不要です。記録される前にチームが確認・承認します。API、メール、MCPに対応。",
+  schemaName: "Tavnit 日本語版",
+  breadcrumbHome: "ホーム",
+  readInEnglish: "Read this page in English",
+  eyebrow: "AIによる書類業務の自動化",
+  h1: "AIで書類からデータを抽出し、チームで確認して、そのまま業務に活かす",
+  lede:
+    "Tavnitは請求書、パッキングリスト、契約書、各種フォームを構造化データに変換します。取引先ごとのテンプレートは必要ありません。データが記録される前にチームが確認・承認し、承認済みのデータはAPI、Webhook、メールでお使いのシステムに届きます。",
+  ctaDemo: "デモを予約",
+  ctaTry: "無料で試す",
+  ids: { howItWorks: "how-it-works", useCases: "use-cases", integrations: "integrations", faq: "faq" },
+  problemHeading: "よくある課題",
+  problems: [
+    "同じ項目を、何百種類ものレイアウトから毎月手で打ち直していませんか。取引先ごとに請求書の書式は異なり、チームの誰かがそれを表計算ソフトや基幹システムに手入力しています。",
+    "テンプレート型のOCRツールは、取引先がレイアウトを変えた途端に、何の警告もなく失敗します。「PDFとチャット」するツールは数字をでっち上げることがあり、確認の仕組みも監査証跡もなく、システムへ連携する手段もありません。",
+    "間違った合計金額は、正しい合計金額とまったく同じに見えます。本当のコストは入力作業の時間ではありません。誰にも気づかれないまま帳簿や通関申告に紛れ込む誤りこそが問題なのです。",
+  ],
+  stepsHeading: "仕組み：抽出、確認、活用",
+  steps: [
+    {
+      title: "抽出",
+      body: "請求書番号、取引先、数量と単価を含む明細行など、必要な項目を一度定義するだけ。Tavnitはレイアウトを問わず、PDF、スキャン、写真からそれらを抽出します。取引先ごとのテンプレートは不要です。",
+    },
+    {
+      title: "確認",
+      body: "Cleanerがデータを整形・検証します。日付形式、通貨、明細の計算、マスターデータとの照合まで。辻褄が合わないものは処理を止めて、指定された担当者のレビューに回します。すべての操作は追記専用の監査証跡に記録されます。",
+    },
+    {
+      title: "活用",
+      body: "承認済みのデータはAPIやWebhookでERPや会計システムに届き、検索可能なBucketに保存され、PDFフォームに自動入力され、あるいはWebポータル上で代わりに作業するAgentに渡されます。",
+    },
+  ],
+  useCasesHeading: "ユースケース",
+  useCasesIntro:
+    "各ページでは、その種類の書類で重要な項目と、よく起こる問題を解説しています。ある書類が他より難しい理由は、まさにそこにあります。",
+  useCasesAll: "{count}件のユースケースをすべて見る",
+  integrationsHeading: "今お使いのツールとそのまま連携",
+  integrations: [
+    "メール：PDFをTavnitのアドレスに転送するだけでデータが返ってきます。連携作業はゼロです。",
+    "REST APIとWebhook：お使いのシステムから書類を送信し、処理が終わった瞬間に結果を受け取れます。Zapier、Make、n8n、Power Automate向けのレシピも用意しています。",
+    "MCPコネクター：Tavnitをclaude.aiやCursorにつなげば、アシスタントに書類の処理や抽出済みデータの検索を頼めます。",
+    "Bucket：自然な言葉で検索し、グラフ化できる組み込みの構造化ストレージ。エクスポートは不要です。",
+  ],
+  integrationsAll: "すべての連携方法",
+  faqHeading: "よくある質問",
+  faqs: [
+    {
+      q: "取引先ごとにテンプレートを作る必要はありますか？",
+      a: "いいえ。Flowで項目を一度定義すれば、Tavnitがどんなレイアウトからでも見つけ出します。取引先が請求書の書式を変えても、何もする必要はありません。",
+    },
+    {
+      q: "誤った値がシステムに入らないようにするには？",
+      a: "人によるレビューを使います。すべての書類で承認を必須にすることも、Cleanerのルールが異常を検知したとき（たとえば数量×単価が明細の合計と一致しないとき）だけ承認を求めることもできます。レビュー担当者は書類と抽出データを並べて確認し、修正または承認します。すべての操作は監査証跡に記録されます。",
+    },
+    {
+      q: "書類はどうやって送ればいいですか？",
+      a: "お好きな方法でどうぞ。PDFを添付したメールをTavnitのアドレスに転送する、アプリでアップロードする、APIで送信する、のいずれでも構いません。結果はWebhook、API、メールで届くほか、検索やグラフ化ができるBucketに保存することもできます。",
+    },
+    {
+      q: "日本語の書類にも対応していますか？",
+      a: "はい。Tavnitはどの言語で書かれた書類からでもデータを抽出でき、お使いのシステムで使っている項目名でデータを返すこともできます。アプリ自体も複数の言語に対応しています。",
+    },
+    {
+      q: "料金はいくらですか？",
+      a: "料金はクレジット制で、1クレジットで1ページを処理できます。デモをご予約いただければ、処理量と実際の書類を拝見したうえでご案内します。",
+    },
+  ],
+  finalHeading: "お手持ちの書類で試してみてください",
+  finalBody:
+    "実際の請求書やパッキングリストをお持ちください。デモでは最初のFlowを一緒に作成し、データが抽出される様子をその場でご覧いただけます。",
+};
 
 export default ja;

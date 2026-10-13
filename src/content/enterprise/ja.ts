@@ -1,14 +1,63 @@
-// TODO(i18n): translate from en
 import type { EnterpriseCopy } from "@/content/types";
-import en from "./en";
 
-/**
- * Enterprise services (/enterprise) — 日本語 (ja).
- *
- * STUB: serves the English source until translated. To translate, replace
- * `en` with a full copy of ./en.ts in 日本語, keeping every key and the
- * values listed as "stays English" in src/content/README.md.
- */
-const ja: EnterpriseCopy = en;
+/** Enterprise services (/enterprise) — 日本語 (ja). Translated from ./en.ts. */
+const ja: EnterpriseCopy = {
+  title: "エンタープライズサービス — 導入支援、統制、業務アドバイザリー",
+  description:
+    "Tavnit Enterprise：貴社の条件に合わせた契約、実務に踏み込んだ導入支援、ユーザーロールと監査証跡、直接サポート、そして書類の電子化とデータ入力業務を最適化する業務アドバイザリーを提供します。",
+  home: "ホーム",
+  breadcrumbLabel: "パンくずリスト",
+  crumb: "エンタープライズ",
+  eyebrow: "Tavnit Enterprise",
+  h1: "エンタープライズサービス",
+  lead:
+    "大量の書類を処理する組織や、独自の条件が必要な組織のために。プラットフォームに加えて、契約、Tavnitを本番運用に乗せるための実務的な支援、そしてその周辺業務へのアドバイスを提供します。",
+  servicesHeading: "Enterpriseに含まれるもの",
+  services: [
+    {
+      title: "貴社の条件に合わせた契約",
+      body: "セルフサービスのプランではなく、処理量、商取引条件、支払い方法を、貴社の書類量に合わせた契約で取り決めます。",
+    },
+    {
+      title: "実務に踏み込んだ導入支援",
+      body: "Flow、Cleaner、レビュールール、連携（API、Webhook、メール）を、実際の書類を使って貴社と一緒に設定し、本番環境で稼働する状態までお届けします。",
+    },
+    {
+      title: "統制と監査",
+      body: "レビュー専用ロールを含むユーザーロール、条件付きの人によるレビュー、そしてすべての閲覧・編集・承認を記録する追記専用の監査証跡。",
+      links: [
+        { label: "ユーザーロール", href: "/docs/user-roles" },
+        { label: "ヒューマン・イン・ザ・ループ", href: "/docs/human-in-the-loop" },
+      ],
+    },
+    {
+      title: "直接サポート",
+      body: "製品を開発しているチームに直接つながる窓口。英語とスペイン語で対応します。",
+    },
+  ],
+  advisory: {
+    eyebrow: "業務アドバイザリー",
+    heading: "業務アドバイザリー",
+    subheading: "書類の電子化とデータ入力業務の最適化",
+    intro:
+      "プラットフォームの提供に加えて、書類に含まれる情報の受け取り方、電子化、記録の方法を整理・改善したい企業に助言を行っています。最終的にTavnitで自動化するかどうかは問いません。",
+    scopeHeading: "対象範囲",
+    scope: [
+      { title: "現状業務の診断", body: "どんな書類が、どの経路で、どれだけの量届くのか。誰が入力し、どれだけ時間がかかり、どこで誤りが生じているのかを明らかにします。" },
+      { title: "電子化", body: "スキャンと取り込みの基準、ファイルの整理と命名規則、混在した束の仕分け、原本の追跡可能性の確保。" },
+      { title: "データ入力", body: "本当に必要な項目の洗い出し、日付・金額・通貨の標準形式、入力チェック、マスターデータとの照合。" },
+      { title: "統制", body: "人によるレビューが必要な箇所、職務分掌、そして監査人や規制当局が求める監査証跡。" },
+      { title: "システム連携", body: "データをERP、会計システム、表計算ソフトにどう届けるか。どの工程を自動化する価値があり、どの工程はそうでないか。" },
+      { title: "展開とトレーニング", body: "段階的な導入計画と、データを入力・確認・活用する担当者へのトレーニング。" },
+    ],
+    deliverablesHeading: "成果物",
+    deliverables:
+      "現状業務の診断書、統制を組み込んだ新しい業務プロセスの設計、そして成果を測る指標（書類1件あたりの入力時間、修正率、レビュー待ちの書類数）を備えた段階的な導入計画をお渡しします。",
+  },
+  ctaHeading: "お問い合わせ",
+  ctaBody: "扱っている書類と処理量をお聞かせください。どのサービスが合うかをご提案します。",
+  ctaButton: "ミーティングを予約",
+  ctaEmail: "またはメールでのお問い合わせ：",
+};
 
 export default ja;
