@@ -7,6 +7,7 @@ import {
   type TranslatedDocSlug,
 } from "./types";
 import deNav from "./de/nav";
+import jaNav from "./ja/nav";
 import plNav from "./pl/nav";
 import zhHansNav from "./zh-Hans/nav";
 import itNav from "./it/nav";
@@ -111,6 +112,17 @@ export const DOCS_CONTENT: Partial<Record<NewLocale, DocsLocaleContent>> = {
       "email-integration": () => import("./pl/email-integration"),
       "mcp-connector": () => import("./pl/mcp-connector"),
       "human-in-the-loop": () => import("./pl/human-in-the-loop"),
+    },
+  },
+  ja: {
+    nav: jaNav,
+    pages: {
+      "getting-started": () => import("./ja/index"),
+      flows: () => import("./ja/flows"),
+      "api-integration": () => import("./ja/api-integration"),
+      "email-integration": () => import("./ja/email-integration"),
+      "mcp-connector": () => import("./ja/mcp-connector"),
+      "human-in-the-loop": () => import("./ja/human-in-the-loop"),
     },
   },
 };
