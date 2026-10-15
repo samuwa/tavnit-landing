@@ -76,10 +76,11 @@ export default function TermsPage() {
         <LegalSection heading="Accounts and credentials">
           <p>
             You are responsible for the accuracy of your account information and for all
-            activity under your account. This explicitly includes API keys and MCP connector
-            URLs, both of which grant access to your organisation&rsquo;s data and must be
-            treated as secrets. Either can be rotated at any time; refreshing a connector URL
-            immediately invalidates the previous one.
+            activity under your account. This explicitly includes API keys, which grant access
+            to your organisation&rsquo;s data and must be treated as secrets, and the AI apps
+            you connect through the MCP connector, which act with your role. A key can be
+            rotated and a connected app revoked at any time; revoking immediately ends that
+            app&rsquo;s access.
           </p>
           <p>
             Organisation Owners and Admins control roles and per-bucket access. We act on the

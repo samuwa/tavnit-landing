@@ -53,19 +53,19 @@ const faqs = [
   },
   {
     q: "¿Necesito escribir código?",
-    a: "No. Generas una URL de conector en Tavnit y la pegas en la configuración de tu asistente. Construir el Flow que llama tampoco requiere código — describes los campos que quieres y Tavnit los extrae.",
+    a: "No. Agregas la URL del servidor de Tavnit en tu asistente (claude.ai y Cursor tienen botones de un clic en la página Integraciones) e inicias sesión con tu cuenta de Tavnit. Construir el Flow que llama tampoco requiere código — describes los campos que quieres y Tavnit los extrae.",
   },
   {
     q: "¿El asistente puede ver todo lo que hay en la cuenta de mi empresa?",
-    a: "No. El conector se emite desde tu propia API key, así que llega solo a la organización en la que iniciaste sesión, con los permisos de tu rol. Un Member no puede hacer que un asistente haga algo que un Member no puede hacer en la aplicación, y los Buckets privados siguen siendo privados salvo que te hayan dado acceso.",
+    a: "No. Apruebas cada app de IA con tu propio inicio de sesión y eliges la organización en la que puede trabajar, así que llega solo a esa organización, con los permisos de tu rol. Un Member no puede hacer que un asistente haga algo que un Member no puede hacer en la aplicación, y los Buckets privados siguen siendo privados salvo que te hayan dado acceso.",
   },
   {
     q: "¿Usar el conector cuesta extra?",
     a: "No. Los documentos procesados a través del conector consumen créditos a la tarifa normal de un crédito por página, igual que subirlos en la aplicación o llamar a la API. No hay un cargo aparte por el acceso MCP.",
   },
   {
-    q: "¿Qué pasa cuando la URL del conector vence?",
-    a: "Las URLs de conector tienen tiempo de vida limitado, y Tavnit muestra cuándo se creó la tuya y cuándo vence. Al renovarla se emite una URL nueva y la anterior se invalida de inmediato, así que cualquier cliente que aún tenga la vieja deja de funcionar hasta que pegues el valor nuevo.",
+    q: "¿Cómo desconecto una app de IA?",
+    a: "La página Integraciones lista cada app de IA conectada, cuándo se aprobó y para qué organización. Revoca una y su acceso termina de inmediato; al conectarla de nuevo te pedirá iniciar sesión y elegir una organización. No hay clave ni URL que rotar: los tokens son de corta duración y la app los renueva por su cuenta.",
   },
 ];
 
@@ -149,8 +149,8 @@ export default async function SpanishMcpIntegrationPage() {
           limpios y tipificados, en lugar de una interpretación del archivo que le entregaron.
         </p>
         <p className="text-fg-4 leading-relaxed mb-10">
-          La configuración es una URL que pegas en los ajustes de tu asistente. Sin SDK, sin
-          servidor propio, sin código.
+          La configuración es un inicio de sesión: agrega Tavnit en tu asistente y apruébalo con
+          tu cuenta de Tavnit. Sin SDK, sin servidor que ejecutar, sin código, sin claves que copiar.
         </p>
 
         <div className="flex flex-wrap gap-3 mb-16">
@@ -297,19 +297,20 @@ export default async function SpanishMcpIntegrationPage() {
                 <h3 className="text-base font-semibold text-fg">Tus permisos, ni uno más</h3>
               </div>
               <p className="text-sm text-fg-4 leading-relaxed">
-                El conector se emite desde tu propia API key y llega solo a la organización en la
-                que lo generaste. El asistente hereda tu rol — no puede hacer nada que tú no
-                pudieras hacer en la aplicación.
+                Apruebas cada app de IA con tu propio inicio de sesión y eliges la organización
+                en la que puede trabajar. El asistente hereda tu rol — no puede hacer nada que tú
+                no pudieras hacer en la aplicación.
               </p>
             </div>
             <div className="glass-card rounded-xl p-5">
               <div className="flex items-center gap-2.5 mb-2 text-accent-2">
                 <Lock size={19} />
-                <h3 className="text-base font-semibold text-fg">Trata la URL como una credencial</h3>
+                <h3 className="text-base font-semibold text-fg">Nada que copiar, fácil de revocar</h3>
               </div>
               <p className="text-sm text-fg-4 leading-relaxed">
-                Quien tenga la URL del conector puede llegar a tus Flows y Buckets. Las URLs tienen
-                tiempo de vida limitado, y renovar una invalida la anterior de inmediato.
+                Las conexiones son OAuth 2.1 estándar: tokens de corta duración, ninguna credencial
+                que pegar o filtrar, y un botón Revocar en la página Integraciones que corta el
+                acceso de una app de inmediato.
               </p>
             </div>
           </div>
@@ -329,9 +330,9 @@ export default async function SpanishMcpIntegrationPage() {
         <section className="mb-16">
           <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">Cómo conectarlo</h2>
           <p className="text-fg-4 leading-relaxed mb-4">
-            Genera una URL de conector en la página de Integraciones de Tavnit y pégala en
-            claude.ai bajo Settings &rarr; Connectors, o añádela a Cursor como servidor MCP remoto.
-            Toma un par de minutos y no requiere código.
+            Abre la página Integraciones de Tavnit y selecciona Agregar a Claude o Agregar a
+            Cursor, o ingresa la URL del servidor en cualquier cliente MCP. Inicia sesión con tu
+            cuenta de Tavnit, elige la organización y aprueba. Toma un minuto y no requiere código.
           </p>
           <Link
             href="/es/documentacion/conector-mcp"
@@ -358,7 +359,7 @@ export default async function SpanishMcpIntegrationPage() {
             Apunta tu asistente a documentos reales
           </h2>
           <p className="text-fg-4 mb-6 max-w-[520px] mx-auto leading-relaxed">
-            Crea un Flow, genera una URL de conector y empieza a preguntar. Créditos gratis para
+            Conecta tu asistente, inicia sesión y empieza a preguntar. Créditos gratis para
             empezar, sin tarjeta.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">

@@ -51,23 +51,23 @@ const faqs = [
   },
   {
     q: "Which AI assistants work with it?",
-    a: "claude.ai on a Pro plan or above, Cursor, and any client that accepts a remote MCP server URL. MCP is an open protocol, so support is not limited to a specific vendor.",
+    a: "claude.ai on a Pro plan or above, Claude Code, Claude Desktop, Cursor, ChatGPT on a paid plan, and any client that supports remote MCP servers with OAuth. MCP is an open protocol, so support is not limited to a specific vendor.",
   },
   {
     q: "Do I need to write code?",
-    a: "No. You generate a connector URL in Tavnit and paste it into your assistant's settings. Building the flow it calls is also no-code — you describe the fields you want and Tavnit extracts them.",
+    a: "No. You add Tavnit's server URL in your assistant (claude.ai and Cursor have one-click buttons on the Integrations page) and sign in with your Tavnit account. Building the flow it calls is also no-code — you describe the fields you want and Tavnit extracts them.",
   },
   {
     q: "Can the assistant see everything in my company's account?",
-    a: "No. The connector is issued from your own API key, so it reaches only the organisation you were signed in to, with your role's permissions. A Member cannot make an assistant do something a Member cannot do in the app, and private Buckets stay private unless you have been granted access.",
+    a: "No. You approve each AI app with your own sign-in and pick the organisation it may work in, so it reaches only that organisation, with your role's permissions. A Member cannot make an assistant do something a Member cannot do in the app, and private Buckets stay private unless you have been granted access.",
   },
   {
     q: "Does using the connector cost extra?",
     a: "No. Documents processed through the connector consume credits at the normal rate of one credit per page, the same as uploading through the app or calling the API. There is no separate charge for MCP access.",
   },
   {
-    q: "What happens when the connector URL expires?",
-    a: "Connector URLs are time-limited, and Tavnit shows when yours was created and when it expires. Refreshing issues a new URL and invalidates the previous one immediately, so any client still holding the old one stops working until you paste the new value.",
+    q: "How do I disconnect an AI app?",
+    a: "The Integrations page lists every connected AI app, when it was approved and for which organisation. Revoke one and its access ends immediately; connecting it again asks you to sign in and pick an organisation. There is no key or URL to rotate: tokens are short-lived and the app refreshes them itself.",
   },
 ];
 
@@ -143,8 +143,8 @@ export default async function McpIntegrationPage() {
           interpretation of a file it was handed.
         </p>
         <p className="text-fg-4 leading-relaxed mb-10">
-          Setup is a URL you paste into your assistant&rsquo;s settings. No SDK, no
-          server to run, no code.
+          Setup is one sign-in: add Tavnit in your assistant and approve it with your
+          Tavnit account. No SDK, no server to run, no code, no key to copy.
         </p>
 
         <div className="flex flex-wrap gap-3 mb-16">
@@ -298,19 +298,20 @@ export default async function McpIntegrationPage() {
                 <h3 className="text-base font-semibold text-fg">Your permissions, not more</h3>
               </div>
               <p className="text-sm text-fg-4 leading-relaxed">
-                The connector is issued from your own API key and reaches only the
-                organisation you generated it in. The assistant inherits your role — it
-                cannot do anything you could not do in the app.
+                You approve each AI app with your own sign-in and pick the organisation it
+                may work in. The assistant inherits your role — it cannot do anything you
+                could not do in the app.
               </p>
             </div>
             <div className="glass-card rounded-xl p-5">
               <div className="flex items-center gap-2.5 mb-2 text-accent-2">
                 <Lock size={19} />
-                <h3 className="text-base font-semibold text-fg">Treat the URL as a credential</h3>
+                <h3 className="text-base font-semibold text-fg">Nothing to copy, easy to revoke</h3>
               </div>
               <p className="text-sm text-fg-4 leading-relaxed">
-                Anyone holding the connector URL can reach your flows and Buckets. URLs are
-                time-limited, and refreshing one invalidates the previous value immediately.
+                Connections are standard OAuth 2.1: short-lived tokens, no credential to
+                paste or leak, and a Revoke button on the Integrations page that cuts an
+                app&rsquo;s access immediately.
               </p>
             </div>
           </div>
@@ -331,9 +332,9 @@ export default async function McpIntegrationPage() {
         <section className="mb-16">
           <h2 className="text-2xl md:text-3xl font-bold text-fg mb-4">Connecting it</h2>
           <p className="text-fg-4 leading-relaxed mb-4">
-            Generate a connector URL on the Integrations page in Tavnit, then paste it into
-            claude.ai under Settings &rarr; Connectors, or add it to Cursor as a remote MCP
-            server. It takes a couple of minutes and needs no code.
+            Open the Integrations page in Tavnit and select Add to Claude or Add to Cursor,
+            or enter the server URL in any MCP client. Sign in with your Tavnit account, pick
+            the organisation, approve. It takes a minute and needs no code.
           </p>
           <Link
             href="/docs/mcp-connector"
@@ -361,7 +362,7 @@ export default async function McpIntegrationPage() {
             Point your assistant at real documents
           </h2>
           <p className="text-fg-4 mb-6 max-w-[520px] mx-auto leading-relaxed">
-            Build a flow, generate a connector URL, and start asking. Free credits to
+            Connect your assistant, sign in, and start asking. Free credits to
             begin, and no card required.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">

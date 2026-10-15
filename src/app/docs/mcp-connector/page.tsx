@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { docMetadata } from "@/components/docs/meta";
 import DocsPageSchema from "@/components/docs/DocsPageSchema";
+import { MCP_URL } from "@/lib/site";
 import {
   AlertTriangle,
   Info,
@@ -9,12 +10,13 @@ import {
   LifeBuoy,
   MessageSquare,
   Plug,
-  RefreshCw,
+  ShieldCheck,
   Settings2,
   Sparkles,
 } from "lucide-react";
 import {
   BulletList,
+  CodeBlock,
   DataTable,
   DocCard,
   DocLink,
@@ -28,6 +30,8 @@ import {
 
 export const metadata = docMetadata("mcp-connector");
 
+const SERVER_URL = `${MCP_URL}/mcp`;
+
 /**
  * Mirrors the numbered steps rendered under "Connect claude.ai". HowTo markup
  * has to describe steps the page actually shows, so the two must stay in sync.
@@ -35,23 +39,19 @@ export const metadata = docMetadata("mcp-connector");
 const HOW_TO = {
   name: "Connect Tavnit to claude.ai with the MCP connector",
   description:
-    "Generate a Tavnit connector URL on the Integrations page and add it to claude.ai as a custom connector, so your assistant can work with your Tavnit data.",
+    "Add Tavnit as a connector in claude.ai, sign in with your Tavnit account, pick the organization the assistant may work in and approve. No key or URL to copy.",
   steps: [
     {
-      name: "Open Integrations in Tavnit",
-      text: "Sign in to the Tavnit app and open Integrations from the sidebar. Check that you are in the organization whose data the assistant should reach.",
+      name: "Open the Integrations page in Tavnit",
+      text: "Sign in to the Tavnit app and open Integrations from the sidebar. The AI apps card shows the server URL and an Add to Claude button.",
     },
     {
-      name: "Generate the connector URL",
-      text: "In the Custom Connector card, select Generate connector URL. Tavnit issues the URL from your API key and shows when it was created and when it expires.",
+      name: "Add the connector in claude.ai",
+      text: "Select Add to Claude, or in claude.ai go to Settings, then Connectors, then Add custom connector, and enter the server URL. Leave the OAuth client fields empty. Custom connectors need a Claude Pro plan or above.",
     },
     {
-      name: "Copy the URL",
-      text: "Copy the connector URL with the copy button. Treat it like a password.",
-    },
-    {
-      name: "Add it as a custom connector in claude.ai",
-      text: "In claude.ai go to Settings, then Connectors, then Add custom connector, and paste the URL. Custom connectors need a Claude Pro plan or above.",
+      name: "Sign in and pick an organization",
+      text: "Select Connect. A Tavnit page opens: sign in if you are not already, choose the organization the assistant may work in, and approve.",
     },
     {
       name: "Confirm the connection",
@@ -71,16 +71,19 @@ export default function Page() {
 
         <DocCard icon={<Plug size={24} />} title="What the MCP connector does">
           <Lead>
-            The MCP connector adds your Tavnit organization as a tool inside an AI assistant. Once
-            it is connected, you can ask the assistant about your Tavnit data in plain language and
-            it answers from your live account instead of guessing.
+            The MCP connector adds your Tavnit organization as a set of tools inside an AI
+            assistant. Once connected, you describe what you need in plain language and the
+            assistant designs and configures it in your live account: flows, cleaning rules,
+            buckets, pipelines, integrations.
           </Lead>
           <p>
             MCP (Model Context Protocol) is the open standard that lets AI assistants call external
-            tools. Tavnit runs an MCP server at <InlineCode>mcp.tavnit.io</InlineCode>, and the
-            connector URL is the credential that points a client at your organization. It works with{" "}
-            <strong>claude.ai</strong> (Pro and above), <strong>Cursor</strong>, and any other client
-            that accepts a remote MCP server URL.
+            tools. Tavnit runs an MCP server at <InlineCode>{SERVER_URL}</InlineCode>. The
+            connector signs you in with your Tavnit account (OAuth 2.1), so there is no key or URL
+            to copy: the assistant acts as you, in the organization you pick, with your role. It
+            works with <strong>claude.ai</strong> (Pro and above), <strong>Claude Code</strong>,{" "}
+            <strong>Claude Desktop</strong>, <strong>Cursor</strong>, <strong>ChatGPT</strong>{" "}
+            (paid plans) and any other client that supports remote MCP servers with OAuth.
           </p>
           <p>
             For what the connector is for, and how it compares to pasting a file into a chat, see
@@ -90,51 +93,47 @@ export default function Page() {
             </Link>
             .
           </p>
-          <InfoBox color="blue" icon={<Info size={20} />} title="Enabled on request">
-            The connector is turned on per organization. If you don&apos;t see the Custom Connector
-            card on the Integrations page, contact support to have it enabled for your
-            organization.
+          <InfoBox color="blue" icon={<Info size={20} />} title="Available to every organization">
+            MCP access is on for every Tavnit organization. If the AI apps card is missing from your
+            Integrations page, an administrator has switched it off for your organization; contact
+            support to have it restored.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<KeyRound size={24} />} title="Before you start">
           <Lead>
-            You need three things: an organization with the connector enabled, your API key, and an
-            MCP client. The connector is issued from your own key, so it reaches only the
-            organization you were in when you generated it, and the assistant acts with that key.
+            You need a Tavnit account that belongs to at least one organization, and an MCP
+            client. That is all: the connection is approved with your sign-in, not with a key.
           </Lead>
           <DataTable
             head={["Requirement", "Where it comes from"]}
             rows={[
               [
-                "Custom Connector card",
+                "A Tavnit account",
                 <Fragment key="f0">
-                  On the <strong>Integrations</strong> page, only when the connector is enabled for
-                  your organization. Ask support if it is missing.
+                  The same email and password (or Google sign-in) you use for the app. The
+                  consent page asks you to sign in when you are not already.
                 </Fragment>,
               ],
               [
-                "Your API key",
+                "An organization",
                 <Fragment key="f1">
-                  The <strong>API Key</strong> card on the same page: one key per member per
-                  organization. If it says <em>No API key found. Please log in again.</em>, sign out
-                  and back in.
+                  You pick one when you approve the connection. Only organizations you belong to,
+                  with MCP access on, are offered.
                 </Fragment>,
               ],
               [
                 "An MCP client",
                 <Fragment key="f2">
-                  claude.ai on a Pro plan or above, Cursor, or any client that accepts a remote MCP
-                  server URL.
+                  claude.ai on a Pro plan or above, Claude Code, Claude Desktop, Cursor, ChatGPT on
+                  a paid plan, or any client that supports remote MCP servers with OAuth.
                 </Fragment>,
               ],
               [
                 "Your role",
                 <Fragment key="f3">
-                  The assistant uses your API key, so it can do only what your key can do. For
-                  example, a key of the <strong>HITL Only</strong> role is refused by processing
-                  requests. See <DocLink href="/docs/user-roles">user roles</DocLink> and{" "}
-                  <DocLink href="/docs/api-integration">the API page</DocLink>.
+                  The assistant inherits your role in the organization you picked, so it can do
+                  only what you can do. See <DocLink href="/docs/user-roles">user roles</DocLink>.
                 </Fragment>,
               ],
             ]}
@@ -143,158 +142,170 @@ export default function Page() {
 
         <DocCard icon={<Settings2 size={24} />} title="Connect claude.ai">
           <Lead>
-            Generate the URL in Tavnit, then paste it into claude.ai as a custom connector. There is
-            nothing to install and no configuration file to edit.
+            Add Tavnit as a connector and approve it with your account. There is nothing to
+            install and no configuration file to edit.
           </Lead>
           <NumberedList
             items={[
               <Fragment key="f4">
-                Open <strong>Integrations</strong> in the Tavnit sidebar. Check the organization
-                switcher first: the connector is bound to whichever organization you are in.
+                Open <strong>Integrations</strong> in the Tavnit sidebar. The <strong>AI apps</strong>{" "}
+                card shows the server URL and an <strong>Add to Claude</strong> button.
               </Fragment>,
               <Fragment key="f5">
-                In the <strong>Custom Connector</strong> card, select{" "}
-                <strong>Generate connector URL</strong>.
+                Select <strong>Add to Claude</strong>, or in claude.ai go to{" "}
+                <strong>Settings → Connectors → Add custom connector</strong> and enter the server
+                URL below. Leave the OAuth client id and secret empty.
               </Fragment>,
-              <Fragment key="f6">Copy the URL with the copy button.</Fragment>,
+              <Fragment key="f6">
+                Select <strong>Connect</strong>. A Tavnit page opens: sign in if you are not
+                already, choose the organization the assistant may work in, and approve.
+              </Fragment>,
               <Fragment key="f7">
-                In claude.ai, go to <strong>Settings → Connectors → Add custom connector</strong> and
-                paste the URL.
-              </Fragment>,
-              <Fragment key="f8">
-                Open a new chat and ask the assistant which Tavnit tools it has. If it lists them, the
-                connector is live.
+                Open a new chat and ask the assistant which Tavnit tools it has. If it lists them,
+                the connector is live.
               </Fragment>,
             ]}
           />
+          <CodeBlock lang="text" code={SERVER_URL} />
         </DocCard>
 
-        <DocCard icon={<Settings2 size={24} />} title="Connect Cursor or another MCP client">
+        <DocCard icon={<Settings2 size={24} />} title="Connect Cursor, Claude Code, ChatGPT or another client">
           <Lead>
-            Any client that supports remote MCP servers takes the same URL. Add it as a remote (URL)
-            server, not a command-based one: there is no local process to run, because the connector
-            points at a hosted server.
+            Every client takes the same server URL and runs the same sign-in. Add it as a remote
+            (URL) server, not a command-based one: there is no local process to run.
           </Lead>
-          <NumberedList
-            items={[
-              "Generate and copy the connector URL from the Integrations page, as above.",
-              <Fragment key="f9">
-                In Cursor, open the MCP settings and add a new server of the{" "}
-                <strong>remote</strong> / URL type.
-              </Fragment>,
-              <Fragment key="f10">
-                Paste the connector URL as the server URL. No separate API key field is needed: the
-                URL already carries the credential.
-              </Fragment>,
-              "Reload the client and check that Tavnit appears in its tool list.",
+          <DataTable
+            head={["Client", "How"]}
+            rows={[
+              [
+                "Cursor",
+                <Fragment key="c0">
+                  Select <strong>Add to Cursor</strong> on the Integrations page, or add{" "}
+                  <InlineCode>{`{"mcpServers":{"tavnit":{"url":"${SERVER_URL}"}}}`}</InlineCode> to{" "}
+                  <InlineCode>~/.cursor/mcp.json</InlineCode>. Then open Settings → Tools &amp; MCP
+                  and select <strong>Login</strong> on the Tavnit entry.
+                </Fragment>,
+              ],
+              [
+                "Claude Code",
+                <Fragment key="c1">
+                  Run <InlineCode>{`claude mcp add --transport http tavnit ${SERVER_URL}`}</InlineCode>,
+                  then <InlineCode>/mcp</InlineCode> → Tavnit → <strong>Authenticate</strong>.
+                </Fragment>,
+              ],
+              [
+                "Claude Desktop",
+                <Fragment key="c2">
+                  Settings → Connectors → <strong>Add custom connector</strong> with the server
+                  URL, then <strong>Connect</strong>.
+                </Fragment>,
+              ],
+              [
+                "ChatGPT",
+                <Fragment key="c3">
+                  Settings → Connectors → <strong>Add custom connector</strong> (developer mode may
+                  need to be on). Enter the server URL, choose <strong>OAuth</strong> and leave the
+                  client fields empty, then <strong>Connect</strong>.
+                </Fragment>,
+              ],
             ]}
           />
-          <InfoBox color="blue" icon={<Info size={20} />} title="One URL, several clients">
-            You have one connector URL at a time, and you can paste it into more than one client.
-            They all act as you in the same organization, so a refresh disconnects all of them at
-            once.
+          <InfoBox color="blue" icon={<Info size={20} />} title="One sign-in per client">
+            Each client gets its own connection, approved separately. They all act as you, in the
+            organization you picked for each one, and each can be revoked on its own.
           </InfoBox>
         </DocCard>
 
         <DocCard icon={<Sparkles size={24} />} title="What your assistant can do">
           <Lead>
-            Through the connector, the assistant works with your organization&apos;s Tavnit data
-            using your API key. Building and configuring flows, Cleaners, pipelines and your team
-            stays in the app.
+            Through the connector, the assistant designs, configures and integrates: it creates
+            flows and their fields, adds cleaning rules, sets up buckets, inspectors, fillers,
+            subjects and pipelines, and wires results to webhooks, email and no-code tools. It
+            also reads your runs and results to validate a design.
           </Lead>
           <p>
-            The tools the connector offers are listed by your MCP client, and the quickest way to see
-            them is to ask the assistant. Ask in plain language and name the flow, Bucket or run you
-            mean, the way it appears in the app.
+            Processing itself stays where it is: documents are uploaded and runs started in the
+            Tavnit app, by email or through the API, and reviews are approved in the app. The
+            connector never spends credits.
           </p>
           <InfoBox color="blue" icon={<Info size={20} />} title="Your data, your organization">
-            The connector only reaches the organization it was generated in. To work with another
-            organization, switch to it in Tavnit and generate a URL there. Work started from the
-            assistant follows your setup like any other run: if a flow asks for{" "}
-            <DocLink href="/docs/human-in-the-loop">human review</DocLink>, the run still waits for it.
+            A connection reaches only the organization you picked when you approved it. To work
+            with another organization, disconnect the app and connect it again: you will be asked
+            to pick again.
           </InfoBox>
         </DocCard>
 
-        <DocCard icon={<RefreshCw size={24} />} title="Expiry and refreshing">
+        <DocCard icon={<ShieldCheck size={24} />} title="Managing and revoking connections">
           <Lead>
-            Connector URLs are time-limited. The Custom Connector card shows when the URL was created
-            and how long it has left, and warns you in its last 24 hours. Refreshing issues a new URL
-            and invalidates the old one immediately.
+            The <strong>Connected AI apps</strong> list on the Integrations page shows every app
+            you approved, when, and for which organization. Revoking one cuts its access at once.
           </Lead>
           <DataTable
-            head={["State", "What you see", "What to do"]}
+            head={["Action", "What happens"]}
             rows={[
               [
-                "Active",
-                <Fragment key="s0">The URL, <em>created …</em> and <em>expires in …d</em>.</Fragment>,
-                "Nothing.",
+                "Revoke",
+                "The app's access ends immediately. Its next request fails until you connect it again from the app, which asks you to sign in and pick an organization.",
               ],
               [
-                "Expiring soon (under 24 hours)",
-                <Fragment key="f16">The remaining time in hours or minutes, and an amber notice: <em>Connector expires soon — refresh now to avoid disruption.</em></Fragment>,
-                "Refresh, then paste the new URL into every client using it.",
+                "Leave an organization",
+                "Connections pointing at that organization stop working on their own.",
               ],
               [
-                "Expired",
-                <Fragment key="f17">A red notice: <em>This connector has expired. Refresh to generate a new URL.</em></Fragment>,
-                "Refresh and re-paste. Clients using the old URL have already stopped working.",
+                "MCP access switched off",
+                "Every connection to that organization stops working until it is switched on again.",
               ],
             ]}
           />
-          <p>
-            To refresh, select <strong>Refresh URL</strong> and confirm with{" "}
-            <strong>Refresh</strong> in the <em>Refresh connector URL?</em> dialog.
-          </p>
           <WarningBox>
-            Refreshing is not a rotation you can stage. The moment you confirm, the previous URL
-            stops working and every assistant holding it fails until you paste the new one. Refresh
-            when you can update the clients straight away.
+            Revoking is immediate and there is no undo: the app has to be connected again. Do it
+            when you can reconnect straight away, or when you mean to cut access for good.
           </WarningBox>
         </DocCard>
 
-        <DocCard icon={<AlertTriangle size={24} />} title="Treat the URL like a password">
+        <DocCard icon={<AlertTriangle size={24} />} title="Security">
           <Lead>
-            The connector URL is a credential. Anyone who has it can reach your organization&apos;s
-            data as you, without signing in. It is safe to paste into an MCP client&apos;s settings;
-            it is not safe to share in a ticket, a chat message or a screenshot.
+            Connections are standard OAuth 2.1: short-lived tokens the client refreshes on its
+            own, approved on a page you control, revocable at any time.
           </Lead>
           <BulletList
             items={[
-              "Do not commit it to a repository or paste it into a shared document.",
-              "Blur or crop it out of any screenshot before sharing.",
-              "If it leaks, refresh it immediately: that invalidates the exposed URL on the spot.",
-              "Regenerating your API key is a separate action on the same page; do that too if you think the key itself is exposed.",
+              "Nothing to copy or store: there is no credential to paste into a client, so there is nothing to leak in a ticket, a chat or a screenshot.",
+              "The assistant acts with your role in the organization you picked, and can never do more than you can in the app.",
+              "Processing, reviews and credits stay in the app; the connector designs and configures only.",
+              "Your API key is separate. Scripts and automations keep using it; the connector does not.",
             ]}
           />
         </DocCard>
 
         <DocCard icon={<LifeBuoy size={24} />} title="Troubleshooting">
           <Lead>
-            Most connector problems are one of four things: the feature is not enabled, the session
-            has lapsed, the URL has expired, or the client is holding a URL that a refresh replaced.
+            Most connector problems are one of four things: the connection was revoked, your
+            membership or role changed, MCP access is off, or the client holds an old connection
+            to another organization.
           </Lead>
           <DataTable
             head={["Symptom", "Cause", "Fix"]}
             rows={[
               [
-                "No Custom Connector card on Integrations",
-                "The connector is not enabled for your organization.",
+                "No AI apps card on Integrations",
+                "MCP access is switched off for your organization.",
                 "Contact support to have it turned on.",
               ],
               [
-                <Fragment key="f18"><InlineCode>Custom connectors require a valid Tavnit session. Try signing out and back in.</InlineCode></Fragment>,
-                "Tavnit could not validate your key to issue or read the URL.",
-                "Sign out and back in, then generate the URL again.",
+                "The consent page says none of your organizations has MCP access",
+                "You belong only to organizations where it is off.",
+                "Ask the organization's owner or support to enable it.",
               ],
               [
                 "The assistant stopped seeing Tavnit",
-                "The URL expired, or someone refreshed it.",
-                "Check the card for an expired or expiring notice, refresh, and re-paste into every client.",
+                "The connection was revoked, or your membership changed.",
+                "Remove the connector in the client and add it again.",
               ],
               [
                 "The assistant sees the wrong data",
-                "The URL was generated while you were in a different organization.",
-                "Switch organizations in Tavnit, generate a fresh URL, and replace the old one.",
+                "You picked a different organization when you approved.",
+                "Revoke the connection on Integrations, reconnect and pick the right organization.",
               ],
               [
                 "The assistant cannot perform an action",
@@ -307,15 +318,15 @@ export default function Page() {
 
         <DocCard icon={<MessageSquare size={24} />} title="When to use the connector instead of the API">
           <Lead>
-            Use the connector for conversational, ad-hoc work: one-off questions, exploring stored
-            data, quick checks. Use the REST API for anything scheduled, high-volume or embedded in
-            another system, where you need explicit error handling and retries.
+            Use the connector for conversational work: designing a flow, adding a rule, checking
+            results, wiring an integration. Use the REST API for anything scheduled, high-volume
+            or embedded in another system, where you need explicit error handling and retries.
           </Lead>
           <DataTable
             head={["Situation", "Use"]}
             rows={[
-              ["A colleague asks what a supplier billed last quarter", "MCP connector"],
-              ["You want to explore your data in a chat", "MCP connector"],
+              ["Design a flow and its cleaning rules by describing them", "MCP connector"],
+              ["Check why last week's runs failed", "MCP connector"],
               ["Every invoice from a vendor portal, nightly", "REST API or an email trigger"],
               ["Your own product needs the extracted data", "REST API plus webhooks"],
             ]}

@@ -111,10 +111,10 @@ export default async function SpanishTermsPage() {
         <LegalSection heading="Cuentas y credenciales">
           <p>
             Eres responsable de la exactitud de la información de tu cuenta y de toda la actividad
-            que ocurra bajo ella. Esto incluye expresamente las claves de API y las URLs del
-            conector MCP, que dan acceso a los datos de tu organización y deben tratarse como
-            secretos. Cualquiera de las dos puede rotarse en cualquier momento; renovar una URL de
-            conector invalida de inmediato la anterior.
+            que ocurra bajo ella. Esto incluye expresamente las claves de API, que dan acceso a los
+            datos de tu organización y deben tratarse como secretos, y las apps de IA que conectas
+            mediante el conector MCP, que actúan con tu rol. Una clave puede rotarse y una app
+            conectada revocarse en cualquier momento; revocarla termina de inmediato su acceso.
           </p>
           <p>
             Los Owners y Admins de la organización controlan los roles y el acceso por Bucket.

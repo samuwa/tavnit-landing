@@ -28,7 +28,7 @@ export const faqs: Faq[] = [
   },
   {
     q: "Can I use Tavnit from claude.ai or Cursor?",
-    a: "Yes. Tavnit ships an MCP (Model Context Protocol) connector: generate a connector URL in the app and paste it into claude.ai (Pro and up), Cursor, or any MCP client. Your AI assistant can then process documents through your flows and query your Buckets directly.",
+    a: "Yes. Tavnit ships an MCP (Model Context Protocol) connector: add the server URL in claude.ai (Pro and up), Claude Code, Cursor or ChatGPT and sign in with your Tavnit account. Your AI assistant can then design flows and cleaning rules and query your Buckets directly.",
   },
   {
     q: "Does Tavnit have an API?",
