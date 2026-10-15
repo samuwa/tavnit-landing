@@ -380,7 +380,7 @@ export default function Page() {
                   <DocLink href="/es/documentacion/conector-mcp">Conector MCP</DocLink>
                 </Fragment>,
                 "Trabajo puntual desde un asistente de IA",
-                "Se habilita por organización a pedido; luego, una URL de conector desde Integraciones",
+                "Activo en todas las organizaciones; inicia sesión desde tu app de IA y elige una organización",
               ],
             ]}
           />

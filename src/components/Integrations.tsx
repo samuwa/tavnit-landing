@@ -193,7 +193,7 @@ function McpMobileCard() {
       <div className="space-y-3 mb-3">
         <div>
           <h4 className="text-[10px] font-bold text-fg-5 uppercase tracking-wider mb-1.5">Connect in Minutes</h4>
-          <MobileEmailSteps steps={["Generate a connector URL in Integrations", "Paste it into claude.ai, Cursor, or any MCP client", "Ask your assistant to run flows and query your data"]} numbered />
+          <MobileEmailSteps steps={["Add Tavnit in claude.ai, Cursor or ChatGPT from Integrations", "Sign in with your Tavnit account and pick an organization", "Ask your assistant to design flows and query your data"]} numbered />
         </div>
         <div>
           <h4 className="text-[10px] font-bold text-fg-5 uppercase tracking-wider mb-1.5">What Your Assistant Can Do</h4>

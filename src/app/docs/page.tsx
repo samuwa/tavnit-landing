@@ -372,7 +372,7 @@ export default function Page() {
                   <DocLink href="/docs/mcp-connector">MCP connector</DocLink>
                 </Fragment>,
                 "Ad-hoc work from an AI assistant",
-                "Enabled per organization on request, then a connector URL from Integrations",
+                "On for every organization; sign in from your AI app and pick an organization",
               ],
             ]}
           />

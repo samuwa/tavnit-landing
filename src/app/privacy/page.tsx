@@ -167,10 +167,11 @@ export default function PrivacyPage() {
         <LegalSection heading="Access control and security">
           <p>
             Access to the application requires authentication. API access requires a secret
-            key, and the MCP connector uses a generated connector URL. Both are credentials:
-            a connector URL grants access to your organisation&rsquo;s data, and refreshing
-            one immediately invalidates the previous URL so any client still using it stops
-            working. Rotate either at any time if you believe it has been exposed.
+            key, and the MCP connector uses OAuth 2.1: an AI app is granted access only after
+            you sign in and approve it, with short-lived tokens the app refreshes itself. The
+            API key is a credential that grants access to your organisation&rsquo;s data;
+            rotate it at any time if you believe it has been exposed. Revoke an AI app from
+            the Integrations page at any time, which cuts its access immediately.
           </p>
           <p>
             Within an organisation, Owner, Admin and Member roles determine what each person

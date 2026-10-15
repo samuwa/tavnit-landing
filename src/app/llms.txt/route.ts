@@ -65,9 +65,10 @@ It differs from conventional document-extraction tools in three ways:
    conditionally when a Cleaner rule flags a value. Every view, edit, and
    approval is written to an append-only audit trail.
 3. **MCP connector.** Tavnit exposes a Model Context Protocol server at
-   ${MCP_URL}. Paste a generated connector URL into claude.ai (Pro and up),
-   Cursor, or any MCP client, and the assistant can run documents through your
-   flows and query your stored data directly.
+   ${MCP_URL}/mcp. Add it in claude.ai (Pro and up), Claude Code, Cursor or
+   ChatGPT, sign in with your Tavnit account (OAuth 2.1) and pick an
+   organization; the assistant can then design flows, cleaning rules, buckets
+   and pipelines and query your stored data directly.
 
 ## Core concepts
 

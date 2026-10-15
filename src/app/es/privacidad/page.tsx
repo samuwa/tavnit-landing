@@ -189,11 +189,12 @@ export default function SpanishPrivacyPage() {
         <LegalSection heading="Control de acceso y seguridad">
           <p>
             Acceder a la aplicación requiere autenticación. El acceso por API requiere una clave
-            secreta, y el conector MCP usa una URL de conector generada. Ambas son credenciales:
-            una URL de conector da acceso a los datos de tu organización, y renovarla invalida de
-            inmediato la URL anterior, de modo que cualquier cliente que aún la use deja de
-            funcionar. Rota cualquiera de las dos en cualquier momento si crees que se ha
-            expuesto.
+            secreta, y el conector MCP usa OAuth 2.1: una app de IA obtiene acceso solo después de
+            que inicias sesión y la apruebas, con tokens de corta duración que la app renueva por
+            su cuenta. La clave de API es una credencial que da acceso a los datos de tu
+            organización; rótala en cualquier momento si crees que se ha expuesto. Revoca una app
+            de IA desde la página Integraciones en cualquier momento, lo que corta su acceso de
+            inmediato.
           </p>
           <p>
             Dentro de una organización, los roles Owner, Admin y Member determinan lo que cada
