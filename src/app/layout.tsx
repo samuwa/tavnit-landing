@@ -4,6 +4,7 @@ import "./globals.css";
 import { APP_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL, TWITTER_HANDLE } from "@/lib/site";
 import { siteSchema } from "@/lib/schema";
 import Analytics, { CONSENT_DEFAULT_SCRIPT } from "@/components/Analytics";
+import ConnectAssistant from "@/components/ConnectAssistant";
 import { THEME_INIT_SCRIPT } from "@/lib/theme-script";
 
 const heading = Plus_Jakarta_Sans({
@@ -110,6 +111,8 @@ export default function RootLayout({
       </head>
       <body className={`${heading.variable} ${body.variable} font-body antialiased`}>
         {children}
+        {/* "Set up Tavnit with Claude / ChatGPT" — the floating coin stack. */}
+        <ConnectAssistant />
         <Analytics />
       </body>
     </html>
