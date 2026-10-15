@@ -64,7 +64,7 @@ export default function SpanishPrivacyPage() {
         locale="es"
         alternatePath="/privacy"
         title="Política de privacidad"
-        lastUpdated="2026-08-26"
+        lastUpdated="2026-10-15"
         intro={
           <>
             Esta política explica qué datos recopila Tavnit, cómo se usan y qué controles tienes
@@ -183,6 +183,53 @@ export default function SpanishPrivacyPage() {
           <p>
             En cada caso, tú eliges el destino, y ese destino está fuera de nuestro control.
             Revisa esas configuraciones antes de enviar datos sensibles por ellas.
+          </p>
+        </LegalSection>
+
+        <LegalSection heading="Apps de IA y el conector MCP">
+          <p>
+            Tavnit se puede conectar a apps de IA (Claude, ChatGPT, Cursor y otras apps que
+            hablan el Model Context Protocol) mediante el conector MCP de Tavnit. El conector
+            permite que la app lea y cambie la configuración de tu organización &mdash; Flows,
+            Cleaners, Buckets, Agentes, Pipelines y el resto &mdash; y lea resultados de
+            procesamiento, en tu nombre y dentro de los permisos de tu rol. Nunca ejecuta
+            procesamiento por sí mismo.
+          </p>
+          <p>
+            <strong className="text-fg-2">Qué recibe la app de IA.</strong> Solo los
+            resultados de las herramientas que la app invoca: la configuración y los datos que
+            le pides leer, incluido el contenido de Buckets y la salida de ejecuciones cuando
+            los solicitas. Esos resultados pueden contener los datos personales que traen tus
+            documentos, así que lo que la app haga después con ellos se rige por la política de
+            privacidad de esa app, no por esta. Revísala antes de conectar.
+          </p>
+          <p>
+            <strong className="text-fg-2">Qué guarda Tavnit sobre una conexión.</strong>{" "}
+            Cuando apruebas una app registramos qué app aprobaste, en cuál de tus
+            organizaciones puede actuar y cuándo; cada llamada a una herramienta que cambia la
+            configuración queda en el registro de auditoría de tu organización bajo tu nombre,
+            igual que un cambio hecho en la aplicación web. La app inicia sesión con OAuth 2.1:
+            te autenticas en Tavnit, eliges la organización y la app recibe tokens de corta
+            duración que renueva por su cuenta. Tu contraseña de Tavnit nunca se comparte con la
+            app, y la app nunca recibe tu clave de API.
+          </p>
+          <p>
+            <strong className="text-fg-2">Lo que no hacemos.</strong> No usamos las llamadas,
+            las instrucciones ni los resultados de una app de IA conectada para entrenar
+            modelos, y no los compartimos con nadie más que con la app que conectaste. El
+            tráfico del conector se mide y registra solo para operar el servicio, dar soporte y
+            prevenir abusos, como cualquier otro uso de la plataforma.
+          </p>
+          <p>
+            <strong className="text-fg-2">Tu control.</strong> Las apps conectadas aparecen en
+            la página Integraciones de la aplicación de Tavnit, donde puedes revocar cualquiera
+            de inmediato; revocar una app invalida sus tokens al instante. Quitar el conector
+            dentro de la app de IA termina la conexión de la misma forma. El conector está
+            documentado en{" "}
+            <Link href="/es/documentacion/conector-mcp" className="text-accent hover:underline">
+              tavnit.io/es/documentacion/conector-mcp
+            </Link>
+            .
           </p>
         </LegalSection>
 
