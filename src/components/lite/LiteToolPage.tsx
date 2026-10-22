@@ -10,6 +10,11 @@ import { LiteIntentProvider } from "@/components/lite/intent";
 import { Download, Files, GitCompareArrows, ListChecks, ScanSearch, ScanText, Scissors, Upload, type LucideIcon } from "lucide-react";
 import type { LiteToolKind } from "@/lib/lite/tools";
 
+/** Same look as shared.tsx BTN_DOWNLOAD; copied because that module is a
+ *  Client Component and this page is rendered on the server. */
+const TEMPLATE_BTN =
+  "lite-press inline-flex min-h-11 shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[var(--lite-blue)] px-5 text-sm font-semibold text-white shadow-sm shadow-[#3b82f6]/30 transition-colors hover:bg-[var(--lite-blue-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50";
+
 /** One icon per "how it works" step: put in, Tavnit reads, take out. */
 const HOW_ICONS: Record<LiteToolKind, LucideIcon[]> = {
   extract: [Upload, ScanText, Download],
@@ -169,6 +174,38 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
           />
         )}
         </LiteIntentProvider>
+
+        {copy.template && (
+          <section aria-labelledby="lite-template-heading" className="mt-28">
+            <h2 id="lite-template-heading" className="lite-display text-3xl sm:text-4xl">
+              {copy.template.heading}
+            </h2>
+            <div className="lite-sheet relative mt-8 grid gap-8 overflow-hidden rounded-2xl border border-[var(--lite-line)] bg-[var(--lite-white)] p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-start">
+              <div>
+                <p className="max-w-[640px] text-sm leading-relaxed text-[var(--lite-muted)]">{copy.template.lead}</p>
+                <ul className="mt-5 flex flex-wrap gap-2" aria-label={copy.template.heading}>
+                  {copy.template.fields.map((f) => (
+                    <li
+                      key={f}
+                      className="rounded-full border border-[var(--lite-line)] bg-[#f6f8fb] px-3 py-1 text-xs font-medium text-[var(--lite-ink)]"
+                    >
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-5 max-w-[640px] text-xs leading-relaxed text-[var(--lite-muted)]">{copy.template.note}</p>
+              </div>
+              <a
+                href={`/api/lite/template/${toolId}?locale=${locale}`}
+                download
+                className={TEMPLATE_BTN}
+              >
+                <Download size={16} strokeWidth={2} aria-hidden />
+                {copy.template.cta}
+              </a>
+            </div>
+          </section>
+        )}
 
         <section aria-labelledby="lite-how-heading" className="mt-28">
           <h2 id="lite-how-heading" className="lite-display text-3xl sm:text-4xl">

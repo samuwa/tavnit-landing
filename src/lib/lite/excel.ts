@@ -23,6 +23,33 @@ export interface ExcelInput {
   toolPath: string;
 }
 
+/**
+ * A cell that carries style or a formula. Plain values (strings, numbers)
+ * stay plain; this exists for the downloadable templates, where a label is
+ * bold and a totals row sums the lines above it. The formula text is written
+ * verbatim, so it must be a real spreadsheet formula, never visitor input.
+ */
+export class Cell {
+  constructor(
+    readonly value: unknown,
+    readonly opts: { bold?: boolean; formula?: string } = {},
+  ) {}
+}
+
+export function cell(value: unknown, opts: { bold?: boolean; formula?: string } = {}): Cell {
+  return new Cell(value, opts);
+}
+
+export interface SheetSpec {
+  name: string;
+  rows: unknown[][];
+  widths?: number[];
+  /** 1-based rows rendered bold (header rows). */
+  boldRows?: number[];
+  /** Freeze the panes below this many rows. */
+  freeze?: number;
+}
+
 function esc(s: string): string {
   return s
     .replace(/&/g, "&amp;")
@@ -45,6 +72,13 @@ function colRef(i: number): string {
 }
 
 function cellXml(ref: string, value: unknown, style?: number): string {
+  if (value instanceof Cell) {
+    const s = value.opts.bold ? 1 : style;
+    if (value.opts.formula) {
+      return `<c r="${ref}"${s ? ` s="${s}"` : ""}><f>${esc(value.opts.formula)}</f></c>`;
+    }
+    return cellXml(ref, value.value, s);
+  }
   const st = style ? ` s="${style}"` : "";
   if (typeof value === "number" && Number.isFinite(value)) {
     return `<c r="${ref}"${st}><v>${value}</v></c>`;
@@ -64,24 +98,27 @@ function cellXml(ref: string, value: unknown, style?: number): string {
   return `<c r="${ref}"${st} t="inlineStr"><is><t xml:space="preserve">${esc(text)}</t></is></c>`;
 }
 
-function sheetXml(header: string[], rows: unknown[][], widths?: number[]): string {
+function sheetXml(spec: SheetSpec): string {
+  const { rows, widths } = spec;
+  const bold = new Set(spec.boldRows ?? []);
   const cols = widths?.length
     ? `<cols>${widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join("")}</cols>`
     : "";
-  const lines: string[] = [];
-  lines.push(
-    `<row r="1">${header.map((h, i) => cellXml(`${colRef(i)}1`, h, 1)).join("")}</row>`,
-  );
-  rows.forEach((row, r) => {
-    const n = r + 2;
-    lines.push(`<row r="${n}">${row.map((v, i) => cellXml(`${colRef(i)}${n}`, v)).join("")}</row>`);
+  const lines = rows.map((row, r) => {
+    const n = r + 1;
+    const style = bold.has(n) ? 1 : undefined;
+    return `<row r="${n}">${row.map((v, i) => cellXml(`${colRef(i)}${n}`, v, style)).join("")}</row>`;
   });
-  const last = `${colRef(Math.max(header.length - 1, 0))}${rows.length + 1}`;
+  const width = rows.reduce((m, r) => Math.max(m, r.length), 1);
+  const last = `${colRef(width - 1)}${Math.max(rows.length, 1)}`;
+  const freeze = spec.freeze
+    ? `<sheetViews><sheetView workbookViewId="0"><pane ySplit="${spec.freeze}" topLeftCell="A${spec.freeze + 1}" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>`
+    : "";
   return (
     `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
     `<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">` +
     `<dimension ref="A1:${last}"/>` +
-    `<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>` +
+    freeze +
     `<sheetFormatPr defaultRowHeight="15"/>${cols}` +
     `<sheetData>${lines.join("")}</sheetData>` +
     `</worksheet>`
@@ -121,24 +158,24 @@ export function buildXlsx(input: ExcelInput): Uint8Array {
     ["https://app.tavnit.io"],
   ];
 
-  const sheet1 = sheetXml(columns, dataRows, widths);
-  const sheet2 = sheetXml(
-    [es ? "Tavnit" : "Tavnit"],
-    stampRows.map((r) => (r.length ? r : [""])),
-    [70, 40],
-  );
+  return buildWorkbook([
+    { name: es ? "Datos" : "Data", rows: [columns, ...dataRows], widths, boldRows: [1], freeze: 1 },
+    { name: "Tavnit", rows: [["Tavnit"], ...stampRows], widths: [70, 40], boldRows: [1], freeze: 1 },
+  ]);
+}
 
-  const sheetName1 = es ? "Datos" : "Data";
-  const sheetName2 = "Tavnit";
-
+/** Zip the OOXML parts for any number of sheets. Sheet names must be unique and ≤ 31 chars. */
+export function buildWorkbook(sheets: SheetSpec[]): Uint8Array {
+  const sheetOverrides = sheets
+    .map((_, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`)
+    .join("");
   const contentTypes =
     `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
     `<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">` +
     `<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>` +
     `<Default Extension="xml" ContentType="application/xml"/>` +
     `<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>` +
-    `<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>` +
-    `<Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>` +
+    sheetOverrides +
     `<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>` +
     `<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>` +
     `<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>` +
@@ -156,16 +193,15 @@ export function buildXlsx(input: ExcelInput): Uint8Array {
     `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
     `<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">` +
     `<sheets>` +
-    `<sheet name="${esc(sheetName1)}" sheetId="1" r:id="rId1"/>` +
-    `<sheet name="${esc(sheetName2)}" sheetId="2" r:id="rId2"/>` +
+    sheets.map((s, i) => `<sheet name="${esc(s.name.slice(0, 31))}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join("") +
     `</sheets></workbook>`;
 
+  const stylesRel = sheets.length + 1;
   const workbookRels =
     `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
     `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">` +
-    `<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>` +
-    `<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/>` +
-    `<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>` +
+    sheets.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join("") +
+    `<Relationship Id="rId${stylesRel}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>` +
     `</Relationships>`;
 
   // Style index 1 = bold header.
@@ -200,8 +236,7 @@ export function buildXlsx(input: ExcelInput): Uint8Array {
       "xl/workbook.xml": strToU8(workbook),
       "xl/_rels/workbook.xml.rels": strToU8(workbookRels),
       "xl/styles.xml": strToU8(styles),
-      "xl/worksheets/sheet1.xml": strToU8(sheet1),
-      "xl/worksheets/sheet2.xml": strToU8(sheet2),
+      ...Object.fromEntries(sheets.map((s, i) => [`xl/worksheets/sheet${i + 1}.xml`, strToU8(sheetXml(s))])),
     },
     { level: 6 },
   );

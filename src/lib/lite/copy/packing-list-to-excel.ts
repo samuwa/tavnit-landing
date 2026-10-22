@@ -26,9 +26,9 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
       this_doc: "este packing list",
     },
     overrides: {
-      title: "Packing list en Excel: conversor gratis con IA",
+      title: "Packing list en Excel: formato gratis y conversor IA",
       description:
-        "Sube un packing list en PDF o foto y recíbelo en formato Excel: descripción, bultos, peso neto, peso bruto y dimensiones por línea. Gratis, sin registro.",
+        "Plantilla de packing list en Excel gratis, o sube el tuyo en PDF o foto y recíbelo en ese formato: bultos, peso neto, peso bruto y dimensiones por línea.",
       label: "Packing list a Excel",
       h1: "Convierte un packing list en Excel",
       intro:
@@ -64,6 +64,24 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
       after: {
         lead: "Salió de un Flow fijo de {fields} campos. En tu cuenta los campos los eliges tú, y así se ve cuando Tavnit procesa todos los packing lists:",
       },
+      template: {
+        heading: "Plantilla de packing list en Excel, gratis",
+        lead: "Si lo que necesitas es hacer un packing list desde cero, descarga el formato: encabezado del embarque, una fila por línea de mercancía y los totales que se suman solos. Sin registro, listo para llenar y enviar.",
+        fields: [
+          "Exportador y consignatario",
+          "Nº de packing list y fecha",
+          "Factura relacionada e Incoterm",
+          "Puertos de carga y descarga",
+          "Buque, contenedor y sello",
+          "Descripción, cantidad y unidad",
+          "Bultos y tipo de bulto",
+          "Peso neto y bruto (kg)",
+          "Dimensiones (cm) y marcas",
+          "Totales automáticos",
+        ],
+        cta: "Descargar plantilla (.xlsx)",
+        note: "Abre en Excel, Google Sheets, Numbers y LibreOffice. Y si el packing list ya te llega en PDF de tu proveedor, no lo copies: súbelo arriba y recíbelo en este mismo formato.",
+      },
       how: {
         steps: [
           { title: "Sube el packing list", body: "PDF, foto o escaneo. Da igual el exportador, el idioma o el formato." },
@@ -86,6 +104,14 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
         {
           q: "¿Qué columnas saca de un packing list?",
           a: "Del documento: exportador, consignatario, número, fecha, factura relacionada, puerto de carga, puerto de descarga y los totales de bultos y pesos. Por línea: descripción, cantidad, unidad, bultos, peso neto, peso bruto y dimensiones. Los datos del documento se repiten en cada fila para que la tabla se filtre sola.",
+        },
+        {
+          q: "¿Qué debe llevar un packing list?",
+          a: "Los datos del embarque (exportador, consignatario, número y fecha, factura relacionada, Incoterm, puertos de carga y descarga, buque y contenedor) y una línea por cada mercancía o bulto: descripción, cantidad, unidad, número y tipo de bultos, peso neto, peso bruto y dimensiones, con los totales al pie. No lleva precios: para eso está la factura comercial. La plantilla de esta página trae exactamente esas columnas.",
+        },
+        {
+          q: "¿Hay un formato de packing list en Excel para descargar?",
+          a: "Sí, gratis y sin registro: el botón “Descargar plantilla” de esta página. Es un .xlsx con el encabezado del embarque, 15 líneas de mercancía y los totales de cantidad, bultos y pesos calculados con fórmulas. Si ya tienes el packing list en PDF, mejor súbelo y recíbelo lleno.",
         },
         {
           q: "¿Puedo elegir otras columnas?",
@@ -126,9 +152,9 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
       this_doc: "this packing list",
     },
     overrides: {
-      title: "Packing List to Excel, Free: AI Extracts Every Line",
+      title: "Packing List to Excel, Free: Template + AI Converter",
       description:
-        "Upload a packing list as PDF or photo and get every line as an Excel table: description, quantity, packages, net and gross weight, dimensions, with shipper, consignee and ports. Free, no templates, no sign-up to see the result.",
+        "Free packing list template for Excel, or upload yours as PDF or photo and get it back in that format: packages, net and gross weight, dimensions per line.",
       label: "Packing list to Excel",
       h1: "Turn a packing list into Excel",
       intro:
@@ -164,6 +190,24 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
       after: {
         lead: "It came out of a fixed Flow with {fields} fields. In your account you choose the fields, and this is what it looks like when Tavnit handles every packing list:",
       },
+      template: {
+        heading: "Free packing list template for Excel",
+        lead: "If you need to write a packing list from scratch, download the format: shipment header, one row per goods line and totals that add themselves up. No sign-up, ready to fill in and send.",
+        fields: [
+          "Shipper and consignee",
+          "Packing list number and date",
+          "Related invoice and Incoterm",
+          "Ports of loading and discharge",
+          "Vessel, container and seal",
+          "Description, quantity and unit",
+          "Packages and package type",
+          "Net and gross weight (kg)",
+          "Dimensions (cm) and marks",
+          "Automatic totals",
+        ],
+        cta: "Download template (.xlsx)",
+        note: "Opens in Excel, Google Sheets, Numbers and LibreOffice. If the packing list already reaches you as a supplier\u2019s PDF, don\u2019t retype it: upload it above and get it back in this same format.",
+      },
       how: {
         steps: [
           { title: "Upload the packing list", body: "PDF, photo or scan. Any shipper, any language, any layout." },
@@ -186,6 +230,14 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
         {
           q: "Which columns does it extract from a packing list?",
           a: "Per document: shipper, consignee, number, date, related invoice, port of loading, port of discharge and the totals of packages and weights. Per line: description, quantity, unit, packages, net weight, gross weight and dimensions. Document values repeat on every row so the table filters on its own.",
+        },
+        {
+          q: "What should a packing list include?",
+          a: "The shipment data (shipper, consignee, number and date, related invoice, Incoterm, ports of loading and discharge, vessel and container) and one line per item or package: description, quantity, unit, number and type of packages, net weight, gross weight and dimensions, with totals at the bottom. No prices: that is what the commercial invoice is for. The template on this page has exactly those columns.",
+        },
+        {
+          q: "Is there a packing list template for Excel I can download?",
+          a: "Yes, free and with no sign-up: the \u201cDownload template\u201d button on this page. It is an .xlsx with the shipment header, 15 goods lines and the totals for quantity, packages and weights computed with formulas. If you already have the packing list as a PDF, upload it instead and get it back filled in.",
         },
         {
           q: "Can I choose other columns?",

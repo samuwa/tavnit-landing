@@ -182,6 +182,16 @@ export interface ToolCopy {
     saved: string;
   };
   how: { heading: string; steps: { title: string; body: string }[] };
+  /** A blank, downloadable template of the document (src/lib/lite/templates.ts),
+   *  for the searches that want a format to fill in rather than a converter. */
+  template?: {
+    heading: string;
+    lead: string;
+    /** What the template contains, shown as chips. */
+    fields: string[];
+    cta: string;
+    note: string;
+  };
   faqHeading: string;
   faqs: { q: string; a: string }[];
   /** compare tools only */
