@@ -26,9 +26,9 @@ const packingListToExcel: Record<Locale, ToolCopyDef> = {
       this_doc: "este packing list",
     },
     overrides: {
-      title: "Packing list a Excel gratis: cada línea con IA",
+      title: "Packing list en Excel: conversor gratis con IA",
       description:
-        "Sube un packing list (lista de empaque) en PDF o foto y recibe cada línea en Excel: descripción, cantidad, bultos, peso neto, peso bruto y dimensiones, con exportador, consignatario y puertos. Gratis, sin plantillas.",
+        "Sube un packing list en PDF o foto y recíbelo en formato Excel: descripción, bultos, peso neto, peso bruto y dimensiones por línea. Gratis, sin registro.",
       label: "Packing list a Excel",
       h1: "Convierte un packing list en Excel",
       intro:

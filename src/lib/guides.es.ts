@@ -26,13 +26,13 @@ export const GUIDES_ES: GuideEs[] = [
   {
     slug: "hs-code-classification-explained",
     slugEs: "clasificacion-arancelaria",
-    title: "Clasificación arancelaria: qué es, cómo se hace y ejemplos",
-    h1: "Clasificación arancelaria: qué es, cómo se determina la partida y dos ejemplos paso a paso",
+    title: "Clasificación arancelaria: qué es, RGI y 2 ejemplos",
+    h1: "Clasificación arancelaria: qué es, cómo se determina la partida con las RGI y dos ejemplos resueltos",
     description:
-      "Qué es, cómo se llega de la descripción del producto a la partida y a la fracción nacional con las RGI y las notas legales, dos ejemplos resueltos y cómo automatizarla con revisión del corredor.",
+      "Qué es la clasificación arancelaria, cómo se determina la partida con las RGI 1 a 6 y las notas legales, y dos ejemplos resueltos paso a paso.",
     lede: "La clasificación arancelaria asigna a cada mercancía un código del Sistema Armonizado, la nomenclatura internacional con la que las aduanas determinan derechos, impuestos y controles. Los seis primeros dígitos son universales; cada país los extiende a ocho, diez o más dígitos en sus líneas arancelarias nacionales. Una fracción equivocada es el impuesto equivocado, un embarque retenido o una multa.",
     published: "2026-09-08",
-    updated: "2026-09-23",
+    updated: "2026-10-21",
     readingMinutes: 9,
     sections: [
       {
@@ -109,6 +109,8 @@ export const GUIDES_ES: GuideEs[] = [
       { q: "¿Qué es una partida arancelaria?", a: "En el Sistema Armonizado, la partida es el nivel de cuatro dígitos (84.71, por ejemplo) y la subpartida el de seis. En Panamá y en buena parte de Centroamérica, “partida arancelaria” se usa también para la fracción nacional completa, la línea de ocho o más dígitos a la que se atan el DAI, el ITBMS y el ISC. Cuando alguien pide “la partida” de un producto, casi siempre quiere esa fracción nacional, no solo los cuatro dígitos." },
       { q: "¿Cuál es la diferencia entre el código SA y la fracción arancelaria?", a: "El código SA son los seis dígitos internacionales que define la Organización Mundial de Aduanas. La fracción arancelaria es la extensión que hace cada país — ocho, diez o más dígitos — y a la que se atan los derechos y los impuestos nacionales. El Arancel Nacional de Panamá, el TARIC de la Unión Europea y el HTS de Estados Unidos son aranceles nacionales construidos sobre el SA." },
       { q: "¿Puede la inteligencia artificial clasificar fracciones arancelarias con precisión?", a: "Puede proponer buenas clasificaciones cuando parte de una descripción de producto adecuada, trabaja contra el arancel nacional completo con sus notas legales y explica su razonamiento. Lo que no debe hacer es presentar declaraciones sin supervisión: el enfoque responsable es una propuesta con nivel de confianza y razonamiento, revisada por un corredor de aduana autorizado en las líneas de baja confianza o de alto valor." },
+      { q: "¿Qué son las RGI 1 a 6 y en qué orden se aplican?", a: "Las Reglas Generales para la Interpretación del Sistema Armonizado se aplican en orden. RGI 1: mandan los textos de las partidas y las notas legales de sección y capítulo; la mayoría de los productos se clasifica aquí. RGI 2: artículos incompletos o sin montar y mezclas de materias. RGI 3: cuando el producto cabe en dos o más partidas, primero la descripción más específica (3 a), luego el carácter esencial (3 b) y, si no, la partida que va última en orden numérico (3 c). RGI 4: la mercancía que no encaja en ninguna partida se clasifica con la más análoga. RGI 5: estuches y envases. RGI 6: la clasificación a nivel de subpartida, comparando solo subpartidas del mismo nivel." },
+      { q: "¿Qué son las notas legales en la clasificación arancelaria?", a: "Son las notas de sección y de capítulo que forman parte del texto legal del arancel. Incluyen o excluyen mercancía concreta de una partida sin importar lo que el título de la partida parezca decir, y definen términos (qué cuenta como “máquina”, “parte” o “juego”). Por la RGI 1 tienen la misma fuerza que los textos de las partidas, así que se leen antes de elegir la partida, no después. Ignorarlas es la causa más común de una fracción equivocada en productos rutinarios." },
       { q: "¿Puedo usar el código SA que mi proveedor puso en la factura?", a: "Tómalo como una pista, no como una respuesta. El proveedor clasificó bajo el arancel de su propio país, posiblemente para control de exportaciones y no para derechos de importación, y posiblemente con una edición anterior del SA. La responsabilidad de la fracción en la declaración de importación es del importador o del corredor." },
     ],
   },

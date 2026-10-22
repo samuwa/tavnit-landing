@@ -24,9 +24,9 @@ const dateFormat: Record<Locale, ToolCopyDef> = {
       this_doc: "esta hoja de cálculo",
     },
     overrides: {
-      title: "Cambiar formato de fecha en Excel, gratis",
+      title: "Cambiar formato de fecha en Excel sin fórmulas",
       description:
-        "Sube un Excel o CSV con fechas mezcladas (03/04/2024, 12 de marzo de 2024, 2024-03-12) y recíbelas todas en un solo formato. Eliges las columnas y el formato. Gratis, sin registro para ver el resultado.",
+        "Sube un Excel o CSV con fechas mezcladas (03/04/2024, 12 de marzo de 2024) y recíbelas en un solo formato, sin fórmulas ni TEXTO(). Gratis, sin registro.",
       label: "Formato de fechas",
       h1: "Pon todas tus fechas en un solo formato",
       intro:

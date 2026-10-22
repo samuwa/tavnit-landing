@@ -19,7 +19,7 @@ const invoiceToExcel: Record<Locale, ToolCopyDef> = {
       another_doc: "otra factura",
       this_doc: "esta factura",
     },
-    overrides: { title: "Factura a Excel gratis: la IA extrae las líneas" },
+    overrides: { title: "Factura a Excel gratis: extrae datos y líneas con IA" },
   },
   en: {
     vocab: {

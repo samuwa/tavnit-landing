@@ -23,7 +23,7 @@ const translateColumns: Record<Locale, ToolCopyDef> = {
       this_doc: "esta hoja de cálculo",
     },
     overrides: {
-      title: "Traducir un Excel por columnas, gratis",
+      title: "Traducir columnas de un Excel a 40 idiomas, gratis",
       description:
         "Sube un Excel o CSV y traduce las columnas que elijas a más de 40 idiomas: inglés, español, portugués, chino y más. La traducción se agrega al lado de cada columna. Gratis, sin registro para ver el resultado.",
       label: "Traducir columnas",
