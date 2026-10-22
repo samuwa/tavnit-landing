@@ -8,6 +8,8 @@ const dateFormat: LiteTool = {
   id: "date-format",
   kind: "clean",
   paths: { en: "/tools/fix-date-format-excel", es: "/es/herramientas/cambiar-formato-de-fecha-excel" },
+  // Spanish-only guide: resolves on the Spanish page, nothing on the English one.
+  related: { guide: "cambiar-formato-de-fecha-en-excel" },
   columnOrder: { es: [], en: [] },
   lineFields: { es: [], en: [] },
   samplePaths: ["lite/sample-dates.csv"],

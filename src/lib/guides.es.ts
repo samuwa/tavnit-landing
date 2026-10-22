@@ -507,6 +507,106 @@ export const GUIDES_ES: GuideEs[] = [
       { q: "¿Puedo usar la partida que puso mi proveedor en la factura?", a: "Como pista, sí; como respuesta, no. El proveedor clasificó bajo el arancel de su país y, a veces, con una edición anterior del Sistema Armonizado. Los seis primeros dígitos suelen coincidir, pero la fracción nacional y la responsabilidad de declararla bien son del importador o de su corredor." },
     ],
   },
+  // ---- Excel: formato de fecha (solo en español) ----
+  // Search Console, oct 2026: "cambiar formato de fecha en excel" y más de
+  // quince variantes ("como cambiar...", "fórmula para cambiar...", "excel
+  // cambiar formato fecha", "fix date"), posiciones 8–27 sobre la página del
+  // tool. La guía responde la pregunta completa y manda al tool para lo que
+  // Excel no resuelve (fechas en palabras, archivos mezclados).
+  {
+    slug: "cambiar-formato-de-fecha-en-excel",
+    slugEs: "cambiar-formato-de-fecha-en-excel",
+    spanishOnly: true,
+    title: "Cambiar formato de fecha en Excel: con y sin fórmulas",
+    h1: "Cómo cambiar el formato de fecha en Excel: formato de celda, Texto en columnas, fórmulas y qué hacer cuando nada funciona",
+    description:
+      "Cómo pasar fechas a dd/mm/aaaa o aaaa-mm-dd en Excel: formato de celda cuando son fechas de verdad, Texto en columnas y fórmulas (FECHA, FECHANUMERO, TEXTO) cuando son texto, y qué hacer con las fechas en palabras.",
+    lede: "En Excel hay dos casos y conviene saber en cuál estás antes de tocar nada. Si las celdas son fechas de verdad (Excel las guarda como un número), cambiar el formato es un clic en Formato de celdas y no se altera ningún dato. Si son texto que parece fecha (lo habitual al importar un CSV o pegar de otro sistema), el formato de celda no hace nada y hay que convertirlas primero: con Texto en columnas, con una fórmula o, si vienen en palabras y mezcladas, con una herramienta que las lea.",
+    published: "2026-10-21",
+    updated: "2026-10-21",
+    readingMinutes: 8,
+    sections: [
+      {
+        heading: "Primero: ¿son fechas o son texto?",
+        paragraphs: [
+          "Excel guarda una fecha como un número de serie: el 12 de marzo de 2024 es el 45363, los días contados desde el 1 de enero de 1900. Lo que ves en la celda (12/03/2024, 2024-03-12, 12-mar-24) es solo el formato con el que muestra ese número. Por eso, cuando las celdas son fechas de verdad, cambiar el formato es gratis: el dato no cambia, solo su presentación.",
+          "El problema aparece cuando las celdas contienen texto que parece una fecha. Pasa al importar un CSV, al pegar desde un sistema contable o un portal, o cuando alguien escribió las fechas con un apóstrofo delante. Excel no sabe que eso es una fecha: no la ordena bien, no la suma, no la filtra por mes, y Formato de celdas no le hace nada.",
+          "Dos formas de comprobarlo en diez segundos. La primera: con alineación general, las fechas de verdad se pegan a la derecha de la celda (son números) y el texto a la izquierda. La segunda, más segura: en una celda vacía escribe =ESNUMERO(A2) (en Excel en inglés, =ISNUMBER(A2)). VERDADERO es fecha; FALSO es texto.",
+        ],
+      },
+      {
+        heading: "Caso 1: son fechas de verdad. Formato de celdas",
+        paragraphs: [
+          "Selecciona la columna, pulsa Ctrl+1 (en Mac, Cmd+1) o botón derecho → Formato de celdas, y en la categoría Fecha elige el formato. Si el que quieres no está en la lista, ve a Personalizada y escribe el código: en Excel en español, dd/mm/aaaa para día, mes y año; aaaa-mm-dd para el formato ISO que cualquier sistema lee sin confusión; dd-mmm-aaaa para 12-mar-2024. En Excel en inglés los códigos cambian de letra: dd/mm/yyyy, yyyy-mm-dd.",
+          "Nada más. Si tras aplicar el formato la celda no cambia, no era una fecha: es texto, y estás en el caso 2. Si ves ######, la columna es demasiado estrecha para el formato nuevo; ensánchala.",
+        ],
+      },
+      {
+        heading: "Caso 2: son texto. Texto en columnas, la forma sin fórmulas",
+        paragraphs: [
+          "Es la herramienta más fiable de Excel para convertir texto en fechas, y casi nadie la usa para eso. Selecciona la columna, ve a Datos → Texto en columnas, pulsa Siguiente dos veces sin cambiar nada y, en el paso 3, marca Fecha y elige el orden en que vienen escritas: DMA si el archivo pone primero el día (31/12/2024), MDA si pone primero el mes (12/31/2024). Finalizar. Excel convierte toda la columna en fechas de verdad en un paso, y a partir de ahí les aplicas el formato que quieras como en el caso 1.",
+          "La ventaja sobre cualquier fórmula es que tú le dices a Excel el orden de día y mes. Es la única forma de que 03/04/2024 se lea bien en todas las filas: Excel no puede adivinar si es 3 de abril o 4 de marzo, y cuando lo adivina lo hace según la configuración regional de tu computadora, que puede no ser la del archivo.",
+        ],
+      },
+      {
+        heading: "Caso 2 con fórmulas: FECHA, FECHANUMERO y TEXTO",
+        paragraphs: [
+          "Cuando prefieres una fórmula (porque el archivo se actualiza y quieres que la conversión viva en una columna), hay tres que resuelven la mayoría de los casos. En Excel configurado en español los argumentos se separan con punto y coma; en inglés, con coma.",
+        ],
+        bullets: [
+          "Texto con posiciones fijas, por ejemplo 12/03/2024 o 12.03.2024 (día, mes, año): =FECHA(DERECHA(A2;4);EXTRAE(A2;4;2);IZQUIERDA(A2;2)). En inglés: =DATE(RIGHT(A2,4),MID(A2,4,2),LEFT(A2,2)). Toma el año de los últimos cuatro caracteres, el mes de la posición 4 y el día de los dos primeros. Si el texto pone primero el mes, intercambia EXTRAE e IZQUIERDA.",
+          "Texto que Excel sí reconoce según tu región: =FECHANUMERO(A2) (=DATEVALUE(A2)). Rápida, pero depende de la configuración regional: en una computadora en español lee 03/04/2024 como 3 de abril; en una en inglés de Estados Unidos, como 4 de marzo. Úsala solo cuando el archivo y tu Excel hablan el mismo orden.",
+          "Para producir un texto con un formato concreto (por ejemplo, para exportar a un sistema que exige aaaa-mm-dd): =TEXTO(A2;\"aaaa-mm-dd\") (=TEXT(A2,\"yyyy-mm-dd\")). Ojo: el resultado es texto, no fecha. Sirve para salir de Excel, no para seguir calculando dentro.",
+          "Años de dos cifras: Excel interpreta 00 a 29 como 2000 a 2029 y 30 a 99 como 1930 a 1999. Un vencimiento “31/12/30” se convierte en 1930. Si tu archivo trae años de dos cifras, conviértelos antes o revisa el resultado.",
+        ],
+      },
+      {
+        heading: "El CSV que llega al revés: día y mes intercambiados",
+        paragraphs: [
+          "El error más caro con fechas no es un formato feo, es un dato cambiado en silencio. Un CSV exportado de un sistema en Estados Unidos trae 03/04/2024 (4 de marzo). Al abrirlo en un Excel en español, las fechas con día 12 o menor se leen al revés (3 de abril) y las de día 13 en adelante quedan como texto porque “no existe el mes 13”. Media columna cambia de fecha y la otra media deja de ser fecha, sin ningún aviso.",
+          "La solución es no abrir el CSV con doble clic. Ve a Datos → Obtener datos → Desde texto/CSV (Power Query), y en la columna de fecha elige Cambiar tipo → Usar configuración regional, indicando el idioma del archivo de origen (inglés de Estados Unidos). Power Query lee todas las filas con el orden correcto. Texto en columnas, con MDA, consigue lo mismo cuando el archivo ya está abierto y la columna sigue siendo texto.",
+        ],
+      },
+      {
+        heading: "Google Sheets",
+        paragraphs: [
+          "Mismas dos situaciones. Si son fechas de verdad: Formato → Número → Fecha personalizada, y armas el formato con los bloques de día, mes y año. Si son texto: Datos → Dividir texto en columnas convierte muchas; =FECHA(DERECHA(A2;4);EXTRAE(A2;4;2);IZQUIERDA(A2;2)) funciona igual que en Excel; y la configuración regional de la hoja de cálculo (Archivo → Configuración) decide cómo se interpreta 03/04/2024 al pegar.",
+        ],
+      },
+      {
+        heading: "Cuando nada funciona: fechas en palabras y archivos mezclados",
+        paragraphs: [
+          "Ninguna fórmula lee “12 de marzo de 2024”, “1 abr 2024”, “March 5th, 2024” y “12/03/24” en la misma columna. Texto en columnas tampoco: necesita que toda la columna venga en el mismo orden. Y eso es exactamente lo que llega cuando las fechas vienen de documentos (facturas, contratos, recibos) tecleados por personas distintas.",
+          "Para ese archivo, la salida práctica es una herramienta que lea cada celda como la leería una persona y escriba todas en el formato que elijas. Es lo que hace el conversor gratis de Tavnit: subes el Excel o CSV, marcas las columnas con fechas, dices si tus fechas numéricas ponen primero el día o el mes y qué formato quieres (aaaa-mm-dd, dd/mm/aaaa o mm/dd/aaaa), y te devuelve el mismo archivo con las celdas cambiadas resaltadas. Las fechas con números se convierten con reglas; las escritas en palabras, con IA. Lo que no se puede leer con seguridad se deja como estaba, en lugar de adivinar.",
+        ],
+        bullets: [
+          "Una columna, un orden conocido: Texto en columnas o una fórmula.",
+          "Un CSV de otro país: Power Query con configuración regional.",
+          "Fechas en palabras, idiomas o formatos mezclados: el conversor.",
+          "Lo mismo cada semana, en cada archivo que llega: un Cleaner (abajo).",
+        ],
+      },
+    ],
+    tavnit: {
+      heading: "Dónde entra Tavnit",
+      paragraphs: [
+        "El conversor gratis de fechas es un Cleaner de Tavnit en versión de un archivo a la vez. En tu cuenta, ese mismo Cleaner se aplica solo a cada archivo que llega por correo o API y a cada documento del que Tavnit extrae datos: una factura con “12 de marzo de 2024” sale con 2024-03-12 en la columna de fecha, junto con los números, las monedas y las validaciones que le pidas, y antes de llegar a tu ERP o a Google Sheets.",
+      ],
+      links: [
+        { label: "Cambiar formato de fecha en Excel, gratis", href: "/es/herramientas/cambiar-formato-de-fecha-excel" },
+        { label: "Qué es un Cleaner", href: "/es/documentacion/cleaners" },
+        { label: "Más herramientas gratis para Excel", href: "/es/herramientas" },
+      ],
+    },
+    faqs: [
+      { q: "¿Cuál es la fórmula para cambiar el formato de fecha en Excel?", a: "Si la celda es una fecha de verdad, no hace falta fórmula: Ctrl+1 → Formato de celdas → Fecha o Personalizada (dd/mm/aaaa, aaaa-mm-dd). Si es texto, =FECHA(DERECHA(A2;4);EXTRAE(A2;4;2);IZQUIERDA(A2;2)) convierte un texto como 12/03/2024 en fecha; =FECHANUMERO(A2) lo hace según tu configuración regional; y =TEXTO(A2;\"aaaa-mm-dd\") produce un texto con el formato que quieras." },
+      { q: "¿Por qué Excel no cambia el formato de mis fechas?", a: "Porque no son fechas sino texto. Compruébalo con =ESNUMERO(A2): si da FALSO, Formato de celdas no puede actuar. Conviértelas primero con Datos → Texto en columnas (paso 3: Fecha, DMA o MDA) o con una fórmula, y después aplica el formato." },
+      { q: "¿Cómo convierto dd/mm/aaaa a aaaa-mm-dd?", a: "Si son fechas: Formato de celdas → Personalizada → aaaa-mm-dd. Si son texto: Texto en columnas con DMA y luego el formato anterior, o =TEXTO(FECHA(DERECHA(A2;4);EXTRAE(A2;4;2);IZQUIERDA(A2;2));\"aaaa-mm-dd\") si necesitas el resultado como texto para exportarlo." },
+      { q: "¿Cómo sé si 03/04/2024 es 3 de abril o 4 de marzo?", a: "Mirando una sola celda, no se puede. Busca en la columna una fecha con día mayor que 12 (15/04/2024 solo puede ser día-mes-año) y aplica ese orden a toda la columna con Texto en columnas. Si no hay ninguna, pregunta a quien generó el archivo o mira el país del sistema de origen." },
+      { q: "¿Qué formato de fecha conviene usar?", a: "Para intercambiar archivos entre sistemas y ordenar bien, aaaa-mm-dd (2024-03-12): no tiene ambigüedad de día y mes y ordena alfabéticamente en orden cronológico. Para leer, dd/mm/aaaa es el habitual en Latinoamérica y España; mm/dd/aaaa, en Estados Unidos." },
+      { q: "¿Y si las fechas están escritas en palabras?", a: "Excel no tiene fórmula para “12 de marzo de 2024” o “March 5th”. Si son pocas, Buscar y reemplazar; si son muchas o vienen mezcladas con otros formatos, una herramienta que las lea con IA, como el conversor gratis de Tavnit, que devuelve el archivo con todas en un solo formato." },
+    ],
+  },
 ];
 
 /** Keyed by the English slug — the hreflang pairing key. */
