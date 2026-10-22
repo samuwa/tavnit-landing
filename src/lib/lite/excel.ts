@@ -194,7 +194,10 @@ export function buildWorkbook(sheets: SheetSpec[]): Uint8Array {
     `<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">` +
     `<sheets>` +
     sheets.map((s, i) => `<sheet name="${esc(s.name.slice(0, 31))}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join("") +
-    `</sheets></workbook>`;
+    `</sheets>` +
+    // Formula cells carry no cached value; ask every reader to compute them on open.
+    `<calcPr fullCalcOnLoad="1"/>` +
+    `</workbook>`;
 
   const stylesRel = sheets.length + 1;
   const workbookRels =

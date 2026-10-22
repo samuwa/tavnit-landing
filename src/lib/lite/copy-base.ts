@@ -191,6 +191,9 @@ export interface ToolCopy {
     fields: string[];
     cta: string;
     note: string;
+    /** Questions about the template itself, appended to the page's FAQs (and
+     *  the FAQPage schema) so a tool that keeps the base FAQs can add them. */
+    faqs?: { q: string; a: string }[];
   };
   faqHeading: string;
   faqs: { q: string; a: string }[];

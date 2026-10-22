@@ -82,6 +82,7 @@ export function liteToolMetadata(toolId: LiteToolId, locale: Locale): Metadata {
 export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; locale: Locale }) {
   const tool = LITE_TOOLS[toolId];
   const copy = TOOL_COPY[toolId][locale];
+  const faqs = [...copy.faqs, ...(copy.template?.faqs ?? [])];
   const hub = HUB_COPY[locale];
   const path = tool.paths[locale];
   const alternatePath = tool.paths[locale === "es" ? "en" : "es"];
@@ -99,7 +100,7 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
       { name: hub.breadcrumbHub, url: `${SITE_URL}${hubPath}` },
       { name: copy.label, url: `${SITE_URL}${path}` },
     ],
-    faqs: copy.faqs,
+    faqs,
   });
   (schema["@graph"] as object[]).push({
     "@type": "WebApplication",
@@ -254,7 +255,7 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
           <h2 id="lite-faq-heading" className="lite-display text-3xl sm:text-4xl">
             {copy.faqHeading}
           </h2>
-          <LiteFaq items={copy.faqs} />
+          <LiteFaq items={faqs} />
         </section>
 
         {(related.useCase || related.guide) && (
