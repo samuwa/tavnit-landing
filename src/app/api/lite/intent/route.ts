@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { APP_URL } from "@/lib/site";
 import { isLiteToolId } from "@/lib/lite/tools";
 import { getOrCreateSessionId } from "@/lib/lite/session";
+import { mintAppSignInUrl } from "@/lib/lite/sso";
 import { createHandoff, insertIntent, linkSessionIntents, storeConfigured, type IntentKind } from "@/lib/lite/store";
 import { authConfigured, currentUser } from "@/lib/supabase/server";
 
@@ -16,7 +17,10 @@ import { authConfigured, currentUser } from "@/lib/supabase/server";
  *  - `handoff: true` (the "Try it in Tavnit" links) also mints a one-time
  *    token and answers { url } — the app URL carrying it. A tool's links
  *    open that same tool inside the app (app.tavnit.io/tools/<tool id>, the
- *    ids are shared), where it runs on the user's own org.
+ *    ids are shared), where it runs on the user's own org. For a visitor
+ *    signed in here (they downloaded a result), the URL is the app's /auth
+ *    page with a single-use sign-in token for the same account, so the tool
+ *    opens without a second login (see lib/lite/sso.ts).
  * Never blocks the visitor: on any failure the answer still carries the plain
  * app URL for a handoff.
  */
@@ -84,7 +88,8 @@ export async function POST(request: Request) {
     await createHandoff(sessionId, token);
     const url = appUrlFor(tool);
     url.searchParams.set("lite", token);
-    return NextResponse.json({ url: url.toString() });
+    const signedIn = user?.email ? await mintAppSignInUrl(user.email, url.pathname, token).catch(() => null) : null;
+    return NextResponse.json({ url: (signedIn ?? url).toString() });
   } catch {
     return NextResponse.json(wantsHandoff ? fallback : { ok: false });
   }
