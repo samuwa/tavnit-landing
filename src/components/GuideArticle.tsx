@@ -65,7 +65,8 @@ export default function GuideArticle({
 }: {
   g: Guide;
   locale: Locale;
-  alternateHref: string;
+  /** The twin in the other language; absent for Spanish-only guides. */
+  alternateHref?: string;
   others: RelatedGuide[];
 }) {
   const t = COPY[locale];
@@ -82,7 +83,7 @@ export default function GuideArticle({
         <Link href={t.homeHref} className="hover:text-fg-3 transition-colors">{t.home}</Link>
         <span aria-hidden="true">/</span>
         <Link href={t.hubHref} className="hover:text-fg-3 transition-colors">{t.hub}</Link>
-        {t.readOther && (
+        {t.readOther && alternateHref && (
           <span className="ml-auto">
             <Link href={alternateHref} hrefLang="en" lang="en" className="hover:text-fg-3 transition-colors">
               {t.readOther}

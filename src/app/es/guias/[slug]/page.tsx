@@ -25,7 +25,9 @@ export async function generateMetadata({
     description: g.description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(`/guides/${g.slug}`, path),
+      // A Spanish-only guide has no twin: a hreflang set with only itself
+      // and an English x-default pointing nowhere would be a broken pair.
+      ...(g.spanishOnly ? {} : { languages: languageAlternates(`/guides/${g.slug}`, path) }),
     },
     openGraph: {
       type: "article",
@@ -34,7 +36,7 @@ export async function generateMetadata({
       description: g.description,
       siteName: "Tavnit",
       locale: ES_LOCALE_OG,
-      alternateLocale: [EN_LOCALE_OG],
+      ...(g.spanishOnly ? {} : { alternateLocale: [EN_LOCALE_OG] }),
       publishedTime: g.published,
       modifiedTime: g.updated,
       images: ["/opengraph-image"],
@@ -52,7 +54,7 @@ export default async function SpanishGuidePage({
   if (!g) notFound();
 
   const path = esGuidePath(g);
-  const enPath = `/guides/${g.slug}`;
+  const enPath = g.spanishOnly ? undefined : `/guides/${g.slug}`;
   const others = GUIDES_ES.filter((o) => o.slug !== g.slug).map((o) => ({
     h1: o.h1,
     readingMinutes: o.readingMinutes,

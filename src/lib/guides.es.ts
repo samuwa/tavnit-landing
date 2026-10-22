@@ -16,7 +16,15 @@ import type { Guide } from "@/lib/guides";
  * `published`, `updated` bumped only for substantive edits, and the register
  * of .agents/product-marketing.md.
  */
-export type GuideEs = Guide & { slugEs: string };
+/**
+ * `spanishOnly`: the guide has no English twin. Its `slug` then equals
+ * `slugEs` (it is only a key), the page emits no hreflang pair and the
+ * sitemap lists it as a plain URL. Used for the tariff-classification
+ * cluster, where the searches are Spanish and Panamanian (RGI, notas
+ * legales, partida arancelaria) and an English version would be a
+ * translation nobody asked for.
+ */
+export type GuideEs = Guide & { slugEs: string; spanishOnly?: true };
 
 export function esGuidePath(g: Pick<GuideEs, "slugEs">): string {
   return `/es/guias/${g.slugEs}`;
@@ -100,6 +108,9 @@ export const GUIDES_ES: GuideEs[] = [
         "Cada clasificación pasa por revisión humana antes de que se presente cualquier cosa, con una bitácora de auditoría de solo anexar que registra quién aprobó qué fracción. Los datos estructurados y ya clasificados pueden entonces pre-llenar el formulario de la declaración en lugar de volver a tipearse.",
       ],
       links: [
+        { label: "Las seis RGI explicadas con ejemplos", href: "/es/guias/reglas-generales-de-interpretacion-rgi" },
+        { label: "Notas legales de sección y capítulo", href: "/es/guias/notas-legales-de-seccion-y-capitulo" },
+        { label: "Partida arancelaria: cinco ejemplos resueltos", href: "/es/guias/partida-arancelaria-ejemplos" },
         { label: "Aduanas y clasificación arancelaria para Panamá", href: "/es/aduanas" },
         { label: "Customs automation — en inglés", href: "/use-cases/customs-trade" },
         { label: "Cleaners — tipo de campo de código arancelario (docs en inglés)", href: "/docs/cleaners" },
@@ -194,6 +205,306 @@ export const GUIDES_ES: GuideEs[] = [
       { q: "¿Cuál es la diferencia entre conciliación de dos vías y de tres vías?", a: "La de dos vías compara la factura con la orden de compra: ¿acordamos comprar esto a este precio? La de tres vías compara además contra la nota de recepción: ¿de verdad llegó? La de tres vías es el estándar para bienes físicos; la de dos vías es común en servicios y compras de bajo valor." },
       { q: "¿Se puede automatizar por completo la conciliación de facturas con órdenes de compra?", a: "La comparación sí. La parte que se resiste a la automatización es llevar el PDF de la factura del proveedor a la misma forma estructurada que tu OC, porque el formato, los números de parte y las descripciones cambian con cada proveedor. Una vez que la extracción está automatizada, conciliar es una consulta, y solo las excepciones necesitan a una persona." },
       { q: "¿Qué tolerancia debo fijar para conciliar facturas con órdenes de compra?", a: "No hay un número universal. La mayoría de las políticas permiten una variación pequeña — porcentual o absoluta — en el precio unitario, variación cero en la cantidad para bienes físicos, y tratan el flete y los recargos como líneas aceptables aparte. Lo importante es que la regla esté escrita y que el sistema la aplique de forma consistente." },
+    ],
+  },
+  // ---- Clúster de clasificación arancelaria (solo en español) ----
+  // Search Console, oct 2026: "rgi aduana", "rgi 1 y 6", "rgi 3", "que es rgi en
+  // aduanas", "que son las notas legales en la clasificacion arancelaria",
+  // "criterios de clasificación arancelaria", "partida arancelaria ejemplo",
+  // "dame la partida arancelaria", "clasificacion arancelaria de este producto".
+  {
+    slug: "reglas-generales-de-interpretacion-rgi",
+    slugEs: "reglas-generales-de-interpretacion-rgi",
+    spanishOnly: true,
+    title: "Reglas Generales de Interpretación (RGI) con ejemplos",
+    h1: "Las seis Reglas Generales de Interpretación (RGI) explicadas con ejemplos",
+    description:
+      "Qué dice cada una de las seis RGI del Sistema Armonizado, en qué orden se aplican y un ejemplo resuelto por regla, de la RGI 1 a la RGI 6.",
+    lede: "Las Reglas Generales de Interpretación (RGI) son las seis reglas, parte del texto legal del Sistema Armonizado, que dicen cómo se clasifica una mercancía cuando el nombre comercial no basta. Se aplican en orden: la RGI 1 resuelve la mayoría de los casos con el texto de la partida y las notas legales; la 2 y la 3 cubren los artículos incompletos, las mezclas y los conjuntos; la 4 lo que no encaja en ninguna partida; la 5 los estuches y envases; y la 6 la subpartida.",
+    published: "2026-10-21",
+    updated: "2026-10-21",
+    readingMinutes: 9,
+    sections: [
+      {
+        heading: "Qué son las RGI y por qué son ley",
+        paragraphs: [
+          "El Sistema Armonizado no es solo una lista de códigos. Es un convenio internacional de la Organización Mundial de Aduanas, y el texto legal que todos los países miembros adoptan tiene tres partes: las Reglas Generales de Interpretación, las notas legales de sección, capítulo y subpartida, y los textos de las partidas y subpartidas. Las RGI van primero porque son las instrucciones de uso de todo lo demás.",
+          "Panamá aplica el SA 2022 a través del Arancel Nacional de Importación (VII Enmienda), que reproduce las seis reglas al inicio. Por eso una clasificación que cita la RGI en la que se apoyó es defendible ante la aduana, y una que solo dice “es lo que más se parece” no. Las notas explicativas de la OMA ayudan a interpretar, pero no son ley; las RGI sí.",
+          "La regla más importante sobre las reglas es el orden: se aplican una tras otra, y solo se pasa a la siguiente cuando la anterior no resuelve. La mayoría de las mercancías se clasifica con la RGI 1 y termina con la RGI 6. Las reglas 2 a 5 existen para los casos intermedios.",
+        ],
+      },
+      {
+        heading: "RGI 1: los textos de las partidas y las notas legales mandan",
+        paragraphs: [
+          "Los títulos de las secciones, de los capítulos y de los subcapítulos solo tienen valor indicativo. La clasificación se determina legalmente por los textos de las partidas y por las notas de sección o de capítulo, y, si no son contrarias a esos textos, por las reglas siguientes. Eso dice la RGI 1, y es la regla con la que se resuelve casi todo.",
+          "Ejemplo. Una camiseta de punto, de algodón. El texto de la partida 61.09 dice “T-shirts y camisetas interiores, de punto”. La nota 1 del Capítulo 61 confirma que el capítulo solo cubre prendas de punto. El producto cumple el texto de la partida y la nota: partida 61.09 por RGI 1, sin necesidad de ninguna otra regla. Lo que sí hace falta es leer la nota, porque si la camiseta fuera tejida (no de punto) saldría del Capítulo 61 y se iría al 62.",
+          "El error típico con la RGI 1 es clasificar por el título del capítulo. “Capítulo 84: máquinas” suena a que cualquier aparato va ahí; el título no clasifica nada, los textos de las partidas sí.",
+        ],
+      },
+      {
+        heading: "RGI 2: artículos incompletos, sin montar y mezclas",
+        paragraphs: [
+          "La RGI 2 a) dice que la referencia a un artículo en una partida alcanza también al artículo incompleto o sin terminar, siempre que presente las características esenciales del artículo completo, y al artículo completo o terminado que se presente desmontado o sin montar todavía. Una bicicleta que viaja en caja, desarmada, se clasifica como bicicleta en la partida 87.12, no como un lote de partes. Un vehículo sin motor sigue siendo un vehículo.",
+          "La RGI 2 b) extiende la referencia a una materia (“de madera”, “de caucho”) a las mezclas y asociaciones de esa materia con otras, y la referencia a un producto de una materia determinada a los productos constituidos total o parcialmente por ella. Pero añade lo importante: cuando por esa extensión el producto cabe en dos o más partidas, se clasifica por la RGI 3. Es decir, la RGI 2 b) abre la puerta a la RGI 3; no la cierra.",
+        ],
+        bullets: [
+          "Desmontado o sin montar: se clasifica como el artículo completo (RGI 2 a).",
+          "Incompleto con el carácter esencial del completo: igual que el completo (RGI 2 a).",
+          "Mezcla o combinación de materias: la partida de la materia se extiende, y si aparecen dos partidas posibles, se resuelve con la RGI 3 (RGI 2 b).",
+        ],
+      },
+      {
+        heading: "RGI 3: cuando la mercancía cabe en dos o más partidas",
+        paragraphs: [
+          "Es la regla que resuelve la mayoría de los casos difíciles, y tiene tres pasos que también se aplican en orden. RGI 3 a): la partida más específica tiene prioridad sobre la más genérica. Las alfombras textiles diseñadas para automóvil podrían ser “partes y accesorios de vehículos” (87.08) o “alfombras y demás revestimientos textiles para el suelo” (57.03); la segunda describe el producto con más precisión y gana. Cuando dos partidas se refieren cada una a solo una parte de las materias o de los artículos del conjunto, se consideran igual de específicas y se pasa al siguiente paso.",
+          "RGI 3 b): las mezclas, los productos compuestos de materias diferentes y los surtidos acondicionados para la venta al por menor se clasifican por la materia o el artículo que les confiere el carácter esencial. El ejemplo de las propias notas explicativas: un paquete con espagueti crudo, un sobre de queso rallado y una lata pequeña de salsa de tomate, vendido como un solo producto, se clasifica como pasta (19.02), porque la pasta es lo que le da el carácter al conjunto. Un juego de peluquería con máquina eléctrica de cortar el pelo, tijeras, peine y cepillo en estuche va con la máquina (85.10).",
+          "RGI 3 c): si ni la 3 a) ni la 3 b) resuelven, la mercancía se clasifica en la última partida por orden de numeración entre las que podrían considerarse. Es la regla de desempate final, y rara vez se llega a ella; cuando se llega, hay que poder explicar por qué ninguna materia da el carácter esencial.",
+        ],
+      },
+      {
+        heading: "RGI 4: la mercancía que no encaja en ninguna partida",
+        paragraphs: [
+          "Si una mercancía no puede clasificarse con las reglas anteriores, se clasifica en la partida de los artículos con los que tenga mayor analogía. En la práctica se usa muy poco, porque casi todos los capítulos terminan en una partida o subpartida “los demás” que recoge lo que no tiene texto propio. Los productos nuevos de verdad tienden a vivir un tiempo en esos “los demás” hasta que una enmienda del SA les da sitio: el SA 2022 creó, por ejemplo, la subpartida 8517.13 para los teléfonos inteligentes y la 8543.40 para los cigarrillos electrónicos.",
+        ],
+      },
+      {
+        heading: "RGI 5: estuches y envases",
+        paragraphs: [
+          "RGI 5 a): los estuches para cámaras, instrumentos musicales, armas, instrumentos de dibujo, collares y continentes similares, especialmente diseñados para contener un artículo determinado, susceptibles de uso prolongado y presentados con el artículo, se clasifican con él. Un estuche de guitarra vendido con la guitarra es guitarra. La excepción: si el continente es el que da el carácter esencial al conjunto (un estuche de plata con un peine barato), se clasifica por el estuche.",
+          "RGI 5 b): los envases que normalmente se usan para esa clase de mercancía se clasifican con ella. Salvo que sean claramente reutilizables: los cilindros de gas se clasifican como cilindros, no como gas.",
+        ],
+      },
+      {
+        heading: "RGI 6: la subpartida",
+        paragraphs: [
+          "Las cinco primeras reglas llegan hasta la partida de cuatro dígitos. La RGI 6 dice que la clasificación en las subpartidas de una misma partida se determina por los textos de esas subpartidas y las notas de subpartida, aplicando las reglas anteriores con los cambios necesarios, y entendiendo que solo pueden compararse subpartidas del mismo nivel. En el arancel, el nivel se ve en los guiones: una subpartida de un guión se compara con las de un guión; las de dos guiones, con las de dos guiones de la misma subpartida de un guión.",
+          "Ejemplo. Café tostado, sin descafeinar. Partida 09.01 por RGI 1. Dentro de ella, el primer nivel separa “café sin tostar” de “café tostado”; se elige tostado. En el segundo nivel, dentro de tostado, “sin descafeinar” o “descafeinado”: 0901.21. Comparar 0901.21 directamente con 0901.11 sería saltarse un nivel, que es justo lo que la RGI 6 prohíbe.",
+          "A partir de la subpartida de seis dígitos empieza el arancel nacional. En Panamá, la fracción nacional es la que fija el DAI, el ITBMS y, cuando aplica, el ISC, y la RGI 6 se sigue aplicando por analogía a esos niveles: se comparan subdivisiones del mismo nivel y se leen las notas que el arancel nacional añada.",
+        ],
+      },
+      {
+        heading: "Cómo citar una RGI en una clasificación defendible",
+        paragraphs: [
+          "Una clasificación que la aduana acepta y que un corredor puede defender dos años después tiene siempre la misma forma: la descripción técnica de la mercancía, la regla que decidió, la nota legal que aplicó y la fracción final.",
+        ],
+        bullets: [
+          "Describe la mercancía por materia, función y presentación antes de buscar el código; el nombre comercial no clasifica.",
+          "Escribe qué regla decidió: “RGI 1 y 6” para los casos directos, “RGI 3 b)” cuando hubo que elegir por carácter esencial.",
+          "Cita la nota de sección o capítulo que incluyó o excluyó el producto, si la hubo.",
+          "Guarda el razonamiento junto con la declaración. Un mismo producto debe clasificarse igual la próxima vez, lo haga quien lo haga.",
+        ],
+      },
+    ],
+    tavnit: {
+      heading: "Dónde entra Tavnit",
+      paragraphs: [
+        "El clasificador arancelario de Tavnit trabaja sobre el Arancel Nacional de Importación de Panamá (VII Enmienda, SA 2022), con sus líneas nacionales, las tasas de DAI, ITBMS e ISC, las notas legales de sección y capítulo y las RGI, y clasifica cada línea de mercancía a partir de la descripción que extrae de la factura y del packing list. Devuelve la fracción, el nivel de confianza y el razonamiento, con la regla y la nota que decidieron el caso.",
+        "Las líneas de baja confianza o de alto valor pasan por revisión del corredor antes de que se presente nada, y cada decisión queda en una bitácora de auditoría. Así, la clasificación defendible que describe esta guía no depende de la memoria de una persona.",
+      ],
+      links: [
+        { label: "Clasificación arancelaria: qué es, RGI y dos ejemplos", href: "/es/guias/clasificacion-arancelaria" },
+        { label: "Notas legales de sección y capítulo", href: "/es/guias/notas-legales-de-seccion-y-capitulo" },
+        { label: "Aduanas y clasificación arancelaria para Panamá", href: "/es/aduanas" },
+      ],
+    },
+    faqs: [
+      { q: "¿Cuántas Reglas Generales de Interpretación hay?", a: "Seis. Las cinco primeras clasifican hasta la partida de cuatro dígitos y la sexta lleva la clasificación a la subpartida. La RGI 2 tiene dos apartados (a y b), la RGI 3 tres (a, b y c) y la RGI 5 dos (a y b)." },
+      { q: "¿Las RGI se aplican en orden?", a: "Sí, y ese es el punto central. Se empieza siempre por la RGI 1; solo si el texto de la partida y las notas legales no resuelven se pasa a la 2, luego a la 3 (en orden a, b, c) y, en último caso, a la 4. La 5 cubre estuches y envases en cualquier caso, y la 6 se aplica al llegar a la subpartida." },
+      { q: "¿Qué diferencia hay entre la RGI 3 a) y la RGI 3 b)?", a: "La 3 a) compara partidas: gana la más específica. La 3 b) mira la mercancía: cuando dos partidas son igual de específicas, se clasifica por la materia o el artículo que le da el carácter esencial. Se aplica primero la 3 a); la 3 b) entra solo cuando la 3 a) no decide." },
+      { q: "¿Qué es la RGI 6 en aduanas?", a: "La regla que lleva la clasificación de la partida de cuatro dígitos a la subpartida. Dice que se usan los textos de las subpartidas y las notas de subpartida, aplicando las reglas anteriores, y que solo se comparan subpartidas del mismo nivel (del mismo número de guiones)." },
+      { q: "¿Las RGI aplican en Panamá?", a: "Sí. El Arancel Nacional de Importación de Panamá está construido sobre el Sistema Armonizado (SA 2022, VII Enmienda) y reproduce las seis reglas, que forman parte de su texto legal. La fracción nacional que se declara es el resultado de aplicarlas hasta la subpartida y seguir, por analogía, en los niveles nacionales." },
+    ],
+  },
+  {
+    slug: "notas-legales-de-seccion-y-capitulo",
+    slugEs: "notas-legales-de-seccion-y-capitulo",
+    spanishOnly: true,
+    title: "Notas legales del arancel: qué son y cómo se usan",
+    h1: "Notas legales de sección y de capítulo: qué son, qué fuerza tienen y cómo se leen",
+    description:
+      "Qué son las notas legales de sección, de capítulo y de subpartida del Sistema Armonizado, por qué mandan sobre el título de la partida, y cinco ejemplos de notas que cambian la clasificación.",
+    lede: "Las notas legales son los textos que aparecen al inicio de cada sección y de cada capítulo del arancel (y, en algunos capítulos, antes de las subpartidas) y que definen términos, excluyen o incluyen mercancías y fijan reglas especiales, como las de las partes. Por la RGI 1 tienen la misma fuerza que los textos de las partidas: una nota que excluye un producto de un capítulo manda, aunque el título de la partida parezca cubrirlo.",
+    published: "2026-10-21",
+    updated: "2026-10-21",
+    readingMinutes: 8,
+    sections: [
+      {
+        heading: "Tres clases de notas: de sección, de capítulo y de subpartida",
+        paragraphs: [
+          "El Sistema Armonizado se organiza en 21 secciones y 97 capítulos. Cada sección y cada capítulo pueden abrir con notas, numeradas, que forman parte del texto legal de la nomenclatura. Las notas de sección aplican a todos los capítulos de la sección; las de capítulo, a las partidas del capítulo. Desde la RGI 6, además, existen notas de subpartida, que solo aplican al clasificar dentro de una partida.",
+          "Hay capítulos sin notas y capítulos con más de una página de ellas. Las secciones XI (textiles), XV (metales comunes), XVI (máquinas y aparatos eléctricos) y XVII (material de transporte) concentran las más largas, porque son las que más productos compuestos y más partes manejan.",
+        ],
+      },
+      {
+        heading: "Por qué mandan: RGI 1 y RGI 6",
+        paragraphs: [
+          "La RGI 1 lo dice textualmente: los títulos de las secciones, capítulos y subcapítulos solo tienen valor indicativo, y la clasificación se determina por los textos de las partidas y por las notas de sección o de capítulo. La RGI 6 repite lo mismo para las subpartidas y sus notas. Es decir, las notas no son una ayuda para interpretar el arancel; son el arancel.",
+          "La consecuencia práctica: cuando el texto de una partida parece cubrir un producto pero una nota de sección o de capítulo lo excluye, la nota gana. Y al revés: una nota puede meter en una partida algo que su texto no menciona. Leer solo los títulos de las partidas produce clasificaciones seguras de sí mismas y equivocadas.",
+        ],
+      },
+      {
+        heading: "Notas legales y notas explicativas no son lo mismo",
+        paragraphs: [
+          "Las notas explicativas las publica la Organización Mundial de Aduanas aparte de la nomenclatura. Describen partida por partida qué comprende y qué no, con ejemplos. Son la referencia que usan las aduanas y los tribunales para interpretar, y conviene leerlas, pero no son texto legal: una clasificación no se apoya en una nota explicativa en contra de una nota legal.",
+          "Lo mismo vale para los criterios de clasificación que la OMA publica sobre productos concretos y para las resoluciones de clasificación de cada aduana: orientan, y en el caso de las resoluciones obligan a quien las obtuvo, pero el texto que manda es el de las partidas y las notas legales.",
+        ],
+      },
+      {
+        heading: "Lo que hace una nota: definir, excluir, incluir, ordenar",
+        paragraphs: [
+          "Casi todas las notas legales hacen una de cuatro cosas. Definen un término que el texto de las partidas usa sin explicar. Excluyen mercancías de una sección o capítulo y dicen a dónde van. Incluyen expresamente algo que de otro modo quedaría en duda. O fijan un orden para resolver un tipo de caso, casi siempre las partes y los accesorios. Cinco ejemplos que aparecen todos los días en un embarque:",
+        ],
+        bullets: [
+          "Definir (Capítulo 64, nota 4): para el calzado, la materia de la parte superior es la que tiene la mayor superficie exterior, y la de la suela, la que tiene la mayor superficie en contacto con el suelo. Esta nota decide si una zapatilla con parte superior textil y refuerzos de cuero va a la partida 64.04 (parte superior textil) o a la 64.03 (parte superior de cuero), y no es cuestión de opinión: se mide.",
+          "Excluir (Sección XVI, nota 1): la sección de máquinas y aparatos eléctricos excluye, entre otros, las correas de transmisión de plástico (Capítulo 39) o de caucho (partida 40.10) y los artículos de los Capítulos 82 y 83 (herramientas y manufacturas de metal). Una correa de caucho para una máquina no es “parte de máquina”: es correa de caucho.",
+          "Ordenar partes de uso general (Sección XV, nota 2): tornillos, pernos, tuercas, muelles, cerraduras, bisagras y similares de metal común son “partes de uso general” y se clasifican siempre en su propia partida (los tornillos de acero, en la 73.18), nunca como parte de la máquina o del mueble al que van destinados.",
+          "Ordenar partes de máquinas (Sección XVI, nota 2): una parte que por sí misma es un artículo de una partida de los Capítulos 84 u 85 (un motor, una bomba, un transformador) va a su propia partida; una parte destinada exclusiva o principalmente a una máquina va con esa máquina; y las demás caen en las partidas residuales de partes (84.87 u 85.48).",
+          "Incluir por defecto (Capítulos 61 y 62, nota 9): las prendas que no puedan identificarse como de hombre o niño ni como de mujer o niña se clasifican en las partidas de prendas para mujer o niña. Una camisa unisex no se clasifica “a criterio”; la nota ya decidió.",
+        ],
+      },
+      {
+        heading: "Cómo leerlas en la práctica",
+        paragraphs: [
+          "El método que evita las clasificaciones seguras y equivocadas es mecánico: antes de elegir la partida, leer las notas de la sección y del capítulo candidatos, completas, y comprobar una por una si alguna define, excluye o incluye el producto. Lleva cinco minutos la primera vez y ninguno la segunda, porque el producto se repite.",
+        ],
+        bullets: [
+          "Ubica la sección y el capítulo candidatos por la materia y la función del producto.",
+          "Lee las notas de esa sección y de ese capítulo antes de leer las partidas, y marca las que mencionan tu producto o su materia.",
+          "Si una nota excluye el producto, sigue a donde la nota lo manda y repite la lectura allí.",
+          "Si una nota define un término del texto de la partida (“de punto”, “parte superior”, “partes de uso general”), aplica la definición, no el sentido corriente de la palabra.",
+          "Al bajar a la subpartida, lee las notas de subpartida del capítulo, si las hay.",
+          "Deja escrito qué nota aplicaste. Es lo que diferencia una clasificación defendible de una adivinanza acertada.",
+        ],
+      },
+      {
+        heading: "Las notas del arancel nacional",
+        paragraphs: [
+          "A partir de los seis dígitos del SA, cada país abre sus propias subdivisiones, y algunos aranceles añaden notas propias que solo aplican a esos niveles nacionales. La regla práctica es leer el arancel que se va a declarar, no solo la nomenclatura internacional. En Panamá, la fracción del Arancel Nacional de Importación es la que determina el DAI, el ITBMS y el ISC, y es a ese nivel al que hay que llegar con las notas leídas.",
+        ],
+      },
+    ],
+    tavnit: {
+      heading: "Dónde entra Tavnit",
+      paragraphs: [
+        "El clasificador de Tavnit no busca el código por parecido con el nombre comercial: clasifica contra el Arancel Nacional de Importación de Panamá (VII Enmienda, SA 2022) aplicando las notas legales de sección y capítulo y las RGI, y registra qué nota y qué regla decidieron cada línea. El resultado es una fracción nacional con su razonamiento, no un código a seis dígitos elegido por similitud.",
+        "La descripción con la que trabaja sale de la factura y del packing list del embarque, extraídos en el mismo Run, y las líneas de baja confianza pasan por el corredor antes de presentarse. Cada decisión queda en la bitácora de auditoría, con la nota citada.",
+      ],
+      links: [
+        { label: "Las seis RGI explicadas con ejemplos", href: "/es/guias/reglas-generales-de-interpretacion-rgi" },
+        { label: "Clasificación arancelaria: qué es, RGI y dos ejemplos", href: "/es/guias/clasificacion-arancelaria" },
+        { label: "Aduanas y clasificación arancelaria para Panamá", href: "/es/aduanas" },
+      ],
+    },
+    faqs: [
+      { q: "¿Qué son las notas legales en la clasificación arancelaria?", a: "Son los textos numerados que abren cada sección y cada capítulo del Sistema Armonizado (y, en algunos capítulos, las subpartidas). Definen términos, excluyen o incluyen mercancías y fijan reglas para casos como las partes. Forman parte del texto legal de la nomenclatura y, por la RGI 1, tienen la misma fuerza que los textos de las partidas." },
+      { q: "¿Las notas legales son obligatorias?", a: "Sí. La RGI 1 establece que la clasificación se determina por los textos de las partidas y por las notas de sección o de capítulo. Una nota que excluye un producto de un capítulo manda sobre el título de la partida, y una clasificación que la ignore es incorrecta aunque el texto de la partida parezca encajar." },
+      { q: "¿Cuál es la diferencia entre notas legales y notas explicativas?", a: "Las notas legales están dentro de la nomenclatura y son ley. Las notas explicativas las publica aparte la Organización Mundial de Aduanas para interpretar partida por partida; son la referencia habitual de aduanas y tribunales, pero no obligan. Ante un conflicto, manda la nota legal." },
+      { q: "¿Dónde se leen las notas legales?", a: "Al inicio de cada sección y de cada capítulo del arancel, antes de la lista de partidas. Las notas de subpartida aparecen a continuación de las notas de capítulo, en los capítulos que las tienen. En el Arancel Nacional de Importación de Panamá están reproducidas en el mismo lugar." },
+      { q: "¿Qué pasa si el título de la partida y una nota se contradicen?", a: "Gana la nota. Los títulos de secciones y capítulos solo son indicativos, y una nota de exclusión o de definición prevalece sobre la lectura literal del texto de la partida. Es el caso más común de clasificación equivocada en productos rutinarios." },
+    ],
+  },
+  {
+    slug: "partida-arancelaria-ejemplos",
+    slugEs: "partida-arancelaria-ejemplos",
+    spanishOnly: true,
+    title: "Partida arancelaria: qué es y 5 ejemplos resueltos",
+    h1: "Partida arancelaria: qué es, cómo se encuentra y cinco ejemplos resueltos paso a paso",
+    description:
+      "Qué es una partida arancelaria, qué la diferencia de la subpartida y de la fracción nacional, y cinco productos clasificados paso a paso: celular, camiseta, zapatillas, café y cargador.",
+    lede: "La partida arancelaria es, en sentido estricto, el código de cuatro dígitos del Sistema Armonizado que agrupa una familia de mercancías (85.17, teléfonos; 61.09, camisetas de punto). En el uso diario de Panamá y Centroamérica, “partida” también nombra la fracción nacional completa, la línea de ocho o más dígitos a la que se atan el DAI, el ITBMS y el ISC. Encontrarla es un procedimiento de seis pasos, y aquí se recorre con cinco productos corrientes.",
+    published: "2026-10-21",
+    updated: "2026-10-21",
+    readingMinutes: 10,
+    sections: [
+      {
+        heading: "Partida, subpartida y fracción: la misma palabra para tres cosas",
+        paragraphs: [
+          "El Sistema Armonizado tiene capítulos de dos dígitos, partidas de cuatro y subpartidas de seis. Esos seis dígitos son idénticos en todos los países miembros. Lo que sigue es nacional: Panamá, por ejemplo, extiende cada subpartida en las líneas de su Arancel Nacional de Importación, y es esa línea, la fracción, la que se declara y la que determina los impuestos.",
+          "Cuando alguien pregunta “¿cuál es la partida arancelaria de este producto?”, casi siempre quiere la fracción nacional, no los cuatro dígitos. Esta guía llega hasta la subpartida de seis dígitos, que es común a todos los países, y señala dónde empieza el tramo nacional. Los dígitos nacionales y las tasas se leen en el arancel vigente del país donde se declara.",
+        ],
+      },
+      {
+        heading: "El método en seis pasos",
+        paragraphs: [
+          "La secuencia es siempre la misma, y los ejemplos de abajo la siguen al pie de la letra.",
+        ],
+        bullets: [
+          "Describir la mercancía por materia, función y presentación, no por su nombre comercial.",
+          "Ubicar la sección y el capítulo candidatos.",
+          "Leer las notas legales de esa sección y ese capítulo, buscando definiciones y exclusiones.",
+          "Elegir la partida de cuatro dígitos por el texto de la partida (RGI 1), o por las RGI 2 a 5 si el texto no basta.",
+          "Bajar a la subpartida de seis dígitos comparando solo subpartidas del mismo nivel (RGI 6).",
+          "Seguir en el arancel nacional hasta la fracción que fija los impuestos, y dejar escrito el razonamiento.",
+        ],
+      },
+      {
+        heading: "Ejemplo 1: un teléfono inteligente",
+        paragraphs: [
+          "Descripción: teléfono móvil con pantalla táctil, sistema operativo y acceso a redes celulares e internet. Es un aparato eléctrico de telecomunicación: Sección XVI, Capítulo 85. Las notas de la Sección XVI no lo excluyen. La partida 85.17 cubre los teléfonos, incluidos los teléfonos inteligentes y los demás teléfonos para redes celulares: partida 85.17 por RGI 1.",
+          "Dentro de la partida, el primer nivel agrupa los “teléfonos, incluidos los teléfonos inteligentes y demás teléfonos para redes celulares u otras redes inalámbricas”, y el segundo nivel distingue los teléfonos inteligentes: subpartida 8517.13 (RGI 6). Esa subpartida la creó el SA 2022; en la edición anterior los teléfonos celulares iban en la 8517.12, y un arancel que no se haya actualizado todavía la mostrará así. De 8517.13 en adelante, dígitos nacionales.",
+        ],
+      },
+      {
+        heading: "Ejemplo 2: una camiseta de algodón",
+        paragraphs: [
+          "Descripción: camiseta de manga corta, de tejido de punto, 100 % algodón. Sección XI (textiles). La primera decisión es el capítulo: el 61 cubre las prendas de punto y el 62 las que no son de punto; la nota 1 del Capítulo 61 lo fija. La partida 61.09, “T-shirts y camisetas interiores, de punto”, describe el producto por su texto: RGI 1.",
+          "En la subpartida, el único criterio es la materia: 6109.10 “de algodón” frente a 6109.90 “de las demás materias textiles”. Resultado: 6109.10. Si la misma camiseta fuera tejida en lugar de punto, se iría al Capítulo 62 (camisas y blusas, partidas 62.05 y 62.06), con otra tasa. Es el error más frecuente en prendas: no mirar si el tejido es de punto.",
+        ],
+      },
+      {
+        heading: "Ejemplo 3: unas zapatillas deportivas",
+        paragraphs: [
+          "Descripción: calzado deportivo con suela de caucho y parte superior textil con refuerzos sintéticos. Sección XII, Capítulo 64. Aquí decide una nota legal antes que el texto de la partida: la nota 4 del capítulo dice que la materia de la parte superior es la que tenga la mayor superficie exterior, y la de la suela, la que tenga la mayor superficie en contacto con el suelo. Medida la superficie, la parte superior es textil y la suela, de caucho.",
+          "Con eso, la partida 64.04 (calzado con suela de caucho, plástico, cuero natural o regenerado y parte superior de materia textil) por RGI 1, y no la 64.03, que exige parte superior de cuero. En la subpartida, 6404.11 cubre el calzado de deporte, de tenis, de baloncesto, de gimnasia, de entrenamiento y similares, con suela de caucho o plástico: 6404.11 por RGI 6. Si los refuerzos de cuero sumaran más superficie que el textil, la respuesta cambiaría a 64.03; por eso la nota pide medir.",
+        ],
+      },
+      {
+        heading: "Ejemplo 4: café tostado en grano",
+        paragraphs: [
+          "Descripción: café tostado, en grano, sin descafeinar, en bolsas de un kilo. Sección II (productos del reino vegetal), Capítulo 9 (café, té, yerba mate y especias). La partida 09.01 cubre el café, incluso tostado o descafeinado: RGI 1.",
+          "La subpartida tiene dos niveles. Primero, “café sin tostar” frente a “café tostado”: tostado. Después, dentro del tostado, “sin descafeinar” (0901.21) frente a “descafeinado” (0901.22): 0901.21. El mismo café, pero en forma de extracto soluble (“café instantáneo”), ya no es café del Capítulo 9: es un extracto, esencia o concentrado de café de la partida 21.01. Dos productos que en la factura se llaman igual y que se clasifican en capítulos distintos.",
+        ],
+      },
+      {
+        heading: "Ejemplo 5: un cargador de celular",
+        paragraphs: [
+          "Descripción: adaptador de corriente que convierte la corriente alterna de la red en corriente continua para cargar un teléfono. La tentación es declararlo como “parte o accesorio de teléfono”. La nota 2 a) de la Sección XVI lo impide: una parte que por sí misma es un artículo comprendido en una partida de los Capítulos 84 u 85 se clasifica en su propia partida, sea cual sea la máquina a la que se destine.",
+          "Un cargador es un convertidor estático (un rectificador): partida 85.04, “transformadores eléctricos, convertidores eléctricos estáticos…”, por RGI 1 y la nota citada. Subpartida 8504.40, “convertidores estáticos”, por RGI 6. Que venga en la misma caja que el teléfono no cambia nada si se factura y se presenta por separado; si viene dentro de la caja del teléfono como un conjunto para la venta al por menor, entra la RGI 3 b) y el conjunto se clasifica por el teléfono.",
+        ],
+      },
+      {
+        heading: "Dónde se equivocan estos cinco productos a diario",
+        paragraphs: [
+          "Los cinco ejemplos son mercancía corriente, y aun así cada uno tiene un error típico que aparece en las declaraciones todas las semanas.",
+        ],
+        bullets: [
+          "Teléfonos: declarar la subpartida de la edición anterior del SA porque el arancel que se consultó no está actualizado.",
+          "Prendas: clasificar una camisa tejida en el Capítulo 61 (de punto) o al revés, sin comprobar el tejido.",
+          "Calzado: elegir la partida por la apariencia de la parte superior sin medir la superficie, como manda la nota 4 del Capítulo 64.",
+          "Café: declarar el café soluble en la partida 09.01, cuando es un extracto de la 21.01.",
+          "Cargadores y accesorios: declararlos como “partes” del aparato principal, contra la nota 2 de la Sección XVI.",
+        ],
+      },
+    ],
+    tavnit: {
+      heading: "Dónde entra Tavnit",
+      paragraphs: [
+        "Tavnit extrae la descripción de cada línea de la factura comercial y del packing list del embarque y la clasifica contra el Arancel Nacional de Importación de Panamá (VII Enmienda, SA 2022), aplicando las notas legales y las RGI, hasta la fracción nacional que fija el DAI, el ITBMS y el ISC. Cada línea sale con su fracción, su nivel de confianza y el razonamiento: la regla y la nota que decidieron, como en los cinco ejemplos de arriba.",
+        "Las líneas de baja confianza o de alto valor las revisa el corredor antes de que se presente la declaración, y cada clasificación queda en una bitácora de auditoría. Un producto clasificado una vez se clasifica igual la siguiente.",
+      ],
+      links: [
+        { label: "Clasificación arancelaria: qué es, RGI y dos ejemplos", href: "/es/guias/clasificacion-arancelaria" },
+        { label: "Las seis RGI explicadas con ejemplos", href: "/es/guias/reglas-generales-de-interpretacion-rgi" },
+        { label: "Notas legales de sección y capítulo", href: "/es/guias/notas-legales-de-seccion-y-capitulo" },
+        { label: "Aduanas y clasificación arancelaria para Panamá", href: "/es/aduanas" },
+      ],
+    },
+    faqs: [
+      { q: "¿Qué es la partida arancelaria de un producto?", a: "En sentido estricto, el código de cuatro dígitos del Sistema Armonizado que agrupa su familia de mercancías (85.17 para los teléfonos). En el uso corriente de Panamá y Centroamérica, también la fracción nacional completa, de ocho o más dígitos, que es la que se declara y la que fija los impuestos." },
+      { q: "¿Cuántos dígitos tiene una partida arancelaria?", a: "La partida tiene cuatro dígitos y la subpartida seis; hasta ahí el código es igual en todos los países del Sistema Armonizado. La fracción nacional añade dígitos propios de cada país (ocho, diez o más). Cuando se pide “la partida” para una declaración, se espera la fracción nacional completa." },
+      { q: "¿Cómo sé la partida arancelaria de mi producto?", a: "Siguiendo los seis pasos de esta guía: describir la mercancía por materia, función y presentación; ubicar sección y capítulo; leer sus notas legales; elegir la partida por el texto (RGI 1); bajar a la subpartida (RGI 6); y terminar en la fracción del arancel nacional vigente. Para mercancía de valor o recurrente, muchas aduanas emiten resoluciones anticipadas de clasificación que fijan la fracción antes de importar." },
+      { q: "¿La partida arancelaria es la misma en todos los países?", a: "Hasta los seis dígitos, sí: la subpartida del Sistema Armonizado es común a todos los países miembros. A partir de ahí cada país tiene sus propias subdivisiones y sus propias tasas, así que el código completo de una fracción panameña no sirve tal cual en México o en España." },
+      { q: "¿Puedo usar la partida que puso mi proveedor en la factura?", a: "Como pista, sí; como respuesta, no. El proveedor clasificó bajo el arancel de su país y, a veces, con una edición anterior del Sistema Armonizado. Los seis primeros dígitos suelen coincidir, pero la fracción nacional y la responsabilidad de declararla bien son del importador o de su corredor." },
     ],
   },
 ];

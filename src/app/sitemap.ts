@@ -67,7 +67,7 @@ function lastCommitDate(...paths: string[]): Date | undefined {
 const ROUTE_PAIRS: { en: string; es: string }[] = [
   ...STATIC_ROUTE_PAIRS,
   ...USE_CASES_ES.map((uc) => ({ en: `/use-cases/${uc.slug}`, es: esUseCasePath(uc) })),
-  ...GUIDES_ES.map((g) => ({ en: `/guides/${g.slug}`, es: esGuidePath(g) })),
+  ...GUIDES_ES.filter((g) => !g.spanishOnly).map((g) => ({ en: `/guides/${g.slug}`, es: esGuidePath(g) })),
   ...DOC_SECTIONS.map((d) => ({ en: d.href, es: DOC_BY_SLUG_ES[d.slug].href })),
 ];
 
