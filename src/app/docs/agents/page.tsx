@@ -12,6 +12,7 @@ import {
   Info,
   KeyRound,
   Layers,
+  LifeBuoy,
   Mail,
   MonitorPlay,
   PlusCircle,
@@ -165,8 +166,8 @@ export default function Page() {
 
         <DocCard icon={<KeyRound size={24} />} title="Variables and secrets">
           <Lead>
-            Each variable has a name, a type (text, number, boolean, date, object or list) and a
-            source. The mission refers to variables by name.
+            Each variable has a name, a type (text, number, boolean, date, object, list or file) and
+            a source. The mission refers to variables by name.
           </Lead>
           <DataTable
             head={["Source", "Where the value comes from"]}
@@ -184,8 +185,28 @@ export default function Page() {
                   These variables only get a value when a flow (or a pipeline) triggers the agent.
                 </Fragment>,
               ],
+              [
+                "From bucket",
+                <Fragment key="v1">
+                  Rows of a <DocLink href="/docs/buckets">Bucket</DocLink>, read when the run{" "}
+                  <em>starts</em> (not when it is triggered), so a run that waited in line sees what
+                  the previous run wrote. Pick the columns, filters, order and a limit (default 2,000
+                  rows, at most 5,000): one column gives its distinct values, several give one object
+                  per row. Paired with a Bucket delivery, it is the agent&apos;s memory between runs:{" "}
+                  <em>&ldquo;skip the leads whose id is in known_leads&rdquo;</em>. The agent reads the
+                  values as data, never as instructions, and API calls can&apos;t override them.
+                </Fragment>,
+              ],
             ]}
           />
+          <p>
+            <strong>File variables.</strong> A variable of type <strong>file</strong> hands the agent
+            a flow run&apos;s original document so it can upload it to the site (an invoice to a
+            customs portal, for example). Set it to <strong>Triggering run&apos;s document</strong> to
+            get the document of the flow run that started the agent, or give it a run ID; a Test run
+            or an API call can send another run ID for each run. The run must belong to your
+            organization; otherwise the run fails before a browser opens, with nothing billed.
+          </p>
           <p>
             <strong>Secret variables.</strong> A static text variable can be flagged{" "}
             <strong>Secret</strong>, for a portal password for example. Its value is stored encrypted
@@ -407,13 +428,16 @@ export default function Page() {
 
         <DocCard icon={<CalendarClock size={24} />} title="Running an agent">
           <Lead>
-            An agent can be started five ways. However it starts, it goes through the same limits
-            and deliveries.
+            An agent can be started six ways. However it starts, it goes through the same limits,
+            concurrency and deliveries.
           </Lead>
           <DataTable
             head={["Trigger", "How"]}
             rows={[
-              ["Test run", "The Test run button on the agent (or Run on the agents list). Uses the static variables."],
+              [
+                "Test run",
+                "The Test run button on the agent (or Run on the agents list). A form asks for each variable, prefilled with the static values; you can also fill it from a completed run of a flow.",
+              ],
               ["Schedule", "Settings → Schedule, described below."],
               ["Linked flow", "Every completed run of a flow with this agent linked, as above."],
               [
@@ -422,7 +446,8 @@ export default function Page() {
                   An Agent node in a <DocLink href="/docs/pipelines">pipeline</DocLink>.
                 </Fragment>,
               ],
-              ["API", "A POST from your own system, described below."],
+              ["API", "A POST from your own system, by the agent's ID or its name, described below."],
+              ["Bucket trigger", "One run per Bucket row that matches a condition, described below."],
             ]}
           />
           <p>
@@ -443,30 +468,51 @@ export default function Page() {
               "Failures of scheduled and API runs send the agent's creator an in-app notification, since nobody is watching the run page",
             ]}
           />
+          <p>
+            <strong>Bucket trigger.</strong> Under <strong>Settings → Bucket trigger</strong>, turn on{" "}
+            <strong>Run once per matching bucket row</strong> to start one run for every row of a
+            Bucket that passes your filters, for example one run per lead whose status is not yet{" "}
+            <InlineCode>complete</InlineCode>. Pick the <strong>Row key</strong> that identifies a row
+            and which columns fill which input variables.
+          </p>
+          <BulletList
+            items={[
+              "The bucket is checked about every 30 seconds; a row whose run is still in progress never gets a second one",
+              "Each row gets a limited number of attempts per 24 hours (1 to 10, default 3), at least 10 minutes apart",
+              "The pace is the agent's concurrency limit: N runs work while N more wait, and the trigger keeps the limit on",
+              "Close the loop with a Bucket delivery that updates the same row (status = complete), so a processed row stops matching",
+              "If the bucket is gone or credits run out, the trigger pauses and a failed run says why",
+            ]}
+          />
         </DocCard>
 
-        <DocCard icon={<Layers size={24} />} title="Concurrency: one run at a time">
+        <DocCard icon={<Layers size={24} />} title="Concurrency: limit overlapping runs">
           <Lead>
             By default, overlapping triggers run in parallel. Many portals don&apos;t like two
-            sessions for the same user at once, so an agent can be set to run one run at a time under{" "}
+            sessions for the same user at once, and some sites should not be hammered, so an agent
+            can be limited to one run at a time, or up to ten, under{" "}
             <strong>Settings → Concurrency</strong>.
           </Lead>
           <DataTable
             head={["Setting", "Effect"]}
             rows={[
               [
-                "Run one at a time",
-                "While a run is queued or running, new triggers wait their turn and start one after another, oldest first.",
+                "Limit concurrent runs",
+                "While the limit is reached, new triggers (manual, API, schedule, linked flow, pipeline, bucket trigger) wait their turn and start as soon as a slot frees up, oldest first.",
+              ],
+              [
+                "Runs at the same time",
+                "1 to 10. 1 means one run at a time.",
               ],
               [
                 "Minimum time between runs (minutes)",
-                "0 to 1440. Counted from the end of one run to the start of the next. It is a minimum: the next run also waits for a free worker.",
+                "0 to 1440, applies with Limit concurrent runs. Counted from the end of one run to the start of the next. It is a minimum: the next run also waits for a free worker.",
               ],
             ]}
           />
           <BulletList
             items={[
-              "A run waiting for its turn shows the status Waiting; it holds no worker",
+              "A run waiting for its turn shows the status Waiting; it holds no worker and is not billed",
               "Up to 20 runs can wait per agent; beyond that, new triggers are refused (the API answers 429)",
               "A run that waits more than 24 hours is marked failed",
               "Only one scheduled run waits at a time, so a slow agent on a fast schedule can't pile up",
@@ -483,9 +529,10 @@ export default function Page() {
           <DataTable
             head={["Status", "Meaning"]}
             rows={[
-              ["Waiting", "Queued behind another run of an agent set to run one at a time."],
+              ["Waiting", "Waiting for a free slot of an agent that limits its concurrent runs."],
               ["Queued", "Accepted and waiting for a worker."],
-              ["Running", "The browser session is open."],
+              ["Running", "The browser session is open. With human help on, the agent may be waiting for a person here, with the browser still open."],
+              ["Waiting for a person", "Paused: the agent asked for help, nobody came in time, and the run was saved where it was. Resume it from the run page."],
               ["Completed", "Finished and delivered. Completed with warnings means a delivery failed."],
               ["Failed", "The run hit an error or a limit; the run page says which."],
               ["Cancelled", "Someone stopped the run."],
@@ -497,17 +544,83 @@ export default function Page() {
               "Captured output and Captured files, with downloads",
               "Summary: duration, LLM calls and tokens",
               "Watch live session while it runs, View session replay afterwards",
+              "Browser sessions: one entry per browser session when the run paused for a person and was resumed",
               "Identifiers (run ID and session ID) for support requests",
             ]}
           />
           <p>
-            <strong>Cancel run</strong> stops a waiting, queued or running run. The browser session
-            ends within a few seconds and nothing is delivered.
+            <strong>Cancel run</strong> stops a waiting, queued, running or paused run. The browser
+            session ends within a few seconds and nothing is delivered.
           </p>
           <InfoBox color="blue" icon={<Info size={20} />} title="Debug from the replay, not the output">
             When an agent returns the wrong value, the replay usually shows why in seconds: it logged
             into the wrong tenant, or the search returned no results and it guessed. Fix the mission,
             not the schema.
+          </InfoBox>
+        </DocCard>
+
+        <DocCard icon={<LifeBuoy size={24} />} title="Human help: when only a person can continue">
+          <Lead>
+            Some steps only a person can do: a captcha, a code sent to the account owner&apos;s
+            phone, a login someone has to approve. Turn on <strong>Settings → Human help</strong> and
+            the agent can stop and ask for help instead of failing, then carry on with the mission.
+          </Lead>
+          <DataTable
+            head={["Setting", "What it does"]}
+            rows={[
+              [
+                "Let the agent ask for help",
+                "Gives the agent a way to call on a person, with one sentence saying what it needs.",
+              ],
+              [
+                "Wait with the browser open (seconds)",
+                "0 to 600. How long the run waits, browser open, for someone to help. Empty uses the default (300); 0 pauses the run at once.",
+              ],
+            ]}
+          />
+          <NumberedList
+            items={[
+              <Fragment key="h0">
+                The agent asks. Whoever started the run (or the agent&apos;s creator) gets an in-app
+                notification, <strong>Agent needs your help</strong>, that opens the run page.
+              </Fragment>,
+              <Fragment key="h1">
+                The run stays <strong>Running</strong> with the browser open. The run page shows{" "}
+                <strong>The agent needs your help</strong> with its request, above the live session.
+              </Fragment>,
+              <Fragment key="h2">
+                Do what it asks in the live session, optionally leave a{" "}
+                <strong>Note for the agent</strong> (&ldquo;I typed the SMS code and logged in&rdquo;),
+                and press <strong>Done — continue</strong>. The agent picks it up within a few seconds,
+                in the same browser.
+              </Fragment>,
+              <Fragment key="h3">
+                If nobody comes within the wait, the browser is closed and the run is saved where it
+                was, with the status <strong>Waiting for a person</strong>. Press{" "}
+                <strong>Resume run</strong> when you are ready: a new browser opens on the same page,
+                still signed in, and the agent continues where it left off. If the obstacle is still
+                there it asks again, so stay on the run page.
+              </Fragment>,
+            ]}
+          />
+          <BulletList
+            items={[
+              "The wait counts inside Max runtime and is billed as browser minutes; the agent always keeps about two minutes to finish after a wait",
+              "A paused run holds no browser or worker and costs nothing while it waits; resuming needs the same one-minute minimum balance as a new run",
+              "Resuming continues the same run: steps, captures, duration and credits add up, and Browser sessions lists every session with its replay",
+              "A paused run can be resumed for 72 hours, then it is marked failed; one run can use up to 10 browser sessions",
+              "A paused run can be cancelled; it frees its concurrency slot, but its schedule and its bucket-trigger row still count it as in progress",
+            ]}
+          />
+          <p>
+            Say it in the mission too, so the agent knows when to ask:{" "}
+            <em>&ldquo;If a captcha or a verification code appears, ask for help and wait.&rdquo;</em>{" "}
+            For codes sent by email, a <strong>Mailbox</strong> (above) needs no person at all.
+          </p>
+          <InfoBox color="blue" icon={<Info size={20} />} title="Not the same as Human in the Loop">
+            <DocLink href="/docs/human-in-the-loop">Human in the Loop</DocLink> reviews extracted data
+            before it is delivered. Human help hands the agent&apos;s browser to a person in the middle
+            of a run, so the agent can get past something it cannot do itself.
           </InfoBox>
         </DocCard>
 
@@ -535,7 +648,7 @@ export default function Page() {
           <Lead>
             Your own systems can start an agent and poll for the result with your API key, sent as{" "}
             <InlineCode>X-API-Key</InlineCode> to <InlineCode>https://run.tavnit.io/api</InlineCode>.
-            The agent&apos;s ID is on its <strong>Agent ID</strong> panel.
+            Name the agent by its ID, shown on its <strong>Agent ID</strong> panel, or by its name.
           </Lead>
           <DataTable
             head={["Request", "What it does"]}
@@ -549,8 +662,16 @@ export default function Page() {
                 </Fragment>,
               ],
               [
+                <InlineCode key="a5">{"POST /bots/runs"}</InlineCode>,
+                <Fragment key="a6">
+                  The same trigger with the agent in the body:{" "}
+                  <InlineCode>{`{"bot_name": "Supplier prices", "inputs": {...}}`}</InlineCode>, or{" "}
+                  <InlineCode>bot_id</InlineCode> instead of <InlineCode>bot_name</InlineCode>.
+                </Fragment>,
+              ],
+              [
                 <InlineCode key="a2">{"GET /bot-runs/{bot_run_id}"}</InlineCode>,
-                "Status, timings, inputs and output (with file links).",
+                "Status, timings, inputs and output (with file links). While the agent waits for a person, human_request says what it asked.",
               ],
               [
                 <InlineCode key="a3">{"GET /bots/{agent_id}/runs"}</InlineCode>,
@@ -558,10 +679,26 @@ export default function Page() {
               ],
               [
                 <InlineCode key="a4">{"POST /bot-runs/{bot_run_id}/cancel"}</InlineCode>,
-                "Cancels a waiting, queued or running run.",
+                "Cancels a waiting, queued, running or paused run.",
+              ],
+              [
+                <InlineCode key="a7">{"POST /bot-runs/{bot_run_id}/human/resolve"}</InlineCode>,
+                "Human help: the same as pressing Done on the run page, with an optional note for the agent.",
+              ],
+              [
+                <InlineCode key="a8">{"POST /bot-runs/{bot_run_id}/resume"}</InlineCode>,
+                "Human help: resumes a run that is Waiting for a person (awaiting_human).",
               ],
             ]}
           />
+          <p>
+            <strong>By name.</strong> <InlineCode>bot_name</InlineCode> must match the agent&apos;s name
+            as shown in the app, ignoring case and extra spaces. Archived namesakes are ignored (a name
+            only an archived agent has answers 409, agent archived). No match answers 404; when several active agents share the name the call answers 409 with their IDs
+            in <InlineCode>bot_ids</InlineCode>, so rename one or use the ID. Renaming an agent changes
+            what <InlineCode>bot_name</InlineCode> must say: use <InlineCode>bot_id</InlineCode> for
+            integrations that must survive a rename.
+          </p>
           <p>
             Every API call starts a new run. A 402 means your organization can&apos;t start new work
             right now; contact the Tavnit team. For the full
@@ -574,8 +711,8 @@ export default function Page() {
         <DocCard icon={<Users size={24} />} title="Permissions">
           <Lead>
             Only Owners and Admins can create, edit, duplicate or delete an agent, which includes
-            setting secrets. Members can run agents and read their runs. HITL Only members have no
-            access to agents.
+            setting secrets. Members can run agents, read their runs, help a run that asks for a
+            person and resume a paused one. HITL Only members have no access to agents.
           </Lead>
           <p>
             See <DocLink href="/docs/user-roles">user roles and permissions</DocLink> for the full
@@ -613,7 +750,15 @@ export default function Page() {
               ],
               [
                 "The status stays Waiting",
-                "The agent runs one at a time and another run, or the minimum gap, is ahead of it.",
+                "The agent limits its concurrent runs and every slot is taken, or the minimum gap has not passed yet.",
+              ],
+              [
+                "The status is Waiting for a person",
+                "The agent asked for help and nobody pressed Done within the wait. Open the run, read what it asked and press Resume run; raise the wait under Settings → Human help if people need longer.",
+              ],
+              [
+                "Triggering by bot_name answers 404 or 409",
+                "404: no active agent has that name (was it renamed?). 409: several active agents share it; the response lists their bot_ids. Rename one, or trigger by bot_id.",
               ],
               [
                 "A scheduled run shows as failed without running",

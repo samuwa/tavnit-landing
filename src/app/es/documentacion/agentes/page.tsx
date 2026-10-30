@@ -12,6 +12,7 @@ import {
   Info,
   KeyRound,
   Layers,
+  LifeBuoy,
   Mail,
   MonitorPlay,
   PlusCircle,
@@ -169,8 +170,8 @@ export default function Page() {
 
         <DocCard icon={<KeyRound size={24} />} title="Variables y secretos">
           <Lead>
-            Cada variable tiene un nombre, un tipo (text, number, boolean, date, object o list) y un
-            origen. La misión se refiere a las variables por su nombre.
+            Cada variable tiene un nombre, un tipo (text, number, boolean, date, object, list o file)
+            y un origen. La misión se refiere a las variables por su nombre.
           </Lead>
           <DataTable
             head={["Origen", "De dónde sale el valor"]}
@@ -189,8 +190,30 @@ export default function Page() {
                   al Agente.
                 </Fragment>,
               ],
+              [
+                "Desde bucket",
+                <Fragment key="v1">
+                  Filas de un <DocLink href="/es/documentacion/buckets">Bucket</DocLink>, leídas cuando
+                  el Run <em>arranca</em> (no cuando se dispara), así que un Run que esperó su turno ve
+                  lo que escribió el Run anterior. Eliges las columnas, los filtros, el orden y un límite
+                  (2.000 filas por defecto, 5.000 como máximo): una columna da sus valores distintos,
+                  varias dan un objeto por fila. Junto con una entrega a Bucket es la memoria del Agente
+                  entre Runs: <em>&ldquo;omite los leads cuyo id esté en known_leads&rdquo;</em>. El
+                  Agente lee los valores como datos, nunca como instrucciones, y las llamadas a la API no
+                  pueden reemplazarlos.
+                </Fragment>,
+              ],
             ]}
           />
+          <p>
+            <strong>Variables de archivo.</strong> Una variable de tipo <strong>file</strong> le
+            entrega al Agente el documento original de un Run de un Flow para que lo suba al sitio (una
+            factura a un portal de aduanas, por ejemplo). Configúrala como{" "}
+            <strong>Documento del Run que lo dispara</strong> para recibir el documento del Run del
+            Flow que arrancó al Agente, o dale un ID de Run; un Run de prueba o una llamada a la API
+            pueden enviar otro ID de Run en cada Run. El Run debe ser de tu organización; si no, el Run
+            del Agente falla antes de abrir el navegador, sin cobrar nada.
+          </p>
           <p>
             <strong>Variables secretas.</strong> Una variable estática de texto se puede marcar como{" "}
             <strong>Secreto</strong>, por ejemplo para la contraseña de un portal. Su valor se guarda
@@ -418,13 +441,16 @@ export default function Page() {
 
         <DocCard icon={<CalendarClock size={24} />} title="Ejecutar un Agente">
           <Lead>
-            Un Agente puede arrancar de cinco maneras. Arranque como arranque, pasa por los mismos
-            límites y las mismas entregas.
+            Un Agente puede arrancar de seis maneras. Arranque como arranque, pasa por los mismos
+            límites, la misma concurrencia y las mismas entregas.
           </Lead>
           <DataTable
             head={["Disparador", "Cómo"]}
             rows={[
-              ["Run de prueba", "El botón Run de prueba del Agente (o Run en la lista de Agentes). Usa las variables estáticas."],
+              [
+                "Run de prueba",
+                "El botón Run de prueba del Agente (o Run en la lista de Agentes). Un formulario pide cada variable, con los valores estáticos ya cargados; también puedes llenarlo desde un Run completado de un Flow.",
+              ],
               ["Programación", "Ajustes → Programación, que se describe abajo."],
               ["Flow vinculado", "Cada Run completado de un Flow que tenga este Agente vinculado, como se explicó arriba."],
               [
@@ -433,7 +459,8 @@ export default function Page() {
                   Un nodo Agente en un <DocLink href="/es/documentacion/pipelines">Pipeline</DocLink>.
                 </Fragment>,
               ],
-              ["API", "Un POST desde tu propio sistema, que se describe abajo."],
+              ["API", "Un POST desde tu propio sistema, por el ID del Agente o por su nombre, que se describe abajo."],
+              ["Disparo por bucket", "Un Run por cada fila de un Bucket que cumpla una condición, que se describe abajo."],
             ]}
           />
           <p>
@@ -454,30 +481,51 @@ export default function Page() {
               "Las fallas de los Runs programados y por API generan una notificación en la app para quien creó el Agente, ya que nadie está mirando la página del Run",
             ]}
           />
+          <p>
+            <strong>Disparo por bucket.</strong> En <strong>Ajustes → Disparo por bucket</strong>, activa{" "}
+            <strong>Un Run por cada fila que cumpla la condición</strong> para arrancar un Run por cada
+            fila de un Bucket que pase tus filtros, por ejemplo un Run por cada lead cuyo estado todavía
+            no sea <InlineCode>completo</InlineCode>. Elige la <strong>Clave de la fila</strong> que la
+            identifica y qué columnas llenan qué variables de entrada.
+          </p>
+          <BulletList
+            items={[
+              "El Bucket se revisa cada 30 segundos aproximadamente; una fila cuyo Run sigue en curso nunca recibe un segundo Run",
+              "Cada fila tiene un número limitado de intentos por 24 horas (de 1 a 10, 3 por defecto), con al menos 10 minutos entre uno y otro",
+              "El ritmo lo marca el límite de concurrencia del Agente: N Runs trabajan mientras otros N esperan, y el disparo mantiene el límite activado",
+              "Cierra el ciclo con una entrega a Bucket que actualice la misma fila (estado = completo), así una fila procesada deja de cumplir la condición",
+              "Si el Bucket ya no existe o se acaban los créditos, el disparo se pausa y un Run fallido explica el motivo",
+            ]}
+          />
         </DocCard>
 
-        <DocCard icon={<Layers size={24} />} title="Concurrencia: un Run a la vez">
+        <DocCard icon={<Layers size={24} />} title="Concurrencia: limitar los Runs simultáneos">
           <Lead>
             Por defecto, los disparadores que se solapan se ejecutan en paralelo. A muchos portales no
-            les gustan dos sesiones del mismo usuario a la vez, así que un Agente se puede configurar
-            para ejecutar un Run a la vez en <strong>Ajustes → Concurrencia</strong>.
+            les gustan dos sesiones del mismo usuario a la vez, y a algunos sitios no conviene
+            saturarlos, así que un Agente se puede limitar a un Run a la vez, o hasta diez, en{" "}
+            <strong>Ajustes → Concurrencia</strong>.
           </Lead>
           <DataTable
             head={["Opción", "Efecto"]}
             rows={[
               [
-                "Ejecutar de uno en uno",
-                "Mientras un Run está en cola o en ejecución, los nuevos disparadores esperan su turno y arrancan uno tras otro, el más antiguo primero.",
+                "Limitar Runs simultáneos",
+                "Mientras se alcanza el límite, los nuevos disparadores (manual, API, programación, Flow vinculado, Pipeline, disparo por bucket) esperan su turno y arrancan en cuanto se libera un lugar, el más antiguo primero.",
+              ],
+              [
+                "Runs al mismo tiempo",
+                "De 1 a 10. 1 significa de uno en uno.",
               ],
               [
                 "Tiempo mínimo entre Runs (minutos)",
-                "De 0 a 1440. Se cuenta desde el final de un Run hasta el inicio del siguiente. Es un mínimo: el siguiente Run también espera un worker libre.",
+                "De 0 a 1440, se aplica con Limitar Runs simultáneos. Se cuenta desde el final de un Run hasta el inicio del siguiente. Es un mínimo: el siguiente Run también espera un worker libre.",
               ],
             ]}
           />
           <BulletList
             items={[
-              "Un Run que espera su turno muestra el estado En espera; no ocupa un worker",
+              "Un Run que espera su turno muestra el estado En espera; no ocupa un worker ni se cobra",
               "Pueden esperar hasta 20 Runs por Agente; a partir de ahí se rechazan los nuevos disparadores (la API responde 429)",
               "Un Run que espera más de 24 horas se marca como fallido",
               "Solo espera un Run programado a la vez, así que un Agente lento con una programación frecuente no acumula Runs",
@@ -494,9 +542,10 @@ export default function Page() {
           <DataTable
             head={["Estado", "Significado"]}
             rows={[
-              ["En espera", "En fila detrás de otro Run de un Agente configurado para ejecutar de uno en uno."],
+              ["En espera", "Esperando un lugar libre de un Agente que limita sus Runs simultáneos."],
               ["En cola", "Aceptado y esperando un worker."],
-              ["En ejecución", "La sesión del navegador está abierta."],
+              ["En ejecución", "La sesión del navegador está abierta. Con la ayuda humana activada, el Agente puede estar esperando a una persona aquí, con el navegador todavía abierto."],
+              ["Esperando a una persona", "En pausa: el Agente pidió ayuda, nadie llegó a tiempo y el Run quedó guardado donde estaba. Reanúdalo desde la página del Run."],
               ["Completado", "Terminado y entregado. Completado con advertencias significa que una entrega falló."],
               ["Fallido", "El Run tuvo un error o alcanzó un límite; la página del Run dice cuál."],
               ["Cancelado", "Alguien detuvo el Run."],
@@ -508,17 +557,86 @@ export default function Page() {
               "Salida capturada y Archivos capturados, con descargas",
               "Resumen: duración, llamadas LLM y tokens",
               "Ver sesión en vivo mientras se ejecuta y Ver repetición de sesión después",
+              "Sesiones del navegador: una entrada por cada sesión del navegador cuando el Run se pausó por una persona y se reanudó",
               "Identificadores (ID del Run e ID de Sesión) para las solicitudes de soporte",
             ]}
           />
           <p>
-            <strong>Cancelar Run</strong> detiene un Run en espera, en cola o en ejecución. La sesión
-            del navegador termina en pocos segundos y no se entrega nada.
+            <strong>Cancelar Run</strong> detiene un Run en espera, en cola, en ejecución o en pausa.
+            La sesión del navegador termina en pocos segundos y no se entrega nada.
           </p>
           <InfoBox color="blue" icon={<Info size={20} />} title="Depura con la repetición, no con la salida">
             Cuando un Agente devuelve un valor incorrecto, la repetición suele mostrar el porqué en
             segundos: entró a la cuenta equivocada, o la búsqueda no dio resultados y adivinó. Corrige la
             misión, no el esquema.
+          </InfoBox>
+        </DocCard>
+
+        <DocCard icon={<LifeBuoy size={24} />} title="Ayuda humana: cuando solo una persona puede seguir">
+          <Lead>
+            Algunos pasos solo los puede hacer una persona: un captcha, un código enviado al teléfono
+            del titular de la cuenta, un inicio de sesión que alguien tiene que aprobar. Activa{" "}
+            <strong>Ajustes → Ayuda humana</strong> y el Agente puede detenerse a pedir ayuda en lugar
+            de fallar, y luego seguir con la misión.
+          </Lead>
+          <DataTable
+            head={["Opción", "Qué hace"]}
+            rows={[
+              [
+                "Permitir que el agente pida ayuda",
+                "Le da al Agente una forma de llamar a una persona, con una frase que dice qué necesita.",
+              ],
+              [
+                "Espera con el navegador abierto (segundos)",
+                "De 0 a 600. Cuánto espera el Run, con el navegador abierto, a que alguien ayude. Vacío usa el valor por defecto (300); 0 pausa el Run de inmediato.",
+              ],
+            ]}
+          />
+          <NumberedList
+            items={[
+              <Fragment key="h0">
+                El Agente pide ayuda. Quien lanzó el Run (o quien creó el Agente) recibe una
+                notificación en la app que abre la página del Run.
+              </Fragment>,
+              <Fragment key="h1">
+                El Run sigue <strong>En ejecución</strong> con el navegador abierto. La página del Run
+                muestra <strong>El agente necesita tu ayuda</strong> con lo que pide, encima de la
+                sesión en vivo.
+              </Fragment>,
+              <Fragment key="h2">
+                Haz lo que pide en la sesión en vivo, deja si quieres una{" "}
+                <strong>Nota para el agente</strong> (&ldquo;escribí el código del SMS e inicié
+                sesión&rdquo;) y pulsa <strong>Listo — continuar</strong>. El Agente lo retoma en unos
+                segundos, en el mismo navegador.
+              </Fragment>,
+              <Fragment key="h3">
+                Si nadie llega dentro de la espera, se cierra el navegador y el Run queda guardado
+                donde estaba, con el estado <strong>Esperando a una persona</strong>. Pulsa{" "}
+                <strong>Reanudar run</strong> cuando puedas: se abre un navegador nuevo en la misma
+                página, con la sesión todavía iniciada, y el Agente sigue donde quedó. Si el obstáculo
+                sigue ahí vuelve a pedir ayuda, así que quédate en la página del Run.
+              </Fragment>,
+            ]}
+          />
+          <BulletList
+            items={[
+              "La espera cuenta dentro de la Duración máxima y se cobra como minutos de navegador; el Agente siempre conserva unos dos minutos para terminar después de una espera",
+              "Un Run en pausa no ocupa navegador ni worker y no cuesta nada mientras espera; reanudarlo pide el mismo saldo mínimo de un minuto que un Run nuevo",
+              "Reanudar continúa el mismo Run: los pasos, las capturas, la duración y los créditos se suman, y Sesiones del navegador lista cada sesión con su repetición",
+              "Un Run en pausa se puede reanudar durante 72 horas; después se marca como fallido. Un Run puede usar hasta 10 sesiones del navegador",
+              "Un Run en pausa se puede cancelar; libera su lugar de concurrencia, pero su programación y su fila del disparo por bucket lo siguen contando como en curso",
+            ]}
+          />
+          <p>
+            Dilo también en la misión, para que el Agente sepa cuándo pedir ayuda:{" "}
+            <em>&ldquo;Si aparece un captcha o un código de verificación, pide ayuda y espera.&rdquo;</em>{" "}
+            Para los códigos que llegan por correo, un <strong>Buzón</strong> (arriba) no necesita a
+            ninguna persona.
+          </p>
+          <InfoBox color="blue" icon={<Info size={20} />} title="No es lo mismo que la Revisión humana">
+            La <DocLink href="/es/documentacion/revision-humana">Revisión humana</DocLink> revisa los
+            datos extraídos antes de entregarlos. La ayuda humana le pasa el navegador del Agente a una
+            persona en medio de un Run, para que el Agente supere algo que no puede hacer solo.
           </InfoBox>
         </DocCard>
 
@@ -546,8 +664,8 @@ export default function Page() {
           <Lead>
             Tus propios sistemas pueden iniciar un Agente y consultar el resultado con tu API key,
             enviada como <InlineCode>X-API-Key</InlineCode> a{" "}
-            <InlineCode>https://run.tavnit.io/api</InlineCode>. El ID del Agente está en su panel{" "}
-            <strong>ID del Agente</strong>.
+            <InlineCode>https://run.tavnit.io/api</InlineCode>. Nombra al Agente por su ID, que está en
+            su panel <strong>ID del Agente</strong>, o por su nombre.
           </Lead>
           <DataTable
             head={["Solicitud", "Qué hace"]}
@@ -561,8 +679,16 @@ export default function Page() {
                 </Fragment>,
               ],
               [
+                <InlineCode key="a5">{"POST /bots/runs"}</InlineCode>,
+                <Fragment key="a6">
+                  El mismo disparo con el Agente en el body:{" "}
+                  <InlineCode>{`{"bot_name": "Precios de proveedores", "inputs": {...}}`}</InlineCode>,
+                  o <InlineCode>bot_id</InlineCode> en lugar de <InlineCode>bot_name</InlineCode>.
+                </Fragment>,
+              ],
+              [
                 <InlineCode key="a2">{"GET /bot-runs/{bot_run_id}"}</InlineCode>,
-                "Estado, tiempos, entradas y salida (con enlaces a los archivos).",
+                "Estado, tiempos, entradas y salida (con enlaces a los archivos). Mientras el Agente espera a una persona, human_request dice qué pidió.",
               ],
               [
                 <InlineCode key="a3">{"GET /bots/{agent_id}/runs"}</InlineCode>,
@@ -570,10 +696,29 @@ export default function Page() {
               ],
               [
                 <InlineCode key="a4">{"POST /bot-runs/{bot_run_id}/cancel"}</InlineCode>,
-                "Cancela un Run en espera, en cola o en ejecución.",
+                "Cancela un Run en espera, en cola, en ejecución o en pausa.",
+              ],
+              [
+                <InlineCode key="a7">{"POST /bot-runs/{bot_run_id}/human/resolve"}</InlineCode>,
+                "Ayuda humana: lo mismo que pulsar Listo en la página del Run, con una nota opcional para el Agente.",
+              ],
+              [
+                <InlineCode key="a8">{"POST /bot-runs/{bot_run_id}/resume"}</InlineCode>,
+                "Ayuda humana: reanuda un Run que está Esperando a una persona (awaiting_human).",
               ],
             ]}
           />
+          <p>
+            <strong>Por nombre.</strong> <InlineCode>bot_name</InlineCode> debe coincidir con el nombre
+            del Agente tal como aparece en la app, sin distinguir mayúsculas ni espacios de más. Los
+            Agentes archivados con el mismo nombre se ignoran (un nombre que solo tiene un Agente
+            archivado responde 409, Agente archivado). Si no coincide ninguno responde 404; si varios
+            Agentes activos comparten el nombre responde 409 con sus IDs en{" "}
+            <InlineCode>bot_ids</InlineCode>, así que renombra uno o usa el ID. Renombrar un Agente
+            cambia lo que debe decir <InlineCode>bot_name</InlineCode>: usa{" "}
+            <InlineCode>bot_id</InlineCode> en las integraciones que deban sobrevivir a un cambio de
+            nombre.
+          </p>
           <p>
             Cada llamada a la API inicia un Run nuevo. Un 402 significa que tu organización no puede
             iniciar trabajo nuevo en este momento; contacta al equipo de Tavnit. Para la referencia completa de solicitudes y respuestas, consulta la{" "}
@@ -585,8 +730,9 @@ export default function Page() {
         <DocCard icon={<Users size={24} />} title="Permisos">
           <Lead>
             Solo Propietarios y Administradores pueden crear, editar, duplicar o eliminar un Agente, lo
-            que incluye definir secretos. Los Miembros pueden ejecutar Agentes y ver sus Runs. Los
-            miembros Solo HITL no tienen acceso a los Agentes.
+            que incluye definir secretos. Los Miembros pueden ejecutar Agentes, ver sus Runs, ayudar a
+            un Run que pide una persona y reanudar uno en pausa. Los miembros Solo HITL no tienen
+            acceso a los Agentes.
           </Lead>
           <p>
             Consulta <DocLink href="/es/documentacion/roles-de-usuario">roles de usuario y
@@ -624,7 +770,15 @@ export default function Page() {
               ],
               [
                 "El estado se queda En espera",
-                "El Agente ejecuta de uno en uno y tiene delante otro Run, o el tiempo mínimo entre Runs.",
+                "El Agente limita sus Runs simultáneos y todos los lugares están ocupados, o todavía no pasó el tiempo mínimo entre Runs.",
+              ],
+              [
+                "El estado es Esperando a una persona",
+                "El Agente pidió ayuda y nadie pulsó Listo dentro de la espera. Abre el Run, lee lo que pidió y pulsa Reanudar run; sube la espera en Ajustes → Ayuda humana si la gente necesita más tiempo.",
+              ],
+              [
+                "Disparar por bot_name responde 404 o 409",
+                "404: ningún Agente activo tiene ese nombre (¿lo renombraron?). 409: varios Agentes activos lo comparten; la respuesta lista sus bot_ids. Renombra uno o dispara por bot_id.",
               ],
               [
                 "Un Run programado aparece como fallido sin haberse ejecutado",

@@ -738,6 +738,28 @@ export const AGENT_TRIGGER_REQUEST = `curl -X POST "${API_BASE}/bots/YOUR_AGENT_
 # 202
 { "success": true, "bot_run_id": "a7c3...", "status": "queued" }`;
 
+export const AGENT_TRIGGER_BY_NAME_REQUEST = `curl -X POST "${API_BASE}/bots/runs" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"bot_name": "Supplier prices", "inputs": {"invoice_month": "2026-08"}}'
+
+# 409 when several active agents share the name
+{ "success": false, "error": "2 agents are named \\"Supplier prices\\": use bot_id", "bot_ids": ["3f2a...", "9b10..."] }`;
+
+export const AGENT_HUMAN_HELP_REQUEST = `# The agent is waiting for a person (status running, human_request present):
+# after doing what it asked in the live session
+curl -X POST "${API_BASE}/bot-runs/YOUR_BOT_RUN_ID/human/resolve" \\
+  -H "X-API-Key: YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"note": "Typed the SMS code"}'
+
+# Nobody came in time (status awaiting_human): resume the same run
+curl -X POST "${API_BASE}/bot-runs/YOUR_BOT_RUN_ID/resume" \\
+  -H "X-API-Key: YOUR_API_KEY"
+
+# 202
+{ "success": true, "bot_run_id": "a7c3...", "status": "queued", "attempt": 2 }`;
+
 export const AGENT_RUN_RESPONSE = `{
   "success": true,
   "run": {

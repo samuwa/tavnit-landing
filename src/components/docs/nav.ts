@@ -203,7 +203,7 @@ export const DOC_SECTIONS: DocSection[] = [
     href: "/docs/agents",
     title: "AI Browser Agents — Act on Your Extracted Document Data",
     description:
-      "Give an agent a plain-language mission and a starting URL. Capture types, secrets, schedules, delivery, chaining agents to flows and runtime limits.",
+      "Give an agent a plain-language mission and a starting URL. Captures, secrets, bucket memory, schedules, human help, delivery, the API and limits.",
     footerColumn: "documentation",
   },
   {
@@ -449,7 +449,7 @@ export const DOC_SECTIONS_ES: DocSection[] = [
     href: "/es/documentacion/agentes",
     title: "Agentes: agentes de IA que actúan con tus datos",
     description:
-      "Dale a un Agente una misión y una URL de inicio. Variables, secretos, capturas, entregas, horarios, límites y cómo encadenarlo a un Flow.",
+      "Dale a un Agente una misión y una URL de inicio. Variables, secretos, memoria en Buckets, horarios, ayuda humana, entregas, la API y límites.",
     footerColumn: "documentation",
   },
   {
