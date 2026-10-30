@@ -45,7 +45,9 @@ import {
   WarningBox,
 } from "@/components/docs/ui";
 import {
+  AGENT_HUMAN_HELP_REQUEST,
   AGENT_RUN_RESPONSE,
+  AGENT_TRIGGER_BY_NAME_REQUEST,
   AGENT_TRIGGER_REQUEST,
   API_ERROR_EXAMPLE,
   API_KEY_RESPONSE,
@@ -299,7 +301,7 @@ export default function ApiIntegrationContentEs() {
               ["402", "Tu organización no puede iniciar trabajo nuevo en este momento; contacta al equipo de Tavnit."],
               ["403", "El recurso es de otra organización, tu rol es Solo HITL o no eres revisor de ese elemento."],
               ["404", "El ID no existe en tu organización."],
-              ["409", "Conflicto con el estado actual: nombre de Bucket que no coincide, ya cancelado o terminado, caso cerrado, espacio ya ocupado."],
+              ["409", "Conflicto con el estado actual: nombre de Bucket que no coincide, ya cancelado o terminado, caso cerrado, espacio ya ocupado, un nombre de Agente que comparten varios Agentes."],
               ["429", "Demasiados runs esperando turno en un Agente."],
               ["500", "Error inesperado. Puedes reintentar más tarde."],
             ]}
@@ -322,9 +324,12 @@ export default function ApiIntegrationContentEs() {
               ["Buckets", "POST /buckets/write", "Agrega o reemplaza filas"],
               ["Buckets", "GET /buckets/read", "Lee filas, paginadas"],
               ["Agentes", "POST /bots/{agent_id}/runs", "Inicia un run del Agente"],
+              ["Agentes", "POST /bots/runs", "Inicia un run del Agente por bot_id o bot_name en el cuerpo"],
               ["Agentes", "GET /bot-runs/{bot_run_id}", "Consulta un run del Agente"],
               ["Agentes", "GET /bots/{agent_id}/runs", "Lista los runs de un Agente"],
               ["Agentes", "POST /bot-runs/{bot_run_id}/cancel", "Cancela un run del Agente"],
+              ["Agentes", "POST /bot-runs/{bot_run_id}/human/resolve", "Avisa a un Agente que espera que la persona terminó"],
+              ["Agentes", "POST /bot-runs/{bot_run_id}/resume", "Reanuda un run en pausa por una persona"],
               ["Matchers", "POST /matchers/{matcher_id}/run", "Compara runs completados"],
               ["Inspectores", "POST /inspectors/{inspector_id}/process", "Agrega un documento a una inspección"],
               ["Fillers", "POST /fillers/{filler_id}/fills", "Abre un fill y agrega documentos"],
@@ -555,28 +560,62 @@ export default function ApiIntegrationContentEs() {
           <p>
             El JSON opcional <InlineCode>{'{"inputs": {...}}'}</InlineCode> reemplaza las variables
             de entrada del Agente para este run. Solo se usan las variables que el Agente declara, y
-            nunca se aceptan valores secretos. También puedes llamar a{" "}
-            <InlineCode>POST /bots/runs</InlineCode> con <InlineCode>bot_id</InlineCode> en el
-            cuerpo. Cada llamada inicia un run nuevo.
+            nunca se aceptan valores secretos. Cada llamada inicia un run nuevo.
           </p>
           <CodeBlock lang="Solicitud" code={AGENT_TRIGGER_REQUEST} />
           <p>
             <InlineCode>status</InlineCode> es <InlineCode>queued</InlineCode>, o{" "}
-            <InlineCode>waiting</InlineCode> cuando el Agente ejecuta un run a la vez y está ocupado
-            (empieza solo cuando le llega el turno). 409 si el Agente está archivado, 429 si ya hay
-            demasiados runs esperando.
+            <InlineCode>waiting</InlineCode> cuando el Agente limita sus runs simultáneos y todos los
+            lugares están ocupados (empieza solo cuando le llega el turno). 409 si el Agente está
+            archivado, 429 si ya hay demasiados runs esperando.
           </p>
+
+          <h3 className={H3}>Disparar por nombre</h3>
+          <Endpoint method="POST" path="/bots/runs" />
+          <p>
+            Nombra al Agente en el cuerpo (o en la query string) en lugar de la ruta:{" "}
+            <InlineCode>bot_id</InlineCode>, o <InlineCode>bot_name</InlineCode> con el nombre del
+            Agente tal como aparece en la app. El nombre debe coincidir exactamente, sin distinguir
+            mayúsculas ni espacios de más, dentro de tu organización; los Agentes archivados con el
+            mismo nombre se ignoran. Sin coincidencia responde 404; un nombre que solo tiene un Agente
+            archivado responde 409 (archivado); un nombre que comparten varios Agentes activos responde
+            409 con sus IDs en <InlineCode>bot_ids</InlineCode>. Si envías ambos, gana{" "}
+            <InlineCode>bot_id</InlineCode>. Renombrar el Agente cambia lo que debe decir{" "}
+            <InlineCode>bot_name</InlineCode>, así que usa <InlineCode>bot_id</InlineCode> cuando una
+            integración deba sobrevivir a un cambio de nombre.
+          </p>
+          <CodeBlock lang="Solicitud" code={AGENT_TRIGGER_BY_NAME_REQUEST} />
 
           <h3 className={H3}>Consulta, lista y cancela</h3>
           <DataTable
             head={["Endpoint", "Qué hace"]}
             rows={[
-              ["GET /bot-runs/{bot_run_id}", "Un run: estado, tiempos, input (sin secretos) y output con enlaces firmados a archivos. También en GET /bots/{agent_id}/runs/{bot_run_id}."],
+              ["GET /bot-runs/{bot_run_id}", "Un run: estado (waiting, queued, running, awaiting_human, completed, failed, cancelled), tiempos, input (sin secretos) y output con enlaces firmados a archivos. También en GET /bots/{agent_id}/runs/{bot_run_id}."],
               ["GET /bots/{agent_id}/runs", "Del más reciente al más antiguo, sin input ni output. Consulta: status (queued, running, completed, failed, cancelled), limit (de 1 a 100; por defecto 20), offset. Devuelve runs y total."],
-              ["POST /bot-runs/{bot_run_id}/cancel", "Cancela un run en espera, en cola o en ejecución. 409 si el run ya terminó. También en POST /bots/{agent_id}/runs/{bot_run_id}/cancel."],
+              ["POST /bot-runs/{bot_run_id}/cancel", "Cancela un run en espera, en cola, en ejecución o en pausa (awaiting_human). 409 si el run ya terminó. También en POST /bots/{agent_id}/runs/{bot_run_id}/cancel."],
             ]}
           />
           <CodeBlock lang="GET /bot-runs/{bot_run_id}" code={AGENT_RUN_RESPONSE} />
+
+          <h3 className={H3}>Ayuda humana</h3>
+          <p>
+            Un Agente con la ayuda humana activada puede detenerse a pedirle a una persona algo que solo
+            un humano puede hacer en el navegador, como un captcha o un código por SMS. Mientras espera,
+            el run sigue en <InlineCode>running</InlineCode> y la consulta trae{" "}
+            <InlineCode>human_request</InlineCode> (<InlineCode>reason</InlineCode>,{" "}
+            <InlineCode>requested_at</InlineCode>). Si nadie ayuda a tiempo, el run se pausa como{" "}
+            <InlineCode>awaiting_human</InlineCode>: sin navegador y sin cobro mientras espera, no es
+            terminal y se puede reanudar durante 72 horas. <InlineCode>attempt</InlineCode> cuenta las
+            sesiones del navegador que lleva el run.
+          </p>
+          <DataTable
+            head={["Endpoint", "Qué hace"]}
+            rows={[
+              ["POST /bot-runs/{bot_run_id}/human/resolve", "La persona terminó: el Agente sigue en el mismo navegador en unos segundos. Nota opcional (hasta 500 caracteres) que el Agente lee. 200; 409 si el run no está esperando a una persona o ya está en pausa (reanúdalo). También en POST /bots/{agent_id}/runs/{bot_run_id}/human/resolve."],
+              ["POST /bot-runs/{bot_run_id}/resume", "Continúa un run en pausa en un navegador nuevo, en la página donde se detuvo y con la sesión iniciada, con las mismas entradas. Nota opcional. 202 con status (queued, o waiting) y attempt; 402 como un run nuevo; 409 si el run no está en pausa o ya usó 10 sesiones del navegador. También en POST /bots/{agent_id}/runs/{bot_run_id}/resume."],
+            ]}
+          />
+          <CodeBlock lang="Solicitud" code={AGENT_HUMAN_HELP_REQUEST} />
           <p>
             Consulta <DocLink href="/es/documentacion/agentes">Agentes</DocLink>.
           </p>
