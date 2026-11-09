@@ -51,7 +51,7 @@ export const HUB_COPY: Record<Locale, HubCopy> = {
   es: {
     title: "Herramientas gratis con IA: factura a Excel y más",
     description:
-      "Herramientas gratis de un solo uso hechas con el mismo motor de Tavnit: convierte una factura en Excel y más. Sin plantillas, sin registro para ver el resultado.",
+      "Herramientas gratis con el motor de Tavnit: factura a Excel, packing list, BL, cotizaciones y más. Sin plantillas ni registro para ver el resultado.",
     h1: "Herramientas gratis",
     intro:
       "Cada herramienta hace una sola cosa con un documento y te muestra el resultado real. Son el mismo motor que usan las empresas que automatizan sus documentos con Tavnit, en versión de una a la vez.",

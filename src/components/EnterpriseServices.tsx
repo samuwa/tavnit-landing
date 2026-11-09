@@ -28,9 +28,9 @@ const SERVICE_ICONS = [FileSignature, Wrench, ShieldCheck, LifeBuoy];
 
 const COPY = {
   en: {
-    title: "Enterprise Services — Implementation, Control and Business Advisory",
+    title: "Enterprise — Implementation, Control and Advisory",
     description:
-      "Tavnit Enterprise: contracts on your terms, hands-on implementation, user roles and audit trail, direct support, and Business Advisory to optimise document digitisation and data entry processes.",
+      "Tavnit Enterprise: custom contracts, hands-on implementation, user roles and audit trail, direct support, and advisory on your document processes.",
     home: "Home",
     homeHref: "/",
     breadcrumbLabel: "Breadcrumb",
@@ -91,9 +91,9 @@ const COPY = {
     schemaLang: "en-US",
   },
   es: {
-    title: "Servicios Enterprise — Implementación, control y Asesoría Empresarial",
+    title: "Enterprise — Implementación, control y asesoría",
     description:
-      "Tavnit Enterprise: contrato a la medida, implementación acompañada, roles de usuario y bitácora de auditoría, soporte directo, y Asesoría Empresarial para la optimización de procesos de digitalización de documentos y entrada de datos.",
+      "Tavnit Enterprise: contrato a la medida, implementación acompañada, roles y bitácora de auditoría, soporte directo y asesoría en tus procesos documentales.",
     home: "Inicio",
     homeHref: "/es",
     breadcrumbLabel: "Ruta de navegación",

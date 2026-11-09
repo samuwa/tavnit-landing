@@ -9,7 +9,7 @@ import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
 
 const TITLE = "Casos de uso — Facturas, aduanas, órdenes de compra y más";
 const DESCRIPTION =
-  "Cómo usan Tavnit los equipos según el tipo de documento: facturas, documentación aduanera, órdenes de compra, cotizaciones, contratos y más — y qué suele salir mal en cada uno.";
+  "Cómo usan Tavnit los equipos según el documento: facturas, aduanas, órdenes de compra, cotizaciones, contratos y más, y qué suele salir mal en cada uno.";
 
 export const metadata: Metadata = {
   title: TITLE,

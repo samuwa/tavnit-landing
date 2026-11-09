@@ -17,7 +17,7 @@ import { isStripeEnabled } from "@/lib/platform";
 
 const TITLE = "Extracción de documentos por MCP para Claude y Cursor";
 const DESCRIPTION =
-  "Conecta Tavnit a claude.ai o Cursor por MCP. Tu asistente puede crear Flows de extracción, procesar documentos con ellos y consultar los resultados — tipificados y limpios.";
+  "Conecta Tavnit a claude.ai o Cursor por MCP: tu asistente crea Flows de extracción, procesa documentos y consulta los resultados, tipificados y limpios.";
 
 export const metadata: Metadata = {
   title: TITLE,

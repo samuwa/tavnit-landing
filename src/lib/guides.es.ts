@@ -322,7 +322,7 @@ export const GUIDES_ES: GuideEs[] = [
     title: "Notas legales del arancel: qué son y cómo se usan",
     h1: "Notas legales de sección y de capítulo: qué son, qué fuerza tienen y cómo se leen",
     description:
-      "Qué son las notas legales de sección, de capítulo y de subpartida del Sistema Armonizado, por qué mandan sobre el título de la partida, y cinco ejemplos de notas que cambian la clasificación.",
+      "Notas legales de sección y capítulo del Sistema Armonizado: qué son, por qué mandan sobre el texto de la partida y 5 ejemplos que cambian la clasificación.",
     lede: "Las notas legales son los textos que aparecen al inicio de cada sección y de cada capítulo del arancel (y, en algunos capítulos, antes de las subpartidas) y que definen términos, excluyen o incluyen mercancías y fijan reglas especiales, como las de las partes. Por la RGI 1 tienen la misma fuerza que los textos de las partidas: una nota que excluye un producto de un capítulo manda, aunque el título de la partida parezca cubrirlo.",
     published: "2026-10-21",
     updated: "2026-10-21",
@@ -410,7 +410,7 @@ export const GUIDES_ES: GuideEs[] = [
     title: "Partida arancelaria: qué es y 5 ejemplos resueltos",
     h1: "Partida arancelaria: qué es, cómo se encuentra y cinco ejemplos resueltos paso a paso",
     description:
-      "Qué es una partida arancelaria, qué la diferencia de la subpartida y de la fracción nacional, y cinco productos clasificados paso a paso: celular, camiseta, zapatillas, café y cargador.",
+      "Qué es una partida arancelaria, cuántos dígitos tiene, en qué se distingue de la subpartida y cómo encontrar la de tu producto, con 5 ejemplos resueltos.",
     lede: "La partida arancelaria es, en sentido estricto, el código de cuatro dígitos del Sistema Armonizado que agrupa una familia de mercancías (85.17, teléfonos; 61.09, camisetas de punto). En el uso diario de Panamá y Centroamérica, “partida” también nombra la fracción nacional completa, la línea de ocho o más dígitos a la que se atan el DAI, el ITBMS y el ISC. Encontrarla es un procedimiento de seis pasos, y aquí se recorre con cinco productos corrientes.",
     published: "2026-10-21",
     updated: "2026-10-21",
@@ -517,10 +517,10 @@ export const GUIDES_ES: GuideEs[] = [
     slug: "cambiar-formato-de-fecha-en-excel",
     slugEs: "cambiar-formato-de-fecha-en-excel",
     spanishOnly: true,
-    title: "Cambiar formato de fecha en Excel: con y sin fórmulas",
+    title: "Cambiar formato de fecha en Excel (mm/dd a dd/mm)",
     h1: "Cómo cambiar el formato de fecha en Excel: formato de celda, Texto en columnas, fórmulas y qué hacer cuando nada funciona",
     description:
-      "Cómo pasar fechas a dd/mm/aaaa o aaaa-mm-dd en Excel: formato de celda cuando son fechas de verdad, Texto en columnas y fórmulas (FECHA, FECHANUMERO, TEXTO) cuando son texto, y qué hacer con las fechas en palabras.",
+      "Pasa fechas de mm/dd/aaaa a dd/mm/aaaa (o al revés) en Excel: con Formato de celdas si son fechas, y con Texto en columnas o una fórmula si son texto.",
     lede: "En Excel hay dos casos y conviene saber en cuál estás antes de tocar nada. Si las celdas son fechas de verdad (Excel las guarda como un número), cambiar el formato es un clic en Formato de celdas y no se altera ningún dato. Si son texto que parece fecha (lo habitual al importar un CSV o pegar de otro sistema), el formato de celda no hace nada y hay que convertirlas primero: con Texto en columnas, con una fórmula o, si vienen en palabras y mezcladas, con una herramienta que las lea.",
     published: "2026-10-21",
     updated: "2026-10-21",

@@ -25,6 +25,13 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        // Search Console 404: the platform tour shows "/pipeline-map" in its
+        // mock address bar and Google followed it. The real page is the doc.
+        source: "/pipeline-map",
+        destination: "/docs/pipeline-map",
+        permanent: true,
+      },
+      {
         // Credit billing is off: the credits pages were withdrawn.
         source: "/docs/credits",
         destination: "/docs",

@@ -25,7 +25,7 @@ const numberFormat: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Convertir comas a puntos en Excel, gratis",
       description:
-        "Sube un Excel o CSV con números como 1.234,56 o 1,234.56 y recíbelos en un solo formato, listos para sumar. Eliges las columnas y el formato. Gratis, sin registro para ver el resultado.",
+        "Sube un Excel o CSV con números como 1.234,56 o 1,234.56 y recíbelos en un solo formato, listos para sumar. Gratis, sin registro para ver el resultado.",
       label: "Comas y puntos en números",
       h1: "Convierte comas a puntos en tus números",
       intro:
@@ -120,7 +120,7 @@ const numberFormat: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Fix Number Format in Excel or CSV, Free",
       description:
-        "Upload an Excel or CSV file with numbers like 1.234,56 or 1,234.56 and get them back in one format, ready to add up. You pick the columns and the format. Free, no sign-up to see the result.",
+        "Upload an Excel or CSV with numbers like 1.234,56 or 1,234.56 and get them back in one format, ready to add up. Free, no sign-up to see the result.",
       label: "Fix number format",
       h1: "Fix the number format in your spreadsheet",
       intro:

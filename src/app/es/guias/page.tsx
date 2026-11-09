@@ -8,9 +8,9 @@ import { GUIDES } from "@/lib/guides";
 import { GUIDES_ES, GUIDE_ES_BY_SLUG, esGuidePath } from "@/lib/guides.es";
 import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates } from "@/lib/locale";
 
-const TITLE = "Guías — Clasificación arancelaria, conciliación de facturas y más";
+const TITLE = "Guías — Clasificación arancelaria, RGI y facturas";
 const DESCRIPTION =
-  "Guías en español sobre los problemas detrás de la automatización documental: clasificación arancelaria en Panamá, conciliación de facturas con órdenes de compra y más.";
+  "Guías en español sobre automatización documental: clasificación arancelaria, RGI, notas legales, conciliación de facturas con órdenes de compra y Excel.";
 
 export const metadata: Metadata = {
   title: TITLE,

@@ -21,7 +21,7 @@ export const revalidate = 300;
 
 const TITLE = "Agendar una demostración";
 const DESCRIPTION =
-  "Agenda una demostración de 30 minutos de Tavnit. Cuéntanos de tus documentos, elige una hora en el calendario y mira tus propios PDFs convertidos en datos estructurados, en vivo.";
+  "Agenda una demo de 30 minutos: cuéntanos de tus documentos, elige una hora y mira tus propios PDFs convertidos en datos estructurados, en vivo.";
 
 export const metadata: Metadata = {
   title: TITLE,

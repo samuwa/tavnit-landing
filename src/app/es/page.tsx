@@ -28,7 +28,7 @@ import SectionEyebrow from "@/components/SectionEyebrow";
 
 const TITLE = "Tavnit — Extrae datos de tus documentos con IA, revísalos y actúa";
 const DESCRIPTION =
-  "Convierte facturas, listas de empaque, contratos y formularios en datos estructurados, sin plantillas por proveedor. Tu equipo revisa y aprueba antes de que nada se registre. API, correo y MCP.";
+  "Convierte facturas, listas de empaque y contratos en datos estructurados sin plantillas por proveedor. Tu equipo revisa antes de registrar. API, correo y MCP.";
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },

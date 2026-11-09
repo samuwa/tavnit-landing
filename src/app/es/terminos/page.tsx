@@ -20,7 +20,7 @@ import { isStripeEnabled } from "@/lib/platform";
  */
 
 const DESCRIPTION =
-  "Los términos que rigen el uso de Tavnit: responsabilidades sobre cuentas y credenciales, uso aceptable, facturación por créditos, propiedad de los datos y límites de la salida de IA.";
+  "Los términos de uso de Tavnit: cuentas y credenciales, uso aceptable, facturación por créditos, propiedad de los datos y límites de la salida de IA.";
 
 export const metadata: Metadata = {
   title: "Términos de servicio",

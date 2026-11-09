@@ -43,9 +43,9 @@ export const USE_CASES_ES: UseCaseEs[] = [
     label: "Aduanas y comercio exterior",
     badge: "Logística y comercio exterior · Panamá",
     h1: "Automatización aduanera con clasificación arancelaria para Panamá",
-    title: "Automatización aduanera con clasificación arancelaria para Panamá",
+    title: "Clasificación arancelaria automática para Panamá",
     description:
-      "Extrae facturas comerciales, listas de empaque y BL, y clasifica la mercancía en el Arancel Nacional de Panamá (VII Enmienda, SA 2022) con DAI, ITBMS e ISC — con revisión del corredor antes de declarar.",
+      "Extrae facturas comerciales, listas de empaque y BL, y clasifica en el Arancel Nacional de Panamá con DAI, ITBMS e ISC. El corredor revisa antes de declarar.",
     summary:
       "Factura comercial, lista de empaque y BL extraídos, con clasificación arancelaria de Panamá integrada en el proceso.",
     lede: "Tavnit lee la documentación del embarque — factura comercial, lista de empaque, conocimiento de embarque, certificado de origen — y devuelve embarcador, consignatario, descripciones, pesos y valores como campos tipificados. Un Cleaner clasifica cada línea de mercancía en el Arancel Nacional de Panamá (VII Enmienda, SA 2022) durante el mismo procesamiento, con DAI, ITBMS e ISC y el razonamiento de la clasificación, para que el corredor revise en lugar de investigar.",

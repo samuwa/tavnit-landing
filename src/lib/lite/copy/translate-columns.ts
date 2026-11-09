@@ -25,7 +25,7 @@ const translateColumns: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Traducir columnas de un Excel a 40 idiomas, gratis",
       description:
-        "Sube un Excel o CSV y traduce las columnas que elijas a más de 40 idiomas: inglés, español, portugués, chino y más. La traducción se agrega al lado de cada columna. Gratis, sin registro para ver el resultado.",
+        "Traduce las columnas que elijas de un Excel o CSV a más de 40 idiomas; la traducción queda al lado de cada columna. Gratis y sin registro.",
       label: "Traducir columnas",
       h1: "Traduce las columnas de tu Excel",
       intro:
@@ -122,7 +122,7 @@ const translateColumns: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Translate Excel Columns, Free",
       description:
-        "Upload an Excel or CSV file and translate the columns you pick into more than 40 languages: English, Spanish, Portuguese, Chinese and more. Each translation is added next to its column. Free, no sign-up to see the result.",
+        "Translate the columns you pick in an Excel or CSV file into 40+ languages; each translation is added next to its column. Free, no sign-up.",
       label: "Translate columns",
       h1: "Translate the columns of your spreadsheet",
       intro:

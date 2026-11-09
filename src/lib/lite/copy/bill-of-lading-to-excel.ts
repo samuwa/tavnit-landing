@@ -26,7 +26,7 @@ const billOfLadingToExcel: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "BL a Excel gratis: datos del conocimiento de embarque",
       description:
-        "Sube un bill of lading (BL) en PDF o foto y recibe sus datos en Excel: número de BL, naviera, embarcador, consignatario, buque, puertos y una fila por contenedor con sello, mercancía, bultos, peso y volumen. Gratis, sin plantillas.",
+        "Sube un BL en PDF o foto y recibe sus datos en Excel: naviera, embarcador, consignatario, buque, puertos y una fila por contenedor. Gratis, sin plantillas.",
       label: "BL a Excel",
       h1: "Convierte un conocimiento de embarque (BL) en Excel",
       intro:
@@ -127,7 +127,7 @@ const billOfLadingToExcel: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Bill of Lading to Excel, Free: Extract B/L Data",
       description:
-        "Upload a bill of lading (B/L) as PDF or photo and get its data as an Excel table: B/L number, carrier, shipper, consignee, vessel, ports, and one row per container with seal, goods, packages, weight and volume. Free, no templates, no sign-up to see the result.",
+        "Upload a bill of lading as PDF or photo and get its data in Excel: carrier, shipper, consignee, vessel, ports and one row per container. Free, no templates.",
       label: "Bill of lading to Excel",
       h1: "Turn a bill of lading into Excel",
       intro:

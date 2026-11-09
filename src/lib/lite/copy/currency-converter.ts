@@ -31,7 +31,7 @@ const currencyConverter: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Convertir moneda en Excel con la tasa del día, gratis",
       description:
-        "Sube un Excel o CSV con precios o montos y recibe cada columna convertida a dólares, euros, pesos mexicanos o cualquiera de 30 monedas, con la tasa de referencia del día. Gratis, sin registro para ver el resultado.",
+        "Convierte columnas de un Excel o CSV a dólares, euros, pesos o cualquiera de 30 monedas con la tasa de referencia del día. Gratis y sin registro.",
       label: "Convertir moneda",
       h1: "Convierte los montos de tu Excel a otra moneda",
       intro:
@@ -130,7 +130,7 @@ const currencyConverter: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Convert Currency in Excel at Today's Rate, Free",
       description:
-        "Upload an Excel or CSV file with prices or amounts and get each column converted to dollars, euros, pounds or any of 30 currencies at the day's reference rate. Free, no sign-up to see the result.",
+        "Convert price or amount columns in an Excel or CSV file to dollars, euros, pounds or any of 30 currencies at today's reference rate. Free, no sign-up.",
       label: "Convert currency",
       h1: "Convert the amounts in your spreadsheet to another currency",
       intro:

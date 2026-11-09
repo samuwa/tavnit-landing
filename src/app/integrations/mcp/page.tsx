@@ -8,7 +8,7 @@ import { isStripeEnabled } from "@/lib/platform";
 import { languageAlternates } from "@/lib/locale";
 
 const DESCRIPTION =
-  "Connect Tavnit to claude.ai or Cursor over MCP. Your assistant can build extraction flows, run documents through them, and query the results — typed and cleaned.";
+  "Connect Tavnit to claude.ai or Cursor over MCP. Your assistant builds extraction flows, runs documents through them and queries the results, typed and clean.";
 
 export const metadata: Metadata = {
   title: "MCP Document Extraction for Claude and Cursor",

@@ -324,7 +324,7 @@ export const DOC_SECTIONS: DocSection[] = [
     href: "/docs/mcp-connector",
     title: "MCP Connector Setup — Connect Tavnit to Claude and Cursor",
     description:
-      "Step-by-step setup for the Tavnit MCP connector: add the server URL to claude.ai, Claude Code, Cursor or ChatGPT, sign in with your Tavnit account, manage connected apps, and fix common errors.",
+      "Set up the Tavnit MCP connector in claude.ai, Claude Code, Cursor or ChatGPT: add the server URL, sign in with Tavnit, manage connected apps and fix errors.",
     footerColumn: "integrations",
   },
   {
@@ -570,7 +570,7 @@ export const DOC_SECTIONS_ES: DocSection[] = [
     href: "/es/documentacion/conector-mcp",
     title: "Conector MCP: conecta Tavnit con Claude y Cursor",
     description:
-      "Configura paso a paso el conector MCP de Tavnit: agrega la URL del servidor a claude.ai, Claude Code, Cursor o ChatGPT, inicia sesión con tu cuenta de Tavnit, administra las apps conectadas y resuelve los errores comunes.",
+      "Configura el conector MCP de Tavnit en claude.ai, Claude Code, Cursor o ChatGPT: agrega la URL, inicia sesión, administra las apps y resuelve errores.",
     footerColumn: "integrations",
   },
   {

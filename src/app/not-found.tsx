@@ -13,6 +13,10 @@ import { isStripeEnabled } from "@/lib/platform";
 export const metadata: Metadata = {
   title: "Page not found",
   robots: { index: false, follow: true },
+  // The root layout declares canonical "/" and the EN/ES hreflang pair for
+  // the homepage; a 404 inheriting them tells crawlers every dead URL is
+  // the homepage. Reset so the 404 declares neither.
+  alternates: null,
 };
 
 export default async function NotFound() {

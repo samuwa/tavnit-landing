@@ -26,7 +26,7 @@ const receiptToExcel: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Recibos a Excel gratis: de la foto a la hoja de cálculo",
       description:
-        "Sube la foto o el PDF de un recibo y recibe sus líneas en Excel: comercio, fecha, artículos, cantidades, ITBMS, propina y total. Gratis, sin plantillas y sin registro para ver el resultado.",
+        "Sube la foto o el PDF de un recibo y recibe sus líneas en Excel: comercio, fecha, artículos, ITBMS, propina y total. Gratis, sin plantillas.",
       label: "Recibos a Excel",
       h1: "Pasa un recibo a Excel",
       intro:
@@ -123,7 +123,7 @@ const receiptToExcel: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Receipt to Excel, Free: Photo to Spreadsheet",
       description:
-        "Upload a photo or PDF of a receipt and get its lines in Excel: merchant, date, items, quantities, tax, tip and total. Free, no templates, no sign-up to see the result. Receipt OCR to spreadsheet in seconds.",
+        "Upload a photo or PDF of a receipt and get its lines in Excel: merchant, date, items, tax, tip and total. Free, no templates, no sign-up to see the result.",
       label: "Receipt to Excel",
       h1: "Turn a receipt into Excel",
       intro:

@@ -13,6 +13,8 @@ import { isStripeEnabled } from "@/lib/platform";
 export const metadata: Metadata = {
   title: "Página no encontrada",
   robots: { index: false, follow: true },
+  // Same reset as src/app/not-found.tsx: no inherited canonical or hreflang.
+  alternates: null,
 };
 
 export default async function SpanishNotFound() {

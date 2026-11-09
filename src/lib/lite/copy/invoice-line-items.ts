@@ -14,7 +14,7 @@ const invoiceLineItems: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Extraer líneas de factura a Excel, gratis",
       description:
-        "Extrae las líneas de una factura (descripción, cantidad, precio unitario e importe) como filas de Excel, con el proveedor, número y fecha en cada fila. PDF o foto, sin plantillas, sin registro para ver el resultado.",
+        "Extrae las líneas de una factura (descripción, cantidad, precio e importe) como filas de Excel, con proveedor, número y fecha. PDF o foto, gratis.",
       label: "Extractor de líneas de factura",
       h1: "Extrae las líneas de una factura",
       intro:
@@ -91,7 +91,7 @@ const invoiceLineItems: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Free Invoice Line Item Extractor: Rows to Excel",
       description:
-        "Extract invoice line items (description, quantity, unit price and amount) as Excel rows, with vendor, number and date on every row. PDF or photo, no templates, no sign-up to see the result.",
+        "Extract invoice line items (description, quantity, unit price, amount) as Excel rows, with vendor, number and date on each. PDF or photo, free.",
       label: "Invoice line item extractor",
       h1: "Extract the line items from an invoice",
       intro:

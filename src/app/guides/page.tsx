@@ -8,9 +8,9 @@ import { GUIDES } from "@/lib/guides";
 import { languageAlternates } from "@/lib/locale";
 
 export const metadata: Metadata = {
-  title: "Guides — PO Matching, Line Items, HS Codes and Document Automation",
+  title: "Guides — PO Matching, Line Items and HS Codes",
   description:
-    "Plain-language guides to the problems behind document automation: matching invoices to purchase orders, extracting invoice line items, classifying HS codes, and more.",
+    "Plain-language guides to document automation: matching invoices to purchase orders, extracting invoice line items, classifying HS codes and more.",
   alternates: {
     canonical: "/guides",
     languages: languageAlternates("/guides", "/es/guias"),

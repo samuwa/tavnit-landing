@@ -121,7 +121,7 @@ const dateFormat: Record<Locale, ToolCopyDef> = {
     overrides: {
       title: "Fix Date Format in Excel or CSV, Free",
       description:
-        "Upload an Excel or CSV file with mixed dates (03/04/2024, March 12 2024, 2024-03-12) and get them all back in one format. You pick the columns and the format. Free, no sign-up to see the result.",
+        "Upload an Excel or CSV with mixed dates (03/04/2024, March 12 2024, 2024-03-12) and get them all in one format you choose. Free, no sign-up.",
       label: "Fix date format",
       h1: "Put every date in your spreadsheet in one format",
       intro:

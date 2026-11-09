@@ -133,10 +133,10 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "line-item-extraction-from-invoices",
-    title: "Line Item Extraction from Invoices: What It Is and Why It Is Hard",
+    title: "Line Item Extraction from Invoices: Why It Is Hard",
     h1: "Line item extraction from invoices",
     description:
-      "Why extracting invoice line items is harder than extracting totals, what a good line-item extraction returns, and how to get table data from any supplier layout without templates.",
+      "Why invoice line items are harder to extract than totals, what good line-item extraction returns, and how to get table data from any layout without templates.",
     lede: "Line item extraction pulls the repeating table from an invoice — each product or service line with its description, SKU, quantity, unit price and amount — into structured rows, rather than just the header fields like vendor, date and total. It is what makes PO matching, spend analysis and inventory reconciliation possible, and it is the part most OCR tools get wrong.",
     published: "2026-09-08",
     updated: "2026-09-08",
@@ -207,7 +207,7 @@ export const GUIDES: Guide[] = [
     title: "HS Code Classification Explained — and How to Automate It",
     h1: "HS code classification: what it is and how to automate it",
     description:
-      "How the Harmonized System works, why tariff classification is judgement work, where the General Rules of Interpretation come in, and what automating it responsibly looks like.",
+      "How the Harmonized System works, why tariff classification is judgement work, where the General Rules of Interpretation fit, and how to automate it safely.",
     lede: "HS code classification assigns each traded product a code from the Harmonized System, the international nomenclature that customs authorities use to determine duty rates, taxes, and controls. The first six digits are global; countries extend them to eight, ten or more digits for national tariff lines. Getting the code wrong means the wrong duty, a delayed shipment, or a penalty.",
     published: "2026-09-08",
     updated: "2026-09-08",
