@@ -9,7 +9,9 @@
  * Consent Mode v2: every storage type starts `denied`. GA still receives
  * cookieless pings (used for modelling) until the visitor accepts the cookie
  * banner, at which point analytics storage flips to `granted`. Advertising
- * storage stays denied forever — we don't run ads and don't want that data.
+ * storage stays denied forever: the banner promises no advertising cookies.
+ * We do run Google Ads (for Tavnit, not on this site); ad clicks are tied to
+ * demo requests through src/lib/attribution.ts instead, with no cookie.
  *
  * The consent key is deliberately the same name and shape as the one the demo
  * uses (`tavnit_consent`), so the two sites make the same decision visible.

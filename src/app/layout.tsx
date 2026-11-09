@@ -4,6 +4,7 @@ import "./globals.css";
 import { APP_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL, TWITTER_HANDLE } from "@/lib/site";
 import { siteSchema } from "@/lib/schema";
 import Analytics, { CONSENT_DEFAULT_SCRIPT } from "@/components/Analytics";
+import AttributionCapture from "@/components/AttributionCapture";
 import ConnectAssistant from "@/components/ConnectAssistant";
 import { THEME_INIT_SCRIPT } from "@/lib/theme-script";
 
@@ -114,6 +115,7 @@ export default function RootLayout({
         {/* "Set up Tavnit with Claude / ChatGPT" — the floating coin stack. */}
         <ConnectAssistant />
         <Analytics />
+        <AttributionCapture />
       </body>
     </html>
   );

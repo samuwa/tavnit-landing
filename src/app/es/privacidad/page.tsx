@@ -64,7 +64,7 @@ export default function SpanishPrivacyPage() {
         locale="es"
         alternatePath="/privacy"
         title="Política de privacidad"
-        lastUpdated="2026-10-15"
+        lastUpdated="2026-11-09"
         intro={
           <>
             Esta política explica qué datos recopila Tavnit, cómo se usan y qué controles tienes
@@ -286,6 +286,18 @@ export default function SpanishPrivacyPage() {
             Hemos desactivado Google Signals y las funciones de publicidad, no compartimos los
             datos con Google para sus propios fines, y conservamos los datos a nivel de evento
             durante 14 meses.
+          </p>
+          <p>
+            <strong className="text-fg-2">Nuestros anuncios.</strong> Anunciamos Tavnit en la
+            Búsqueda de Google. Si llegas a tavnit.io desde uno de nuestros anuncios, el
+            identificador de clic que Google añade al enlace (<code>gclid</code>,{" "}
+            <code>gbraid</code> o <code>wbraid</code>) y las etiquetas de campaña se guardan en
+            tu navegador solo durante esa visita (almacenamiento de sesión, se borra al cerrar la
+            pestaña; sin cookies). Si después pides una demostración, se guardan con tu solicitud
+            para que podamos indicarle a Google Ads qué anuncios llevaron a reuniones. Nuestra
+            cuenta de Google Ads está vinculada a Google Analytics solo para contar esas
+            solicitudes. No usamos cookies de publicidad, remarketing ni publicidad personalizada
+            en tavnit.io.
           </p>
           <p>
             Puedes cambiar de opinión en cualquier momento desde{" "}

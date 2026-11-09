@@ -39,7 +39,7 @@ export default function PrivacyPage() {
       <LegalDocument
         alternatePath="/es/privacidad"
         title="Privacy Policy"
-        lastUpdated="2026-10-15"
+        lastUpdated="2026-11-09"
         intro={
           <>
             This policy explains what data Tavnit collects, how it is used, and the
@@ -265,6 +265,17 @@ export default function PrivacyPage() {
             Google&rsquo;s data processing terms. We have disabled Google Signals and
             advertising features, do not share the data with Google for its own purposes,
             and keep event-level data for 14 months.
+          </p>
+          <p>
+            <strong className="text-fg-2">Our ads.</strong> We advertise Tavnit on Google
+            Search. If you reach tavnit.io by clicking one of our ads, the click identifier
+            Google adds to the link (<code>gclid</code>, <code>gbraid</code> or{" "}
+            <code>wbraid</code>) and the campaign tags in it are kept in your browser for that
+            visit only (session storage, deleted when you close the tab; no cookie). If you
+            then request a demo, they are stored with your request so we can tell Google Ads
+            which ads led to meetings. Our Google Ads account is linked to Google Analytics
+            only to count those requests. We do not use advertising cookies, remarketing or
+            personalised advertising on tavnit.io.
           </p>
           <p>
             You can change your mind at any time via <em>Cookie settings</em> in the footer

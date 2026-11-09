@@ -1,5 +1,6 @@
 "use client";
 
+import { trackEvent } from "@/lib/analytics";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Download, FileText, Loader2, RotateCcw } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
@@ -220,6 +221,7 @@ export default function LiteSplit({
           return;
         }
         pending.current = null;
+        trackEvent("lite_download", { tool: toolId, locale, sample: phase.splitId === SAMPLE });
       } catch (e) {
         const code = e instanceof Error ? e.message : "backend";
         setDownloadError(copy.errors[code] ?? copy.errors.backend);

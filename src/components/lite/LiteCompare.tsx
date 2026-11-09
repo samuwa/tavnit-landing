@@ -1,5 +1,6 @@
 "use client";
 
+import { trackEvent } from "@/lib/analytics";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Download, GitCompareArrows, Loader2, RotateCcw, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
@@ -303,6 +304,7 @@ export default function LiteCompare({
         setAuthOpen(true);
         return;
       }
+      trackEvent("lite_download", { tool: toolId, locale, sample: phase.matchId === SAMPLE });
       if (afterShownFor.current !== phase.matchId) {
         afterShownFor.current = phase.matchId;
         setTimeout(() => setAfterOpen(true), 600);

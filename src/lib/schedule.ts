@@ -1,5 +1,6 @@
 import "server-only";
 
+import type { Attribution } from "@/lib/attribution";
 import { SALES_EMAIL, SALES_NOTIFY_EMAILS } from "@/lib/site";
 
 /**
@@ -48,6 +49,8 @@ export interface MeetingRequest {
   email: string;
   company: string | null;
   topic: string | null;
+  /** Ad-click id and UTM tags, when the visitor came from a campaign. */
+  attribution?: Attribution;
 }
 
 /** Best-effort insert — the visitor still gets the calendar if storage is
@@ -57,16 +60,24 @@ export async function saveMeetingRequest(req: MeetingRequest): Promise<string | 
   const headers = serviceHeaders();
   const base = process.env.SUPABASE_URL;
   if (!headers || !base) return null;
-  try {
+  const { attribution, ...lead } = req;
+  const insert = async (row: Record<string, unknown>) => {
     const res = await fetch(`${base}/rest/v1/meeting_requests`, {
       method: "POST",
       headers: { ...headers, Prefer: "return=representation" },
-      body: JSON.stringify(req),
+      body: JSON.stringify(row),
       cache: "no-store",
     });
     if (!res.ok) return null;
     const rows = (await res.json()) as Array<{ id: string }>;
     return rows[0]?.id ?? null;
+  };
+  try {
+    const hasAttribution = attribution && Object.keys(attribution).length > 0;
+    if (!hasAttribution) return await insert(lead);
+    // If the attribution columns are missing (migration not applied yet),
+    // PostgREST rejects the whole row; keep the lead and drop the tags.
+    return (await insert({ ...lead, ...attribution })) ?? (await insert(lead));
   } catch {
     return null;
   }
@@ -126,6 +137,16 @@ export async function markMeetingScheduled(params: {
   }
 }
 
+/** One line for the sales email: where the lead came from, if tagged. */
+function adSource(a: Attribution | undefined): string | null {
+  if (!a) return null;
+  const parts = [a.utm_source, a.utm_medium, a.utm_campaign, a.utm_term].filter(Boolean);
+  if (a.gclid || a.gbraid || a.wbraid) parts.unshift("Google Ads");
+  if (parts.length === 0) return null;
+  const landing = a.landing_page ? ` (entró por ${a.landing_page})` : "";
+  return `• Origen: ${parts.join(" / ")}${landing}`;
+}
+
 /** Same Mailgun account and env names the follow-up questionnaire uses.
  *  Optional by design: without MAILGUN_API_KEY this quietly no-ops. */
 export async function notifyMeetingRequest(
@@ -146,6 +167,7 @@ export async function notifyMeetingRequest(
     `• Email: ${req.email}`,
     req.company ? `• Empresa: ${req.company}` : null,
     req.topic ? `• Quiere hablar de: ${req.topic}` : null,
+    adSource(req.attribution),
     "",
     "Se le mostró tu Calendly al enviar el formulario — revisa si ya reservó.",
     stored ? null : "(Aviso: no se pudo guardar en la base — este correo es la única copia.)",

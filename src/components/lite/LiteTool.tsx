@@ -1,5 +1,6 @@
 "use client";
 
+import { trackEvent } from "@/lib/analytics";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Check, Download, ExternalLink, FileText, Loader2, Plus, RotateCcw, Sparkles, TriangleAlert, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
@@ -419,6 +420,7 @@ export default function LiteTool({
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 10_000);
+      trackEvent("lite_download", { tool: toolId, locale, sample: phase.runId === SAMPLE });
       // The file is theirs. One beat later, once, "and then what?".
       if (afterShownFor.current !== phase.runId) {
         afterShownFor.current = phase.runId;

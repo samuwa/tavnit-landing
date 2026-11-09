@@ -1,5 +1,6 @@
 "use client";
 
+import { readAttribution } from "@/lib/attribution";
 import { trackEvent } from "@/lib/analytics";
 
 import { useEffect, useRef, useState } from "react";
@@ -158,7 +159,7 @@ export default function ScheduleMeeting({
       const res = await fetch("/api/schedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, company, topic, website }),
+        body: JSON.stringify({ name, email, company, topic, website, attribution: readAttribution() }),
       });
       const body = (await res.json().catch(() => null)) as
         | { error?: string; id?: string | null }

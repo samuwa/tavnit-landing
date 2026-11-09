@@ -4,6 +4,7 @@ import {
   saveMeetingRequest,
   type MeetingRequest,
 } from "@/lib/schedule";
+import { sanitizeAttribution } from "@/lib/attribution";
 
 /**
  * Receives the /schedule form. Stores the lead and emails the sales rep;
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
     email: str(body.email, 200),
     company: str(body.company, 160) || null,
     topic: str(body.topic, 2000) || null,
+    attribution: sanitizeAttribution(body.attribution),
   };
   if (!req.name) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
