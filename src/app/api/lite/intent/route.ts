@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 import { APP_URL } from "@/lib/site";
-import { isLiteToolId } from "@/lib/lite/tools";
+import { LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
 import { getOrCreateSessionId } from "@/lib/lite/session";
 import { mintAppSignInUrl } from "@/lib/lite/sso";
 import { createHandoff, insertIntent, linkSessionIntents, storeConfigured, type IntentKind } from "@/lib/lite/store";
@@ -56,7 +56,10 @@ function cleanPayload(raw: unknown): Record<string, unknown> {
 
 /** Where a link from this tool lands in the app: the same tool, or the app root. */
 function appUrlFor(tool: string | null): URL {
-  return new URL(tool && tool !== "site" ? `/tools/${tool}` : "/", APP_URL);
+  // The custom tool has no twin in the app yet (its Flow lives in the Lite
+  // org): its links land on the app itself, where a flow is made the same way.
+  const hasTwin = tool && tool !== "site" && !(isLiteToolId(tool) && LITE_TOOLS[tool].custom);
+  return new URL(hasTwin ? `/tools/${tool}` : "/", APP_URL);
 }
 
 export async function POST(request: Request) {

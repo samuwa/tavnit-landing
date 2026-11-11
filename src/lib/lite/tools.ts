@@ -13,6 +13,7 @@ import numberFormat from "@/lib/lite/defs/number-format";
 import dateFormat from "@/lib/lite/defs/date-format";
 import currencyConverter from "@/lib/lite/defs/currency-converter";
 import translateColumns from "@/lib/lite/defs/translate-columns";
+import customExtractor from "@/lib/lite/defs/custom-extractor";
 
 /**
  * Registry of Tavnit Lite tools.
@@ -31,6 +32,7 @@ import translateColumns from "@/lib/lite/defs/translate-columns";
  */
 
 export type LiteToolId =
+  | "custom-extractor"
   | "invoice-to-excel"
   | "invoice-line-items"
   | "po-invoice-check"
@@ -79,6 +81,11 @@ export interface LiteTool {
   id: LiteToolId;
   kind: LiteToolKind;
   paths: Record<Locale, string>;
+  /** The Custom Tool: its Flow is the visitor's own, made from an AI
+   *  suggestion (lib/lite/custom.ts), so `flow`, `columnOrder` and
+   *  `lineFields` are resolved per visitor at run time. The hub features it
+   *  above the grid instead of listing it in a group. */
+  custom?: true;
   /** The commercial pages this tool feeds, by English slug; the Spanish
    *  twins resolve through the data files (see ./related.ts). A tool page
    *  links to them and they link back with "try it free", so a visitor who
@@ -127,6 +134,7 @@ export interface LiteTool {
 }
 
 export const LITE_TOOLS: Record<LiteToolId, LiteTool> = {
+  "custom-extractor": customExtractor,
   "invoice-to-excel": invoiceToExcel,
   "invoice-line-items": invoiceLineItems,
   "po-invoice-check": poInvoiceCheck,
@@ -143,6 +151,9 @@ export const LITE_TOOLS: Record<LiteToolId, LiteTool> = {
 };
 
 export const LITE_TOOL_IDS = Object.keys(LITE_TOOLS) as LiteToolId[];
+
+/** The one tool whose Flow belongs to the visitor (see `custom` above). */
+export const LITE_CUSTOM_TOOL_ID: LiteToolId = "custom-extractor";
 
 export function isLiteToolId(v: unknown): v is LiteToolId {
   return typeof v === "string" && v in LITE_TOOLS;

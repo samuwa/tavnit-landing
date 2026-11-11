@@ -2,10 +2,12 @@
 
 import { trackEvent } from "@/lib/analytics";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Check, Download, ExternalLink, FileText, Loader2, Plus, RotateCcw, Sparkles, TriangleAlert, X } from "lucide-react";
+import { Check, Download, ExternalLink, FileText, Loader2, Plus, RotateCcw, Sparkles, TriangleAlert, WandSparkles, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { LiteToolId } from "@/lib/lite/tools";
-import { LITE_ACCEPT, LITE_TOOLS } from "@/lib/lite/tools";
+import Link from "next/link";
+import { LITE_ACCEPT, LITE_CUSTOM_TOOL_ID, LITE_TOOLS } from "@/lib/lite/tools";
+import { CUSTOM_COPY } from "@/lib/lite/custom-copy";
 import type { Locale } from "@/lib/locale";
 import AuthModal from "@/components/lite/AuthModal";
 import { useMarkUsed, useLiteIntent } from "@/components/lite/intent";
@@ -138,6 +140,10 @@ export default function LiteTool({
   turnstileSiteKey,
   hasSample,
   sampleUrl,
+  header,
+  lineFieldsOverride,
+  autoStartFile,
+  onRunError,
 }: {
   toolId: LiteToolId;
   locale: Locale;
@@ -146,6 +152,16 @@ export default function LiteTool({
   hasSample: boolean;
   /** The bundled sample document, under /public, for the viewer. */
   sampleUrl?: string;
+  /** The custom tool (LiteCustom): what replaces the page's title above the
+   *  drop zone — the visitor's tool, its columns, the way to rebuild it. */
+  header?: React.ReactNode;
+  /** The custom tool: its table columns (a fixed tool reads the registry). */
+  lineFieldsOverride?: string[];
+  /** The custom tool: a document to run as soon as the tool mounts — the
+   *  sample it was just built from. */
+  autoStartFile?: File | null;
+  /** Called with the error code when a run could not start or failed. */
+  onRunError?: (code: string) => void;
 }) {
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
   const [dragging, setDragging] = useState(false);
@@ -163,7 +179,8 @@ export default function LiteTool({
   const [flowSignal, setFlowSignal] = useState(0);
   /** Columns the visitor removed from the table; the Excel leaves them out too. */
   const [hidden, setHidden] = useState<string[]>([]);
-  const lineFields = LITE_TOOLS[toolId].lineFields[locale];
+  const lineFields = lineFieldsOverride ?? LITE_TOOLS[toolId].lineFields[locale];
+  const isCustom = toolId === LITE_CUSTOM_TOOL_ID;
   const inputRef = useRef<HTMLInputElement>(null);
   const abort = useRef<AbortController | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -321,6 +338,9 @@ export default function LiteTool({
   // download, so once the rows are back the download fires by itself.
   const autoDownload = useRef(false);
   useEffect(() => {
+    // A tool that mounts with a document to run starts fresh: an older
+    // result of this tool is not what the visitor is waiting for.
+    if (autoStartFile) return;
     const stash = readStash(toolId);
     const url = new URL(window.location.href);
     if (url.searchParams.has("auth")) {
@@ -349,7 +369,25 @@ export default function LiteTool({
     setPhase({ kind: "processing", file: stash.file, stage: 1, runId: stash.runId, startedAt });
     void poll(stash.runId, stash.file, startedAt, ctrl, true);
     return () => ctrl.abort();
-  }, [toolId, poll, locale]);
+  }, [toolId, poll, locale]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // The custom tool, right after it was built: run the sample through it.
+  // Deferred by a tick and cancelled on cleanup, so a mount that React
+  // replays (Strict Mode) starts one run, not one that its own cleanup aborts.
+  const autoStarted = useRef(false);
+  useEffect(() => {
+    if (!autoStartFile || autoStarted.current) return;
+    const timer = setTimeout(() => {
+      autoStarted.current = true;
+      void start(autoStartFile, false);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [autoStartFile, start]);
+
+  const errorCode = phase.kind === "error" ? phase.code : null;
+  useEffect(() => {
+    if (errorCode) onRunError?.(errorCode);
+  }, [errorCode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => () => abort.current?.abort(), []);
 
@@ -572,16 +610,21 @@ export default function LiteTool({
       </div>
     ) : null;
 
+  const customPromo = CUSTOM_COPY[locale].promo;
+  const customPath = LITE_TOOLS[LITE_CUSTOM_TOOL_ID].paths[locale];
+
   // ---- idle / processing / error ----------------------------------------------
   if (phase.kind !== "done") {
     return (
       <>
-        <header className="max-w-[620px]">
-          <h1 className="lite-display text-[2.6rem] leading-[1.05] sm:text-6xl">{copy.h1}</h1>
-          <p className="mt-5 text-lg leading-relaxed text-[var(--lite-muted)]">{copy.intro}</p>
-        </header>
+        {header ?? (
+          <header className="max-w-[620px]">
+            <h1 className="lite-display text-[2.6rem] leading-[1.05] sm:text-6xl">{copy.h1}</h1>
+            <p className="mt-5 text-lg leading-relaxed text-[var(--lite-muted)]">{copy.intro}</p>
+          </header>
+        )}
 
-        <div className="mt-10">
+        <div className={header ? "mt-6" : "mt-10"}>
           {phase.kind === "idle" ? dropZone : phase.kind === "processing" ? progress : errorBox}
         </div>
 
@@ -593,6 +636,14 @@ export default function LiteTool({
             </li>
           ))}
         </ul>
+        {!isCustom && phase.kind === "idle" && (
+          <p className="mt-6 text-center text-sm text-[var(--lite-muted)]">
+            {customPromo.title}{" "}
+            <Link href={customPath} className="font-semibold text-[var(--lite-violet)] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50">
+              {customPromo.cta}
+            </Link>
+          </p>
+        )}
       </>
     );
   }
@@ -828,6 +879,26 @@ export default function LiteTool({
               {copy.result.flowNoteCta}
             </button>
           </p>
+        )}
+
+        {!isCustom && (
+          <aside className="mt-6 flex flex-col gap-3 rounded-xl border border-[var(--lite-violet)]/25 bg-[var(--lite-violet-soft)] px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between">
+            <span className="flex min-w-0 items-start gap-3">
+              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[var(--lite-violet)] text-white">
+                <WandSparkles size={16} aria-hidden />
+              </span>
+              <span className="min-w-0 text-sm leading-relaxed">
+                <span className="block font-semibold">{customPromo.title}</span>
+                <span className="block text-[var(--lite-muted)]">{customPromo.body}</span>
+              </span>
+            </span>
+            <Link
+              href={customPath}
+              className="lite-press inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-[var(--lite-violet)] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-violet)]/50"
+            >
+              {customPromo.cta}
+            </Link>
+          </aside>
         )}
 
         {rows.length > 0 && (

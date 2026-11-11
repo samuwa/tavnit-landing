@@ -4,6 +4,7 @@ import { getSessionId } from "@/lib/lite/session";
 import { getRunForSession, updateRun } from "@/lib/lite/store";
 import { normalizeRows } from "@/lib/lite/rows";
 import { LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
+import { customRunColumns } from "@/lib/lite/custom";
 
 /**
  * Polls one run. Only the session that started it can read it: the run id
@@ -15,7 +16,10 @@ export const runtime = "nodejs";
 
 const ID_RE = /^[A-Za-z0-9_-]{8,64}$/;
 
-function columnOrderFor(tool: string, locale: string): string[] {
+function columnOrderFor(tool: string, locale: string, meta: unknown): string[] {
+  // A custom tool's columns are the visitor's own, stored with the run.
+  const custom = customRunColumns(meta);
+  if (custom) return custom;
   if (!isLiteToolId(tool)) return [];
   return LITE_TOOLS[tool].columnOrder[locale === "en" ? "en" : "es"];
 }
@@ -42,7 +46,7 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
   }
 
   if (run.status === "completed") {
-    const table = normalizeRows(run.columns, run.rows ?? [], columnOrderFor(owned.tool, owned.locale));
+    const table = normalizeRows(run.columns, run.rows ?? [], columnOrderFor(owned.tool, owned.locale, owned.meta));
     if (owned.status !== "completed") {
       await updateRun(id, {
         status: "completed",

@@ -30,6 +30,7 @@ resultados: tu factura → Tavnit → seis destinos; en móvil se apila.
 | Página | EN | ES |
 |---|---|---|
 | Hub | `/tools` | `/es/herramientas` |
+| Extractor a la medida (Custom Tool) | `/tools/custom-extractor` | `/es/herramientas/extractor-a-la-medida` |
 | Factura a Excel | `/tools/invoice-to-excel` | `/es/herramientas/factura-a-excel` |
 | Líneas de factura (mismo Flow, otra página) | `/tools/invoice-line-item-extractor` | `/es/herramientas/extraer-lineas-de-factura` |
 | OC vs factura | `/tools/po-vs-invoice-check` | `/es/herramientas/comparar-factura-con-orden-de-compra` |
@@ -154,6 +155,23 @@ Rutas: `POST /api/lite/clean/preview` (lee el archivo, sugiere columnas y separa
 - Relleno de celdas vacías: un espacio `" "` (pandas no lo lee como NaN, no se cobra y los derivados lo saltan).
 
 Un Cleaner por destino: **30 monedas** (todas las del BCE; JPY, KRW e ISK con 0 decimales) y **43 idiomas** (cualquier código ISO 639-1 sirve: el motor se lo pasa al modelo). Los ids están en `defs/currency-converter.ts` y `defs/translate-columns.ts`. Para agregar un destino: clonar el Cleaner de USD o de `en` (cleaners + sus 20 cleaner_fields, cambiando `target_currency` / `target_language`) y sumar la línea en el def; el desplegable, la validación y el nombre (con `Intl.DisplayNames`) salen solos. Los primeros del desplegable son `POPULAR_OUTPUTS` en `clean.ts`. BGN salió de la lista: el BCE dejó de publicarlo cuando Bulgaria adoptó el euro.
+
+## Custom Tool: el extractor a la medida (2026-11-11)
+
+`/tools/custom-extractor` y `/es/herramientas/extractor-a-la-medida` (id `custom-extractor`, `custom: true` en el registro). Es el gancho de Lite: el visitante arma su propia herramienta. No tiene Flow fijo: cada herramienta es **un Flow nuevo en la org Lite**, creado por el landing.
+
+Flujo: sube un documento de ejemplo → `POST /api/flows/suggest-fields` del producto (el mismo asistente de "crear flow con IA" de la app; no gasta créditos) propone hasta 10 datos de encabezado y 10 columnas de tabla → el visitante desmarca y renombra → se crea el Flow y el mismo documento corre por él. Al volver, la página muestra "Tu herramienta" con sus columnas y la zona de carga. **Una herramienta por visitante**; para cambiarla se rehace con un documento nuevo y la nueva reemplaza a la anterior (solo al confirmar las columnas; cancelar conserva la actual).
+
+- **Dueño**: la cookie de sesión `tavnit_lite_sid` (30 días) y, si inició sesión, su cuenta (la herramienta aparece también en otro navegador). La IP solo limita cuántas propuestas se piden; no es dueña de nada (una oficina comparte IP).
+- **Tabla `lite_custom_tools`** (migración `20261111150000_lite_custom_tools.sql`, aplicada el 2026-11-11): `draft` (propuesta sin confirmar) → `active` → `replaced` / `expired`. Índices únicos: una activa por sesión y una por usuario. `lite_custom_reserve` cuenta e inserta en una transacción (cupo de propuestas); `lite_custom_activate` activa el borrador y retira la anterior en una transacción.
+- **Rutas**: `POST /api/lite/custom/suggest` (mismas defensas que un run, en el mismo orden, y cupo propio), `POST /api/lite/custom` (JSON `{ draftId, name, fields: [{ key, name }] }`), `GET /api/lite/custom` (la herramienta del visitante y cuántas propuestas le quedan). Los documentos corren por `POST /api/lite/runs` con `tool=custom-extractor`: el Flow sale de la herramienta de la sesión (`no_tool` si no hay) y las columnas quedan en `lite_runs.meta` para ordenar la tabla y el Excel.
+- **El navegador nunca manda hints.** La propuesta se guarda en el borrador; al crear, el navegador solo dice qué campos quedan y cómo se llaman. Tipo, clase (encabezado / tabla) e indicaciones de extracción salen del borrador de esa sesión. Así la página no sirve para correr prompts arbitrarios. Los nombres se sanean (`cleanCustomName`: una línea, sin caracteres de control ni signo de fórmula inicial, 60 caracteres).
+- **Forma del Flow**: igual a la que crea la app desde una sugerencia (`flows` + `flow_fields`, hint `Location: Next to label "…"` / `Column header: … --- Field meaning: …`). `buildHint` en `src/lib/lite/custom-server.ts` es espejo de `extraction-hints.ts` de tavnit-nextjs: cambiarlos juntos. Diferencia a propósito: **no se guarda la parte `Examples:`** (valores leídos del documento del visitante), porque el Flow vive más que las 24 h de retención; los ejemplos se muestran una vez en la revisión. Nombre del Flow: `Lite custom · <nombre>`; sin HITL, webhook ni correo.
+- **Cupos**: 3 propuestas al día por sesión y por IP, 150 al día en total (`LITE_CUSTOM_SUGGESTS_PER_DAY`, `LITE_CUSTOM_DAILY_CAP`). El tope global debe quedar por debajo de `RATE_LIMIT_ORG_ASSISTANT_PER_DAY` de Flask (200): para Flask todos los visitantes son la org Lite. Los documentos que corren por la herramienta usan el cupo normal (5 al día); el documento de ejemplo cuenta como uno.
+- **Vigencia y limpieza** (`cleanupCustomTools`, en el mismo cron `/api/cron/lite-cleanup`, después de la purga de runs; el reporte sale en `custom`): borradores de más de 48 h se borran; herramientas **sin cuenta** sin uso por 30 días expiran (con cuenta no vencen); el Flow de una herramienta reemplazada o expirada se marca `deleted_at` + `inactive` al momento y se borra del todo cuando ya no tiene runs (la purga los quita a las 24 h; `runs_flow_id_fkey` no deja antes).
+- **Dónde sobresale**: tarjeta propia arriba del hub (fuera de la cuadrícula), primer ítem del menú en violeta, primera en el footer, y en las herramientas de extracción una línea bajo la zona de carga y una franja bajo el resultado ("¿Tienes otro tipo de documento?").
+- **Pendiente (fase 2)**: no tiene gemela en la app (`/tools/<id>`), así que sus botones hacia Tavnit abren la app en la raíz. Falta el reclamo que copie el Flow a la org del usuario (RPC en tavnit-nextjs) y su fila en `tool_sources` no aplica: no es un recurso fijo.
+- Textos: `src/lib/lite/copy/custom-extractor.ts` (lo común a toda herramienta) y `src/lib/lite/custom-copy.ts` (armarla, la tarjeta del hub, la franja).
 
 ## Recursos en la org Lite (2026-09-24)
 
