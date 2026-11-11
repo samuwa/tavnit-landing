@@ -246,3 +246,59 @@ export async function runSweep(params: { cleanerId: string; csv: Uint8Array; fil
   if (!body.sweep_id || typeof body.sweep_id !== "string") throw new LiteApiError("Sweep returned no id", 502);
   return { sweepId: body.sweep_id };
 }
+
+/**
+ * One field as the product's field-suggestion assistant proposes it: the
+ * hint PARTS (printed label, column headers, meaning), not a finished hint.
+ */
+export interface SuggestedFieldRaw {
+  name: string;
+  data_type: string;
+  confidence: number;
+  examples: string[];
+  label_keywords?: string;
+  column_headers?: string[];
+  field_meaning?: string;
+}
+
+export interface FieldSuggestionRaw {
+  suggested_name: string;
+  suggested_description: string;
+  document_type: string;
+  metadata_fields: SuggestedFieldRaw[];
+  table_fields: SuggestedFieldRaw[];
+}
+
+/**
+ * Custom tool: asks the assistant behind the app's "create a flow with AI"
+ * which fields one sample document holds (POST /api/flows/suggest-fields).
+ * Stateless and free of credits in the product: it writes nothing and runs
+ * no extraction. The model call happens inside the request (up to ~25 s).
+ * 400 = the assistant could not use the document; 429 / 503 = the Lite
+ * org's assistant budget or the shared concurrency cap, both worth a retry.
+ */
+export async function suggestFields(params: { bytes: Uint8Array; filename: string; contentType: string }): Promise<FieldSuggestionRaw> {
+  const key = apiKey();
+  if (!key) throw new LiteApiError("Lite API key not configured", 503);
+  const form = new FormData();
+  form.append("file", new Blob([params.bytes as BlobPart], { type: params.contentType }), params.filename);
+  let res: Response;
+  try {
+    res = await fetch(`${BASE_URL}/api/flows/suggest-fields`, {
+      method: "POST",
+      headers: { "X-API-Key": key },
+      body: form,
+      cache: "no-store",
+      signal: AbortSignal.timeout(45_000),
+    });
+  } catch {
+    throw new LiteApiError("Suggestion timed out", 504);
+  }
+  if (res.status === 400) throw new LiteApiError("Suggestion rejected the document", 400);
+  if (res.status === 429 || res.status === 503) throw new LiteApiError("Suggestion busy", 429);
+  if (!res.ok) throw new LiteApiError(`Suggestion failed (${res.status})`, 502);
+  const body = (await res.json().catch(() => null)) as { suggestion?: FieldSuggestionRaw } | null;
+  const s = body?.suggestion;
+  if (!s || typeof s !== "object") throw new LiteApiError("Suggestion returned nothing", 502);
+  return s;
+}

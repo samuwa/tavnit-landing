@@ -5,6 +5,7 @@ import { getRunForSession, updateRun } from "@/lib/lite/store";
 import { normalizeRows } from "@/lib/lite/rows";
 import { buildXlsx } from "@/lib/lite/excel";
 import { LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
+import { customRunColumns } from "@/lib/lite/custom";
 import { authConfigured, currentUser } from "@/lib/supabase/server";
 
 /**
@@ -20,7 +21,10 @@ export const runtime = "nodejs";
 
 const ID_RE = /^[A-Za-z0-9_-]{8,64}$/;
 
-function columnOrderFor(tool: string, locale: string): string[] {
+function columnOrderFor(tool: string, locale: string, meta: unknown): string[] {
+  // A custom tool's columns are the visitor's own, stored with the run.
+  const custom = customRunColumns(meta);
+  if (custom) return custom;
   if (!isLiteToolId(tool)) return [];
   return LITE_TOOLS[tool].columnOrder[locale === "en" ? "en" : "es"];
 }
@@ -63,7 +67,7 @@ export async function GET(request: Request, ctx: { params: Promise<{ id: string 
     return NextResponse.json({ error: "not_ready" }, { status: 409 });
   }
 
-  const table = normalizeRows(run.columns, run.rows ?? [], columnOrderFor(owned.tool, owned.locale));
+  const table = normalizeRows(run.columns, run.rows ?? [], columnOrderFor(owned.tool, owned.locale, owned.meta));
   const hide = hiddenColumns(request);
   const kept = table.columns.filter((c) => !hide.has(c));
   const columns = kept.length ? kept : table.columns;

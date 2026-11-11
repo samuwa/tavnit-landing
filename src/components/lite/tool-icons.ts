@@ -19,6 +19,7 @@ import type { LiteToolId, LiteToolKind } from "@/lib/lite/tools";
 
 /** One icon per free tool, shared by the hub grid and the header menu. */
 export const TOOL_ICONS: Partial<Record<LiteToolId, LucideIcon>> = {
+  "custom-extractor": WandSparkles,
   "invoice-to-excel": FileSpreadsheet,
   "invoice-line-items": Rows3,
   "po-invoice-check": GitCompareArrows,

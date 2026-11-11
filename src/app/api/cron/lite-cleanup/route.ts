@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import { purgeExpiredRuns } from "@/lib/lite/purge";
+import { cleanupCustomTools, type CustomCleanupReport } from "@/lib/lite/custom-server";
 
 /**
  * Hourly (vercel.json): deletes the document and results of free-tool runs
- * older than LITE_RETENTION_HOURS. Requires `Authorization: Bearer
+ * older than LITE_RETENTION_HOURS, then tidies the custom tools (stale
+ * suggestions, anonymous tools unused for 30 days, and the Flows of replaced
+ * or expired tools once their runs are gone — the run purge goes first so a
+ * Flow whose last run was just purged can go in the same pass). Requires `Authorization: Bearer
  * $CRON_SECRET`, which Vercel attaches to cron invocations.
  *
  * Query parameters, for operating it by hand with the same secret:
@@ -34,7 +38,14 @@ export async function GET(request: Request) {
       maxAgeHours: Number.isFinite(maxAge) && maxAge >= 0 && url.searchParams.has("max_age_hours") ? maxAge : undefined,
       limit: Number.isFinite(limit) && limit > 0 ? limit : undefined,
     });
-    return NextResponse.json(report, { status: report.errors.length ? 207 : 200 });
+    let custom: CustomCleanupReport | { error: string };
+    try {
+      custom = await cleanupCustomTools({ dryRun, limit: Number.isFinite(limit) && limit > 0 ? limit : undefined });
+    } catch (e) {
+      custom = { error: e instanceof Error ? e.message : String(e) };
+    }
+    const customFailed = "error" in custom || custom.errors.length > 0;
+    return NextResponse.json({ ...report, custom }, { status: report.errors.length || customFailed ? 207 : 200 });
   } catch (e) {
     return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 500 });
   }

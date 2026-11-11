@@ -5,9 +5,10 @@ import LiteTool from "@/components/lite/LiteTool";
 import LiteCompare from "@/components/lite/LiteCompare";
 import LiteSplit from "@/components/lite/LiteSplit";
 import LiteClean from "@/components/lite/LiteClean";
+import LiteCustom from "@/components/lite/LiteCustom";
 import LiteFaq from "@/components/lite/LiteFaq";
 import { LiteIntentProvider } from "@/components/lite/intent";
-import { Download, Files, GitCompareArrows, ListChecks, ScanSearch, ScanText, Scissors, Upload, type LucideIcon } from "lucide-react";
+import { Download, Files, GitCompareArrows, ListChecks, ScanSearch, ScanText, Scissors, Upload, WandSparkles, type LucideIcon } from "lucide-react";
 import type { LiteToolKind } from "@/lib/lite/tools";
 
 /** Same look as shared.tsx BTN_DOWNLOAD; copied because that module is a
@@ -22,11 +23,14 @@ const HOW_ICONS: Record<LiteToolKind, LucideIcon[]> = {
   split: [Upload, ScanSearch, Scissors],
   clean: [Upload, ListChecks, Download],
 };
+/** The custom tool's steps: a sample in, the AI's proposal, the saved tool. */
+const CUSTOM_HOW_ICONS: LucideIcon[] = [Upload, WandSparkles, Download];
 import { buildLocalizedPageSchema } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
 import { EN_LOCALE_OG, ES_LOCALE_OG, languageAlternates, type Locale } from "@/lib/locale";
 import { LITE_HUB_PATHS, LITE_TOOLS, type LiteToolId } from "@/lib/lite/tools";
 import { HUB_COPY, TOOL_COPY } from "@/lib/lite/copy";
+import { CUSTOM_COPY } from "@/lib/lite/custom-copy";
 import { pagesForTool } from "@/lib/lite/related";
 
 /** Strings for the block that sends the visitor on to the product pages. */
@@ -133,7 +137,9 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
         </nav>
 
         <LiteIntentProvider tool={toolId} locale={locale}>
-        {tool.kind === "compare" && tool.compare ? (
+        {tool.custom ? (
+          <LiteCustom locale={locale} copy={copy} custom={CUSTOM_COPY[locale]} turnstileSiteKey={turnstileSiteKey} />
+        ) : tool.kind === "compare" && tool.compare ? (
           <LiteCompare
             toolId={toolId}
             locale={locale}
@@ -214,7 +220,7 @@ export default function LiteToolPage({ toolId, locale }: { toolId: LiteToolId; l
           </h2>
           <ol className="lite-sheet relative mt-8 grid overflow-hidden rounded-2xl border border-[var(--lite-line)] bg-[var(--lite-white)] sm:grid-cols-3">
             {copy.how.steps.map((s, i) => {
-              const Icon = HOW_ICONS[tool.kind][i] ?? HOW_ICONS.extract[i] ?? Upload;
+              const Icon = (tool.custom ? CUSTOM_HOW_ICONS[i] : HOW_ICONS[tool.kind][i]) ?? HOW_ICONS.extract[i] ?? Upload;
               return (
                 <li
                   key={s.title}

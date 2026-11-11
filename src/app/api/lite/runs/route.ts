@@ -4,7 +4,10 @@ import { NextResponse } from "next/server";
 import { LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
 import { LiteApiError, liteApiConfigured, resolveId, submitRun } from "@/lib/lite/api";
 import { clientIp, getOrCreateSessionId, hashIp } from "@/lib/lite/session";
-import { finalizeReservation, quotaSnapshot, releaseReservation, reserve, storeConfigured } from "@/lib/lite/store";
+import { finalizeReservation, quotaSnapshot, releaseReservation, reserve, storeConfigured, updateRun } from "@/lib/lite/store";
+import { customConfigured, findActiveTool, isUuid, touchTool, type CustomToolRow } from "@/lib/lite/custom-server";
+import { customRunMeta } from "@/lib/lite/custom";
+import { authConfigured, currentUser } from "@/lib/supabase/server";
 import { LiteValidationError, precheckUpload, validateUpload } from "@/lib/lite/validate";
 import { isHumanSession, markHumanSession, verifyTurnstile } from "@/lib/lite/turnstile";
 
@@ -12,7 +15,9 @@ import { isHumanSession, markHumanSession, verifyTurnstile } from "@/lib/lite/tu
  * Starts a free-tool run.
  *
  * multipart/form-data:
- *   tool      — a LiteToolId
+ *   tool      — a LiteToolId. The custom tool ("custom-extractor") has no
+ *               fixed Flow: the run goes to the Flow of the tool this
+ *               session (or account) built, `no_tool` when there is none.
  *   locale    — "en" | "es" (only stored, for the lead record)
  *   file      — the document (omit when sample is set)
  *   sample    — "1" (or a slot index, "0".."n") to run a bundled sample
@@ -65,8 +70,11 @@ export async function POST(request: Request) {
   const localeRaw = form.get("locale");
   const locale = localeRaw === "en" ? "en" : "es";
   if (tool.kind === "split") return ERR("bad_request", 400);
-  const flowId = resolveId(tool.flow, locale);
-  if (!flowId) return ERR("unavailable", 503);
+  // The custom tool's Flow is the visitor's own: resolved below, once we
+  // know who is asking.
+  if (tool.custom && !customConfigured()) return ERR("unavailable", 503);
+  let flowId = tool.custom ? null : resolveId(tool.flow, locale);
+  if (!tool.custom && !flowId) return ERR("unavailable", 503);
   const sampleRaw = form.get("sample");
   const slotRaw = form.get("slot");
   const slot = typeof slotRaw === "string" && /^\d{1,2}$/.test(slotRaw) ? Number(slotRaw) : 0;
@@ -112,6 +120,20 @@ export async function POST(request: Request) {
     if (!(await verifyTurnstile(typeof token === "string" ? token : null, ip))) return ERR("captcha", 400);
     await markHumanSession(sessionId);
   }
+
+  let customTool: CustomToolRow | null = null;
+  if (tool.custom) {
+    if (isSample) return ERR("bad_request", 400);
+    try {
+      const user = authConfigured() ? await currentUser().catch(() => null) : null;
+      customTool = await findActiveTool(sessionId, user?.id ?? null);
+    } catch {
+      return ERR("unavailable", 503);
+    }
+    if (!customTool || !isUuid(customTool.flow_id)) return ERR("no_tool", 409);
+    flowId = customTool.flow_id;
+  }
+  if (!flowId) return ERR("unavailable", 503);
 
   let validated;
   try {
@@ -162,6 +184,13 @@ export async function POST(request: Request) {
     // to it: the browser could never read the result, so report the error now
     // instead of letting the visitor poll into a 404.
     return ERR("unavailable", 503);
+  }
+
+  if (customTool) {
+    // The columns as they were when this run started, so the table and the
+    // Excel keep their order even if the visitor rebuilds the tool meanwhile.
+    await updateRun(runId, { meta: customRunMeta(customTool.fields ?? []) });
+    await touchTool(customTool.id);
   }
 
   // For the "N left today" line only; the limit itself was enforced above.

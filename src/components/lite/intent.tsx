@@ -4,6 +4,7 @@ import { trackEvent } from "@/lib/analytics";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { APP_URL } from "@/lib/site";
 import type { Locale } from "@/lib/locale";
+import { LITE_CUSTOM_TOOL_ID } from "@/lib/lite/tools";
 
 /**
  * What the visitor tried, sent to /api/lite/intent so the product can start
@@ -56,7 +57,8 @@ function send(body: Record<string, unknown>, keepalive = false) {
 
 /** The same tool inside the app (the ids are shared), or the app root. */
 function toolAppUrl(tool: string | undefined): string {
-  return tool && tool !== "site" ? `${APP_URL}/tools/${tool}` : APP_URL;
+  // The custom tool has no twin in the app yet: its links open the app itself.
+  return tool && tool !== "site" && tool !== LITE_CUSTOM_TOOL_ID ? `${APP_URL}/tools/${tool}` : APP_URL;
 }
 
 /** Records, once per result, that the visitor used this tool. */

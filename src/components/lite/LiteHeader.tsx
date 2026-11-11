@@ -7,7 +7,7 @@ import { ArrowRight, ArrowUpRight, ChevronDown, LogOut, Menu, X } from "lucide-r
 import type { Locale } from "@/lib/locale";
 import type { ShellCopy } from "@/lib/lite/copy";
 import type { ToolCopy } from "@/lib/lite/copy";
-import type { LiteToolId, LiteToolKind } from "@/lib/lite/tools";
+import { LITE_CUSTOM_TOOL_ID, type LiteToolId, type LiteToolKind } from "@/lib/lite/tools";
 import AuthModal from "@/components/lite/AuthModal";
 import { signOutLite, useLiteSession } from "@/components/lite/session";
 import { TavnitLink } from "@/components/lite/intent";
@@ -80,16 +80,18 @@ function LiteMark({ label }: { label: string }) {
 
 function ToolItem({ t, onPick }: { t: HeaderTool; onPick: () => void }) {
   const Icon = TOOL_ICONS[t.id] ?? KIND_ICON[t.kind];
+  // The custom tool is the one the menu points at.
+  const featured = t.id === LITE_CUSTOM_TOOL_ID;
   return (
     <Link
       href={t.href}
       onClick={onPick}
       className="group flex items-center gap-3 rounded-lg px-2 py-2 text-sm font-medium text-[var(--lite-ink)] transition-colors hover:bg-[#f3f6fa] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lite-blue)]/50"
     >
-      <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${KIND_TILE[t.kind]}`}>
+      <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${featured ? "bg-[var(--lite-violet)] text-white" : KIND_TILE[t.kind]}`}>
         <Icon size={16} strokeWidth={2} aria-hidden />
       </span>
-      {t.label}
+      <span className={featured ? "font-semibold text-[var(--lite-violet)]" : undefined}>{t.label}</span>
     </Link>
   );
 }

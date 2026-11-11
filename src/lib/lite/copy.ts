@@ -14,6 +14,7 @@ import numberFormat from "@/lib/lite/copy/number-format";
 import dateFormat from "@/lib/lite/copy/date-format";
 import currencyConverter from "@/lib/lite/copy/currency-converter";
 import translateColumns from "@/lib/lite/copy/translate-columns";
+import customExtractor from "@/lib/lite/copy/custom-extractor";
 
 /**
  * Copy for the free tools. The base (copy-base.ts) is one complete tool
@@ -25,6 +26,7 @@ export type { HubCopy, ToolCopy, ToolCopyDef } from "@/lib/lite/copy-base";
 export { AUTH_SIGNUP_CTA_APP } from "@/lib/lite/copy-base";
 
 const DEFS: Record<LiteToolId, Record<Locale, ToolCopyDef>> = {
+  "custom-extractor": customExtractor,
   "invoice-to-excel": invoiceToExcel,
   "invoice-line-items": invoiceLineItems,
   "po-invoice-check": poInvoiceCheck,
