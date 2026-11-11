@@ -23,7 +23,7 @@
 -- of lite_runs — a suggestion costs a model call but no credits.
 --
 -- Service-role only, like lite_runs: RLS on, no policies. Owned by
--- tavnit-landing. Apply manually via the Supabase SQL editor.
+-- tavnit-landing. Applied to the shared project on 2026-11-11.
 
 create table if not exists public.lite_custom_tools (
   id              uuid        primary key default gen_random_uuid(),
