@@ -224,6 +224,27 @@ export async function sampleDownloadRecordedToday(userId: string, tool: string):
   return rows.length > 0;
 }
 
+/**
+ * Whether this user already downloaded something today (UTC). Decides the
+ * once-a-day sign-in notification; a failed lookup answers true, so a store
+ * outage never turns into an email per download.
+ */
+export async function userDownloadedToday(userId: string): Promise<boolean> {
+  const h = headers();
+  const b = base();
+  if (!h || !b) return true;
+  try {
+    const res = await fetch(
+      `${b}/rest/v1/lite_runs?select=id&user_id=eq.${encodeURIComponent(userId)}&downloaded_at=gte.${encodeURIComponent(startOfUtcDay())}&limit=1`,
+      { headers: h, cache: "no-store" },
+    );
+    if (!res.ok) return true;
+    return ((await res.json()) as unknown[]).length > 0;
+  } catch {
+    return true;
+  }
+}
+
 export async function insertRun(row: {
   run_id: string;
   tool: string;

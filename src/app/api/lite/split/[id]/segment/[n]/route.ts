@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionId } from "@/lib/lite/session";
-import { getRunForSession, updateRun } from "@/lib/lite/store";
+import { getRunForSession } from "@/lib/lite/store";
+import { recordDownload } from "@/lib/lite/notify";
 import { downloadLiteObject, readSplit } from "@/lib/lite/product";
 import { authConfigured, currentUser } from "@/lib/supabase/server";
 import { segmentName } from "@/lib/lite/split-view";
@@ -28,7 +29,7 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
   const obj = await downloadLiteObject(seg.file_path).catch(() => null);
   if (!obj) return NextResponse.json({ error: "not_found" }, { status: 404 });
 
-  await updateRun(id, { user_id: user.id, user_email: user.email, downloaded_at: new Date().toISOString() });
+  await recordDownload(id, user, { tool: owned.tool, locale: owned.locale, filename: owned.filename });
   const ext = seg.file_path.split(".").pop()?.toLowerCase() || "pdf";
   const filename = segmentName(owned.filename || "document", Number(n), seg.matched_doc_title ?? null, ext);
   const ascii = filename.replace(/[^\x20-\x7E]/g, "_").replace(/"/g, "");
