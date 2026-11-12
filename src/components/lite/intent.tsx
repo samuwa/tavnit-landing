@@ -1,6 +1,6 @@
 "use client";
 
-import { trackEvent } from "@/lib/analytics";
+import { trackDocumentProcessed, trackEvent } from "@/lib/analytics";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { APP_URL } from "@/lib/site";
 import type { Locale } from "@/lib/locale";
@@ -69,6 +69,7 @@ export function useMarkUsed(done: boolean, key: string | null, extra?: Payload) 
     if (!ctx || !done || !key || sent.current === key) return;
     sent.current = key;
     trackEvent("lite_tool_used", { tool: ctx.tool, locale: ctx.locale });
+    trackDocumentProcessed(ctx.tool, ctx.locale, key, key === "sample");
     void send({ tool: ctx.tool, kind: "used", locale: ctx.locale, payload: extra ?? {} }, true).catch(() => {});
   }, [ctx, done, key, extra]);
 }
