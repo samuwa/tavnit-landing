@@ -313,6 +313,8 @@ export interface HubCopy {
   intro: string;
   breadcrumbHome: string;
   breadcrumbHub: string;
+  /** The closed-by-default section that holds the ready-made tools. */
+  readyMade: string;
   /** Section titles of the grid, by tool kind. */
   groups: { extract: string; compare: string; split: string; clean: string };
   /** Under the grid: the line that sends people to the product. */

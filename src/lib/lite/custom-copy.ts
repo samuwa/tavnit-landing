@@ -71,7 +71,7 @@ export interface CustomCopy {
   loading: string;
   errors: Record<string, string>;
   /** The feature card at the top of the hub. */
-  hub: { title: string; body: string; cta: string; steps: [string, string, string] };
+  hub: { badge: string; title: string; body: string; cta: string; note: string; steps: [string, string, string] };
   /** The strip under another tool's result. */
   promo: { title: string; body: string; cta: string };
 }
@@ -136,10 +136,12 @@ export const CUSTOM_COPY: Record<Locale, CustomCopy> = {
       create_failed: "No pudimos crear tu herramienta. Intenta de nuevo.",
     },
     hub: {
-      title: "Crea tu propia herramienta",
-      body: "¿Tu documento no está en la lista? Sube uno de ejemplo, la IA propone las columnas y te queda una herramienta hecha a tu medida, guardada para la próxima vez.",
-      cta: "Crear mi herramienta",
-      steps: ["Sube un ejemplo", "Elige las columnas", "Úsala con cada documento"],
+      badge: "Gratis · A tu medida",
+      title: "Sube tu documento y llévate tus datos en Excel",
+      body: "Factura, orden de compra, packing list, póliza: el documento que sea. La IA lo lee, te propone las columnas y tú eliges las que quieres. Te queda una herramienta a tu medida para usarla con cada documento nuevo.",
+      cta: "Subir mi documento",
+      note: "Gratis · PDF, JPG o PNG",
+      steps: ["Sube tu documento", "Elige tus columnas", "Llévate tu Excel"],
     },
     promo: {
       title: "¿Tienes otro tipo de documento?",
@@ -206,10 +208,12 @@ export const CUSTOM_COPY: Record<Locale, CustomCopy> = {
       create_failed: "We could not create your tool. Try again.",
     },
     hub: {
-      title: "Build your own tool",
-      body: "Your document isn't on the list? Upload a sample, the AI suggests the columns and you get a tool made to measure, saved for next time.",
-      cta: "Build my tool",
-      steps: ["Upload a sample", "Choose the columns", "Use it on every document"],
+      badge: "Free · Made to measure",
+      title: "Upload your document, get your data in Excel",
+      body: "Invoice, purchase order, packing list, insurance policy: whatever you have. The AI reads it and suggests the columns, and you keep the ones you want. You leave with a tool made to measure, ready for every new document.",
+      cta: "Upload my document",
+      note: "Free · PDF, JPG or PNG",
+      steps: ["Upload your document", "Pick your columns", "Take your Excel"],
     },
     promo: {
       title: "Got a different kind of document?",
