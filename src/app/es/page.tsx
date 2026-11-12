@@ -6,6 +6,7 @@ import { buildLocalizedPageSchema } from "@/lib/schema";
 import { APP_URL, SITE_URL } from "@/lib/site";
 import { USE_CASES_ES, esUseCasePath } from "@/lib/use-cases.es";
 import SectionEyebrow from "@/components/SectionEyebrow";
+import HeroAnimation from "@/components/HeroAnimation";
 
 /**
  * Spanish landing page.
@@ -132,6 +133,12 @@ export default function SpanishLandingPage() {
             Read this page in English
           </Link>
         </p>
+
+        {/* Same document-to-table mock-up as the English hero. Decorative:
+            the h1 below says in words what it shows. */}
+        <section className="hero-enter mb-12 md:mb-16" aria-hidden="true">
+          <HeroAnimation locale="es" />
+        </section>
 
         <SectionEyebrow className="mb-4">Operaciones documentales con IA</SectionEyebrow>
 

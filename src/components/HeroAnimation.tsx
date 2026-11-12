@@ -4,7 +4,15 @@ import { useEffect, useRef, useCallback } from "react";
 
 const FIELDS = ["Order Number", "Order Date", "Supplier", "Item"];
 
-export default function HeroAnimation() {
+/** The only visible words in the mock-up; everything else is skeleton bars. */
+const COPY = {
+  en: { processing: "AI Processing", field: "Field", value: "Value", complete: "Extraction complete" },
+  es: { processing: "Procesando con IA", field: "Campo", value: "Valor", complete: "Extracción completa" },
+} as const;
+
+type Copy = (typeof COPY)[keyof typeof COPY];
+
+export default function HeroAnimation({ locale = "en" }: { locale?: keyof typeof COPY }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -18,7 +26,7 @@ export default function HeroAnimation() {
 
     // Build the animation DOM
     container.innerHTML = "";
-    const wrapper = buildAnimation(container);
+    const wrapper = buildAnimation(container, COPY[locale]);
 
     // Start animation loop
     const timeout = setTimeout(() => runAnimation(wrapper), 500);
@@ -28,7 +36,7 @@ export default function HeroAnimation() {
       cleanup();
       container.innerHTML = "";
     };
-  }, [cleanup]);
+  }, [cleanup, locale]);
 
   return (
     <div
@@ -46,7 +54,7 @@ function getResponsiveGap() {
   return "3rem";
 }
 
-function buildAnimation(container: HTMLDivElement): HTMLDivElement {
+function buildAnimation(container: HTMLDivElement, copy: Copy): HTMLDivElement {
   const wrapper = document.createElement("div");
   wrapper.className = "animation-wrapper";
   wrapper.style.cssText = `
@@ -59,8 +67,8 @@ function buildAnimation(container: HTMLDivElement): HTMLDivElement {
   `;
 
   wrapper.appendChild(createPDF());
-  wrapper.appendChild(createArrow());
-  wrapper.appendChild(createTable());
+  wrapper.appendChild(createArrow(copy));
+  wrapper.appendChild(createTable(copy));
   container.appendChild(wrapper);
   createParticles(wrapper);
 
@@ -98,7 +106,7 @@ function createPDF(): HTMLDivElement {
   return pdf;
 }
 
-function createArrow(): HTMLDivElement {
+function createArrow(copy: Copy): HTMLDivElement {
   const section = document.createElement("div");
   section.className = "arrow-section";
   section.innerHTML = `
@@ -106,7 +114,7 @@ function createArrow(): HTMLDivElement {
       <path d="M5 12h14M12 5l7 7-7 7"/>
     </svg>
     <div id="processing-hero" style="text-align:center;opacity:0;">
-      <div class="processing-text">AI Processing</div>
+      <div class="processing-text">${copy.processing}</div>
       <div style="display:flex;gap:4px;justify-content:center;margin-top:4px;">
         <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#3b82f6,#6c42f0);"></div>
         <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(90deg,#3b82f6,#6c42f0);"></div>
@@ -117,7 +125,7 @@ function createArrow(): HTMLDivElement {
   return section;
 }
 
-function createTable(): HTMLDivElement {
+function createTable(copy: Copy): HTMLDivElement {
   const table = document.createElement("div");
   table.className = "table-doc";
   table.id = "table-hero";
@@ -141,10 +149,10 @@ function createTable(): HTMLDivElement {
 
   table.innerHTML = `
     <table>
-      <thead><tr><th style="color:var(--fg-4)">Field</th><th style="color:var(--fg-4)">Value</th></tr></thead>
+      <thead><tr><th style="color:var(--fg-4)">${copy.field}</th><th style="color:var(--fg-4)">${copy.value}</th></tr></thead>
       <tbody id="table-body-hero">${headerRow}${fieldRows}${footerRow}</tbody>
     </table>
-    <div class="complete-banner" id="complete-banner-hero">&#10003; Extraction complete</div>
+    <div class="complete-banner" id="complete-banner-hero">&#10003; ${copy.complete}</div>
   `;
   return table;
 }
