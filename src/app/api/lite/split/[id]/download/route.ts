@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { zipSync } from "fflate";
 import { getSessionId } from "@/lib/lite/session";
-import { getRunForSession, updateRun } from "@/lib/lite/store";
+import { getRunForSession } from "@/lib/lite/store";
+import { recordDownload } from "@/lib/lite/notify";
 import { downloadLiteObject, readSplit } from "@/lib/lite/product";
 import { authConfigured, currentUser } from "@/lib/supabase/server";
 import { segmentName } from "@/lib/lite/split-view";
@@ -37,7 +38,7 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
   if (!Object.keys(files).length) return NextResponse.json({ error: "not_found" }, { status: 404 });
   const zip = zipSync(files, { level: 0 }); // PDFs are already compressed
 
-  await updateRun(id, { user_id: user.id, user_email: user.email, downloaded_at: new Date().toISOString() });
+  await recordDownload(id, user, { tool: owned.tool, locale: owned.locale, filename: owned.filename });
   const stem = (owned.filename || "documents").replace(/\.[^.]*$/, "").replace(/[^\p{L}\p{N} ._-]/gu, "").trim() || "documents";
   const filename = `tavnit-${stem}.zip`.slice(0, 120);
   const ascii = filename.replace(/[^\x20-\x7E]/g, "_").replace(/"/g, "");

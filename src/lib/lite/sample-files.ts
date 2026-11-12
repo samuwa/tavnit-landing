@@ -6,7 +6,8 @@ import { PDFDocument } from "pdf-lib";
 import { randomBytes } from "node:crypto";
 import { LITE_TOOLS, type LiteToolId } from "@/lib/lite/tools";
 import { clientIp, getOrCreateSessionId, hashIp } from "@/lib/lite/session";
-import { insertRun, sampleDownloadRecordedToday, updateRun } from "@/lib/lite/store";
+import { insertRun, sampleDownloadRecordedToday } from "@/lib/lite/store";
+import { recordDownload } from "@/lib/lite/notify";
 
 /** The bundled sample PDF of a tool, from /public. */
 export async function samplePdf(tool: LiteToolId, index = 0): Promise<Uint8Array | null> {
@@ -59,7 +60,7 @@ export async function recordSampleDownload(
       is_sample: true,
       kind: "run",
     });
-    await updateRun(runId, { status: "completed", user_id: user.id, user_email: user.email ?? null, downloaded_at: new Date().toISOString() });
+    await recordDownload(runId, user, { tool, locale, sample: true });
   } catch {
     // The file still goes out; losing the lead row is not worth a failed download.
   }

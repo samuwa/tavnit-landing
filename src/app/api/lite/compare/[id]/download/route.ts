@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionId } from "@/lib/lite/session";
-import { updateRun } from "@/lib/lite/store";
+import { recordDownload } from "@/lib/lite/notify";
 import { buildXlsx } from "@/lib/lite/excel";
 import { compareState } from "@/lib/lite/compare-server";
 import { LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
@@ -46,7 +46,7 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
   const sourceName = state.result.kind === "po" ? state.result.docs.map((d) => d.file).join(" vs ") : state.result.suppliers.map((d) => d.file).join(" + ");
   const xlsx = buildXlsx({ columns, rows, locale, sourceName, toolPath: LITE_TOOLS[state.owned.tool].paths[locale] });
 
-  await updateRun(id, { user_id: user.id, user_email: user.email, downloaded_at: new Date().toISOString() });
+  await recordDownload(id, user, { tool: state.owned.tool, locale: state.owned.locale, filename: state.owned.filename });
 
   const base = (state.result.kind === "po" ? "po-check" : "quotes").slice(0, 60);
   const filename = `tavnit-${base}.xlsx`;
