@@ -170,7 +170,7 @@ export default function ScheduleMeeting({
       }
       requestIdRef.current = body?.id ?? null;
       setSubmitted(true);
-      trackEvent("generate_lead", { source: "schedule_form", locale });
+      trackEvent("generate_lead", { lead_type: "demo_request", source: "schedule_form", locale });
     } catch {
       setError(t.genericError);
     } finally {

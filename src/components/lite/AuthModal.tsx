@@ -5,6 +5,8 @@ import { Loader2, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
 import type { Locale } from "@/lib/locale";
 import { APP_URL } from "@/lib/site";
+import { clearPendingToolLead, markPendingToolLead, takePendingToolLead, trackToolLead } from "@/lib/analytics";
+import { useLiteIntent } from "@/components/lite/intent";
 
 /**
  * Sign-in / sign-up dialog for the free tools' download step.
@@ -17,6 +19,11 @@ import { APP_URL } from "@/lib/site";
  * through /auth/callback, so before redirecting the dialog asks the tool
  * to stash the current run (`onBeforeRedirect`); the tool restores it and
  * finishes the download when the visitor lands back with `?auth=1`.
+ *
+ * This is also where the GA4 `generate_lead` conversion is counted: once per
+ * successful submission from a tool's download step (never from the header's
+ * plain sign-in, never on a validation or auth error). Email submissions
+ * count right here; Google counts on the way back, once the session exists.
  */
 
 type Mode = "signup" | "signin";
@@ -67,6 +74,26 @@ export default function AuthModal({
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
+  // The tool this dialog gates a download for. The header's dialog sits
+  // outside a tool (and has `resume` off): it never counts a lead.
+  const intent = useLiteIntent();
+  const leadTool = resume && intent ? intent.tool : null;
+  const leadLocale = intent?.locale ?? locale;
+
+  // Back from Google: count the lead the click could not, if it worked.
+  useEffect(() => {
+    if (!leadTool || !takePendingToolLead(leadTool)) return;
+    void (async () => {
+      try {
+        const { getSupabaseBrowser } = await import("@/lib/supabase/client");
+        const { data } = await getSupabaseBrowser().auth.getSession();
+        if (data.session) trackToolLead(leadTool, leadLocale, "google");
+      } catch {
+        // Not signed in after all: no lead.
+      }
+    })();
+  }, [leadTool, leadLocale]);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -111,16 +138,19 @@ export default function AuthModal({
       const { getSupabaseBrowser } = await import("@/lib/supabase/client");
       const supabase = getSupabaseBrowser();
       onBeforeRedirect();
+      if (leadTool) markPendingToolLead(leadTool);
       const { error: err } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: { redirectTo: returnTo() },
       });
       if (err) {
+        clearPendingToolLead();
         setError(copy.generic);
         setGoogleBusy(false);
       }
       // On success the browser is navigating away; nothing else to do.
     } catch {
+      clearPendingToolLead();
       setError(copy.generic);
       setGoogleBusy(false);
     }
@@ -144,6 +174,7 @@ export default function AuthModal({
           setError(copy.generic);
           return;
         }
+        if (leadTool) trackToolLead(leadTool, leadLocale, "signin");
         onAuthed();
         return;
       }
@@ -168,6 +199,9 @@ export default function AuthModal({
         setError(copy.existing);
         return;
       }
+      // The email is in: this is the lead, whether the session starts now or
+      // after the confirmation link.
+      if (leadTool) trackToolLead(leadTool, leadLocale, "signup");
       if (data.session) {
         onAuthed();
         return;
