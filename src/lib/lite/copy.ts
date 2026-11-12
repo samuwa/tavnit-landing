@@ -53,12 +53,13 @@ export const HUB_COPY: Record<Locale, HubCopy> = {
   es: {
     title: "Herramientas gratis con IA: factura a Excel y más",
     description:
-      "Herramientas gratis con el motor de Tavnit: factura a Excel, packing list, BL, cotizaciones y más. Sin plantillas ni registro para ver el resultado.",
+      "Sube tu documento y llévate tus datos en Excel con las columnas que elijas. Gratis, con el motor de Tavnit: factura a Excel, packing list, BL, cotizaciones y más.",
     h1: "Herramientas gratis",
     intro:
-      "Cada herramienta hace una sola cosa con un documento y te muestra el resultado real. Son el mismo motor que usan las empresas que automatizan sus documentos con Tavnit, en versión de una a la vez.",
+      "Herramientas listas para los documentos más comunes. Cada una hace una sola cosa y te muestra el resultado real.",
     breadcrumbHome: "Inicio",
     breadcrumbHub: "Herramientas",
+    readyMade: "Ver herramientas ya hechas",
     groups: { extract: "De documento a Excel", compare: "Comparar documentos", split: "Organizar escaneos", clean: "Limpiar hojas de cálculo" },
     outro: "Todas funcionan con el mismo motor que usan las empresas que automatizan sus documentos con Tavnit. Cuando quieras que pase solo, con todos tus documentos, está tu cuenta.",
     outroCta: "Crear cuenta gratis",
@@ -66,12 +67,13 @@ export const HUB_COPY: Record<Locale, HubCopy> = {
   en: {
     title: "Free AI Document Tools: Invoice to Excel & More",
     description:
-      "Free single-purpose tools built on Tavnit's own engine: turn an invoice into Excel and more. No templates, no sign-up to see the result.",
+      "Upload your document and get your data in Excel with the columns you choose. Free, on Tavnit's own engine: invoice to Excel, packing lists, bills of lading and more.",
     h1: "Free tools",
     intro:
-      "Each tool does one thing to one document and shows you the real result. They run on the same engine companies use to automate their documents with Tavnit, one at a time.",
+      "Ready-made tools for the most common documents. Each does one thing and shows you the real result.",
     breadcrumbHome: "Home",
     breadcrumbHub: "Tools",
+    readyMade: "See ready-made tools",
     groups: { extract: "Document to Excel", compare: "Compare documents", split: "Organise scans", clean: "Clean spreadsheets" },
     outro: "All of them run on the same engine companies use to automate their documents with Tavnit. When you want it to happen on its own, for all your documents, there is your account.",
     outroCta: "Create a free account",
