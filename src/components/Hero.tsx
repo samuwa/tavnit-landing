@@ -45,7 +45,7 @@ export default function Hero() {
 
         {/* Animation */}
         <div
-          className="hero-enter w-full my-4 md:my-[clamp(0.5rem,2svh,2rem)]"
+          className="hero-enter w-full mt-7 mb-4 md:mt-[clamp(1.5rem,4.5svh,3.5rem)] md:mb-[clamp(0.5rem,2svh,2rem)]"
           style={{ "--hero-delay": "0.15s" } as React.CSSProperties}
           aria-hidden="true"
         >

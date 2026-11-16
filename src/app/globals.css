@@ -363,7 +363,11 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
   color: #fff;
   background: linear-gradient(90deg, #3b82f6, #6c42f0);
-  box-shadow: 0 6px 18px -6px rgba(76, 99, 246, 0.8);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+    0 10px 24px -8px rgba(76, 99, 246, 0.75),
+    0 0 18px -4px rgba(108, 66, 240, 0.55);
+  pointer-events: none;
   will-change: transform, opacity;
 }
 

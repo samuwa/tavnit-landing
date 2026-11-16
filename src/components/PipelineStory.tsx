@@ -527,6 +527,20 @@ export default function PipelineStory() {
   }, [lineWidth]);
   const tokenX = useTransform(() => along.get() * lineWidth.get());
 
+  // The stage is as tall as the stop on it. Every stop sits in the same
+  // grid cell so they can cross-fade, which sizes the cell to the tallest
+  // one: the closing frame, almost 300px taller than a stop. That height
+  // showed up as an empty band between the story and the next section.
+  const stage = useRef<HTMLDivElement>(null);
+  const [stageHeight, setStageHeight] = useState<number | null>(null);
+  useEffect(() => {
+    const el = stage.current?.children[active];
+    if (!(el instanceof HTMLElement)) return;
+    const ro = new ResizeObserver(() => setStageHeight(el.offsetHeight));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [active]);
+
   // #agents and friends open the stop they name.
   useEffect(() => {
     const open = () => {
@@ -652,7 +666,13 @@ export default function PipelineStory() {
         </div>
 
         {/* The stage: every stop in the same place, one showing */}
-        <div className="grid" onPointerEnter={onStageEnter} onPointerLeave={onStageLeave}>
+        <div
+          ref={stage}
+          className="grid transition-[height] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+          style={stageHeight ? { height: stageHeight } : undefined}
+          onPointerEnter={onStageEnter}
+          onPointerLeave={onStageLeave}
+        >
           {STATIONS.map((s, i) => (
             <Station
               key={s.id}

@@ -91,7 +91,9 @@ export default function InvoiceSheet({ data = false }: { data?: boolean }) {
           ["Containerumschlag", "620,00"],
         ].map(([what, amount], i) => (
           <div key={what} className={`flex justify-between gap-2 border-t py-[6px] text-[10.5px] ${rule}`}>
-            <span className="truncate">
+            {/* Not truncate: its overflow clip cut the value's box at the sides
+                and its field-name tag above. These descriptions fit. */}
+            <span className="min-w-0 whitespace-nowrap">
               {i === 0 ? (
                 <Val k="line_items[3]" data={data}>
                   {what}

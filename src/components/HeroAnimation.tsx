@@ -194,8 +194,11 @@ const COPY = {
 
 const SCAN_AT = 450;
 const FIRST_FLIGHT = 750;
-const FLIGHT_GAP = 280;
-const FLIGHT_MS = 900;
+/** One value leaves at a time: the next starts as the last one lands. */
+const FLIGHT_GAP = 560;
+const FLIGHT_MS = 1000;
+/** When, in a flight, the value appears in its row (under the landing chip). */
+const LAND_AT = 0.8;
 const HOLD_MS = 2600;
 const DEAL_MS = 420;
 
@@ -244,7 +247,10 @@ function Sheet({
       <div className="flex items-start justify-between gap-3 border-b border-[#e4e7e2] pb-2.5">
         <div className="min-w-0">
           <div className="text-[8.5px] font-semibold uppercase tracking-[0.16em] text-[#6b7672]">{doc.title}</div>
-          <div className="mt-0.5 truncate text-[13px] font-bold">
+          {/* -mx-1 px-1: the highlight reaches 4px past the text on each side,
+              and truncate clips at the padding box, so the container is
+              widened by the same amount (it used to cut the box's sides). */}
+          <div className="-mx-1 mt-0.5 truncate px-1 py-px text-[13px] font-bold">
             <span data-src="issuer" className={mark("issuer")}>
               {doc.issuer}
             </span>
@@ -292,6 +298,87 @@ function Sheet({
       </div>
     </div>
   );
+}
+
+const easeInOut = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const easeOut = (x: number) => 1 - Math.pow(1 - x, 3);
+
+/**
+ * One value travelling from the paper to its row.
+ *
+ * Three beats: it lifts off the page (a small rise and a scale-up, as if
+ * picked up), travels on a curve, and settles onto its row while the row's
+ * own text fades in under it.
+ *
+ * The curve is sampled into keyframes (with linear timing between them, and
+ * the easing applied while sampling) because a Web Animation moves in
+ * straight lines between keyframes: the earlier version had three, and the
+ * chip visibly turned a corner at the top of its arc. Transform and opacity
+ * only, so it stays on the compositor.
+ */
+function flyValue(layer: HTMLElement, from: [number, number], to: [number, number], text: string, duration: number) {
+  const [sx, sy] = from;
+  const [tx, ty] = to;
+  const lift = 7;
+  const start: [number, number] = [sx, sy - lift];
+  // Over the top when travelling sideways; a bow to the right when the table
+  // sits below the deck (phones).
+  const sideways = Math.abs(tx - sx) > Math.abs(ty - sy);
+  const control: [number, number] = sideways
+    ? [(sx + tx) / 2, Math.min(sy, ty) - 46]
+    : [Math.max(sx, tx) + 56, (sy + ty) / 2];
+  const at = (u: number): [number, number] => {
+    const a = (1 - u) * (1 - u);
+    const b = 2 * (1 - u) * u;
+    const c = u * u;
+    return [a * start[0] + b * control[0] + c * tx, a * start[1] + b * control[1] + c * ty];
+  };
+
+  const LIFT = 0.16;
+  const SETTLE = 0.82;
+
+  const chip = document.createElement("div");
+  chip.className = "hero-chip";
+  chip.textContent = text;
+
+  layer.append(chip);
+
+  const N = 36;
+  const chipFrames: Keyframe[] = [];
+  for (let j = 0; j <= N; j++) {
+    const t = j / N;
+    let x = sx;
+    let y = sy;
+    let scale = 1;
+    let opacity = 1;
+    let u = 0;
+    if (t <= LIFT) {
+      const k = easeOut(t / LIFT);
+      y = sy - lift * k;
+      scale = 0.88 + 0.18 * k;
+      opacity = k;
+    } else if (t <= SETTLE) {
+      u = easeInOut((t - LIFT) / (SETTLE - LIFT));
+      [x, y] = at(u);
+      scale = 1.06 - 0.06 * u;
+    } else {
+      const k = easeOut((t - SETTLE) / (1 - SETTLE));
+      u = 1;
+      x = tx;
+      y = ty;
+      scale = 1 - 0.06 * k;
+      opacity = 1 - k;
+    }
+    chipFrames.push({
+      offset: t,
+      opacity,
+      transform: `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scale})`,
+    });
+  }
+  const timing: KeyframeAnimationOptions = { duration, easing: "linear", fill: "forwards" };
+  const anims = [chip.animate(chipFrames, timing)];
+  anims[0].onfinish = () => chip.remove();
+  return { anims };
 }
 
 export default function HeroAnimation({ locale = "en" }: { locale?: keyof typeof COPY }) {
@@ -363,33 +450,11 @@ export default function HeroAnimation({ locale = "en" }: { locale?: keyof typeof
       const sy = (s.top - w.top + s.height / 2) / k;
       const tx = (d.left - w.left + d.width / 2) / k;
       const ty = (d.top - w.top + d.height / 2) / k;
-      // Arc: over the top when travelling sideways, a bow to the side when
-      // the table sits below the deck.
-      const sideways = Math.abs(tx - sx) > Math.abs(ty - sy);
-      const mx = (sx + tx) / 2 + (sideways ? 0 : 46);
-      const my = (sy + ty) / 2 - (sideways ? 44 : 0);
-
-      const chip = document.createElement("div");
-      chip.className = "hero-chip";
-      chip.textContent = flights[i].chip;
-      layer.appendChild(chip);
-      const at = (x: number, y: number, scale: number) =>
-        `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scale})`;
-      const flight = chip.animate(
-        [
-          { transform: at(sx, sy, 0.9), opacity: 0 },
-          { transform: at(sx, sy, 1), opacity: 1, offset: 0.14 },
-          { transform: at(mx, my, 1.07), opacity: 1, offset: 0.56 },
-          { transform: at(tx, ty, 1), opacity: 1, offset: 0.93 },
-          { transform: at(tx, ty, 1), opacity: 0 },
-        ],
-        { duration: FLIGHT_MS, easing: "cubic-bezier(0.45, 0.05, 0.25, 1)", fill: "forwards" }
-      );
-      anims.push(flight);
-      flight.onfinish = () => {
-        chip.remove();
-        setFilled((f) => Math.max(f, i + 1));
-      };
+      const flight = flyValue(layer, [sx, sy], [tx, ty], flights[i].chip, FLIGHT_MS);
+      anims.push(...flight.anims);
+      // The value shows in its row while the chip is still settling on it,
+      // so the hand-over is a cross-fade, not a blink.
+      later(() => setFilled((f) => Math.max(f, i + 1)), FLIGHT_MS * LAND_AT);
     };
 
     later(() => {
@@ -439,7 +504,7 @@ export default function HeroAnimation({ locale = "en" }: { locale?: keyof typeof
   const done = shownFilled >= keys.length;
   const landed = (key: string) => shownFilled > keys.indexOf(key);
   const appear = (on: boolean) =>
-    `transition-opacity duration-200 ${on ? "opacity-100" : "opacity-0"}`;
+    `transition-opacity duration-150 ease-out ${on ? "opacity-100" : "opacity-0"}`;
 
   const fieldRow = (f: Field) => (
     <div
