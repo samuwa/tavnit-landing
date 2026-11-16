@@ -37,7 +37,7 @@ const NAV: Record<Locale, { href: string; label: string }[]> = {
   ],
 };
 
-const CTA: Record<Locale, string> = { en: "Get Started", es: "Empezar" };
+const CTA: Record<Locale, string> = { en: "Get started free", es: "Empezar" };
 const DEMO: Record<Locale, { href: string; label: string }> = {
   en: { href: "/schedule", label: "Book a demo" },
   es: { href: "/es/agendar", label: "Agendar demo" },
@@ -122,9 +122,9 @@ export default function Header({
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color] duration-200 ${
         scrolled
-          ? "bg-bg/80 backdrop-blur-xl shadow-lg shadow-black/20 border-b border-tint/10"
+          ? "bg-bg/85 backdrop-blur-xl border-b border-tint/10"
           : "bg-bg/50 backdrop-blur-xl border-b border-tint/5"
       }`}
     >
@@ -156,7 +156,7 @@ export default function Header({
             <Link
               key={link.href}
               href={link.href}
-              className="text-[15px] font-medium text-fg-3 hover:text-fg transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-[#3b82f6] after:to-[#6c42f0] after:transition-all hover:after:w-full"
+              className="text-[15px] font-medium text-fg-3 hover:text-fg transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:origin-left after:scale-x-0 after:bg-gradient-to-r after:from-[#3b82f6] after:to-[#6c42f0] after:transition-transform after:duration-200 after:ease-[cubic-bezier(0.23,1,0.32,1)] hover:after:scale-x-100"
             >
               {link.label}
             </Link>
@@ -169,13 +169,13 @@ export default function Header({
               brand gradient pill for the product; same height, no jump. */}
           <Link
             href={DEMO[locale].href}
-            className="inline-flex h-9 items-center rounded-full px-4 text-sm font-medium text-fg-3 transition-colors hover:bg-tint/[0.06] hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50"
+            className="inline-flex h-9 items-center rounded-full px-4 text-sm font-medium text-fg-3 press hover:bg-tint/[0.06] hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50"
           >
             {DEMO[locale].label}
           </Link>
           <Link
             href="https://app.tavnit.io"
-            className="group inline-flex h-9 items-center gap-1.5 rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] pl-4 pr-3.5 text-sm font-semibold tracking-[-0.01em] text-white shadow-[0_6px_18px_-8px_rgba(76,99,246,0.7)] transition-[filter,box-shadow] hover:shadow-[0_8px_22px_-8px_rgba(76,99,246,0.85)] hover:brightness-[1.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            className="group inline-flex h-9 items-center gap-1.5 rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] pl-4 pr-3.5 text-sm font-semibold tracking-[-0.01em] text-white shadow-[0_6px_18px_-8px_rgba(76,99,246,0.7)] press hover:shadow-[0_8px_22px_-8px_rgba(76,99,246,0.85)] hover:brightness-[1.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             {CTA[locale]}
             <ArrowRight size={14} strokeWidth={2.25} className="transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -197,7 +197,7 @@ export default function Header({
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-bg/95 backdrop-blur-xl border-t border-tint/10 shadow-xl">
+        <div className="menu-enter lg:hidden bg-bg/95 backdrop-blur-xl border-t border-tint/10 shadow-xl">
           <nav className="flex flex-col p-6 gap-1">
             {links.map((link) => (
               <Link
@@ -211,7 +211,7 @@ export default function Header({
             ))}
             <Link
               href="https://app.tavnit.io"
-              className="mt-5 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-[15px] font-semibold text-white shadow-[0_8px_24px_-10px_rgba(76,99,246,0.7)]"
+              className="mt-5 press inline-flex h-12 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-[15px] font-semibold text-white shadow-[0_8px_24px_-10px_rgba(76,99,246,0.7)]"
             >
               {CTA[locale]}
               <ArrowRight size={16} strokeWidth={2.25} />
@@ -219,7 +219,7 @@ export default function Header({
             <Link
               href={DEMO[locale].href}
               onClick={() => setMobileOpen(false)}
-              className="mt-2 inline-flex h-12 items-center justify-center rounded-full border border-tint/10 text-[15px] font-semibold text-fg-2 hover:text-fg"
+              className="mt-2 press inline-flex h-12 items-center justify-center rounded-full border border-tint/10 text-[15px] font-semibold text-fg-2 hover:text-fg"
             >
               {DEMO[locale].label}
             </Link>

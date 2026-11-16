@@ -86,7 +86,7 @@ export default async function PricingPage() {
           {PRICING.map((plan) => (
             <div
               key={plan.name}
-              className={`relative py-5 px-4 sm:py-8 sm:px-6 rounded-2xl flex flex-col transition-all duration-300 ${
+              className={`relative py-5 px-4 sm:py-8 sm:px-6 rounded-2xl flex flex-col transition duration-300 ${
                 plan.featured
                   ? "glass-card border-[#3b82f6]/50 shadow-xl shadow-[#3b82f6]/10 lg:scale-105"
                   : "glass-card glass-card-hover"
@@ -133,7 +133,7 @@ export default async function PricingPage() {
               </div>
               <Link
                 href={APP_URL}
-                className={`w-full py-2.5 sm:py-3 rounded-lg text-center text-sm sm:text-base font-semibold transition-all ${
+                className={`w-full py-2.5 sm:py-3 rounded-lg text-center text-sm sm:text-base font-semibold press ${
                   plan.featured
                     ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20"
                     : "border border-[#3b82f6]/50 text-accent hover:bg-[#3b82f6] hover:text-white hover:-translate-y-0.5"
@@ -222,7 +222,7 @@ export default async function PricingPage() {
         <div className="text-center">
           <Link
             href={APP_URL}
-            className="inline-block px-8 py-3.5 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20 transition-all"
+            className="inline-block px-8 py-3.5 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20 press"
           >
             Start Free Trial
           </Link>

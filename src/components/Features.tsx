@@ -1,11 +1,19 @@
 "use client";
 
-import { Fragment, useRef, useCallback, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useRef, useState } from "react";
+import Link from "next/link";
+import { motion, useInView } from "framer-motion";
 import {
-  LayoutGrid, Sparkles, GitBranch, Lightbulb,
-  Database, Users, Code2, UserCheck, Bot, Plug, Check, Scissors, BarChart3,
+  LayoutGrid, Database, Users, Plug, Check, BarChart3, ArrowRight,
 } from "lucide-react";
+import { reveal } from "@/lib/motion";
+
+/* This section used to carry ten tabs, a miniature for every capability.
+   Six of them (extraction, routing, cleaning, review, agents, API and
+   webhooks) are what the "Follow one invoice" story above walks through,
+   so here they said the same thing a second time. What is left is what
+   the story cannot show: how a flow is built, working by chat, where the
+   data lives, and who has access. */
 
 /* ── Vignettes ──────────────────────────────────────────────
    One animated miniature per feature — a truthful sketch of
@@ -17,48 +25,6 @@ const frame = "relative h-full overflow-hidden rounded-xl border border-tint/10 
 /* Centered variant for list-shaped vignettes so they don't top-anchor in the tall panel */
 const frameC = `${frame} flex flex-col justify-center`;
 const chip = "rounded-md border border-tint/10 bg-tint/[0.06] px-2 py-1 text-tint/80";
-const conf = "rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-500/15 text-ok";
-
-function ExtractionVignette() {
-  const fields = [
-    { k: "vendor", v: "Acme Corp", c: "99%" },
-    { k: "invoice_number", v: "INV-2043", c: "98%" },
-    { k: "date", v: "2026-03-15", c: "97%" },
-    { k: "total", v: "1,420.00", c: "99%" },
-  ];
-  return (
-    <div className={`${frame} grid grid-cols-2 gap-4`}>
-      <div className="relative overflow-hidden rounded-lg border border-tint/10 bg-tint/[0.03] p-3">
-        <p className="text-tint/45">invoice_2043.pdf</p>
-        <div className="mt-3 space-y-2">
-          {[100, 75, 90, 60, 85].map((w, i) => (
-            <div key={i} className="h-1.5 rounded bg-tint/15" style={{ width: `${w}%` }} />
-          ))}
-        </div>
-        <div className="mt-4 space-y-2">
-          {[80, 95, 70].map((w, i) => (
-            <div key={i} className="h-1.5 rounded bg-tint/10" style={{ width: `${w}%` }} />
-          ))}
-        </div>
-        <div className="feat-scan" />
-      </div>
-      <div>
-        <p className="text-tint/45 uppercase tracking-wider text-[10px]">Extracted fields</p>
-        <div className="mt-2 space-y-2">
-          {fields.map((f, i) => (
-            <div key={f.k} className="feat-cell flex items-center justify-between gap-2 rounded-md border border-tint/10 bg-tint/[0.05] px-2.5 py-1.5" style={{ animationDelay: `${0.4 + i * 0.35}s` }}>
-              <span className="text-accent-2">{f.k}</span>
-              <span className="flex items-center gap-2 text-tint/85">
-                {f.v}
-                <span className={conf}>{f.c}</span>
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function FlowBuilderVignette() {
   const metaFields = [
@@ -111,266 +77,6 @@ function FlowBuilderVignette() {
 
       <p className="feat-cell mt-3 flex items-center gap-1.5 text-ok" style={{ animationDelay: "3.9s" }}>
         <Check size={12} /> Flow ready — no code written
-      </p>
-    </div>
-  );
-}
-
-function RoutingVignette() {
-  const docs = [
-    { type: "invoice", pages: "pp. 1–3", fromX: "110%", badge: "bg-[#3b82f6]/15 text-accent-2", delay: 1.0 },
-    { type: "purchase order", pages: "pp. 4–6", fromX: "0%", badge: "bg-[#6c42f0]/20 text-violet-2", delay: 1.25 },
-    { type: "invoice", pages: "pp. 7–9", fromX: "-110%", badge: "bg-[#3b82f6]/15 text-accent-2", delay: 1.5 },
-  ];
-  return (
-    <div className={frameC}>
-      {/* One mixed scan, page edges stacked behind it */}
-      <div className="relative mx-auto w-60">
-        <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-lg border border-tint/10 bg-tint/[0.02]" aria-hidden="true" />
-        <div className="absolute inset-0 translate-x-1 translate-y-1 rounded-lg border border-tint/10 bg-tint/[0.03]" aria-hidden="true" />
-        <div className="relative flex items-baseline justify-between rounded-lg border border-tint/15 bg-panel px-3 py-2">
-          <span className="text-tint/80">scans_batch.pdf</span>
-          <span className="text-[10px] text-tint/40">9 pages</span>
-        </div>
-      </div>
-
-      <p className="feat-cell mx-auto mt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-tint/45" style={{ animationDelay: "0.5s" }}>
-        <Scissors size={11} className="text-accent-2" /> Splitter · 3 documents found
-      </p>
-
-      {/* The stack splits into typed documents */}
-      <div className="mt-2 grid grid-cols-3 gap-2">
-        {docs.map((d) => (
-          <div
-            key={d.pages}
-            className="feat-split rounded-lg border border-tint/10 bg-tint/[0.04] px-2 py-1.5 text-center"
-            style={{ "--from-x": d.fromX, animationDelay: `${d.delay}s` } as React.CSSProperties}
-          >
-            <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold ${d.badge}`}>{d.type}</span>
-            <p className="mt-1 text-[10px] text-tint/45">{d.pages}</p>
-          </div>
-        ))}
-      </div>
-
-      <p className="feat-cell mx-auto mt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-tint/45" style={{ animationDelay: "2.2s" }}>
-        <GitBranch size={11} className="text-accent-2" /> Collection · each routed to its flow
-      </p>
-
-      {/* Each document lands in the right flow */}
-      <div className="mt-2 grid grid-cols-2 gap-3">
-        <div className="feat-cell rounded-lg border border-[#3b82f6]/25 bg-[#3b82f6]/[0.05] p-2.5" style={{ animationDelay: "2.5s" }}>
-          <p className="text-tint/60 font-semibold">Invoice Processor flow</p>
-          <div className="mt-1.5 space-y-1.5">
-            <div className="feat-cell flex items-center justify-between rounded bg-tint/[0.07] px-2 py-1 text-tint/75" style={{ animationDelay: "2.9s" }}>
-              <span>invoice · pp. 1–3</span>
-              <Check size={11} className="text-ok" />
-            </div>
-            <div className="feat-cell flex items-center justify-between rounded bg-tint/[0.07] px-2 py-1 text-tint/75" style={{ animationDelay: "3.5s" }}>
-              <span>invoice · pp. 7–9</span>
-              <Check size={11} className="text-ok" />
-            </div>
-          </div>
-        </div>
-        <div className="feat-cell rounded-lg border border-[#6c42f0]/30 bg-[#6c42f0]/[0.06] p-2.5" style={{ animationDelay: "2.5s" }}>
-          <p className="text-tint/60 font-semibold">Purchase Order flow</p>
-          <div className="mt-1.5 space-y-1.5">
-            <div className="feat-cell flex items-center justify-between rounded bg-tint/[0.07] px-2 py-1 text-tint/75" style={{ animationDelay: "3.2s" }}>
-              <span>purchase order · pp. 4–6</span>
-              <Check size={11} className="text-ok" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CleaningVignette() {
-  const rows = [
-    { dirty: "acme CORP.", clean: "Acme Corp", op: "format" },
-    { dirty: "07/16/26", clean: "2026-07-16", op: "date" },
-    { dirty: "1.240,00 EUR", clean: "$1,352.40", op: "convert fx" },
-    { dirty: "2 × 1,240.00", clean: "2,480.00", op: "calculate" },
-    { dirty: "hex bolt M8", clean: "HS 7318.15", op: "classify" },
-  ];
-  return (
-    <div className={frameC}>
-      <p className="text-center text-tint/45">Cleaners · every value normalized before it&apos;s stored</p>
-      <div className="relative mt-3">
-        {/* One shared grid so the arrow and tag columns align across rows */}
-        <div className="mx-auto grid w-fit grid-cols-[auto_auto_auto_auto] items-center gap-x-4 gap-y-2.5">
-          {rows.map((r, i) => {
-            const delay = 0.5 + i * 0.45;
-            return (
-              <Fragment key={r.dirty}>
-                <span
-                  className="feat-strike text-tint/70"
-                  style={{ "--strike-d": `${delay}s` } as React.CSSProperties}
-                >
-                  {r.dirty}
-                </span>
-                <span className="text-center text-tint/30">→</span>
-                <span className="feat-cell text-tint/90" style={{ animationDelay: `${delay}s` }}>
-                  {r.clean}
-                </span>
-                <span
-                  className="feat-cell w-fit rounded bg-[#3b82f6]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-accent-2"
-                  style={{ animationDelay: `${delay}s` }}
-                >
-                  {r.op}
-                </span>
-              </Fragment>
-            );
-          })}
-        </div>
-        <div className="feat-sweep" aria-hidden="true" />
-      </div>
-      <p className="feat-cell mt-3.5 flex items-center justify-center gap-1.5 text-ok" style={{ animationDelay: "3.1s" }}>
-        <Check size={12} /> Clean, consistent, delivered — nothing edited by hand
-      </p>
-    </div>
-  );
-}
-
-function AgentsVignette() {
-  const formFields = [
-    { label: "invoice number", value: "INV-2043", delay: 0.5 },
-    { label: "amount", value: "$1,420.00", delay: 1.0 },
-    { label: "remittance file", value: "remittance_INV-2043.pdf", delay: 1.5 },
-  ];
-  return (
-    <div className={`${frame} flex flex-col p-0`}>
-      <div className="flex items-center gap-2 border-b border-tint/10 px-4 py-2">
-        <span className="size-2 rounded-full bg-tint/15" />
-        <span className="size-2 rounded-full bg-tint/15" />
-        <span className="size-2 rounded-full bg-tint/15" />
-        <span className="ml-1 flex-1 truncate rounded bg-tint/[0.06] px-2 py-0.5 text-[10px] text-tint/45">vendor-portal.example.com/payments/new · live session</span>
-      </div>
-      <div className="flex flex-1 flex-col justify-center gap-4 p-4 lg:flex-row lg:items-center">
-        {/* The portal form the agent fills out */}
-        <div className="flex-1 rounded-lg border border-tint/10 bg-tint/[0.03] p-3">
-          <p className="text-tint/45">Payment submission form</p>
-          <div className="mt-2.5 space-y-2">
-            {formFields.map((f) => (
-              <div key={f.label}>
-                <p className="text-[10px] text-tint/40">{f.label}</p>
-                <div className="mt-0.5 rounded border border-tint/15 bg-well/40 px-2 py-1.5">
-                  <span className="feat-cell inline-block text-tint/85" style={{ animationDelay: `${f.delay}s` }}>
-                    {f.value}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="feat-press mt-3 inline-block rounded-md bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] px-3 py-1.5 font-semibold text-white" style={{ animationDelay: "2.2s" }}>
-            Submit payment
-          </div>
-        </div>
-
-        {/* What the agent brings back */}
-        <div className="flex-1">
-          <div className="feat-cell rounded-md border border-emerald-500/25 bg-emerald-500/[0.08] px-2.5 py-1.5 text-ok" style={{ animationDelay: "2.8s" }}>
-            <span className="flex items-center gap-1.5"><Check size={12} /> Form submitted</span>
-          </div>
-          <p className="feat-cell mt-3 text-[10px] uppercase tracking-wider text-tint/45" style={{ animationDelay: "3.2s" }}>
-            Captured back to your run
-          </p>
-          <div className="mt-1.5 space-y-1.5">
-            <div className="feat-cell flex items-center justify-between rounded-md border border-tint/10 bg-tint/[0.05] px-2.5 py-1.5" style={{ animationDelay: "3.4s" }}>
-              <span className="text-accent-2">submission_no</span>
-              <span className="text-tint/85">PAY-88231</span>
-            </div>
-            <div className="feat-cell flex items-center justify-between rounded-md border border-tint/10 bg-tint/[0.05] px-2.5 py-1.5" style={{ animationDelay: "3.7s" }}>
-              <span className="text-accent-2">portal_status</span>
-              <span className="text-ok">accepted</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function HitlVignette() {
-  return (
-    <div className={frameC}>
-      <div className="flex items-center justify-between gap-3">
-        <p className="truncate text-tint/45">Run #4127 · Invoice Processor · paused for review</p>
-        <span className="relative shrink-0">
-          <span className="rounded bg-amber-400/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-400">
-            awaiting approval
-          </span>
-          <span
-            className="feat-cell absolute inset-0 flex items-center justify-center rounded bg-ok/15 text-[9px] font-bold uppercase tracking-wider text-ok"
-            style={{ animationDelay: "3.3s" }}
-          >
-            approved
-          </span>
-        </span>
-      </div>
-
-      {/* Source document and extracted data, side by side. The
-          mismatched total highlights in BOTH at the same moment. */}
-      <div className="mt-2.5 grid grid-cols-2 gap-3">
-        <div className="rounded-lg border border-tint/10 bg-tint/[0.03] p-3">
-          <p className="text-tint/45">invoice_2043.pdf</p>
-          <div className="mt-2.5 space-y-2">
-            <div className="h-1.5 w-3/4 rounded bg-tint/15" />
-            <div className="h-1.5 w-full rounded bg-tint/10" />
-            <div className="h-1.5 w-2/3 rounded bg-tint/10" />
-            <div className="relative flex h-5 items-center px-1.5">
-              <span className="text-[10px] tracking-wide text-tint/65">TOTAL EUR 1.420,00</span>
-              <span
-                className="feat-cell absolute -inset-x-0.5 inset-y-0 rounded border border-amber-400/60 bg-amber-400/10"
-                style={{ animationDelay: "1.0s" }}
-                aria-hidden="true"
-              />
-            </div>
-            <div className="h-1.5 w-1/2 rounded bg-tint/10" />
-          </div>
-        </div>
-
-        <div className="rounded-lg border border-tint/10 bg-tint/[0.03] p-3">
-          <p className="text-tint/45">Extracted data</p>
-          <div className="mt-2 space-y-1.5">
-            <div className="flex items-center justify-between rounded bg-tint/[0.05] px-2 py-1">
-              <span className="text-accent-2">vendor</span>
-              <span className="text-tint/85">Acme Corp</span>
-            </div>
-            <div className="flex items-center justify-between rounded bg-tint/[0.05] px-2 py-1">
-              <span className="text-accent-2">invoice_no</span>
-              <span className="text-tint/85">INV-2043</span>
-            </div>
-            <div className="relative flex items-center justify-between rounded bg-tint/[0.05] px-2 py-1">
-              <span className="text-accent-2">total</span>
-              <span className="flex items-center gap-1.5">
-                <span className="feat-strike text-tint/80" style={{ "--strike-d": "1.7s" } as React.CSSProperties}>
-                  1,240.00
-                </span>
-                <span className="feat-cell text-fg" style={{ animationDelay: "2.0s" }}>1,420.00</span>
-              </span>
-              <span
-                className="feat-cell absolute -inset-x-0.5 inset-y-0 rounded border border-amber-400/60 bg-amber-400/10"
-                style={{ animationDelay: "1.0s" }}
-                aria-hidden="true"
-              />
-            </div>
-            <div className="flex items-center justify-between rounded bg-tint/[0.05] px-2 py-1">
-              <span className="text-accent-2">due_date</span>
-              <span className="text-tint/85">2026-04-11</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="feat-cell mt-3 flex items-center gap-2" style={{ animationDelay: "2.5s" }}>
-        <span className="feat-press flex items-center gap-1.5 rounded-md bg-emerald-600 px-3 py-1.5 font-semibold text-white" style={{ animationDelay: "3.0s" }}>
-          <Check size={12} /> Approve run
-        </span>
-        <span className="rounded-md border border-tint/10 px-3 py-1.5 text-tint/50">Reject</span>
-      </div>
-      <p className="feat-cell mt-2.5 border-l-2 border-emerald-500/40 pl-2 text-[10px] text-tint/40" style={{ animationDelay: "3.7s" }}>
-        audit · append-only · maria@ edited total, approved the run · 09:41
       </p>
     </div>
   );
@@ -485,52 +191,6 @@ function BucketsVignette() {
   );
 }
 
-function ApiVignette() {
-  const outs = [
-    { title: "webhook", detail: '{ "total": 1420 }', note: "erp · 200", delay: 1.7 },
-    { title: "email", detail: "ap@acme.com", note: "results sent", delay: 2.0 },
-    { title: "PDF form", detail: "payment_order.pdf", note: "filled", delay: 2.3 },
-    { title: "bucket", detail: "Invoices", note: "+1 row", delay: 2.6 },
-  ];
-  return (
-    <div className={frameC}>
-      {/* In */}
-      <div className="feat-cell mx-auto flex w-fit max-w-full items-center gap-2 rounded-lg border border-tint/10 bg-tint/[0.04] px-3 py-2" style={{ animationDelay: "0.2s" }}>
-        <span className="truncate text-tint/80">✉ invoice_2043.pdf</span>
-        <span className="text-tint/30">→</span>
-        <span className="truncate text-tint/50">invoices@collect.tavnit.io</span>
-      </div>
-
-      <div className="feat-cell mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-tint/35 to-tint/10" style={{ animationDelay: "0.8s" }} aria-hidden="true" />
-
-      {/* Through Tavnit */}
-      <div className="feat-cell mx-auto flex w-fit items-center gap-2 rounded-lg border border-[#3b82f6]/30 bg-[#3b82f6]/[0.08] px-3 py-2" style={{ animationDelay: "1.0s" }}>
-        <span className="text-tint/85">run #4129 · extracted &amp; cleaned</span>
-        <Check size={12} className="text-ok" />
-      </div>
-
-      <div className="feat-cell mx-auto my-1.5 h-4 w-px bg-gradient-to-b from-tint/35 to-tint/10" style={{ animationDelay: "1.5s" }} aria-hidden="true" />
-
-      {/* Out — one delivery row, left to right */}
-      <div className="grid grid-cols-4 gap-2">
-        {outs.map((o) => (
-          <div key={o.title} className="feat-cell rounded-lg border border-tint/10 bg-tint/[0.04] p-2 text-center" style={{ animationDelay: `${o.delay}s` }}>
-            <p className="text-[10px] uppercase tracking-wider text-tint/40">{o.title}</p>
-            <p className="mt-1 truncate text-accent-2">{o.detail}</p>
-            <p className="mt-0.5 truncate text-[10px] text-tint/45">
-              {o.note} <span className="text-ok">✓</span>
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <p className="feat-cell mt-3.5 text-center text-[10px] text-tint/40" style={{ animationDelay: "3.1s" }}>
-        also in: REST API · UI upload&ensp;·&ensp;also out: Zapier / Make
-      </p>
-    </div>
-  );
-}
-
 function TeamsVignette() {
   /* Role subtitles match the in-app docs verbatim */
   const roles = [
@@ -590,197 +250,150 @@ function TeamsVignette() {
 /* ── Feature registry ─────────────────────────────────────── */
 
 const features = [
-  { icon: Sparkles, title: "AI Extraction", desc: "Multiple leading AI models pull tables, metadata, handwriting, and complex layouts out of any document — with a confidence score on every field.", Vignette: ExtractionVignette },
-  { icon: LayoutGrid, title: "Flow Builder", desc: "Describe what to capture in plain language and Tavnit builds the schema — metadata fields for single values like vendor and total, table fields for line items. No code.", Vignette: FlowBuilderVignette },
-  { icon: GitBranch, title: "Routing & Splitting", desc: "Splitters break multi-document PDFs apart, then Collections route each document to the right flow automatically.", Vignette: RoutingVignette },
-  { icon: Lightbulb, title: "AI Data Cleaning", desc: "Cleaners format, translate, convert currencies and units, calculate fields, match reference data — even classify HS tariff codes.", Vignette: CleaningVignette },
-  { icon: Bot, title: "AI Agents", desc: "Browser-automation agents act on extracted data across the web — and you can watch every session live.", Vignette: AgentsVignette },
-  { icon: UserCheck, title: "Human in the Loop", desc: "Pause runs for review — extracted data next to the source document. Fix values in place, approve or reject, and every action lands in an append-only audit trail.", Vignette: HitlVignette },
-  { icon: Plug, title: "MCP Connector", desc: "Add Tavnit to claude.ai, Cursor, or any MCP client — your AI assistant can build flows, attach cleaners, run extractions, and query your data.", Vignette: McpVignette },
-  { icon: Database, title: "Buckets & Analytics", desc: "Editable tables where extracted data lands. Fix a cell in place, export CSV/Excel, search columns semantically — and open built-in analytics with one click.", Vignette: BucketsVignette },
-  { icon: Code2, title: "API, Email & Webhooks", desc: "Send documents in by REST API or a forwarding address; results come out as webhook JSON, filled PDF forms, or bucket rows — Zapier and Make included.", Vignette: ApiVignette },
-  { icon: Users, title: "Teams & Roles", desc: "Four roles with clear boundaries: Owners control billing and settings, Admins manage people and content, Members run and view, Viewers read only. Unlimited seats.", Vignette: TeamsVignette },
+  {
+    icon: LayoutGrid,
+    question: "How you build it",
+    title: "Flow Builder",
+    desc: "Describe what to capture in plain language and Tavnit builds the schema: metadata fields for single values like vendor and total, table fields for line items. No code.",
+    href: "/docs/flows",
+    Vignette: FlowBuilderVignette,
+  },
+  {
+    icon: Plug,
+    question: "How you talk to it",
+    title: "MCP Connector",
+    desc: "Add Tavnit to claude.ai, Cursor, or any MCP client. Your AI assistant can build flows, attach cleaners, run extractions, and query your data.",
+    href: "/integrations/mcp",
+    Vignette: McpVignette,
+  },
+  {
+    icon: Database,
+    question: "Where the data lives",
+    title: "Buckets & Analytics",
+    desc: "Editable tables where extracted data lands. Fix a cell in place, export CSV or Excel, search columns semantically, and open built-in analytics with one click.",
+    href: "/docs/buckets",
+    Vignette: BucketsVignette,
+  },
+  {
+    icon: Users,
+    question: "Who can touch it",
+    title: "Teams & Roles",
+    desc: "Four roles with clear boundaries: Owners control billing and settings, Admins manage people and content, Members run and view, Viewers read only. Unlimited seats.",
+    href: "/docs/user-roles",
+    Vignette: TeamsVignette,
+  },
 ];
 
-/* Compact card for the mobile marquee row */
-function MarqueeCard({ f }: { f: typeof features[number] }) {
-  return (
-    <div className="glass-card rounded-xl p-4 border border-tint/10 flex-shrink-0 w-[200px]">
-      <div className="flex items-center gap-2.5 mb-2">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-[#3b82f6]/10 text-accent">
-          <f.icon size={16} />
-        </div>
-        <h3 className="text-xs font-bold text-fg">{f.title}</h3>
-      </div>
-      <p className="text-[11px] text-fg-4 leading-relaxed">{f.desc}</p>
-    </div>
-  );
-}
+/** How long a capability stays up before the section moves to the next. */
+const DWELL = 8;
 
-/* Speed: pixels per second */
-const MARQUEE_SPEED = 30;
-const PAUSE_AFTER_TOUCH_MS = 4000;
-const AUTO_ADVANCE_MS = 5000;
-
+/**
+ * Four capabilities, one on stage at a time: tabs across the top, then a
+ * single panel with the capability's miniature beside what it is.
+ *
+ * Two earlier layouts missed in opposite directions. A list of four names
+ * next to one tall panel left most of the section empty. Four full cards,
+ * each with its own miniature, filled it and made it the heaviest block on
+ * the page. This keeps one miniature moving and the section short.
+ *
+ * It moves on by itself (the active tab fills as it waits) until the
+ * visitor picks a tab; it holds while the pointer is over the panel, and
+ * does not run off screen.
+ */
 export default function Features() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const animRef = useRef<number | null>(null);
-  const lastTimeRef = useRef<number>(0);
-  const offsetRef = useRef(0);
-  const isPausedRef = useRef(false);
-  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  /* Desktop showcase state. Auto-tours until the user picks a
-     feature themselves; from then on the selection is theirs. */
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { amount: 0.4 });
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [interacted, setInteracted] = useState(false);
-
-  const select = useCallback((i: number) => {
-    setInteracted(true);
-    setActive(i);
-  }, []);
-
-  useEffect(() => {
-    if (paused || interacted) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => setActive((a) => (a + 1) % features.length), AUTO_ADVANCE_MS);
-    return () => clearInterval(id);
-  }, [paused, interacted]);
-
-  /* Measure how wide one set of cards is */
-  const getSetWidth = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return 0;
-    return features.length * (200 + 12);
-  }, []);
-
-  /* Mobile marquee animation loop */
-  const animate = useCallback((time: number) => {
-    if (!lastTimeRef.current) lastTimeRef.current = time;
-    const delta = (time - lastTimeRef.current) / 1000;
-    lastTimeRef.current = time;
-
-    if (!isPausedRef.current) {
-      offsetRef.current -= MARQUEE_SPEED * delta;
-      const setWidth = getSetWidth();
-      if (setWidth > 0 && Math.abs(offsetRef.current) >= setWidth) {
-        offsetRef.current += setWidth;
-      }
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translateX(${offsetRef.current}px)`;
-      }
-    }
-
-    animRef.current = requestAnimationFrame(animate);
-  }, [getSetWidth]);
-
-  const pauseMarquee = useCallback(() => {
-    isPausedRef.current = true;
-    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = setTimeout(() => {
-      isPausedRef.current = false;
-      lastTimeRef.current = 0;
-    }, PAUSE_AFTER_TOUCH_MS);
-  }, []);
-
-  useEffect(() => {
-    animRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (animRef.current) cancelAnimationFrame(animRef.current);
-      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    };
-  }, [animate]);
-
-  const doubled = [...features, ...features];
-  const current = features[active];
+  const [picked, setPicked] = useState(false);
+  const [held, setHeld] = useState(false);
+  const f = features[active];
+  const touring = inView && !picked && !held;
 
   return (
     <section className="py-16 md:py-24" id="features" aria-labelledby="features-heading">
-      {/* ── Mobile: continuous marquee ── */}
-      <div className="md:hidden">
-        <div className="px-4 mb-5">
-          <p className="text-xl font-bold text-fg mb-1 text-center" aria-hidden="true">
-            The Complete Document Automation Platform
-          </p>
-          <p className="text-xs text-fg-4 text-center">
-            Extract, clean, review, store, and act — all in one pipeline
-          </p>
-        </div>
-
-        <div className="overflow-hidden" onTouchStart={pauseMarquee}>
-          <div
-            ref={trackRef}
-            className="flex gap-3 will-change-transform"
-            style={{ width: "max-content" }}
-          >
-            {doubled.map((f, i) => (
-              <MarqueeCard key={`${f.title}-${i}`} f={f} />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Desktop: feature switcher with live vignettes ── */}
-      <div className="hidden md:block max-w-[1100px] mx-auto px-4 sm:px-6">
-        <motion.div
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 id="features-heading" className="text-3xl md:text-4xl font-bold text-fg mb-2">
-            The Complete Document Automation Platform
+      <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <motion.div className="mb-7 text-center md:mb-9" {...reveal()}>
+          <h2 id="features-heading" className="mb-2 text-3xl font-bold text-fg md:text-4xl">
+            What surrounds the pipeline
           </h2>
-          <p className="text-base md:text-lg text-fg-4 max-w-[600px] mx-auto">
-            Extract, clean, review, store, and act — all in one pipeline
+          <p className="mx-auto max-w-[640px] text-base text-fg-4 md:text-lg">
+            How you build it, how you talk to it, where the data lives and who can touch it
           </p>
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-[270px_1fr] gap-6 items-stretch"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-        >
-          {/* Feature list */}
-          <div role="tablist" aria-label="Platform capabilities" className="flex flex-col justify-between gap-1">
-            {features.map((f, i) => (
+        <motion.div ref={ref} {...reveal(0.08)}>
+          <div role="tablist" aria-label="More in Tavnit Pro" className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+            {features.map((t, i) => (
               <button
-                key={f.title}
+                key={t.title}
                 role="tab"
+                type="button"
                 aria-selected={i === active}
-                onClick={() => select(i)}
-                className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#93c5fd] ${
-                  i === active ? "bg-tint/[0.07] text-fg" : "text-fg-4 hover:text-fg hover:bg-tint/[0.04]"
+                onClick={() => {
+                  setPicked(true);
+                  setActive(i);
+                }}
+                className={`press relative flex cursor-pointer items-center gap-2.5 overflow-hidden rounded-xl border px-3.5 py-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]/50 ${
+                  i === active ? "border-[#3b82f6]/45 bg-[#3b82f6]/[0.07] text-fg" : "border-tint/10 text-fg-4 hover:border-tint/25 hover:text-fg-2"
                 }`}
               >
-                <span
-                  className={`absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-full bg-gradient-to-b from-[#3b82f6] to-[#6c42f0] transition-opacity duration-200 ${
-                    i === active ? "opacity-100" : "opacity-0"
-                  }`}
-                  aria-hidden="true"
-                />
-                <f.icon
-                  size={17}
-                  className={`shrink-0 transition-colors duration-200 ${i === active ? "text-accent" : "text-fg-5 group-hover:text-fg-3"}`}
-                />
-                <span className="text-sm font-semibold">{f.title}</span>
+                <t.icon size={16} className={`shrink-0 ${i === active ? "text-accent" : "text-fg-5"}`} aria-hidden />
+                <span className="min-w-0">
+                  <span className="block truncate text-[10px] font-semibold uppercase tracking-[0.12em] text-fg-5">{t.question}</span>
+                  <span className="block truncate text-sm font-semibold">{t.title}</span>
+                </span>
+                {/* How long until the section moves on */}
+                {i === active && touring && (
+                  <motion.span
+                    key={`dwell-${active}`}
+                    className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-accent"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: DWELL, ease: "linear" }}
+                    onAnimationComplete={() => setActive((a) => (a + 1) % features.length)}
+                    aria-hidden
+                  />
+                )}
               </button>
             ))}
           </div>
 
-          {/* Vignette panel */}
-          <div className="glass-card rounded-2xl border border-[#3b82f6]/20 shadow-2xl shadow-[#3b82f6]/10 p-5 flex flex-col min-h-[440px]">
-            <div key={active} className="flex-1 min-h-0" role="tabpanel" aria-label={current.title}>
-              <current.Vignette />
+          <div
+            role="tabpanel"
+            aria-label={f.title}
+            onPointerEnter={(e) => e.pointerType === "mouse" && setHeld(true)}
+            onPointerLeave={() => setHeld(false)}
+            className="glass-card grid overflow-hidden rounded-2xl md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]"
+          >
+            <div className="h-[300px] p-3 md:h-[330px] md:pr-0" aria-hidden="true">
+              {inView && <f.Vignette key={active} />}
             </div>
-            <div className="pt-4 shrink-0">
-              <h3 className="text-base font-bold text-fg mb-1">{current.title}</h3>
-              <p className="text-sm text-fg-4 leading-relaxed">{current.desc}</p>
+            {/* All four are in the page (stacked in one cell, one showing):
+                a crawler reads every capability and follows every link. */}
+            <div className="grid">
+              {features.map((t, i) => (
+                <div
+                  key={t.title}
+                  inert={i !== active}
+                  className={`col-start-1 row-start-1 flex flex-col justify-center p-5 sm:p-7 md:p-8 ${
+                    i === active ? "story-rise" : "pointer-events-none opacity-0"
+                  }`}
+                >
+                  <p className="mb-2.5 flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-fg-4">
+                    <span className="h-px w-5 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0]" aria-hidden />
+                    {t.question}
+                  </p>
+                  <h3 className="mb-3 text-2xl font-bold text-fg">{t.title}</h3>
+                  <p className="mb-5 text-[15px] leading-relaxed text-fg-4">{t.desc}</p>
+                  <Link
+                    href={t.href}
+                    className="group inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent-2"
+                  >
+                    Read more
+                    <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         </motion.div>

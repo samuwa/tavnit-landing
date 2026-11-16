@@ -252,7 +252,7 @@ export default function DocsShell({ children }: { children: React.ReactNode }) {
                     // during render-commit.
                     onClick={() => setSidebarOpen(false)}
                     aria-current={active ? "page" : undefined}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition ${
                       active
                         ? "bg-accent/10 text-fg border-l-2 border-accent -ml-[1px] font-semibold"
                         : "text-fg-4 hover:text-fg-2 hover:bg-tint/5"

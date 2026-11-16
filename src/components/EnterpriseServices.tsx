@@ -269,7 +269,7 @@ export default function EnterpriseServices({ locale }: { locale: Locale }) {
           <p className="text-fg-4 mb-6 max-w-[520px] mx-auto leading-relaxed">{t.ctaBody}</p>
           <Link
             href={t.ctaHref}
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 transition-all"
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 press"
           >
             {t.ctaButton} <ArrowRight size={17} />
           </Link>

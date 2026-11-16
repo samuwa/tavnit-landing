@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { trackEvent } from "@/lib/analytics";
 import Link from "next/link";
 import { ArrowRight, Zap, Mail, Code2, Plug } from "lucide-react";
+import { reveal } from "@/lib/motion";
 
 export default function FinalCTA() {
   return (
@@ -14,12 +15,10 @@ export default function FinalCTA() {
 
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 text-center relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          {...reveal()}
         >
           <h2 id="cta-heading" className="text-2xl sm:text-4xl md:text-5xl font-bold text-fg mb-4 sm:mb-6 leading-tight">
-            Stop Re-Typing.<br className="sm:hidden" /> Start Automating.
+            Stop re-typing.<br className="sm:hidden" /> Start automating.
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-fg-3 mb-8 md:mb-10 max-w-[560px] mx-auto">
             Create your first extraction flow in minutes. Upload a document and
@@ -32,21 +31,21 @@ export default function FinalCTA() {
               onClick={() => trackEvent("cta_click", { cta: "get_started", location: "final_cta" })}
               className="hero-cta-primary group inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold tracking-[-0.01em] text-white"
             >
-              Get Started Free
+              Get started free
               <ArrowRight size={16} strokeWidth={2.25} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </Link>
             <Link
               href="/schedule"
               onClick={() => trackEvent("cta_click", { cta: "book_demo", location: "final_cta" })}
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-tint/10 bg-bg/60 px-6 text-[15px] font-semibold tracking-[-0.01em] text-fg-2 backdrop-blur transition-colors hover:border-tint/25 hover:text-fg"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-tint/10 bg-bg/60 px-6 text-[15px] font-semibold tracking-[-0.01em] text-fg-2 backdrop-blur press hover:border-tint/25 hover:text-fg"
             >
-              Book a Demo
+              Book a demo
             </Link>
             <Link
               href="/docs"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-tint/10 bg-bg/60 px-6 text-[15px] font-semibold tracking-[-0.01em] text-fg-2 backdrop-blur transition-colors hover:border-tint/25 hover:text-fg"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-tint/10 bg-bg/60 px-6 text-[15px] font-semibold tracking-[-0.01em] text-fg-2 backdrop-blur press hover:border-tint/25 hover:text-fg"
             >
-              View Documentation
+              View documentation
             </Link>
           </div>
 

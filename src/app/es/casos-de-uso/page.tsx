@@ -82,7 +82,7 @@ export default function SpanishUseCasesHub() {
             <Link
               key={uc.slug}
               href={esUseCasePath(uc)}
-              className="glass-card glass-card-hover rounded-xl p-5 flex flex-col transition-all"
+              className="glass-card glass-card-hover rounded-xl p-5 flex flex-col transition"
             >
               <span className="text-[11px] font-semibold text-accent-2 uppercase tracking-wider mb-2">
                 {uc.badge}
@@ -128,7 +128,7 @@ export default function SpanishUseCasesHub() {
           </p>
           <Link
             href="/es/agendar"
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 transition-all"
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 press"
           >
             Agendar una demostración <ArrowRight size={17} />
           </Link>

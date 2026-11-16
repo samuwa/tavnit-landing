@@ -13,6 +13,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import SectionEyebrow from "@/components/SectionEyebrow";
+import { reveal } from "@/lib/motion";
 
 /* Auto-tour timing */
 const ADVANCE_MS = 6000;
@@ -255,7 +256,7 @@ export default function PlatformOverview() {
 
   const description = (leaf: Leaf, isActive: boolean) => (
     <span
-      className={`hidden lg:block overflow-hidden transition-all duration-300 ${
+      className={`hidden lg:block overflow-hidden transition-[max-height,opacity,margin] duration-300 ${
         isActive ? "max-h-24 opacity-100 mt-1" : "max-h-0 opacity-0"
       }`}
     >
@@ -276,9 +277,7 @@ export default function PlatformOverview() {
         {/* ── Header ── */}
         <motion.div
           className="text-center mb-10 md:mb-14"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          {...reveal()}
         >
           <SectionEyebrow align="center">Platform tour</SectionEyebrow>
           <h2
@@ -296,10 +295,7 @@ export default function PlatformOverview() {
         {/* ── App replica ── */}
         <motion.div
           className="glass-card rounded-2xl overflow-hidden border border-[#3b82f6]/20 shadow-2xl shadow-[#3b82f6]/10"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
+          {...reveal(0.1)}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
@@ -402,7 +398,7 @@ export default function PlatformOverview() {
 
                     {/* Children: always visible as chips on mobile, accordion on desktop */}
                     <div
-                      className={`flex lg:block gap-1 lg:ml-[17px] lg:border-l lg:border-tint/10 lg:pl-2 lg:overflow-hidden lg:transition-all lg:duration-300 ${
+                      className={`flex lg:block gap-1 lg:ml-[17px] lg:border-l lg:border-tint/10 lg:pl-2 lg:overflow-hidden lg:transition-[max-height,opacity,margin] lg:duration-300 ${
                         groupActive
                           ? "lg:max-h-72 lg:opacity-100 lg:mt-0.5"
                           : "lg:max-h-0 lg:opacity-0"

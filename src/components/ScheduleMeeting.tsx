@@ -303,7 +303,7 @@ export default function ScheduleMeeting({
         <button
           type="submit"
           disabled={submitting || !name.trim() || !email.trim()}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] px-7 py-3.5 font-bold text-white shadow-lg shadow-[#3b82f6]/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#3b82f6]/30 disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] px-7 py-3.5 font-bold text-white shadow-lg shadow-[#3b82f6]/25 press hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#3b82f6]/30 disabled:pointer-events-none disabled:opacity-50"
         >
           {submitting ? (
             <Loader2 size={18} className="animate-spin" aria-hidden />

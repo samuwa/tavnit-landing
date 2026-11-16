@@ -4,6 +4,7 @@ import { trackEvent } from "@/lib/analytics";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Play } from "lucide-react";
 import HeroAnimation from "./HeroAnimation";
+import { Fit, useMedia } from "./story/shared";
 
 /**
  * The mock-up sits between "Documents to Structured Data" and "... In
@@ -27,11 +28,16 @@ import HeroAnimation from "./HeroAnimation";
 const DOCUMENTS_PROCESSED = "100,000+";
 
 export default function Hero() {
+  // On a large monitor the mock-up is drawn bigger instead of sitting at
+  // laptop size. Only where there is height for it: the hero fills one
+  // screen and the buttons must stay on it.
+  const roomy = useMedia("(min-width: 1536px) and (min-height: 860px)");
+  const vast = useMedia("(min-width: 1900px) and (min-height: 1000px)");
   return (
     <section className="relative min-h-svh flex items-center justify-center overflow-hidden pt-20 md:pt-16" id="hero" aria-labelledby="hero-heading">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center py-4 md:py-[clamp(0.5rem,1.5svh,2rem)] w-full">
+      <div className="max-w-[1200px] 2xl:max-w-[1480px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center py-4 md:py-[clamp(0.5rem,1.5svh,2rem)] w-full">
         <div className="hero-enter">
-          <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-[clamp(2rem,5svh,3rem)] lg:text-[clamp(2.25rem,5svh,3.5rem)] font-extrabold leading-tight tracking-tight text-fg">
+          <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-[clamp(2rem,5svh,3rem)] lg:text-[clamp(2.25rem,5svh,3.5rem)] 2xl:text-[clamp(2.75rem,6svh,4.75rem)] font-extrabold leading-tight tracking-tight text-fg">
             <span>Documents to <span className="gradient-text">Structured Data</span></span>
             <span className="sr-only"> — AI-Powered PDF Extraction In Seconds</span>
           </h1>
@@ -43,17 +49,26 @@ export default function Hero() {
           style={{ "--hero-delay": "0.15s" } as React.CSSProperties}
           aria-hidden="true"
         >
-          <HeroAnimation />
+          {/* The min-heights are the mock-up's height at each scale, set in
+              CSS so the space is there before the script runs: growing it
+              afterwards would shift the buttons (layout shift). */}
+          <Fit
+            width={860}
+            max={vast ? 1.5 : roomy ? 1.25 : 1}
+            className="[@media(min-width:1536px)_and_(min-height:860px)]:min-h-[382px] [@media(min-width:1900px)_and_(min-height:1000px)]:min-h-[458px]"
+          >
+            <HeroAnimation />
+          </Fit>
         </div>
 
         {/* Typing Effect: completes the headline, decorative for AT */}
-        <div className="text-3xl sm:text-4xl md:text-[clamp(2rem,5svh,3rem)] lg:text-[clamp(2.25rem,5svh,3.5rem)] font-extrabold leading-tight tracking-tight mb-6 md:mb-[clamp(0.75rem,2svh,1.5rem)] text-fg" aria-hidden="true">
+        <div className="text-3xl sm:text-4xl md:text-[clamp(2rem,5svh,3rem)] lg:text-[clamp(2.25rem,5svh,3.5rem)] 2xl:text-[clamp(2.75rem,6svh,4.75rem)] font-extrabold leading-tight tracking-tight mb-6 md:mb-[clamp(0.75rem,2svh,1.5rem)] text-fg" aria-hidden="true">
           <span className="typing-text">... In Seconds</span>
         </div>
 
         {/* Subtitle */}
         <p
-          className="hero-enter text-base sm:text-lg text-fg-4 max-w-[560px] mb-8 md:mb-[clamp(1rem,2.5svh,2rem)]"
+          className="hero-enter text-base sm:text-lg 2xl:text-2xl text-fg-4 max-w-[560px] 2xl:max-w-[760px] mb-8 md:mb-[clamp(1rem,2.5svh,2rem)]"
           style={{ "--hero-delay": "0.3s" } as React.CSSProperties}
         >
           Extract data from any document, review it with your team, and let AI act on it.
@@ -68,9 +83,9 @@ export default function Hero() {
             <Link
               href="https://app.tavnit.io"
               onClick={() => trackEvent("cta_click", { cta: "start_free_trial", location: "hero" })}
-              className="hero-cta-primary group inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold tracking-[-0.01em] text-white"
+              className="hero-cta-primary group inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold tracking-[-0.01em] text-white 2xl:h-14 2xl:px-8 2xl:text-[17px]"
             >
-              Start Free Trial
+              Get started free
               <ArrowRight size={16} strokeWidth={2.25} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </Link>
             <Link
@@ -78,17 +93,17 @@ export default function Hero() {
               onClick={() => trackEvent("cta_click", { cta: "live_demo", location: "hero" })}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex h-12 items-center justify-center gap-3 rounded-full border border-tint/10 bg-bg/60 pl-1.5 pr-6 text-[15px] font-semibold tracking-[-0.01em] text-fg-2 backdrop-blur transition-colors hover:border-tint/25 hover:text-fg"
+              className="group inline-flex h-12 items-center justify-center gap-3 rounded-full border border-tint/10 bg-bg/60 pl-1.5 pr-6 text-[15px] font-semibold tracking-[-0.01em] text-fg-2 backdrop-blur press 2xl:h-14 2xl:pr-8 2xl:text-[17px] hover:border-tint/25 hover:text-fg"
             >
               <span className="grid h-9 w-9 place-items-center rounded-full bg-tint/[0.06] ring-1 ring-inset ring-tint/10 transition-colors group-hover:bg-tint/10">
                 <Play size={13} className="translate-x-px fill-current" />
               </span>
-              Try the Live Demo
+              Try the live demo
             </Link>
           </div>
 
           {/* Proof */}
-          <p className="flex items-center gap-1.5 text-xs sm:text-sm text-fg-5">
+          <p className="flex items-center gap-1.5 text-xs sm:text-sm 2xl:text-base text-fg-5">
             <CheckCircle2 size={14} className="text-ok/70" aria-hidden />
             {DOCUMENTS_PROCESSED} documents processed
             <span aria-hidden="true">·</span>

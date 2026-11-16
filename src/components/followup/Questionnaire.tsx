@@ -373,7 +373,7 @@ function LangToggle({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => voi
           type="button"
           onClick={() => onChange(code)}
           aria-pressed={lang === code}
-          className={`px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
+          className={`px-3 py-1.5 rounded-full transition duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
             lang === code
               ? "bg-[#3b82f6]/20 text-fg shadow-[0_0_12px_rgba(59,130,246,0.2)]"
               : "text-fg-5 hover:text-fg-3"
@@ -470,7 +470,7 @@ function ChoiceInput({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.06 * i, duration: 0.25 }}
             onClick={() => onCommit(opt.value)}
-            className="glass-card glass-card-hover group flex items-center gap-4 rounded-2xl px-6 py-5 text-left transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] hover:-translate-y-px"
+            className="glass-card glass-card-hover group flex items-center gap-4 rounded-2xl px-6 py-5 text-left transition duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] hover:-translate-y-px"
           >
             {Icon && (
               <span className="shrink-0 w-11 h-11 rounded-xl bg-tint/5 border border-tint/10 flex items-center justify-center text-fg-4 group-hover:text-accent group-hover:border-[#3b82f6]/40 group-hover:bg-[#3b82f6]/10 transition-colors">
@@ -491,7 +491,7 @@ function ChoiceInput({
               </kbd>
               <ChevronRight
                 size={18}
-                className="absolute inset-0 m-auto text-accent opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
+                className="absolute inset-0 m-auto text-accent opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition duration-200"
               />
             </span>
           </motion.button>
@@ -536,7 +536,7 @@ function ChipsInput({
               transition={{ delay: 0.04 * i, duration: 0.2 }}
               onClick={() => toggle(opt.value)}
               aria-pressed={active}
-              className={`px-5 py-3 rounded-full border text-sm font-medium transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
+              className={`px-5 py-3 rounded-full border text-sm font-medium transition duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
                 active
                   ? "border-[#3b82f6]/60 bg-[#3b82f6]/15 text-fg shadow-[0_0_16px_rgba(59,130,246,0.25)]"
                   : "border-tint/10 bg-tint/[0.04] text-fg-3 hover:border-tint/25 hover:bg-tint/[0.07]"
@@ -706,7 +706,7 @@ function UploadInput({
           setDragging(false);
           upload(e.dataTransfer.files);
         }}
-        className={`w-full rounded-2xl border-2 border-dashed px-6 py-10 text-center transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
+        className={`w-full rounded-2xl border-2 border-dashed px-6 py-10 text-center transition duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6] ${
           dragging
             ? "border-[#3b82f6] bg-[#3b82f6]/10"
             : "border-tint/15 bg-tint/[0.03] hover:border-[#3b82f6]/50 hover:bg-tint/[0.05]"
@@ -821,7 +821,7 @@ function DoneScreen({
             <button
               type="button"
               onClick={() => setShowScheduler(true)}
-              className="inline-flex items-center gap-2 text-fg-3 hover:text-fg border border-tint/15 hover:border-tint/30 rounded-xl px-6 py-3.5 font-medium transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
+              className="inline-flex items-center gap-2 text-fg-3 hover:text-fg border border-tint/15 hover:border-tint/30 rounded-xl px-6 py-3.5 font-medium press duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3b82f6]"
             >
               <CalendarCheck size={18} />
               {t.doneColdCta}
@@ -829,7 +829,7 @@ function DoneScreen({
           ) : (
             <a
               href={mailtoHref}
-              className="inline-flex items-center gap-2 text-fg-3 hover:text-fg border border-tint/15 hover:border-tint/30 rounded-xl px-6 py-3.5 font-medium transition-all duration-200"
+              className="inline-flex items-center gap-2 text-fg-3 hover:text-fg border border-tint/15 hover:border-tint/30 rounded-xl px-6 py-3.5 font-medium press duration-200"
             >
               <CalendarCheck size={18} />
               {t.doneColdCta}
@@ -847,7 +847,7 @@ function DoneScreen({
               <button
                 type="button"
                 onClick={() => setShowScheduler(true)}
-                className="hero-cta-primary inline-flex items-center gap-2.5 rounded-xl px-7 py-4 font-heading font-bold text-white bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30 transition-all duration-300 hover:-translate-y-0.5 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3b82f6]"
+                className="hero-cta-primary inline-flex items-center gap-2.5 rounded-xl px-7 py-4 font-heading font-bold text-white bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30 press duration-300 hover:-translate-y-0.5 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3b82f6]"
               >
                 <CalendarCheck size={19} />
                 {t.doneWarmCta}
@@ -855,7 +855,7 @@ function DoneScreen({
             ) : (
               <a
                 href={mailtoHref}
-                className="hero-cta-primary inline-flex items-center gap-2.5 rounded-xl px-7 py-4 font-heading font-bold text-white bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30 transition-all duration-300 hover:-translate-y-0.5"
+                className="hero-cta-primary inline-flex items-center gap-2.5 rounded-xl px-7 py-4 font-heading font-bold text-white bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] shadow-lg shadow-[#3b82f6]/25 hover:shadow-xl hover:shadow-[#3b82f6]/30 press duration-300 hover:-translate-y-0.5"
               >
                 <CalendarCheck size={19} />
                 {t.doneWarmCta}
@@ -870,7 +870,7 @@ function DoneScreen({
         href={hookHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="glass-card glass-card-hover group mt-10 flex items-center gap-4 rounded-2xl px-6 py-5 max-w-xl transition-all duration-200 hover:-translate-y-px"
+        className="glass-card glass-card-hover group mt-10 flex items-center gap-4 rounded-2xl px-6 py-5 max-w-xl transition duration-200 hover:-translate-y-px"
       >
         <span className="shrink-0 w-11 h-11 rounded-xl bg-tint/5 border border-tint/10 flex items-center justify-center text-fg-4 group-hover:text-accent group-hover:border-[#3b82f6]/40 transition-colors">
           <Compass size={20} aria-hidden />
@@ -884,7 +884,7 @@ function DoneScreen({
         <ChevronRight
           size={18}
           aria-hidden
-          className="ml-auto shrink-0 text-fg-6 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-accent transition-all duration-200"
+          className="ml-auto shrink-0 text-fg-6 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-accent transition duration-200"
         />
       </a>
 
@@ -1107,7 +1107,7 @@ function PrimaryButton({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-heading font-bold text-white bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] shadow-lg shadow-[#3b82f6]/25 transition-all duration-300 enabled:hover:-translate-y-0.5 enabled:hover:shadow-xl enabled:hover:shadow-[#3b82f6]/30 enabled:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3b82f6]"
+      className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-heading font-bold text-white bg-gradient-to-br from-[#3b82f6] to-[#6c42f0] shadow-lg shadow-[#3b82f6]/25 press duration-300 enabled:hover:-translate-y-0.5 enabled:hover:shadow-xl enabled:hover:shadow-[#3b82f6]/30 enabled:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3b82f6]"
     >
       {children}
     </button>

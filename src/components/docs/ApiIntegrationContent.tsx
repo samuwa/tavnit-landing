@@ -121,7 +121,7 @@ function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void 
         <button
           key={l}
           onClick={() => setLang(l)}
-          className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+          className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${
             lang === l
               ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
               : "text-fg-4 hover:text-fg hover:bg-tint/5"
@@ -163,7 +163,7 @@ export default function ApiIntegrationContent() {
           role="tab"
           aria-selected={apiTab === "code"}
           onClick={() => setChosenTab("code")}
-          className={`px-5 py-2 rounded-md text-sm font-medium transition-all ${
+          className={`px-5 py-2 rounded-md text-sm font-medium transition ${
             apiTab === "code"
               ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
               : "text-fg-4 hover:text-fg hover:bg-tint/5"
@@ -175,7 +175,7 @@ export default function ApiIntegrationContent() {
           role="tab"
           aria-selected={apiTab === "no-code"}
           onClick={() => setChosenTab("no-code")}
-          className={`px-5 py-2 rounded-md text-sm font-medium transition-all ${
+          className={`px-5 py-2 rounded-md text-sm font-medium transition ${
             apiTab === "no-code"
               ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-lg"
               : "text-fg-4 hover:text-fg hover:bg-tint/5"
