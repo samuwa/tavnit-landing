@@ -80,10 +80,10 @@ export default function Hero() {
 
         {/* Subtitle */}
         <p
-          className="hero-enter text-base sm:text-lg 2xl:text-2xl text-fg-4 max-w-[560px] 2xl:max-w-[760px] mb-8 md:mb-[clamp(1rem,2.5svh,2rem)]"
+          className="hero-enter text-balance text-base sm:text-lg 2xl:text-2xl text-fg-4 max-w-[620px] 2xl:max-w-[820px] mb-8 md:mb-[clamp(1rem,2.5svh,2rem)]"
           style={{ "--hero-delay": "0.3s" } as React.CSSProperties}
         >
-          Extract data from any document, review it with your team, and let AI act on it.
+          Extract data from any document, review it with your team, and let AI act on it. Full document automation, all in one place.
         </p>
 
         {/* CTAs */}
