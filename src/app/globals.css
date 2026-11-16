@@ -275,19 +275,20 @@ h1, h2, h3, h4, h5, h6 {
   background-clip: text;
 }
 
-@keyframes typing {
-  from { width: 0; }
-  to { width: 7em; }
+/* The hero's two serif phrases, "Structured Data" and "in seconds": the
+   brand's serif italic (see display-font). The headline has two voices and
+   no more: the sans says what goes in, the serif what comes out. */
+.hero-serif {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.08em;
+  letter-spacing: -0.015em;
+  padding-right: 0.08em;
+  line-height: 1;
 }
 
-.typing-text {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 0;
-  vertical-align: top;
-  animation: typing 1.2s steps(15) 1.8s forwards;
-}
+
 
 /* ---- Product story (PipelineStory): the few motions that are plain CSS ---- */
 

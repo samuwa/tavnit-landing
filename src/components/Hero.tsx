@@ -4,6 +4,8 @@ import { trackEvent } from "@/lib/analytics";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Play } from "lucide-react";
 import HeroAnimation from "./HeroAnimation";
+import TypedPhrase from "./TypedPhrase";
+import { display } from "@/lib/display-font";
 import { Fit, useMedia } from "./story/shared";
 
 /**
@@ -34,11 +36,19 @@ export default function Hero() {
   const roomy = useMedia("(min-width: 1536px) and (min-height: 860px)");
   const vast = useMedia("(min-width: 1900px) and (min-height: 1000px)");
   return (
-    <section className="relative min-h-svh flex items-center justify-center overflow-hidden pt-20 md:pt-16" id="hero" aria-labelledby="hero-heading">
+    <section className={`relative min-h-svh flex items-center justify-center overflow-hidden pt-20 md:pt-16 ${display.variable}`} id="hero" aria-labelledby="hero-heading">
       <div className="max-w-[1200px] 2xl:max-w-[1480px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center py-4 md:py-[clamp(0.5rem,1.5svh,2rem)] w-full">
         <div className="hero-enter">
           <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-[clamp(2rem,5svh,3rem)] lg:text-[clamp(2.25rem,5svh,3.5rem)] 2xl:text-[clamp(2.75rem,6svh,4.75rem)] font-extrabold leading-tight tracking-tight text-fg">
-            <span>Documents to <span className="gradient-text">Structured Data</span></span>
+            <span>
+              Documents to{" "}
+              {/* The brand's serif italic (as in the Lite and Pro marks), a
+                  touch larger to sit level with the sans: a serif italic
+                  reads smaller at the same size. ml: the space alone is a
+                  tight sans space and the italic leans into it. pr: the
+                  last letter's overhang would be cut by the gradient clip. */}
+              <span className="gradient-text hero-serif ml-[0.12em]">Structured Data</span>
+            </span>
             <span className="sr-only"> — AI-Powered PDF Extraction In Seconds</span>
           </h1>
         </div>
@@ -61,9 +71,11 @@ export default function Hero() {
           </Fit>
         </div>
 
-        {/* Typing Effect: completes the headline, decorative for AT */}
-        <div className="text-3xl sm:text-4xl md:text-[clamp(2rem,5svh,3rem)] lg:text-[clamp(2.25rem,5svh,3.5rem)] 2xl:text-[clamp(2.75rem,6svh,4.75rem)] font-extrabold leading-tight tracking-tight mb-6 md:mb-[clamp(0.75rem,2svh,1.5rem)] text-fg" aria-hidden="true">
-          <span className="typing-text">... In Seconds</span>
+        {/* Typed in after the mock-up: ends the headline in the same serif
+            as "Structured Data", in plain ink (one accent colour, two
+            typefaces). Decorative for assistive tech: the H1 says it. */}
+        <div className="text-3xl sm:text-4xl md:text-[clamp(2rem,5svh,3rem)] lg:text-[clamp(2.25rem,5svh,3.5rem)] 2xl:text-[clamp(2.75rem,6svh,4.75rem)] leading-tight mb-6 md:mb-[clamp(0.75rem,2svh,1.5rem)] text-fg-2" aria-hidden="true">
+          <TypedPhrase text="… in seconds" className="hero-serif" />
         </div>
 
         {/* Subtitle */}

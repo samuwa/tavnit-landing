@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Fraunces } from "next/font/google";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { animate, motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, LogIn, MousePointerClick, Play, RotateCcw, Sparkles, Split } from "lucide-react";
@@ -14,19 +13,9 @@ import { RULES } from "./story/Record";
 import ReviewScene from "./story/ReviewScene";
 import ActScene, { OUTPUTS, SECONDS_PER_OUTPUT } from "./story/ActScene";
 import TavnitPro from "./story/TavnitPro";
+import { display } from "@/lib/display-font";
 import FinishedPipeline, { type PipeNode } from "./story/FinishedPipeline";
 import { DocToken, Fit, type SceneProps, type SourceId, type Story } from "./story/shared";
-
-/** The display serif of the Tavnit Pro mark (the same face as "Lite"). */
-const display = Fraunces({
-  subsets: ["latin"],
-  weight: ["500"],
-  style: ["normal", "italic"],
-  variable: "--font-display",
-  display: "swap",
-  // Three letters, far below the fold: not worth a preload next to the LCP.
-  preload: false,
-});
 
 /**
  * The product story, told by following one invoice along its whole path:
