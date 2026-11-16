@@ -72,7 +72,7 @@ export default function IntegrationsPage() {
             <Link
               key={item.label}
               href={item.href}
-              className="glass-card glass-card-hover rounded-xl p-5 flex flex-col transition-all"
+              className="glass-card glass-card-hover rounded-xl p-5 flex flex-col transition"
             >
               <div className="flex items-start justify-between gap-3 mb-2">
                 <h2 className="text-base font-semibold text-fg">{item.label}</h2>
@@ -121,7 +121,7 @@ export default function IntegrationsPage() {
           </p>
           <Link
             href={APP_URL}
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 transition-all"
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 press"
           >
             Start free <ArrowRight size={17} />
           </Link>

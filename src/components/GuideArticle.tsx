@@ -167,7 +167,7 @@ export default function GuideArticle({
               <Link
                 key={o.href}
                 href={o.href}
-                className="glass-card glass-card-hover rounded-xl p-4 transition-all"
+                className="glass-card glass-card-hover rounded-xl p-4 transition"
               >
                 <span className="text-sm font-semibold text-fg">{o.h1}</span>
                 <span className="block text-xs text-fg-5 mt-1 leading-relaxed">
@@ -202,7 +202,7 @@ export default function GuideArticle({
         <p className="text-fg-4 mb-6 max-w-[520px] mx-auto leading-relaxed">{t.finalBody}</p>
         <Link
           href={t.finalHref}
-          className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 transition-all"
+          className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 press"
         >
           {t.finalCta} <ArrowRight size={17} />
         </Link>

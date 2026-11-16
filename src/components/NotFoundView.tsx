@@ -77,7 +77,7 @@ export default function NotFoundView({ locale, stripeOn }: { locale: Locale; str
               <li key={href}>
                 <Link
                   href={href}
-                  className="glass-card glass-card-hover group flex items-start gap-4 rounded-xl p-5 transition-all"
+                  className="glass-card glass-card-hover group flex items-start gap-4 rounded-xl p-5 transition"
                 >
                   <span className="mt-0.5 inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[#3b82f6]/15 text-accent-2">
                     <Icon size={18} />

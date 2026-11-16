@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import type { Faq } from "@/lib/faqs";
+import { reveal } from "@/lib/motion";
 
 function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
   const [open, setOpen] = useState(false);
@@ -12,10 +13,7 @@ function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
   return (
     <motion.div
       className="glass-card rounded-xl overflow-hidden"
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.04 }}
+      {...reveal(index * 0.04)}
     >
       <button
         onClick={() => setOpen((v) => !v)}
@@ -26,14 +24,14 @@ function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
         <span className="text-sm md:text-base font-semibold text-fg">{q}</span>
         <ChevronDown
           size={18}
-          className={`flex-shrink-0 text-accent transition-transform duration-300 ${
+          className={`flex-shrink-0 text-accent transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
             open ? "rotate-180" : ""
           }`}
         />
       </button>
       <div
         id={panelId}
-        className={`grid transition-all duration-300 ease-in-out ${
+        className={`grid transition-[grid-template-rows,opacity] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
           open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >
@@ -51,12 +49,10 @@ export default function FAQ({ faqs }: { faqs: Faq[] }) {
       <div className="max-w-[800px] mx-auto px-4 sm:px-6">
         <motion.div
           className="text-center mb-8 md:mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          {...reveal()}
         >
           <h2 id="faq-heading" className="text-3xl md:text-4xl font-bold text-fg mb-3">
-            Frequently Asked Questions
+            Frequently asked questions
           </h2>
           <p className="text-base md:text-lg text-fg-4">
             Everything you need to know before your first flow

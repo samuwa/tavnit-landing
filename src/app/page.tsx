@@ -1,16 +1,10 @@
 import SquaresBackground from "@/components/SquaresBackground";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import Problem from "@/components/Problem";
-import HowItWorks from "@/components/HowItWorks";
-import LiveDemo from "@/components/LiveDemo";
+import PipelineStory from "@/components/PipelineStory";
 import Features from "@/components/Features";
-import ExtractionShowcase from "@/components/ExtractionShowcase";
-import AgentsShowcase from "@/components/AgentsShowcase";
-import HumanInTheLoop from "@/components/HumanInTheLoop";
 import PlatformOverview from "@/components/PlatformOverview";
 import UseCases from "@/components/UseCases";
-import Integrations from "@/components/Integrations";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
@@ -38,17 +32,16 @@ export default async function Home() {
 
       <Header showPricing={stripeOn} />
       <main role="main">
+        {/* One question per section, in the order a visitor asks them:
+            what is it, how does it work, is it real, what else is there,
+            is it for me. The page used to answer "how does it work" five
+            times (a feature grid, an integrations diagram, a demo
+            screenshot and four use-case mock-ups, on top of the story). */}
         <Hero />
-        <Problem />
-        <HowItWorks />
-        <LiveDemo />
-        <Features />
-        <ExtractionShowcase />
-        <HumanInTheLoop />
-        <AgentsShowcase />
+        <PipelineStory />
         <PlatformOverview />
+        <Features />
         <UseCases />
-        <Integrations />
         {stripeOn && <Pricing />}
         <FAQ faqs={faqs} />
         <FinalCTA />

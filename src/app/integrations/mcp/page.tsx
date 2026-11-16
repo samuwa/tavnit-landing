@@ -150,13 +150,13 @@ export default async function McpIntegrationPage() {
         <div className="flex flex-wrap gap-3 mb-16">
           <Link
             href={APP_URL}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20 transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20 press"
           >
             Start free <ArrowRight size={17} />
           </Link>
           <Link
             href="/docs/mcp-connector"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#3b82f6]/50 text-accent font-semibold hover:bg-[#3b82f6] hover:text-white transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#3b82f6]/50 text-accent font-semibold hover:bg-[#3b82f6] hover:text-white press"
           >
             Setup guide
           </Link>
@@ -368,13 +368,13 @@ export default async function McpIntegrationPage() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Link
               href={APP_URL}
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 press"
             >
               Start free <ArrowRight size={17} />
             </Link>
             <Link
               href={stripeOn ? "/pricing" : "/schedule"}
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg press"
             >
               {stripeOn ? "See pricing" : "Book a demo"}
             </Link>

@@ -7,7 +7,7 @@ import type { Locale } from "@/lib/locale";
 /**
  * Shell for standalone marketing routes (/pricing, /privacy, /terms, /es/*).
  *
- * The homepage sections are scroll-snap targets driven by `#hero`, `#problem`
+ * The homepage sections are styled through `#hero`, `#how-it-works`
  * and friends in globals.css. Those IDs don't exist here, so these pages scroll
  * normally while keeping the same background, header and footer.
  *

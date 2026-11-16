@@ -84,7 +84,7 @@ export default function SpanishGuidesHub() {
             <Link
               key={g.slug}
               href={esGuidePath(g)}
-              className="glass-card glass-card-hover rounded-2xl p-6 block transition-all"
+              className="glass-card glass-card-hover rounded-2xl p-6 block transition"
             >
               <h2 className="text-xl font-bold text-fg mb-2">{g.h1}</h2>
               <p className="text-sm text-fg-4 leading-relaxed mb-3">{g.description}</p>

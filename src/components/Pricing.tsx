@@ -5,6 +5,7 @@ import { Check } from "lucide-react";
 import Link from "next/link";
 
 import { EXTRA_CREDIT_MINIMUM, EXTRA_CREDIT_USD, INCLUDED_FEATURES, PRICING } from "@/lib/site";
+import { reveal } from "@/lib/motion";
 
 /** Presentation shape derived from the shared PRICING source of truth. */
 const plans = PRICING.map((tier) => ({
@@ -27,11 +28,9 @@ export default function Pricing() {
       <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6">
         <motion.div
           className="text-center mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          {...reveal()}
         >
-          <h2 id="pricing-heading" className="text-3xl md:text-4xl font-bold text-fg mb-2">Simple, Transparent Pricing</h2>
+          <h2 id="pricing-heading" className="text-3xl md:text-4xl font-bold text-fg mb-2">Simple, transparent pricing</h2>
           <p className="text-lg text-fg-4">Monthly plans with flexible credits</p>
         </motion.div>
 
@@ -39,15 +38,12 @@ export default function Pricing() {
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              className={`relative py-5 px-4 sm:py-8 sm:px-6 rounded-2xl flex flex-col hover:-translate-y-2 transition-all duration-300 ${
+              className={`relative py-5 px-4 sm:py-8 sm:px-6 rounded-2xl flex flex-col hover:-translate-y-2 transition duration-300 ${
                 plan.featured
                   ? "glass-card border-[#3b82f6]/50 shadow-xl shadow-[#3b82f6]/10 lg:scale-105"
                   : "glass-card glass-card-hover"
               }`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              {...reveal(i * 0.06)}
             >
               {plan.featured && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 sm:px-4 bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white text-[9px] sm:text-xs font-bold uppercase tracking-wider rounded-full shadow-md whitespace-nowrap">
@@ -74,7 +70,7 @@ export default function Pricing() {
               </div>
               <Link
                 href="https://app.tavnit.io"
-                className={`w-full py-2.5 sm:py-3 rounded-lg text-center text-sm sm:text-base font-semibold transition-all ${
+                className={`w-full py-2.5 sm:py-3 rounded-lg text-center text-sm sm:text-base font-semibold press ${
                   plan.featured
                     ? "bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20"
                     : "border border-[#3b82f6]/50 text-accent hover:bg-[#3b82f6] hover:text-white hover:-translate-y-0.5"
@@ -93,9 +89,7 @@ export default function Pricing() {
         {/* All Plans Include */}
         <motion.div
           className="max-w-[900px] mx-auto p-5 sm:p-8 mb-8 sm:mb-0 rounded-2xl glass-card"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          {...reveal()}
         >
           <h4 className="text-lg sm:text-xl font-bold text-center text-fg mb-5 sm:mb-6">Everything Included in All Plans:</h4>
           <ul className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">

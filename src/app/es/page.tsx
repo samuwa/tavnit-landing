@@ -155,13 +155,13 @@ export default function SpanishLandingPage() {
         <div className="flex flex-wrap gap-3 mb-20">
           <Link
             href="/es/agendar"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20 transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#3b82f6]/20 press"
           >
             Agendar una demostración <ArrowRight size={17} />
           </Link>
           <Link
             href={APP_URL}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg press"
           >
             Probar gratis
           </Link>
@@ -207,7 +207,7 @@ export default function SpanishLandingPage() {
               <Link
                 key={uc.slug}
                 href={esUseCasePath(uc)}
-                className="glass-card glass-card-hover rounded-xl p-5 transition-all"
+                className="glass-card glass-card-hover rounded-xl p-5 transition"
               >
                 <span className="block text-base font-semibold text-fg mb-1.5">{uc.label}</span>
                 <span className="block text-sm text-fg-4 leading-relaxed">{uc.summary}</span>
@@ -264,13 +264,13 @@ export default function SpanishLandingPage() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Link
               href="/es/agendar"
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-r from-[#3b82f6] to-[#6c42f0] text-white font-semibold shadow-md hover:-translate-y-0.5 press"
             >
               Agendar una demostración <ArrowRight size={17} />
             </Link>
             <Link
               href={APP_URL}
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-lg border border-tint/15 text-fg-3 font-semibold hover:bg-tint/5 hover:text-fg press"
             >
               Probar gratis
             </Link>

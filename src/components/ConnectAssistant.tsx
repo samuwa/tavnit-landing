@@ -126,6 +126,16 @@ export default function ConnectAssistant() {
   const rootRef = useRef<HTMLDivElement>(null);
   const expanded = open || hover;
 
+  // The label only introduces the coins on the first screen. Further down it
+  // sat on top of section copy, so past the hero the coins stand alone.
+  const [atTop, setAtTop] = useState(true);
+  useEffect(() => {
+    const onScroll = () => setAtTop(window.scrollY < window.innerHeight * 0.6);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   // Cookie banner spans the bottom edge on phones; stay out of its way.
   const bannerOpen = useSyncExternalStore(
     bannerStore.subscribe,
@@ -263,7 +273,11 @@ export default function ConnectAssistant() {
                 <Coin id="chatgpt" className="absolute bottom-3 left-5 rotate-6" />
                 <Coin id="claude" className="absolute bottom-0 left-0 -rotate-6" />
               </span>
-              <span className="mb-1 hidden rounded-full border border-tint/10 bg-panel/90 px-3 py-1.5 text-xs font-medium text-fg-3 shadow-(--shadow-card) backdrop-blur-md transition-colors group-hover:text-fg group-focus-visible:ring-2 group-focus-visible:ring-[#3b82f6]/50 sm:block">
+              <span
+                className={`mb-1 hidden rounded-full border border-tint/10 bg-panel/90 px-3 py-1.5 text-xs font-medium text-fg-3 shadow-(--shadow-card) backdrop-blur-md transition-[opacity,color] duration-200 group-hover:text-fg group-focus-visible:ring-2 group-focus-visible:ring-[#3b82f6]/50 sm:block ${
+                  atTop ? "opacity-100" : "pointer-events-none opacity-0"
+                }`}
+              >
                 {t.chip}
               </span>
             </motion.button>
