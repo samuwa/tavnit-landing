@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionId } from "@/lib/lite/session";
 import { recordDownload } from "@/lib/lite/notify";
+import { attributionFromRequest } from "@/lib/attribution";
 import { buildXlsx } from "@/lib/lite/excel";
 import { compareState } from "@/lib/lite/compare-server";
 import { LITE_TOOLS, isLiteToolId } from "@/lib/lite/tools";
@@ -20,7 +21,7 @@ function copyFor(tool: string, locale: "es" | "en") {
   return TOOL_COPY[tool][locale].compare ?? null;
 }
 
-export async function GET(_request: Request, ctx: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
   if (!ID_RE.test(id)) return NextResponse.json({ error: "not_found" }, { status: 404 });
   const sessionId = await getSessionId();
@@ -46,7 +47,7 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
   const sourceName = state.result.kind === "po" ? state.result.docs.map((d) => d.file).join(" vs ") : state.result.suppliers.map((d) => d.file).join(" + ");
   const xlsx = buildXlsx({ columns, rows, locale, sourceName, toolPath: LITE_TOOLS[state.owned.tool].paths[locale] });
 
-  await recordDownload(id, user, { tool: state.owned.tool, locale: state.owned.locale, filename: state.owned.filename });
+  await recordDownload(id, user, { tool: state.owned.tool, locale: state.owned.locale, filename: state.owned.filename }, attributionFromRequest(request));
 
   const base = (state.result.kind === "po" ? "po-check" : "quotes").slice(0, 60);
   const filename = `tavnit-${base}.xlsx`;

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionId } from "@/lib/lite/session";
 import { getRunForSession } from "@/lib/lite/store";
 import { recordDownload } from "@/lib/lite/notify";
+import { attributionFromRequest } from "@/lib/attribution";
 import { readSweep } from "@/lib/lite/product";
 import { buildCsv, isCleanMeta, mergeSweep } from "@/lib/lite/clean-server";
 import { buildXlsx } from "@/lib/lite/excel";
@@ -55,7 +56,7 @@ export async function GET(request: Request, ctx: { params: Promise<{ id: string 
         toolPath,
       });
 
-  await recordDownload(id, user, { tool: owned.tool, locale: owned.locale, filename: owned.filename });
+  await recordDownload(id, user, { tool: owned.tool, locale: owned.locale, filename: owned.filename }, attributionFromRequest(request));
 
   const stem = sourceName.replace(/\.[^.]*$/, "").replace(/[^\p{L}\p{N} ._-]/gu, "").trim() || "file";
   const filename = `tavnit-${stem}.${csv ? "csv" : "xlsx"}`.slice(0, 120);

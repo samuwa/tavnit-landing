@@ -319,6 +319,28 @@ export async function updateRun(
   }
 }
 
+/**
+ * Stamps the ad click a lead came from on its run (columns from the
+ * lite_runs_attribution migration). Its own request, separate from the
+ * download stamp in updateRun: if the columns are missing in an environment,
+ * only this write fails and the lead itself is still recorded.
+ */
+export async function setRunAttribution(runId: string, attribution: Record<string, string>): Promise<void> {
+  const h = headers();
+  const b = base();
+  if (!h || !b || Object.keys(attribution).length === 0) return;
+  try {
+    await fetch(`${b}/rest/v1/lite_runs?run_id=eq.${encodeURIComponent(runId)}`, {
+      method: "PATCH",
+      headers: { ...h, Prefer: "return=minimal" },
+      body: JSON.stringify(attribution),
+      cache: "no-store",
+    });
+  } catch {
+    // Best effort: the lead simply stays without attribution.
+  }
+}
+
 /* ---------- intents: what a visitor tried, for the product to pick up ---------- */
 
 export type IntentKind = "used" | "cta" | "download";

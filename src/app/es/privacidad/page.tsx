@@ -293,10 +293,11 @@ export default function SpanishPrivacyPage() {
             identificador de clic que Google añade al enlace (<code>gclid</code>,{" "}
             <code>gbraid</code> o <code>wbraid</code>) y las etiquetas de campaña se guardan en
             tu navegador solo durante esa visita (almacenamiento de sesión, se borra al cerrar la
-            pestaña; sin cookies). Si después pides una demostración, se guardan con tu solicitud
-            para que podamos indicarle a Google Ads qué anuncios llevaron a reuniones. Nuestra
-            cuenta de Google Ads está vinculada a Google Analytics solo para contar esas
-            solicitudes. No usamos cookies de publicidad, remarketing ni publicidad personalizada
+            pestaña; sin cookies). Si después pides una demostración, o inicias sesión para
+            descargar un resultado de una de nuestras herramientas gratuitas, se guardan con esa
+            solicitud o descarga para que podamos indicarle a Google Ads qué anuncios llevaron a
+            reuniones y registros. Nuestra cuenta de Google Ads está vinculada a Google Analytics
+            solo para contar esas solicitudes y descargas. No usamos cookies de publicidad, remarketing ni publicidad personalizada
             en tavnit.io.
           </p>
           <p>

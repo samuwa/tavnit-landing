@@ -1,6 +1,7 @@
 "use client";
 
 import { trackEvent } from "@/lib/analytics";
+import { attributionHeaders } from "@/lib/attribution";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Download, GitCompareArrows, Loader2, RotateCcw, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
@@ -296,7 +297,7 @@ export default function LiteCompare({
         phase.matchId === SAMPLE
           ? `/api/lite/sample/${toolId}/download?locale=${locale}`
           : `/api/lite/compare/${encodeURIComponent(phase.matchId)}/download`,
-        { cache: "no-store" },
+        { cache: "no-store", headers: attributionHeaders() },
       );
       const ok = await saveResponse(res, "tavnit-comparison.xlsx");
       if (ok) setDownloadedName(ok);

@@ -272,9 +272,10 @@ export default function PrivacyPage() {
             Google adds to the link (<code>gclid</code>, <code>gbraid</code> or{" "}
             <code>wbraid</code>) and the campaign tags in it are kept in your browser for that
             visit only (session storage, deleted when you close the tab; no cookie). If you
-            then request a demo, they are stored with your request so we can tell Google Ads
-            which ads led to meetings. Our Google Ads account is linked to Google Analytics
-            only to count those requests. We do not use advertising cookies, remarketing or
+            then request a demo, or sign in to download a result from one of our free tools,
+            they are stored with that request or download so we can tell Google Ads which
+            ads led to meetings and sign-ups. Our Google Ads account is linked to Google
+            Analytics only to count those requests and downloads. We do not use advertising cookies, remarketing or
             personalised advertising on tavnit.io.
           </p>
           <p>

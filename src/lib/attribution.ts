@@ -1,5 +1,5 @@
 /**
- * Ad-click attribution for the demo form, without advertising cookies.
+ * Ad-click attribution for leads, without advertising cookies.
  *
  * The cookie banner promises no advertising cookies, so Google Ads cannot
  * rely on its own `_gcl_*` cookies here. Instead, when a visitor lands from
@@ -77,4 +77,30 @@ export function sanitizeAttribution(input: unknown): Attribution {
     out[k] = s;
   }
   return out;
+}
+
+/* ---------- free tools: the download request carries it in a header ---------- */
+
+export const ATTRIBUTION_HEADER = "x-tavnit-attribution";
+
+/**
+ * Browser side: headers for a free tool's download request. Empty for visitors
+ * who did not arrive from an ad. URI-encoded because UTM values are free text
+ * and header values must be Latin-1.
+ */
+export function attributionHeaders(): Record<string, string> {
+  const a = readAttribution();
+  if (Object.keys(a).length === 0) return {};
+  return { [ATTRIBUTION_HEADER]: encodeURIComponent(JSON.stringify(a)) };
+}
+
+/** Server side: the sanitized attribution a download request came with, if any. */
+export function attributionFromRequest(request: Request): Attribution {
+  const raw = request.headers.get(ATTRIBUTION_HEADER);
+  if (!raw || raw.length > 4000) return {};
+  try {
+    return sanitizeAttribution(JSON.parse(decodeURIComponent(raw)));
+  } catch {
+    return {};
+  }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { trackEvent } from "@/lib/analytics";
+import { attributionHeaders } from "@/lib/attribution";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Download, FileText, Loader2, RotateCcw } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
@@ -214,7 +215,7 @@ export default function LiteSplit({
         const base = phase.splitId === SAMPLE ? `/api/lite/sample/${toolId}` : `/api/lite/split/${encodeURIComponent(phase.splitId)}`;
         const q = phase.splitId === SAMPLE ? `?locale=${locale}` : "";
         const url = which === "all" ? `${base}/download${q}` : `${base}/segment/${which}${q}`;
-        const res = await fetch(url, { cache: "no-store" });
+        const res = await fetch(url, { cache: "no-store", headers: attributionHeaders() });
         const ok = await saveResponse(res, which === "all" ? "tavnit-documents.zip" : "tavnit-document.pdf");
         if (!ok) {
           setAuthOpen(true);
