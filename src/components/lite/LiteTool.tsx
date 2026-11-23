@@ -1,6 +1,7 @@
 "use client";
 
 import { trackEvent } from "@/lib/analytics";
+import { attributionHeaders } from "@/lib/attribution";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Check, Download, ExternalLink, FileText, Loader2, Plus, RotateCcw, Sparkles, TriangleAlert, WandSparkles, X } from "lucide-react";
 import type { ToolCopy } from "@/lib/lite/copy";
@@ -435,6 +436,7 @@ export default function LiteTool({
           : `/api/lite/runs/${encodeURIComponent(phase.runId)}/download${hide}`,
         {
         cache: "no-store",
+        headers: attributionHeaders(),
       });
       if (res.status === 401) {
         setAuthOpen(true);

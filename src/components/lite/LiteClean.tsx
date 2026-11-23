@@ -1,6 +1,7 @@
 "use client";
 
 import { trackEvent } from "@/lib/analytics";
+import { attributionHeaders } from "@/lib/attribution";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, ChevronDown, Download, FileSpreadsheet, FileText, Loader2, RotateCcw } from "lucide-react";
@@ -265,7 +266,7 @@ export default function LiteClean({
       setDownloadError(null);
       pending.current = fmt;
       try {
-        const res = await fetch(`/api/lite/clean/${encodeURIComponent(phase.sweepId)}/download${fmt === "csv" ? "?fmt=csv" : ""}`, { cache: "no-store" });
+        const res = await fetch(`/api/lite/clean/${encodeURIComponent(phase.sweepId)}/download${fmt === "csv" ? "?fmt=csv" : ""}`, { cache: "no-store", headers: attributionHeaders() });
         const ok = await saveResponse(res, `tavnit-file.${fmt}`);
         if (!ok) setAuthOpen(true);
         else trackEvent("lite_download", { tool: toolId, locale, sample: false });

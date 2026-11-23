@@ -3,6 +3,7 @@ import { zipSync } from "fflate";
 import { getSessionId } from "@/lib/lite/session";
 import { getRunForSession } from "@/lib/lite/store";
 import { recordDownload } from "@/lib/lite/notify";
+import { attributionFromRequest } from "@/lib/attribution";
 import { downloadLiteObject, readSplit } from "@/lib/lite/product";
 import { authConfigured, currentUser } from "@/lib/supabase/server";
 import { segmentName } from "@/lib/lite/split-view";
@@ -13,7 +14,7 @@ export const runtime = "nodejs";
 
 const ID_RE = /^[A-Za-z0-9_-]{8,64}$/;
 
-export async function GET(_request: Request, ctx: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
   if (!ID_RE.test(id)) return NextResponse.json({ error: "not_found" }, { status: 404 });
   const sessionId = await getSessionId();
@@ -38,7 +39,7 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
   if (!Object.keys(files).length) return NextResponse.json({ error: "not_found" }, { status: 404 });
   const zip = zipSync(files, { level: 0 }); // PDFs are already compressed
 
-  await recordDownload(id, user, { tool: owned.tool, locale: owned.locale, filename: owned.filename });
+  await recordDownload(id, user, { tool: owned.tool, locale: owned.locale, filename: owned.filename }, attributionFromRequest(request));
   const stem = (owned.filename || "documents").replace(/\.[^.]*$/, "").replace(/[^\p{L}\p{N} ._-]/gu, "").trim() || "documents";
   const filename = `tavnit-${stem}.zip`.slice(0, 120);
   const ascii = filename.replace(/[^\x20-\x7E]/g, "_").replace(/"/g, "");
