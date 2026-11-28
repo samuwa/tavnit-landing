@@ -21,9 +21,11 @@ import { useLiteIntent } from "@/components/lite/intent";
  * finishes the download when the visitor lands back with `?auth=1`.
  *
  * This is also where the GA4 `generate_lead` conversion is counted: once per
- * successful submission from a tool's download step (never from the header's
- * plain sign-in, never on a validation or auth error). Email submissions
- * count right here; Google counts on the way back, once the session exists.
+ * download step that ends with a real session (never from the header's plain
+ * sign-in, never on a validation or auth error). Password sign-in and a
+ * sign-up that already has a session count here. Google, and an email
+ * sign-up that still has to confirm, leave a pending marker and count on
+ * the way back through /auth/callback, once the session exists.
  */
 
 type Mode = "signup" | "signin";
@@ -80,14 +82,17 @@ export default function AuthModal({
   const leadTool = resume && intent ? intent.tool : null;
   const leadLocale = intent?.locale ?? locale;
 
-  // Back from Google: count the lead the click could not, if it worked.
+  // Back from Google or from the email confirmation link: count the lead
+  // the click could not, once, and only if a session actually exists.
   useEffect(() => {
-    if (!leadTool || !takePendingToolLead(leadTool)) return;
+    if (!leadTool) return;
+    const method = takePendingToolLead(leadTool);
+    if (!method) return;
     void (async () => {
       try {
         const { getSupabaseBrowser } = await import("@/lib/supabase/client");
         const { data } = await getSupabaseBrowser().auth.getSession();
-        if (data.session) trackToolLead(leadTool, leadLocale, "google");
+        if (data.session) trackToolLead(leadTool, leadLocale, method);
       } catch {
         // Not signed in after all: no lead.
       }
@@ -138,19 +143,19 @@ export default function AuthModal({
       const { getSupabaseBrowser } = await import("@/lib/supabase/client");
       const supabase = getSupabaseBrowser();
       onBeforeRedirect();
-      if (leadTool) markPendingToolLead(leadTool);
+      if (leadTool) markPendingToolLead(leadTool, "google");
       const { error: err } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: { redirectTo: returnTo() },
       });
       if (err) {
-        clearPendingToolLead();
+        if (leadTool) clearPendingToolLead();
         setError(copy.generic);
         setGoogleBusy(false);
       }
       // On success the browser is navigating away; nothing else to do.
     } catch {
-      clearPendingToolLead();
+      if (leadTool) clearPendingToolLead();
       setError(copy.generic);
       setGoogleBusy(false);
     }
@@ -174,7 +179,11 @@ export default function AuthModal({
           setError(copy.generic);
           return;
         }
-        if (leadTool) trackToolLead(leadTool, leadLocale, "signin");
+        if (leadTool) {
+          // A confirmation still pending must not count a second time.
+          clearPendingToolLead();
+          trackToolLead(leadTool, leadLocale, "signin");
+        }
         onAuthed();
         return;
       }
@@ -199,13 +208,18 @@ export default function AuthModal({
         setError(copy.existing);
         return;
       }
-      // The email is in: this is the lead, whether the session starts now or
-      // after the confirmation link.
-      if (leadTool) trackToolLead(leadTool, leadLocale, "signup");
       if (data.session) {
+        if (leadTool) {
+          // Drop any earlier marker so the return path cannot count again.
+          clearPendingToolLead();
+          trackToolLead(leadTool, leadLocale, "signup");
+        }
         onAuthed();
         return;
       }
+      // No session yet: the confirmation link comes back through
+      // /auth/callback (?auth=1). Count there, once the session exists.
+      if (leadTool) markPendingToolLead(leadTool, "signup");
       setNotice(copy.checkEmail);
     } catch {
       setError(copy.generic);

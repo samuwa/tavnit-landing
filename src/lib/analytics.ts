@@ -105,13 +105,11 @@ type LiteLocale = "en" | "es";
 /** How the visitor identified themselves in the download dialog. */
 export type LeadMethod = "signup" | "signin" | "google";
 
-const LEAD_PENDING_KEY = "tavnit_lite_lead_pending";
-const LEAD_PENDING_TTL_MS = 15 * 60 * 1000;
 const PROCESSED_KEY = "tavnit_lite_processed";
 
 /**
  * The conversion Google Ads imports from GA4: a visitor gave their email in a
- * free tool's download dialog. Called once per successful submission, by the
+ * free tool's download dialog and a session exists. Called once, by the
  * dialog itself; carries the tool and locale, never the email.
  */
 export function trackToolLead(tool: string, locale: LiteLocale, method: LeadMethod) {
@@ -124,19 +122,96 @@ export function trackToolLead(tool: string, locale: LiteLocale, method: LeadMeth
 }
 
 /**
- * Google sign-in leaves the page before it succeeds, so the lead cannot be
- * counted at the click. The dialog leaves this marker instead and counts the
- * lead on the way back, once the session exists (see `takePendingToolLead`).
+ * Auth that leaves the page (Google, or email sign-up that still needs a
+ * confirmation link) cannot be counted at the click. The dialog leaves this
+ * marker and counts the lead on the way back, once a session exists
+ * (`takePendingToolLead`).
+ *
+ * Google returns in the same tab, so sessionStorage is enough. The
+ * confirmation link usually opens a new tab, which does not share
+ * sessionStorage, so the same payload is also kept in a first-party cookie.
+ * A copy already counted in another tab is remembered in localStorage and
+ * is not counted again.
  */
-export function markPendingToolLead(tool: string) {
+export type PendingLeadMethod = "google" | "signup";
+
+const LEAD_PENDING_KEY = "tavnit_lite_lead_pending";
+const LEAD_PENDING_COOKIE = "tavnit_lite_lead";
+const LEAD_SEEN_KEY = "tavnit_lite_lead_seen";
+/** Google OAuth is back in the same tab within seconds. */
+const GOOGLE_PENDING_TTL_MS = 15 * 60 * 1000;
+/** Long enough for a confirmation email opened later the same day. */
+const SIGNUP_PENDING_TTL_MS = 24 * 60 * 60 * 1000;
+
+interface PendingLead {
+  tool: string;
+  method: PendingLeadMethod;
+  at: number;
+  exp: number;
+}
+
+function pendingId(p: PendingLead): string {
+  return `${p.tool}:${p.at}`;
+}
+
+function parsePending(raw: string | null): PendingLead | null {
+  if (!raw) return null;
   try {
-    window.sessionStorage.setItem(LEAD_PENDING_KEY, JSON.stringify({ tool, at: Date.now() }));
+    const v = JSON.parse(raw) as { tool?: unknown; method?: unknown; at?: unknown; exp?: unknown };
+    if (typeof v.tool !== "string" || !v.tool || typeof v.at !== "number") return null;
+    const method: PendingLeadMethod = v.method === "signup" ? "signup" : "google";
+    const exp =
+      typeof v.exp === "number"
+        ? v.exp
+        : v.at + (method === "signup" ? SIGNUP_PENDING_TTL_MS : GOOGLE_PENDING_TTL_MS);
+    return { tool: v.tool, method, at: v.at, exp };
   } catch {
-    // Storage blocked: this lead goes uncounted rather than miscounted.
+    return null;
   }
 }
 
-export function clearPendingToolLead() {
+function readCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  for (const part of document.cookie.split("; ")) {
+    const i = part.indexOf("=");
+    if (i === -1 || part.slice(0, i) !== name) continue;
+    try {
+      return decodeURIComponent(part.slice(i + 1));
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+function writeLeadCookie(payload: PendingLead) {
+  const maxAge = Math.max(1, Math.ceil((payload.exp - Date.now()) / 1000));
+  const secure = window.location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${LEAD_PENDING_COOKIE}=${encodeURIComponent(JSON.stringify(payload))}; Path=/; Max-Age=${maxAge}; SameSite=Lax${secure}`;
+}
+
+function clearLeadCookie() {
+  const secure = window.location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${LEAD_PENDING_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax${secure}`;
+}
+
+function readStoredPending(): PendingLead | null {
+  try {
+    return parsePending(window.sessionStorage.getItem(LEAD_PENDING_KEY));
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredPending(payload: PendingLead) {
+  try {
+    window.sessionStorage.setItem(LEAD_PENDING_KEY, JSON.stringify(payload));
+  } catch {
+    // The cookie still covers a return in another tab.
+  }
+}
+
+function clearStoredPending() {
   try {
     window.sessionStorage.removeItem(LEAD_PENDING_KEY);
   } catch {
@@ -144,22 +219,75 @@ export function clearPendingToolLead() {
   }
 }
 
-/**
- * True, once, when a Google sign-in was started from this tool's download
- * dialog in the last few minutes. The marker is removed on read, so a reload
- * (or a second dialog on the page) can never count the same lead twice.
- */
-export function takePendingToolLead(tool: string): boolean {
+function seenIds(): string[] {
   try {
-    const raw = window.sessionStorage.getItem(LEAD_PENDING_KEY);
-    if (!raw) return false;
-    const v = JSON.parse(raw) as { tool?: string; at?: number };
-    if (v.tool !== tool) return false;
-    window.sessionStorage.removeItem(LEAD_PENDING_KEY);
-    return typeof v.at === "number" && Date.now() - v.at < LEAD_PENDING_TTL_MS;
+    const raw = window.localStorage.getItem(LEAD_SEEN_KEY);
+    const v = raw ? (JSON.parse(raw) as unknown) : [];
+    return Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
   } catch {
-    return false;
+    return [];
   }
+}
+
+function rememberSeen(id: string) {
+  try {
+    const next = [...seenIds().filter((x) => x !== id), id].slice(-30);
+    window.localStorage.setItem(LEAD_SEEN_KEY, JSON.stringify(next));
+  } catch {
+    // This tab still drops its own copies below.
+  }
+}
+
+function forgetPendingCopies() {
+  clearStoredPending();
+  try {
+    clearLeadCookie();
+  } catch {
+    // ignore
+  }
+}
+
+export function markPendingToolLead(tool: string, method: PendingLeadMethod = "google") {
+  const ttl = method === "signup" ? SIGNUP_PENDING_TTL_MS : GOOGLE_PENDING_TTL_MS;
+  const payload: PendingLead = { tool, method, at: Date.now(), exp: Date.now() + ttl };
+  writeStoredPending(payload);
+  try {
+    writeLeadCookie(payload);
+  } catch {
+    // Session storage still covers the same-tab Google return.
+  }
+}
+
+/** Drop a pending lead and remember it, so a later return cannot count it. */
+export function clearPendingToolLead() {
+  const cookie = parsePending(readCookie(LEAD_PENDING_COOKIE));
+  const pending = cookie ?? readStoredPending();
+  if (pending) rememberSeen(pendingId(pending));
+  forgetPendingCopies();
+}
+
+/**
+ * The pending method, once, for this tool. Removed on read. `null` when
+ * there is no marker, it belongs to another tool, it expired, or another
+ * tab already counted it.
+ */
+export function takePendingToolLead(tool: string): PendingLeadMethod | null {
+  let cookie: PendingLead | null = null;
+  try {
+    cookie = parsePending(readCookie(LEAD_PENDING_COOKIE));
+  } catch {
+    cookie = null;
+  }
+  const session = readStoredPending();
+  const pending = cookie?.tool === tool ? cookie : session?.tool === tool ? session : null;
+  if (!pending) return null;
+  const id = pendingId(pending);
+  const seen = seenIds().includes(id);
+  const expired = Date.now() > pending.exp;
+  rememberSeen(id);
+  forgetPendingCopies();
+  if (seen || expired) return null;
+  return pending.method;
 }
 
 /**

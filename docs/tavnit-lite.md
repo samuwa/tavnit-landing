@@ -92,6 +92,12 @@ salir la herramienta guarda el run en `sessionStorage` (`tavnit_lite_run`,
 24 h) y al volver lo restaura, vuelve a pedir las filas al servidor y dispara
 la descarga sola. Un simple reload también restaura el resultado.
 
+El evento GA4 `generate_lead` se cuenta solo cuando ya hay sesión. El alta
+por correo que todavía tiene que confirmar no dispara el evento al enviar el
+formulario: deja el mismo marcador que Google (`markPendingToolLead`) y el
+conteo ocurre al volver de `/auth/callback`, una sola vez. Un inicio de
+sesión con contraseña, o un alta que ya trae sesión, se cuenta en el momento.
+
 Requisito: `https://www.tavnit.io/auth/callback` (y en local
 `http://localhost:3010/auth/callback`) en Supabase → Authentication → URL
 Configuration → Redirect URLs. Con Google no viaja el idioma en los
@@ -204,7 +210,48 @@ Limpieza: `purgeExpiredRuns` borra también las filas `splits` (y sus objetos en
 
 - `node --conditions=react-server --import tsx scripts/lite-check.mts` — Excel, normalización de filas y validación de subidas.
 - Con el servidor local, la página funciona sin backend (muestra "no disponible"); el flujo completo necesita la key y el flow de la org Lite.
-- El lead de cada descarga queda en `lite_runs` (`user_id`, `user_email`, `downloaded_at`); pendiente pasarlo al CRM del admin con origen "lite".
+- El lead de cada descarga queda en `lite_runs` (`user_id`, `user_email`, `downloaded_at`, y el clic de anuncio si llegó con uno). La subida a Google Ads está en la sección siguiente. Pendiente pasarlo al CRM del admin con origen "lite".
+
+## Conversiones offline (Google Ads)
+
+El script `scripts/export-ads-offline-conversions.mjs` arma el CSV de
+**Goals → Uploads → Conversions from clicks**. No llama a la API de Google
+Ads y no escribe correos ni ids de usuario. Corre en local (o en un job
+privado) con la service role de Supabase; no hay ruta HTTP.
+
+Una fila por lead: la descarga más temprana que tenga `gclid`, `gbraid` o
+`wbraid`. Si la misma persona o el mismo clic aparecen en otro run, ese run
+no se repite. Cada fila lleva un solo identificador (gclid gana; si no es
+válido se usa gbraid y luego wbraid). La hora va en `America/Panama`
+(UTC−05:00 todo el año), formato `yyyy-MM-dd HH:mm:ss`, con la fila
+`Parameters:TimeZone=America/Panama`. El nombre por defecto es
+`Free tool lead (offline)` y tiene que coincidir con la acción de conversión
+creada en Ads.
+
+Antes de usar `--mark`, aplica en el SQL editor
+`supabase/migrations/20261128120000_lite_runs_ads_exported.sql` (`ads_exported_at`).
+Sin esa columna el CSV igual se genera, pero una segunda corrida volvería a
+incluir las mismas filas.
+
+```bash
+node scripts/export-ads-offline-conversions.mjs --self-test
+node --env-file=.env.local scripts/export-ads-offline-conversions.mjs --out ads.csv
+# revisar que no haya correos; luego, para no reexportar:
+node --env-file=.env.local scripts/export-ads-offline-conversions.mjs --out ads.csv --mark
+```
+
+Sube `ads.csv` una sola vez, y solo si el script imprimió que marcó las
+filas. Variables (ver `.env.example`): `SUPABASE_URL`,
+`SUPABASE_SERVICE_ROLE_KEY`, y opcionales `ADS_OFFLINE_CONVERSION_NAME`,
+`ADS_OFFLINE_CONVERSION_VALUE` (1), `ADS_OFFLINE_CONVERSION_CURRENCY` (USD),
+`ADS_OFFLINE_TIMEZONE`.
+
+Para probar el conteo en el navegador: en una herramienta, crea cuenta con
+correo cuando Supabase pide confirmación. En la pestaña de red no debe
+haber `generate_lead` al enviar el formulario. Al abrir el enlace y volver
+a la herramienta con sesión, sí, una vez (`method=signup`). Un segundo
+reload no lo repite. Entrar con contraseña o con Google sigue contando una
+sola vez, como antes.
 
 ## De Lite a Tavnit (handoff)
 
