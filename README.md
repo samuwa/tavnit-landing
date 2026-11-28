@@ -34,3 +34,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Conversiones offline de Google Ads
+
+Las descargas de las herramientas gratis que llegan con `gclid` / `gbraid` /
+`wbraid` se exportan a un CSV para subirlo a mano en Google Ads
+(Conversions from clicks). El script no llama a la API de Ads y el CSV no
+incluye correos. Detalle y prueba del evento `generate_lead`:
+[docs/tavnit-lite.md](docs/tavnit-lite.md) (sección «Conversiones offline»).
+
+```bash
+node scripts/export-ads-offline-conversions.mjs --self-test
+node --env-file=.env.local scripts/export-ads-offline-conversions.mjs --out ads.csv
+node --env-file=.env.local scripts/export-ads-offline-conversions.mjs --out ads.csv --mark
+```
+
+`--mark` exige la migración `supabase/migrations/20261128120000_lite_runs_ads_exported.sql`.
+El nombre de la conversión sale de `ADS_OFFLINE_CONVERSION_NAME` (por defecto
+`Free tool lead (offline)`).
